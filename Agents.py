@@ -56,3 +56,12 @@ class Generator(object):
 
         # Children
         self.dynamics = []
+
+##
+# Load Class
+class Load(object):
+    """Load Agent for LTD Model"""
+    def __init__(self,newLoad):
+        # Identification
+        self.id = newload
+        # Current Status
