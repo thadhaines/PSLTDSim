@@ -2,6 +2,7 @@
 """visual studio often requires deleting default ironpython environment, and using 2.7 (no bit declaration)"""
 
 from __main__ import *
+global locations
 import clr              # required to load .NET dll
 clr.AddReferenceToFileAndPath(locations[0])
 import GE.Pslf.Middleware as mid

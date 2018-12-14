@@ -5,8 +5,7 @@
     <ProjectGuid>8e1af4a0-1473-401a-940c-b0a4b969b64b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>LTD_sim.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\LTD_sim</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <InterpreterId>IronPython|2.7-32</InterpreterId>
     <LaunchProvider>IronPython (.NET) launcher</LaunchProvider>

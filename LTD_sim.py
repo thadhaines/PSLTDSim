@@ -18,4 +18,4 @@ from Agents import *
 
 sys = Model(locations)
 
-raw_input("Press <Enter> to Continue. . . .")
+raw_input("Press <Enter> to Continue. . . . ")
