@@ -13,9 +13,9 @@ locations = (
     dydPath,
     )
 
-from Model import *
-from Agents import *
+execfile('Model.py')
+execfile('Agents.py')
 
 sys = Model(locations)
 
-raw_input("Press <Enter> to Continue. . . .")
+raw_input("Press <Enter> to Continue. . . . ")
