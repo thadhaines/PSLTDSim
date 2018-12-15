@@ -24,6 +24,7 @@ class BusAgent(object):
 
         # Children
         self.Gens = []
+        self.Slack = []
         self.Load = []
 
     def __str__(self):
@@ -63,6 +64,14 @@ class GeneratorAgent(object):
         # Children
         self.dynamics = []
 
+class SlackAgent(GeneratorAgent):
+    """Derived from GeneratorAgent for Slack Generator"""
+    def __init__(self, model, newGen):
+        super(SlackAgent, self).__init__(model, newGen)
+        # attempt at deriving SlackAgent from Generator Agent
+        # mostly a placehold class for inheritance confirmation
+        self.Tol = 0.01
+
 class LoadAgent(object):
     """Load Agent for LTD Model"""
     def __init__(self,model, newLoad):
@@ -94,10 +103,11 @@ class AreaAgent(object):
         # Children
         self.Gens = []
         self.Load = []
+        self.Slack = []
 
     def checkArea(self):
         """Checks if found number of Generators and loads is Correct"""
-        if self.Ngen == len(self.Gens):
+        if self.Ngen == (len(self.Gens)+len(self.Slack)):
             if self.model.debug: print("Gens correct in Area:\t%d" % self.Area)
         else:
             print("*** Gen Error: %d/%d found. Area:\t%d" % 

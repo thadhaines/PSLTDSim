@@ -1,11 +1,15 @@
 """Developement file that acts as main"""
 
 # Required Paths
-fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"  # full path to dll
-pslfPath = r"C:\Program Files (x86)\GE PSLF"  # path to folder containing PSLF license
+## full path to dll
+fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"  
+## path to folder containing PSLF license
+pslfPath = r"C:\Program Files (x86)\GE PSLF"  
+## .sav path
 savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
 savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
-savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
+#savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
+## .dyd path
 dydPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData.dyd"
 
 locations = (
