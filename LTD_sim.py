@@ -7,7 +7,7 @@ fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"
 pslfPath = r"C:\Program Files (x86)\GE PSLF"  
 ## .sav path
 savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
-savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
+#savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
 #savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
 ## .dyd path
 dydPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData.dyd"
@@ -26,6 +26,7 @@ execfile('Model.py')
 env = Model(locations, 0, 1) # locations, Htot, debug
 env.dispCP()
 
+# Check should be included n default model init behavior
 for x in range(env.Narea):
     env.Area[x].checkArea()
 

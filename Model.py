@@ -43,7 +43,7 @@ class Model(object):
         # init_dynamics
 
         # Systemwide Variables
-        self.Htot = Htot # will be checked later to decide if manual input dectected
+        self.Htot = Htot # TODO: check later to decide if manual input dectected
         self.f = 1
         self.ct = 0 # current time
         
@@ -98,7 +98,7 @@ class Model(object):
                                          (a_busses[c_bus].Extnum, 
                                           n_gen, 
                                           n_load,
-                                          a_busses[c_bus].Busnam,)
+                                          a_busses[c_bus].Busnam)
                                          )
                 self.Area.append(newAreaAgent)
             c_area +=1
@@ -110,28 +110,29 @@ class Model(object):
             print("Found %d loads" % f_load)
 
     # Additional init Methods
-    def incorporateBus(self,newBus,areaAgent):
+    def incorporateBus(self, newBus, areaAgent):
         """Handles adding Busses and associated children to Mirror"""
         # b_... Bus objects
         # c_... Current Object
+        m_ref = areaAgent.model # to simplify referencing
+        slackFlag = 0
         if newBus.Type == 0:
             slackFlag = 1
-        else: slackFlag = 0
 
-        newBusAgent = BusAgent(areaAgent.model, newBus)
+        newBusAgent = BusAgent(m_ref, newBus)
 
-        if newBusAgent.Ngen > 0:
+        if (newBusAgent.Ngen > 0):
             b_gen = col.GeneratorDAO.FindByBus(newBusAgent.Scanbus)
             for c_gen in range(newBusAgent.Ngen):
 
                 if slackFlag:
-                    newGenAgent = SlackAgent(areaAgent.model, b_gen[c_gen])
+                    newGenAgent = SlackAgent(m_ref, b_gen[c_gen])
                     # add references to gen in model and bus,area agent
                     newBusAgent.Slack.append(newGenAgent)
                     self.Slack.append(newGenAgent)
                     areaAgent.Slack.append(newGenAgent)
                 else:
-                    newGenAgent = GeneratorAgent(areaAgent.model, b_gen[c_gen])
+                    newGenAgent = GeneratorAgent(m_ref, b_gen[c_gen])
                     # add references to gen in model and bus,area agent
                     newBusAgent.Gens.append(newGenAgent)
                     self.Gens.append(newGenAgent)
@@ -140,7 +141,7 @@ class Model(object):
         if newBusAgent.Nload > 0:
             b_load = col.LoadDAO.FindByBus(newBusAgent.Scanbus)
             for c_load in range(newBusAgent.Nload):
-                newLoadAgent = LoadAgent(areaAgent.model, b_load[c_load])
+                newLoadAgent = LoadAgent(m_ref, b_load[c_load])
                 # add references to load in model and bus,area agent
                 newBusAgent.Load.append(newLoadAgent)
                 self.Load.append(newLoadAgent)

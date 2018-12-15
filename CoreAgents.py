@@ -58,7 +58,8 @@ class GeneratorAgent(object):
         self.Pe = self.Pm       # Initialize as equal
         self.Q = newGen.Qgen    # Q generatred
 
-        # the idea is to have current status variables, then move them to a time sequence list at each step
+        # the idea is to have current status variables for easy access,
+        # then move them to a time sequence list at each step
         # could use current time as an index (would allow for pre-allocation)
 
         # Children
@@ -70,7 +71,7 @@ class SlackAgent(GeneratorAgent):
         super(SlackAgent, self).__init__(model, newGen)
         # attempt at deriving SlackAgent from Generator Agent
         # mostly a placehold class for inheritance confirmation
-        self.Tol = 0.01
+        self.Tol = 0.01 # will be set in model params....
 
 class LoadAgent(object):
     """Load Agent for LTD Model"""
@@ -108,13 +109,16 @@ class AreaAgent(object):
     def checkArea(self):
         """Checks if found number of Generators and loads is Correct"""
         if self.Ngen == (len(self.Gens)+len(self.Slack)):
-            if self.model.debug: print("Gens correct in Area:\t%d" % self.Area)
+            if self.model.debug: 
+                print("Gens correct in Area:\t%d" % self.Area)
+            
         else:
             print("*** Gen Error: %d/%d found. Area:\t%d" % 
-                  (len(self.Gens), self.Ngen, self.Area))
+                  ((len(self.Gens)+len(self.Slack)), self.Ngen, self.Area))
 
         if self.Nload == len(self.Load):
-            if self.model.debug: print("Load correct in Area:\t%d" % self.Area)
+            if self.model.debug: 
+                print("Load correct in Area:\t%d" % self.Area)
         else:
             print("*** Load Error: %d/%d found. Area:\t%d" % 
                   (len(self.Load), self.Nload, self.Area))
