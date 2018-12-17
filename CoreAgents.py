@@ -1,4 +1,8 @@
-"""LTD Core Agent Definitions"""
+"""LTD Core Agent Definitions
+Currently includes: Bus, Generator, Slack, Load, and Area agents.
+None of which are fully developed.
+"""
+
 from __main__ import *
 
 class BusAgent(object):
@@ -58,7 +62,7 @@ class GeneratorAgent(object):
         self.Pe = self.Pm       # Initialize as equal
         self.Q = newGen.Qgen    # Q generatred
 
-        # the idea is to have current status variables for easy access,
+        # NOTE: the idea is to have current status variables for easy access,
         # then move them to a time sequence list at each step
         # could use current time as an index (would allow for pre-allocation)
 
@@ -71,7 +75,7 @@ class SlackAgent(GeneratorAgent):
         super(SlackAgent, self).__init__(model, newGen)
         # attempt at deriving SlackAgent from Generator Agent
         # mostly a placehold class for inheritance confirmation
-        self.Tol = 0.01 # will be set in model params....
+        self.Tol = 0.01 # UNDONE: will be set in model params....
 
 class LoadAgent(object):
     """Load Agent for LTD Model"""

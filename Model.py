@@ -1,5 +1,4 @@
-"""Test of seperated files"""
-"""VS may require default ironpython environment (no bit declaration)"""
+"""Model for agent based LTD simulations"""
 
 from __main__ import *
 
@@ -48,7 +47,7 @@ class Model(object):
         self.f = 1
         self.ct = 0 # current time
 
-        #
+        # NOTE: These variable names may change after a varibale naming convention has been decided
         self.PeSum = 0
         self.PmSum = 0
         self.Qgensum = 0
