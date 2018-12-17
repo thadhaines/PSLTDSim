@@ -48,7 +48,7 @@ class Model(object):
         self.f = 1
         self.t = 0 
 
-        # NOTE: Any/all variable names may change after a varibale naming convention has been decided
+        # NOTE: Variable names may change after a varibale naming convention has been decided
         # ss_ .. system sum
         self.ss_Pe = 0.0
         self.ss_Pm = 0.0
