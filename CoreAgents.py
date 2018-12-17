@@ -3,8 +3,6 @@ Currently includes: Bus, Generator, Slack, Load, and Area agents.
 None of which are fully developed.
 """
 
-from __main__ import *
-
 class BusAgent(object):
     """Bus Agent for LTD Model"""
     def __init__(self, model, newBus):
@@ -56,6 +54,7 @@ class GeneratorAgent(object):
         self.Busnum = newGen.GetBusNumber()
         self.Scanbus = newGen.GetScanBusIndex()
         self.Mbase = newGen.Mbase
+        self.St = newGen.St
 
         # Current Status
         self.Pm = newGen.Pgen   # Voltage Magnitude
@@ -91,6 +90,7 @@ class LoadAgent(object):
         # Current Status
         self.P = newLoad.P   
         self.Q = newLoad.Q 
+        self.St = newLoad.St
 
 class AreaAgent(object):
     """Area Agent for LTD Model Collections"""
