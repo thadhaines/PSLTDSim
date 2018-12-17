@@ -25,6 +25,8 @@ execfile('Model.py')
 
 env = Model(locations, 0, 1) # locations, Htot, debug
 env.dispCP()
+env.sumPower()
+env.dispPow()
 
 # Check should be included n default model init behavior
 for x in range(env.Narea):

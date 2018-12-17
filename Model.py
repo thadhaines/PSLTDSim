@@ -15,6 +15,7 @@ class Model(object):
         """Carries out initialization 
         This includes: PSLF, python mirror, dynamics, and perturbances
         """
+        ## Simulation Parameters
         self.locations = locations
         self.debug = debug
 
@@ -46,8 +47,17 @@ class Model(object):
         self.Htot = Htot # TODO: check later to decide if manual input dectected
         self.f = 1
         self.ct = 0 # current time
+
+        #
+        self.PeSum = 0
+        self.PmSum = 0
+        self.Qgensum = 0
+        self.QLsum = 0
+        self.PLsum = 0
+        self.PLosses = 0
+        self.QLosses = 0
         
-        # init perturbances...
+        # init perturbances... Maybe just an addPertutbance method...
 
     # Initiazliaze Methods
     def init_PSLF(self):
@@ -165,6 +175,22 @@ class Model(object):
 	        0, # reorder
             )
 
+    def sumPower(self):
+        """Function to sum all Pe, Pm, P, and Q of system"""
+        for ndx in range(len(self.Gens)):
+            #Sum all generator values
+            self.PeSum += self.Gens[ndx].Pe
+            self.PmSum += self.Gens[ndx].Pm
+            self.Qgensum += self.Gens[ndx].Q
+
+        for ndx in range(len(self.Load)):
+            self.QLsum += self.Load[ndx].Q
+            self.PLsum += self.Load[ndx].P
+
+        self.PLosses = self.PeSum - self.PLsum
+        self.QLosses = self.Qgensum - self.QLsum
+        self.Pacc = self.PmSum - self.PeSum
+
     # Information Display
     def dispCP(self):
         """Display current Case Parameters"""
@@ -176,3 +202,16 @@ class Model(object):
         print("%d Generators" % self.Ngen)
         print("%d Loads" % self.Nload)
         print("***_________________***")
+
+    def dispPow(self):
+        """Display system power values"""
+        print("*** System Power Overview ***")
+        print("Pm:\t%.2f" % self.PmSum)
+        print("Pe:\t%.2f" % self.PeSum)
+        print("Pacc:\t%.2f" % self.Pacc)
+        print("Pload:\t%.2f" % self.PLsum)
+        print("Ploss:\t%.2f" % self.PLosses)
+        print("Qgen:\t%.2f" % self.Qgensum)
+        print("Qload:\t%.2f" % self.QLsum)
+        print("Qloss:\t%.2f" % self.QLosses)
+        print("***_______________________***")
