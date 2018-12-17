@@ -16,6 +16,6 @@ locations = (
 execfile('Model.py')
 execfile('Agents.py')
 
-sys = Model(locations)
+mirror = Model(locations)
 
 raw_input("Press <Enter> to Continue. . . . ")

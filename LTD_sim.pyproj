@@ -28,7 +28,7 @@
     <InterpreterReference Include="IronPython|2.7-32" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agents.py" />
+    <Compile Include="CoreAgents.py" />
     <Compile Include="Model.py" />
     <Compile Include="Start_Template.py" />
   </ItemGroup>

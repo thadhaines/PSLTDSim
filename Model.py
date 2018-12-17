@@ -1,5 +1,4 @@
-"""Test of seperated files"""
-"""visual studio often requires deleting default ironpython environment, and using 2.7 (no bit declaration)"""
+"""Model for agent based LTD simulations"""
 
 from __main__ import *
 
@@ -11,9 +10,13 @@ import GE.Pslf.Middleware.Collections as col
 # Model Creation
 class Model(object):
     """Model class for LTD Model"""
-    def __init__(self, locations, Htot = 0):
-        """Carries out initialization of PSLF, python mirror, dynamics, and perturbances"""
+    def __init__(self, locations, Htot = 0, debug = 0):
+        """Carries out initialization 
+        This includes: PSLF, python mirror, dynamics, and perturbances
+        """
+        ## Simulation Parameters
         self.locations = locations
+        self.debug = debug
 
         ## init pslf
         self.pslf = self.init_PSLF()
@@ -31,7 +34,7 @@ class Model(object):
         # Agent Collections
         self.Area = []
         self.Bus = []
-        self.Gen = []
+        self.Gens = []
         self.Load = []
         self.Slack = []
 
@@ -40,15 +43,26 @@ class Model(object):
         # init_dynamics
 
         # Systemwide Variables
-        self.Htot = Htot # will be checked later to decide if manual input dectected
+        self.Htot = Htot # TODO: check later to decide if manual input dectected
         self.f = 1
         self.ct = 0 # current time
+
+        # NOTE: These variable names may change after a varibale naming convention has been decided
+        self.PeSum = 0
+        self.PmSum = 0
+        self.Qgensum = 0
+        self.QLsum = 0
+        self.PLsum = 0
+        self.PLosses = 0
+        self.QLosses = 0
         
-        # init pert
+        # init perturbances... Maybe just an addPertutbance method...
 
     # Initiazliaze Methods
     def init_PSLF(self):
-        """Attempts to initialize instance of PSLF with given paths. Returns pslf object"""
+        """Initialize instance of PSLF with given paths. 
+        Returns pslf object, prints error code, or crashes.
+        """
         pslf = mid.Pslf(self.locations[1])   # create pslf instance / object
         load_test = pslf.LoadCase(self.locations[2])     # load .sav file
 
@@ -61,11 +75,15 @@ class Model(object):
             return None
 
     def init_mirror(self):
-        """Create mirror of PSLF system"""
+        """Create python mirror of PSLF system
+        Handles Buses, Generators, and Loads
+        """
         c_area = 0
         f_bus = 0
         f_gen = 0
         f_load = 0
+
+        if self.debug: print("Extnum\tgen\tload\tBusnam")
 
         while f_bus < self.Nbus:
             #while not all busses are found
@@ -73,25 +91,72 @@ class Model(object):
             n_bus = len(a_busses)
             if n_bus > 0:
                 #If Current area has buses
-                self.Area.append(c_area)
+                newAreaAgent = AreaAgent(self, c_area)
                 f_bus += n_bus
-        
+
                 for c_bus in range(n_bus):
                     #for each found bus
-                    self.Bus.append(Bus(a_busses[c_bus]))
-                    b_gen = col.GeneratorDAO.FindByBus(a_busses[c_bus].Extnum)
-                    n_gen = len(b_gen)
-                    b_load = col.LoadDAO.FindByBus(a_busses[c_bus].Extnum)
-                    n_load = len(b_load)
+                    self.incorporateBus(a_busses[c_bus], newAreaAgent)
+                    c_ScanBus = a_busses[c_bus].GetScanBusIndex()
+                    n_gen = len(col.GeneratorDAO.FindByBus(c_ScanBus))
+                    n_load = len(col.LoadDAO.FindByBus(c_ScanBus))
                     f_gen += n_gen
                     f_load += n_load
-                    print("%s \thas %d gen and %d load" % (a_busses[c_bus].Busnam, n_gen, n_load))
 
+                    if self.debug: print("%d\t%d\t%d\t%s" % 
+                                         (a_busses[c_bus].Extnum, 
+                                          n_gen, 
+                                          n_load,
+                                          a_busses[c_bus].Busnam)
+                                         )
+                self.Area.append(newAreaAgent)
             c_area +=1
-            
-        print("Found %d buses" % f_bus)
-        print("Found %d gens" % f_gen)
-        print("Found %d loads" % f_load)
+        
+        if self.debug:
+            print("Found %d Areas" % len(self.Area))
+            print("Found %d buses" % f_bus)
+            print("Found %d gens (%d Slack)" % (f_gen, len(self.Slack)))
+            print("Found %d loads" % f_load)
+
+    # Additional init Methods
+    def incorporateBus(self, newBus, areaAgent):
+        """Handles adding Busses and associated children to Mirror"""
+        # b_... Bus objects
+        # c_... Current Object
+        m_ref = areaAgent.model # to simplify referencing
+        slackFlag = 0
+        if newBus.Type == 0:
+            slackFlag = 1
+
+        newBusAgent = BusAgent(m_ref, newBus)
+
+        if (newBusAgent.Ngen > 0):
+            b_gen = col.GeneratorDAO.FindByBus(newBusAgent.Scanbus)
+            for c_gen in range(newBusAgent.Ngen):
+
+                if slackFlag:
+                    newGenAgent = SlackAgent(m_ref, b_gen[c_gen])
+                    # add references to gen in model and bus,area agent
+                    newBusAgent.Slack.append(newGenAgent)
+                    self.Slack.append(newGenAgent)
+                    areaAgent.Slack.append(newGenAgent)
+                else:
+                    newGenAgent = GeneratorAgent(m_ref, b_gen[c_gen])
+                    # add references to gen in model and bus,area agent
+                    newBusAgent.Gens.append(newGenAgent)
+                    self.Gens.append(newGenAgent)
+                    areaAgent.Gens.append(newGenAgent)
+
+        if newBusAgent.Nload > 0:
+            b_load = col.LoadDAO.FindByBus(newBusAgent.Scanbus)
+            for c_load in range(newBusAgent.Nload):
+                newLoadAgent = LoadAgent(m_ref, b_load[c_load])
+                # add references to load in model and bus,area agent
+                newBusAgent.Load.append(newLoadAgent)
+                self.Load.append(newLoadAgent)
+                areaAgent.Load.append(newLoadAgent)
+
+        self.Bus.append(newBusAgent)
 
     # Simulation Methods
     def LTD_Solve(self):
@@ -109,9 +174,43 @@ class Model(object):
 	        0, # reorder
             )
 
+    def sumPower(self):
+        """Function to sum all Pe, Pm, P, and Q of system"""
+        for ndx in range(len(self.Gens)):
+            #Sum all generator values
+            self.PeSum += self.Gens[ndx].Pe
+            self.PmSum += self.Gens[ndx].Pm
+            self.Qgensum += self.Gens[ndx].Q
+
+        for ndx in range(len(self.Load)):
+            self.QLsum += self.Load[ndx].Q
+            self.PLsum += self.Load[ndx].P
+
+        self.PLosses = self.PeSum - self.PLsum
+        self.QLosses = self.Qgensum - self.QLsum
+        self.Pacc = self.PmSum - self.PeSum
+
     # Information Display
-    def caseParams(self):
-        """Fucntion displays current Case Parameters"""
+    def dispCP(self):
+        """Display current Case Parameters"""
+        print("*** Case Parameters ***")
         print(".sav ==\t%s" % self.locations[2])
-        print("%d Areas \t%d Zones" % (self.Narea, self.Nzone))
-        print("%d Busses\t%d Generators\t%d Loads" % (self.Nbus, self.Ngen, self.Nload))
+        print("%d Areas" % self.Narea)
+        print("%d Zones" % self.Nzone)
+        print("%d Busses" % self.Nbus)
+        print("%d Generators" % self.Ngen)
+        print("%d Loads" % self.Nload)
+        print("***_________________***")
+
+    def dispPow(self):
+        """Display system power values"""
+        print("*** System Power Overview ***")
+        print("Pm:\t%.2f" % self.PmSum)
+        print("Pe:\t%.2f" % self.PeSum)
+        print("Pacc:\t%.2f" % self.Pacc)
+        print("Pload:\t%.2f" % self.PLsum)
+        print("Ploss:\t%.2f" % self.PLosses)
+        print("Qgen:\t%.2f" % self.Qgensum)
+        print("Qload:\t%.2f" % self.QLsum)
+        print("Qloss:\t%.2f" % self.QLosses)
+        print("***_______________________***")
