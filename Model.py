@@ -2,36 +2,37 @@
 
 from __main__ import *
 
-import clr              # required to load .NET dll
+# load .NET dll
+import clr              
 clr.AddReferenceToFileAndPath(locations[0])
 import GE.Pslf.Middleware as mid
 import GE.Pslf.Middleware.Collections as col
 
-# Model Creation
 class Model(object):
     """Model class for LTD Model"""
     def __init__(self, locations, Htot = 0, debug = 0):
         """Carries out initialization 
         This includes: PSLF, python mirror, dynamics, and perturbances
         """
-        ## Simulation Parameters
+        # Simulation Parameters
         self.locations = locations
         self.debug = debug
 
-        ## init pslf
+        # init pslf and solve system
         self.pslf = self.init_PSLF()
         self.LTD_Solve()
 
-        ## init_mirror
-        ### Case Parameters
+        # init_mirror
+        ## Case Parameters
         self.Ngen = self.pslf.GetCasepar('Ngen')
         self.Nbus = self.pslf.GetCasepar('Nbus')
         self.Nload = self.pslf.GetCasepar('Nload')
-        self.Nbrsec = self.pslf.GetCasepar('Nbrsec') # branch sections = lines?
         self.Narea = self.pslf.GetCasepar('Narea')
         self.Nzone = self.pslf.GetCasepar('Nzone')
+        # Q: branch sections = lines?
+        self.Nbrsec = self.pslf.GetCasepar('Nbrsec') 
 
-        # Agent Collections
+        ## Agent Collections
         self.Area = []
         self.Bus = []
         self.Gens = []
@@ -42,29 +43,33 @@ class Model(object):
 
         # init_dynamics
 
-        # Systemwide Variables
+        # Systemwide Variables (after init_dynamics so that H can be summed)
         self.Htot = Htot # TODO: check later to decide if manual input dectected
         self.f = 1
-        self.ct = 0 # current time
+        self.t = 0 
 
-        # NOTE: These variable names may change after a varibale naming convention has been decided
-        self.PeSum = 0
-        self.PmSum = 0
-        self.Qgensum = 0
-        self.QLsum = 0
-        self.PLsum = 0
-        self.PLosses = 0
-        self.QLosses = 0
+        # NOTE: Any/all variable names may change after a varibale naming convention has been decided
+        # ss_ .. system sum
+        self.ss_Pe = 0.0
+        self.ss_Pm = 0.0
+        self.ss_Qgen = 0.0
+        self.ss_Qload = 0.0
+        self.ss_Pload = 0.0
+        self.PLosses = 0.0
+        self.QLosses = 0.0
+        self.ss_Pacc = 0.0
         
-        # init perturbances... Maybe just an addPertutbance method...
+        # init perturbances. Maybe just an addPertutbance method.?
 
     # Initiazliaze Methods
     def init_PSLF(self):
         """Initialize instance of PSLF with given paths. 
         Returns pslf object, prints error code, or crashes.
         """
-        pslf = mid.Pslf(self.locations[1])   # create pslf instance / object
-        load_test = pslf.LoadCase(self.locations[2])     # load .sav file
+        # create pslf instance / object
+        pslf = mid.Pslf(self.locations[1])   
+        # load .sav file
+        load_test = pslf.LoadCase(self.locations[2])     
 
         if load_test == 0:
             print(self.locations[2] + " Successfully loaded.")
@@ -78,12 +83,19 @@ class Model(object):
         """Create python mirror of PSLF system
         Handles Buses, Generators, and Loads
         """
+        # Useful variable notation key:
+        # c_ .. current
+        # f_ .. found
+        # a_ .. area
+        # n_ .. number of
+
         c_area = 0
         f_bus = 0
         f_gen = 0
         f_load = 0
 
-        if self.debug: print("Extnum\tgen\tload\tBusnam")
+        if self.debug: 
+            print("Extnum\tgen\tload\tBusnam")
 
         while f_bus < self.Nbus:
             #while not all busses are found
@@ -103,14 +115,15 @@ class Model(object):
                     f_gen += n_gen
                     f_load += n_load
 
-                    if self.debug: print("%d\t%d\t%d\t%s" % 
+                    if self.debug: 
+                        print("%d\t%d\t%d\t%s" % 
                                          (a_busses[c_bus].Extnum, 
                                           n_gen, 
                                           n_load,
                                           a_busses[c_bus].Busnam)
                                          )
                 self.Area.append(newAreaAgent)
-            c_area +=1
+            c_area += 1
         
         if self.debug:
             print("Found %d Areas" % len(self.Area))
@@ -121,8 +134,9 @@ class Model(object):
     # Additional init Methods
     def incorporateBus(self, newBus, areaAgent):
         """Handles adding Busses and associated children to Mirror"""
-        # b_... Bus objects
-        # c_... Current Object
+        # b_ .. Bus objects
+        # c_ .. Current Object
+        # m_ .. model
         m_ref = areaAgent.model # to simplify referencing
         slackFlag = 0
         if newBus.Type == 0:
@@ -130,6 +144,7 @@ class Model(object):
 
         newBusAgent = BusAgent(m_ref, newBus)
 
+        # locate and create bus generator children
         if (newBusAgent.Ngen > 0):
             b_gen = col.GeneratorDAO.FindByBus(newBusAgent.Scanbus)
             for c_gen in range(newBusAgent.Ngen):
@@ -147,6 +162,7 @@ class Model(object):
                     self.Gens.append(newGenAgent)
                     areaAgent.Gens.append(newGenAgent)
 
+        # locate and create bus load children
         if newBusAgent.Nload > 0:
             b_load = col.LoadDAO.FindByBus(newBusAgent.Scanbus)
             for c_load in range(newBusAgent.Nload):
@@ -160,7 +176,9 @@ class Model(object):
 
     # Simulation Methods
     def LTD_Solve(self):
-        """Function to use custom solve parameters"""
+        """Function to use custom solve parameters
+        Local file manipulation requierd to perform without PSLF errors.
+        """
         return self.pslf.SolveCase(
             25, # maxIterations, 
 	        0, 	# iterationsBeforeVarLimits, 
@@ -177,18 +195,28 @@ class Model(object):
     def sumPower(self):
         """Function to sum all Pe, Pm, P, and Q of system"""
         for ndx in range(len(self.Gens)):
-            #Sum all generator values
-            self.PeSum += self.Gens[ndx].Pe
-            self.PmSum += self.Gens[ndx].Pm
-            self.Qgensum += self.Gens[ndx].Q
+            #Sum all generator values if status = 1
+            if self.Gens[ndx].St == 1:
+                self.ss_Pe += self.Gens[ndx].Pe
+                self.ss_Pm += self.Gens[ndx].Pm
+                self.ss_Qgen += self.Gens[ndx].Q
+
+        for ndx in range(len(self.Slack)):
+            #Sum all Slack values if status = 1
+            if self.Slack[ndx].St == 1:
+                self.ss_Pe += self.Slack[ndx].Pe
+                self.ss_Pm += self.Slack[ndx].Pm
+                self.ss_Qgen += self.Slack[ndx].Q
 
         for ndx in range(len(self.Load)):
-            self.QLsum += self.Load[ndx].Q
-            self.PLsum += self.Load[ndx].P
+            #Sum all loads with status == 1
+            if self.Load[ndx].St == 1:
+                self.ss_Qload += self.Load[ndx].Q
+                self.ss_Pload += self.Load[ndx].P
 
-        self.PLosses = self.PeSum - self.PLsum
-        self.QLosses = self.Qgensum - self.QLsum
-        self.Pacc = self.PmSum - self.PeSum
+        self.PLosses = self.ss_Pe - self.ss_Pload
+        self.QLosses = self.ss_Qgen - self.ss_Qload
+        self.ss_Pacc = self.ss_Pm - self.ss_Pe
 
     # Information Display
     def dispCP(self):
@@ -203,14 +231,14 @@ class Model(object):
         print("***_________________***")
 
     def dispPow(self):
-        """Display system power values"""
+        """Display System Sumation power values"""
         print("*** System Power Overview ***")
-        print("Pm:\t%.2f" % self.PmSum)
-        print("Pe:\t%.2f" % self.PeSum)
-        print("Pacc:\t%.2f" % self.Pacc)
-        print("Pload:\t%.2f" % self.PLsum)
+        print("Pm:\t%.2f" % self.ss_Pm)
+        print("Pe:\t%.2f" % self.ss_Pe)
+        print("Pacc:\t%.2f" % self.ss_Pacc)
+        print("Pload:\t%.2f" % self.ss_Pload)
         print("Ploss:\t%.2f" % self.PLosses)
-        print("Qgen:\t%.2f" % self.Qgensum)
-        print("Qload:\t%.2f" % self.QLsum)
+        print("Qgen:\t%.2f" % self.ss_Qgen)
+        print("Qload:\t%.2f" % self.ss_Qload)
         print("Qloss:\t%.2f" % self.QLosses)
         print("***_______________________***")
