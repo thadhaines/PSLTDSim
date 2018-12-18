@@ -55,6 +55,7 @@ class GeneratorAgent(object):
         self.Scanbus = newGen.GetScanBusIndex()
         self.Mbase = newGen.Mbase
         self.St = newGen.St
+        self.H = 0.0
 
         # Current Status
         self.Pm = newGen.Pgen   # Voltage Magnitude
@@ -75,6 +76,8 @@ class SlackAgent(GeneratorAgent):
         # attempt at deriving SlackAgent from Generator Agent
         # mostly a placehold class for inheritance confirmation
         self.Tol = 0.01 # UNDONE: will be set in model params....
+        self.Pe_calc = 0.0
+        self.Pe_error = 0.0
 
 class LoadAgent(object):
     """Load Agent for LTD Model"""

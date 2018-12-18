@@ -11,8 +11,9 @@ savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
 #savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
 #savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
 ## .dyd path
-dydPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData.dyd"
-
+dydPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"
+#dydPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"
+#dydPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"
 locations = (
     fullMiddlewareFilePath,
     pslfPath,
@@ -42,4 +43,17 @@ print(dir())
 # to view size of mirror
 import sys 
 print("mirror size [bytes]: %d " % sys.getsizeof(mirror))
-raw_input("Press <Enter> to Continue. . . . ")
+
+htot = 0
+for x in range(len(mirror.PSLFdynamics)):
+    print("%.2f on Busnum %d " % (mirror.PSLFdynamics[x].H, mirror.PSLFdynamics[x].Busnum))
+    htot +=mirror.PSLFdynamics[x].H
+
+print("System H: %.3f" % htot)
+htot = 0
+for x in range(len(mirror.Machines)):
+    print("%.2f on Busnum %d " % (mirror.Machines[x].H, mirror.Machines[x].Busnum))
+    htot+=mirror.Machines[x].H
+
+print("System H: %.3f" % htot)
+#raw_input("Press <Enter> to Continue. . . . ")

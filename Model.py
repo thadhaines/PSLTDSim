@@ -1,6 +1,7 @@
 """Model for agent based LTD simulations"""
 
 from __main__ import *
+from parseDyd import *
 
 # load .NET dll
 import clr              
@@ -17,6 +18,7 @@ class Model(object):
         # Simulation Parameters
         self.locations = locations
         self.debug = debug
+        self.ss_H = Htot
 
         # init pslf and solve system
         self.pslf = self.init_PSLF()
@@ -40,8 +42,13 @@ class Model(object):
         self.Slack = []
 
         self.init_mirror()
+        self.Machines = self.Gens + self.Slack
 
         # init_dynamics
+        self.PSLFdynamics = []
+
+        parseDyd(self, locations[3])
+        self.init_H()
 
         # Systemwide Variables (after init_dynamics so that H can be summed)
         self.Htot = Htot # TODO: check later to decide if manual input dectected
@@ -174,6 +181,21 @@ class Model(object):
 
         self.Bus.append(newBusAgent)
 
+    def init_H(self):
+        """Link H from PSLF dynamic models to mirror machine
+        Will account for multiple gens on same bus using Busnam as 2nd check
+        """
+        for pdmod in range(len(self.PSLFdynamics)):
+            for gen in range(len(self.Machines)):
+                b_check = self.PSLFdynamics[pdmod].Busnum == self.Machines[gen].Busnum
+                n_check = self.PSLFdynamics[pdmod].Busnam == self.Machines[gen].Busnam
+                if self.debug:
+                    print(b_check, n_check)
+                if (b_check == 1) and (n_check == 1):
+                    self.Machines[gen].H = self.PSLFdynamics[pdmod].H
+                    self.ss_H += self.Machines[gen].H
+                    break
+
     # Simulation Methods
     def LTD_Solve(self):
         """Function to use custom solve parameters
@@ -194,19 +216,12 @@ class Model(object):
 
     def sumPower(self):
         """Function to sum all Pe, Pm, P, and Q of system"""
-        for ndx in range(len(self.Gens)):
+        for ndx in range(len(self.Machines)):
             #Sum all generator values if status = 1
-            if self.Gens[ndx].St == 1:
-                self.ss_Pe += self.Gens[ndx].Pe
-                self.ss_Pm += self.Gens[ndx].Pm
-                self.ss_Qgen += self.Gens[ndx].Q
-
-        for ndx in range(len(self.Slack)):
-            #Sum all Slack values if status = 1
-            if self.Slack[ndx].St == 1:
-                self.ss_Pe += self.Slack[ndx].Pe
-                self.ss_Pm += self.Slack[ndx].Pm
-                self.ss_Qgen += self.Slack[ndx].Q
+            if self.Machines[ndx].St == 1:
+                self.ss_Pe += self.Machines[ndx].Pe
+                self.ss_Pm += self.Machines[ndx].Pm
+                self.ss_Qgen += self.Machines[ndx].Q
 
         for ndx in range(len(self.Load)):
             #Sum all loads with status == 1
@@ -233,12 +248,14 @@ class Model(object):
     def dispPow(self):
         """Display System Sumation power values"""
         print("*** System Power Overview ***")
-        print("Pm:\t%.2f" % self.ss_Pm)
-        print("Pe:\t%.2f" % self.ss_Pe)
-        print("Pacc:\t%.2f" % self.ss_Pacc)
-        print("Pload:\t%.2f" % self.ss_Pload)
-        print("Ploss:\t%.2f" % self.PLosses)
-        print("Qgen:\t%.2f" % self.ss_Qgen)
-        print("Qload:\t%.2f" % self.ss_Qload)
-        print("Qloss:\t%.2f" % self.QLosses)
+        print("Pm:\t%.3f" % self.ss_Pm)
+        print("Pe:\t%.3f" % self.ss_Pe)
+        print("Pacc:\t%.3f" % self.ss_Pacc)
+        print("Pload:\t%.3f" % self.ss_Pload)
+        print("Ploss:\t%.3f" % self.PLosses)
+        print("*_*")
+        #NOTE: Q values are meaningless until Shunts and SVDs are accounted for
+        print("Qgen:\t%.3f" % self.ss_Qgen)
+        print("Qload:\t%.3f" % self.ss_Qload)
+        print("Qloss:\t%.3f" % self.QLosses)
         print("***_______________________***")
