@@ -67,6 +67,7 @@ class GeneratorAgent(object):
         # could use current time as an index (would allow for pre-allocation)
 
         # Children
+        self.machine_model = []
         self.dynamics = []
 
 class SlackAgent(GeneratorAgent):

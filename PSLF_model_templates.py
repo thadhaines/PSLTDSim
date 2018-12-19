@@ -5,35 +5,51 @@ A more adaptive parser would be ideal.
 
 class genrou():
     """Generator class for the pslf gensal model parameters
-    Class parameters populated by parsed line elements from a dyd line
+    Class parameters populated by parsed line elements from a CLEAN dyd line
     NOTE: There has got to be a better way to do this. Hardcoded indexes are a bad idea
     """
-    def __init__(self, line):
-        parts = line.split()
-        partsq = line.split('"') # to handle odd names / zones
-        
+    def __init__(self, parts, m_ref):
+        #for later reference if desired
+        self.dydLine = parts
+
+        #for underdefined models, add zeros, length specific to model type
+        if len(parts)<25:
+            short = 25-len(parts)
+            for x in range(short):
+                parts.append(0.0)
+
         self.Type = parts[0]
-        self.Busnum = int(parts[1])
-        self.Busnam = partsq[1].rstrip() # to remove double quotes, lagging ws
-        self.Base_kV = float(partsq[2])
-        self.Zone = partsq[3] # string with now quotes
-        mbase = parts[9].split('=')
-        self.Mbase = float(mbase[1]) # in MVA
+        self.Busnum = parts[1]
+        self.Busnam = parts[2]
+        self.Base_kV = parts[3]
+        self.Zone = parts[4]
+        self.Rlevel = parts[5]
+
+        if isinstance(parts[6], basestring):
+            #if '=' in parts[6]:
+            mbase = parts[6].split('=')
+            self.Mbase = float(mbase[1]) # in MVA
+        else:
+            parts.insert(6, 'BASE MVA')
+            self.Mbase = 100.00 # TODO: add model Sbase (mbase)
         
-        self.Tpdo  = float(parts[10])
-        self.Tppdo = float(parts[11])
-        self.Tpdq = float(parts[12])
-        self.Tppqo = float(parts[13])
-        self.H = float(parts[14]) # in sec
-        self.D = float(parts[15])
-        self.Ld = float(parts[16])
-        self.Lq = float(parts[17])
-        self.Lpd = float(parts[18])
-        self.Lppd = float(parts[19]) 
-        self.Ll = float(parts[20])
-        self.S1 = float(parts[21])
-        self.S12 = float(parts[22])
-        self.Ra = float(parts[23])
-        self.Rcomp = float(parts[24])
-        self.Xcomp = float(parts[25])
-        self.accel = float(parts[26])
+        self.Tpdo  = parts[7]
+        self.Tppdo = parts[8]
+        self.Tpdq = parts[9]
+        self.Tppqo = parts[10]
+        self.H = parts[11] # in sec
+        self.D = parts[12]
+        self.Ld = parts[13]
+        self.Lq = parts[14]
+        self.Lpd = parts[15]
+        self.Lpq = parts[16]
+        self.Lppd = parts[17] 
+        self.Ll = parts[18]
+        self.S1 = parts[19]
+        self.S12 = parts[20]
+        self.Ra = parts[21]
+        self.Rcomp = parts[22]
+        self.Xcomp = parts[23]
+        self.Accel = parts[24] # not in genrou model, included in WECC
+
+        print("Model Created %d %s" % (self.Busnum,self.Busnam))

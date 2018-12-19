@@ -5,6 +5,57 @@ genrou 12 "GRANDC-G3   " 20.00  "1 "  : #9 mva=9000.0000 6.0000 0.0250 0.0600 0.
 
 import PSLF_model_templates as pmod
 
+def cleanDydStr(str):
+    """Parse dyd string into list of more easily workable parts
+    Removes any comments and casts most common parameters 
+    Assumes busnum is int, all parameters after #X or mXX= are floats
+    """
+    clean = []
+    a = str.split(":")
+    b = a[0].split('"')
+    c = str.split()
+    d = a[1].split()
+ 
+    clean.append(c[0])                  # model
+    clean.append(int(c[1]))             # busnum
+    clean.append(b[1].rstrip())         # busnam
+    clean.append(float(b[2].strip()))   # base kV
+    clean.append(b[3].strip())          # id?
+
+    for n in range(len(d)):
+        #set IMPORT = 0.0
+        if (d[n] == 'IMPORT'):
+            d[n] = 0.0
+            clean.append(d[n])
+            continue
+
+        # not cast # identifier
+        if '#' in d[n]:
+            clean.append(d[n])
+            continue
+
+        # ignore inline comments
+        if '"' in d[n]:
+            continue
+
+        # parse value from mva= 
+        # funtionality removed - may cause confusion if not defined.
+        if '=' in d[n]:
+            #e = d[n].split('=')
+            #clean.append(float(e[1]))
+            clean.append(d[n])
+            continue
+        
+        clean.append(float(d[n]))
+
+    # debug
+    #for x in range(len(clean)):
+    #    print(x, clean[x], type(clean[x]))
+    #print(len(clean))
+
+
+    return clean
+
 def parseDyd(m_ref,dydLoc):
     """Function that parses dyd information to mirror
     Will parse particular dyd models to intermediate classes
@@ -23,9 +74,11 @@ def parseDyd(m_ref,dydLoc):
         
         #print(line) # Debug
         parts = line.split()
-    
+        
         if parts[0] == "genrou":
-            newPmod = pmod.genrou(line)
+            print("testing gen %s" % parts[1])
+            cleanLine = cleanDydStr(line)
+            newPmod = pmod.genrou(cleanLine, m_ref)
             m_ref.PSLFdynamics.append(newPmod)
             foundModels += 1
   

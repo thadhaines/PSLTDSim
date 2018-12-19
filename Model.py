@@ -19,6 +19,7 @@ class Model(object):
         self.locations = locations
         self.debug = debug
         self.ss_H = Htot
+        self.ss_Hpu = Htot
 
         # init pslf and solve system
         self.pslf = self.init_PSLF()
@@ -42,7 +43,7 @@ class Model(object):
         self.Slack = []
 
         self.init_mirror()
-        self.Machines = self.Gens + self.Slack
+        self.Machines = self.Slack + self.Gens
 
         # init_dynamics
         self.PSLFdynamics = []
@@ -193,7 +194,11 @@ class Model(object):
                     print(b_check, n_check)
                 if (b_check == 1) and (n_check == 1):
                     self.Machines[gen].H = self.PSLFdynamics[pdmod].H
-                    self.ss_H += self.Machines[gen].H
+                    # Produces different result using PSLF .sav Mbase and .dyd Mbase(mva=...)
+                    #self.ss_H += self.Machines[gen].H*self.Machines[gen].Mbase
+                    self.ss_H += self.Machines[gen].H*self.PSLFdynamics[pdmod].Mbase
+                    # add refernece to PSLF machine model in python mirror gen
+                    self.Machines[gen].machine_model.append(self.PSLFdynamics[pdmod])
                     break
 
     # Simulation Methods
