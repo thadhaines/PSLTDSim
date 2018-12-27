@@ -1,9 +1,10 @@
 """Developement file that acts as main"""
 """VS may require default ironpython environment (no bit declaration)"""
+
 # workaround for interactive mode runs
 import os
 print(os.getcwd())
-os.chdir("C:\\Users\\thad\\Source\\Repos\\thadhaines\\LTD_sim\\")
+# os.chdir("C:\\Users\\thad\\Source\\Repos\\thadhaines\\LTD_sim\\")
 
 # Required Paths
 ## full path to dll
