@@ -16,10 +16,6 @@ class BusAgent(object):
         self.Scanbus = newBus.GetScanBusIndex()
         self.Type = newBus.Type
 
-        # Current Status
-        self.Vm = newBus.Vm     # Voltage Magnitude
-        self.Va = newBus.Va     # Voltage Angle (radians)
-        
         # Case Parameters
         self.Nload = len(col.LoadDAO.FindByBus(self.Scanbus))
         self.Ngen = len(col.GeneratorDAO.FindByBus(self.Scanbus))
@@ -28,6 +24,10 @@ class BusAgent(object):
         self.Gens = []
         self.Slack = []
         self.Load = []
+
+        # Current Status
+        self.Vm = newBus.Vm     # Voltage Magnitude
+        self.Va = newBus.Va     # Voltage Angle (radians)
 
     def __str__(self):
         tag = "Bus "+self.Busnam+" in Area "+self.Area
@@ -116,16 +116,23 @@ class AreaAgent(object):
         self.Gens = []
         self.Load = []
         self.Slack = []
+        self.Machines = []
 
     def checkArea(self):
-        """Checks if found number of Generators and loads is Correct"""
-        if self.Ngen == (len(self.Gens)+len(self.Slack)):
+        """Checks if found number of Generators and loads is Correct
+        Creates Machine list
+        Returns 0 if all valid, -1 for invalid Generators, -2 for invalid loads
+        """
+        self.Machines = self.Slack + self.Gens
+
+        if self.Ngen == (len(self.Machines)):
             if self.model.debug: 
                 print("Gens correct in Area:\t%d" % self.Area)
             
         else:
             print("*** Gen Error: %d/%d found. Area:\t%d" % 
-                  ((len(self.Gens)+len(self.Slack)), self.Ngen, self.Area))
+                  (len(self.Machines), self.Ngen, self.Area))
+            return -1
 
         if self.Nload == len(self.Load):
             if self.model.debug: 
@@ -133,3 +140,6 @@ class AreaAgent(object):
         else:
             print("*** Load Error: %d/%d found. Area:\t%d" % 
                   (len(self.Load), self.Nload, self.Area))
+            return -2
+
+        return 0

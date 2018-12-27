@@ -13,7 +13,7 @@ class Model(object):
     """Model class for LTD Model"""
     def __init__(self, locations, simParams, debug = 0):
         """Carries out initialization 
-        This includes: PSLF, python mirror, dynamics, and perturbances
+        This includes: PSLF, python mirror, and dynamics
         """
         # Simulation Parameters
         self.locations = locations
@@ -23,10 +23,47 @@ class Model(object):
         self.Hinput = simParams[3]
         self.Dinput = simParams[4]
         self.debug = debug
+        self.dataPoints = int(self.endTime//self.timeStep + 1)
 
+        # Simulation Variables
+        # r_ ... running (time series)
+        # c_ ... current
+        # ss_ .. system sum
+        # r_ ... running
+
+        self.c_dP = 0 # current data Point
+        self.c_f = [1.0]
+        self.c_t = [0.0]
+
+        self.ss_H = 0.0 # placeholder, Hsys used in maths
+
+        self.ss_Pe = 0.0
+        self.ss_Pm = 0.0
+        self.ss_Pacc = 0.0
+
+        self.ss_Qgen = 0.0
+        self.ss_Qload = 0.0
+        self.ss_Pload = 0.0
+
+        # for fun stats, not completely utilized
+        self.PLosses = 0.0
+        self.QLosses = 0.0
+
+        # initialize running (history) values 
+        self.r_t = [None]*self.dataPoints
+        self.r_f = [None]*self.dataPoints
+        self.r_ss_Pe = [None]*self.dataPoints
+        self.r_ss_Pm = [None]*self.dataPoints
+        self.r_ss_Pacc = [None]*self.dataPoints
+
+        self.r_ss_Qgen = [None]*self.dataPoints
+        self.r_ss_Qload = [None]*self.dataPoints
+        self.r_ss_Pload = [None]*self.dataPoints
+        
         # init pslf and solve system
         self.pslf = self.init_PSLF()
-        self.LTD_Solve()
+        #self.LTD_Solve() #NOTE: currently commented out until soln params clearly defined
+        self.pslf.SolveCase()
 
         # init_mirror
         ## Case Parameters
@@ -43,40 +80,34 @@ class Model(object):
         self.Gens = []
         self.Load = []
         self.Slack = []
+        self.Perturbance = []
 
         self.init_mirror()
         self.Machines = self.Slack + self.Gens
+
+        # Check mirror accuracy in each Area, create machines list for each area
+        for x in range(self.Narea):
+            valid = self.Area[x].checkArea()
+            if valid != 0:
+                print("Mirror inaccurate in Area %d, error code: %d" % (x, valid))
 
         # init_dynamics
         self.PSLFmach = []
         self.PSLFgov = []
         self.PSLFexc = []
 
+        # read dyd, create pslf models
         parseDyd(self, locations[3])
-        self.ss_H = 0.0
+        
+        # link H and mbase to mirror
         self.init_H()
 
-        # Systemwide Variables (after init_dynamics so that H can be summed)
+        # Handle system inertia
+        # NOTE: H is MW*sec unless noted as PU or in PSLF models
         if self.Hinput > 0.0:
-            self.Hsys = self.Hinput # TODO: check later to decide if manual input dectected
+            self.Hsys = self.Hinput
         else:
             self.Hsys = self.ss_H
-
-        self.f = [1.0]
-        self.t = [0.0]
-
-        # NOTE: Variable names may change after a varibale naming convention has been decided
-        # ss_ .. system sum
-        self.ss_Pe = 0.0
-        self.ss_Pm = 0.0
-        self.ss_Qgen = 0.0
-        self.ss_Qload = 0.0
-        self.ss_Pload = 0.0
-        self.PLosses = 0.0
-        self.QLosses = 0.0
-        self.ss_Pacc = 0.0
-        
-        # init perturbances. Maybe just an addPertutbance method.?
 
     # Initiazliaze Methods
     def init_PSLF(self):
@@ -99,6 +130,7 @@ class Model(object):
     def init_mirror(self):
         """Create python mirror of PSLF system
         Handles Buses, Generators, and Loads
+        TODO: Add shunts, SVD, and lines
         """
         # Useful variable notation key:
         # c_ .. current
@@ -207,7 +239,7 @@ class Model(object):
                     self.Machines[gen].Hpu = self.PSLFmach[pdmod].H
                     self.Machines[gen].MbaseDYD = self.PSLFmach[pdmod].Mbase
                     # NOTE: PSLF .sav Mbase and .dyd Mbase may be different
-                    # Via PSLF user manual - dyd values overwrite any sav values
+                    # dyd values overwrite any sav values (Via PSLF user manual)
                     self.Machines[gen].H = self.PSLFmach[pdmod].H *self.PSLFmach[pdmod].Mbase
                     self.ss_H += self.Machines[gen].H 
                     # add refernece to PSLF machine model in python mirror
@@ -236,6 +268,7 @@ class Model(object):
         """Function to sum all Pe, Pm, P, and Q of system
         NOTE: Only matches real power until SVD and Shunts are modeled
         """
+        # reset system sums
         self.ss_Pe = 0.0
         self.ss_Pm = 0.0
         self.ss_Qgen = 0.0
@@ -260,7 +293,7 @@ class Model(object):
         self.ss_Pacc = self.ss_Pm - self.ss_Pe
 
     # Information Display
-    def dispCP(self):
+    def dispCaseP(self):
         """Display current Case Parameters"""
         print("*** Case Parameters ***")
         print(".sav ==\t%s" % self.locations[2])

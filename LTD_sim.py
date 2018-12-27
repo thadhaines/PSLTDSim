@@ -52,17 +52,13 @@ del timeStep, endTime, slackTol, Hsys, Dsys
 execfile('CoreAgents.py')
 execfile('Model.py')
 
-# mirror arguments: locations, simParams, debug flag NOTE: will probably change
+# mirror arguments: locations, simParams, debug flag
 mirror = Model(locations, simParams, 0)
 
 # testing of information display functions
-mirror.dispCP()
+mirror.dispCaseP()
 mirror.sumPower()
 mirror.dispPow()
-
-# Check should be included n default model init behavior
-for x in range(mirror.Narea):
-    mirror.Area[x].checkArea()
 
 # Display 'workspace' variables
 print("Current dir():")
@@ -96,4 +92,5 @@ for x in range(len(mirror.Machines)):
 
 if mismatch == 0:
     print("Mbase in sav and dyd are in agreement.")
+
 raw_input("Press <Enter> to Continue. . . . ")

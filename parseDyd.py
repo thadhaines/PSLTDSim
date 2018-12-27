@@ -1,5 +1,5 @@
-"""Parse dyd file information to python mirror
-assumes each line is a separate dynamic element of the form:
+"""Functions to parse dyd file information to python mirror
+Assumes each valid dyd line is a separate dynamic element of the form:
 genrou 12 "GRANDC-G3   " 20.00  "1 "  : #9 mva=9000.0000 6.0000 0.0250 0.0600 0.0400 5.0000 0.0000 1.2000 0.7000 0.3000 0.2300 0.2200 0.1700 0.0500 0.3000 0.0000 0.0000 0.0000 0.0000
 """
 
