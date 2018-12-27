@@ -53,11 +53,10 @@ def cleanDydStr(str):
     #    print(x, clean[x], type(clean[x]))
     #print(len(clean))
 
-
     return clean
 
 def parseDyd(m_ref,dydLoc):
-    """Function that parses dyd information to mirror
+    """Function that parses dyd information to mirror PSLFdyanmics list
     Will parse particular dyd models to intermediate classes
     these classes will be referenced by the model to populate dynamic properties
     """
@@ -76,14 +75,16 @@ def parseDyd(m_ref,dydLoc):
         parts = line.split()
         
         if parts[0] == "genrou":
-            print("testing gen %s" % parts[1])
+            if m_ref.debug:
+                print("testing gen %s" % parts[1])
             cleanLine = cleanDydStr(line)
             newPmod = pmod.genrou(cleanLine, m_ref)
-            m_ref.PSLFdynamics.append(newPmod)
+            m_ref.PSLFmach.append(newPmod)
             foundModels += 1
   
         line = next(file,  None) # get next line, if there is one
 
     file.close() # close file
+
     if m_ref.debug == 1:
         print("Parsed %d models from dyd:  %s" % (foundModels, dydLoc))

@@ -53,9 +53,11 @@ class GeneratorAgent(object):
         self.Busnam = newGen.GetBusName()
         self.Busnum = newGen.GetBusNumber()
         self.Scanbus = newGen.GetScanBusIndex()
-        self.Mbase = newGen.Mbase
+        self.MbaseSAV = newGen.Mbase
+        self.MbaseDYD = 0.0
         self.St = newGen.St
         self.H = 0.0
+        self.Hpu = 0.0
 
         # Current Status
         self.Pm = newGen.Pgen   # Voltage Magnitude
@@ -68,6 +70,7 @@ class GeneratorAgent(object):
 
         # Children
         self.machine_model = []
+        # could be an empty list for each type
         self.dynamics = []
 
 class SlackAgent(GeneratorAgent):
@@ -76,9 +79,9 @@ class SlackAgent(GeneratorAgent):
         super(SlackAgent, self).__init__(model, newGen)
         # attempt at deriving SlackAgent from Generator Agent
         # mostly a placehold class for inheritance confirmation
-        self.Tol = 0.01 # UNDONE: will be set in model params....
-        self.Pe_calc = 0.0
-        self.Pe_error = 0.0
+        self.Tol = [0.01] # UNDONE: will be set in model params....
+        self.Pe_calc = [0.0]
+        self.Pe_error = [0.0]
 
 class LoadAgent(object):
     """Load Agent for LTD Model"""

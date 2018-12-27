@@ -11,15 +11,18 @@ import GE.Pslf.Middleware.Collections as col
 
 class Model(object):
     """Model class for LTD Model"""
-    def __init__(self, locations, Htot = 0, debug = 0):
+    def __init__(self, locations, simParams, debug = 0):
         """Carries out initialization 
         This includes: PSLF, python mirror, dynamics, and perturbances
         """
         # Simulation Parameters
         self.locations = locations
+        self.timeStep = simParams[0]
+        self.endTime = simParams[1]
+        self.slackTol = simParams[2]
+        self.Hinput = simParams[3]
+        self.Dinput = simParams[4]
         self.debug = debug
-        self.ss_H = Htot
-        self.ss_Hpu = Htot
 
         # init pslf and solve system
         self.pslf = self.init_PSLF()
@@ -32,7 +35,6 @@ class Model(object):
         self.Nload = self.pslf.GetCasepar('Nload')
         self.Narea = self.pslf.GetCasepar('Narea')
         self.Nzone = self.pslf.GetCasepar('Nzone')
-        # Q: branch sections = lines?
         self.Nbrsec = self.pslf.GetCasepar('Nbrsec') 
 
         ## Agent Collections
@@ -46,15 +48,22 @@ class Model(object):
         self.Machines = self.Slack + self.Gens
 
         # init_dynamics
-        self.PSLFdynamics = []
+        self.PSLFmach = []
+        self.PSLFgov = []
+        self.PSLFexc = []
 
         parseDyd(self, locations[3])
+        self.ss_H = 0.0
         self.init_H()
 
         # Systemwide Variables (after init_dynamics so that H can be summed)
-        self.Htot = Htot # TODO: check later to decide if manual input dectected
-        self.f = 1
-        self.t = 0 
+        if self.Hinput > 0.0:
+            self.Hsys = self.Hinput # TODO: check later to decide if manual input dectected
+        else:
+            self.Hsys = self.ss_H
+
+        self.f = [1.0]
+        self.t = [0.0]
 
         # NOTE: Variable names may change after a varibale naming convention has been decided
         # ss_ .. system sum
@@ -183,22 +192,26 @@ class Model(object):
         self.Bus.append(newBusAgent)
 
     def init_H(self):
-        """Link H from PSLF dynamic models to mirror machine
-        Will account for multiple gens on same bus using Busnam as 2nd check
+        """Link H and Mbase from PSLF dyd dynamic models to mirror machines
+        Will calculate ss_H
+        Will account for multiple gens on same bus using Busnam as 2nd check (though possibly extra)
         """
-        for pdmod in range(len(self.PSLFdynamics)):
+        # pdmod = pslf dynamic model
+        for pdmod in range(len(self.PSLFmach)):
             for gen in range(len(self.Machines)):
-                b_check = self.PSLFdynamics[pdmod].Busnum == self.Machines[gen].Busnum
-                n_check = self.PSLFdynamics[pdmod].Busnam == self.Machines[gen].Busnam
+                b_check = self.PSLFmach[pdmod].Busnum == self.Machines[gen].Busnum
+                n_check = self.PSLFmach[pdmod].Busnam == self.Machines[gen].Busnam
                 if self.debug:
                     print(b_check, n_check)
                 if (b_check == 1) and (n_check == 1):
-                    self.Machines[gen].H = self.PSLFdynamics[pdmod].H
-                    # Produces different result using PSLF .sav Mbase and .dyd Mbase(mva=...)
-                    #self.ss_H += self.Machines[gen].H*self.Machines[gen].Mbase
-                    self.ss_H += self.Machines[gen].H*self.PSLFdynamics[pdmod].Mbase
-                    # add refernece to PSLF machine model in python mirror gen
-                    self.Machines[gen].machine_model.append(self.PSLFdynamics[pdmod])
+                    self.Machines[gen].Hpu = self.PSLFmach[pdmod].H
+                    self.Machines[gen].MbaseDYD = self.PSLFmach[pdmod].Mbase
+                    # NOTE: PSLF .sav Mbase and .dyd Mbase may be different
+                    # Via PSLF user manual - dyd values overwrite any sav values
+                    self.Machines[gen].H = self.PSLFmach[pdmod].H *self.PSLFmach[pdmod].Mbase
+                    self.ss_H += self.Machines[gen].H 
+                    # add refernece to PSLF machine model in python mirror
+                    self.Machines[gen].machine_model.append(self.PSLFmach[pdmod])
                     break
 
     # Simulation Methods
@@ -220,7 +233,15 @@ class Model(object):
             )
 
     def sumPower(self):
-        """Function to sum all Pe, Pm, P, and Q of system"""
+        """Function to sum all Pe, Pm, P, and Q of system
+        NOTE: Only matches real power until SVD and Shunts are modeled
+        """
+        self.ss_Pe = 0.0
+        self.ss_Pm = 0.0
+        self.ss_Qgen = 0.0
+        self.ss_Qload = 0.0
+        self.ss_Pload = 0.0
+
         for ndx in range(len(self.Machines)):
             #Sum all generator values if status = 1
             if self.Machines[ndx].St == 1:
