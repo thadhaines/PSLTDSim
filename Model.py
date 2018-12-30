@@ -31,9 +31,9 @@ class Model(object):
         # ss_ .. system sum
         # r_ ... running
 
-        self.c_dP = 0 # current data Point
-        self.c_f = [1.0]
-        self.c_t = [0.0]
+        self.c_dp = 0 # current data Point
+        self.c_f = 1.0
+        self.c_t = 0.0
 
         self.ss_H = 0.0 # placeholder, Hsys used in maths
 
@@ -199,13 +199,13 @@ class Model(object):
             for c_gen in range(newBusAgent.Ngen):
 
                 if slackFlag:
-                    newGenAgent = SlackAgent(m_ref, b_gen[c_gen])
+                    newGenAgent = SlackAgent(m_ref, newBusAgent, b_gen[c_gen])
                     # add references to gen in model and bus,area agent
                     newBusAgent.Slack.append(newGenAgent)
                     self.Slack.append(newGenAgent)
                     areaAgent.Slack.append(newGenAgent)
                 else:
-                    newGenAgent = GeneratorAgent(m_ref, b_gen[c_gen])
+                    newGenAgent = GeneratorAgent(m_ref, newBusAgent, b_gen[c_gen])
                     # add references to gen in model and bus,area agent
                     newBusAgent.Gens.append(newGenAgent)
                     self.Gens.append(newGenAgent)
@@ -215,7 +215,7 @@ class Model(object):
         if newBusAgent.Nload > 0:
             b_load = col.LoadDAO.FindByBus(newBusAgent.Scanbus)
             for c_load in range(newBusAgent.Nload):
-                newLoadAgent = LoadAgent(m_ref, b_load[c_load])
+                newLoadAgent = LoadAgent(m_ref, newBusAgent, b_load[c_load])
                 # add references to load in model and bus,area agent
                 newBusAgent.Load.append(newLoadAgent)
                 self.Load.append(newLoadAgent)
@@ -247,6 +247,28 @@ class Model(object):
                     break
 
     # Simulation Methods
+    def runSim(self):
+        """Function to run LTD simulation"""
+        print("\nStarting Simulation...")
+        print("Time\tData Point")
+
+        while self.c_t <= self.endTime:
+            print("%.2f\t%d" % (self.c_t, self.c_dp))
+            # step perturbances
+            # step distribution
+            # step machine dynamics
+            # step model dynamics
+            # step log
+
+            # step time
+            self.r_t[self.c_dp] = self.c_t
+            self.c_dp += 1
+            self.c_t += self.timeStep
+
+        print("___________________")
+        print("Simulation Complete\n")
+
+
     def LTD_Solve(self):
         """Function to use custom solve parameters
         Local file manipulation requierd to perform without PSLF errors.

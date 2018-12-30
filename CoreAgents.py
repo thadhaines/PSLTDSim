@@ -25,11 +25,16 @@ class BusAgent(object):
         self.Slack = []
         self.Load = []
 
+        # if this is how shunts/SVDs work...
+        self.Shunt = []
+        self.SVD = []
+
         # Current Status
         self.Vm = newBus.Vm     # Voltage Magnitude
         self.Va = newBus.Va     # Voltage Angle (radians)
 
     def __str__(self):
+        """Possible useful identification function"""
         tag = "Bus "+self.Busnam+" in Area "+self.Area
         return tag
 
@@ -41,7 +46,7 @@ class BusAgent(object):
 
 class GeneratorAgent(object):
     """Generator Agent for LTD Model"""
-    def __init__(self, model, newGen):
+    def __init__(self, model, parentBus, newGen):
         # Model Reference
         self.model = model
 
@@ -53,13 +58,14 @@ class GeneratorAgent(object):
         self.Busnam = newGen.GetBusName()
         self.Busnum = newGen.GetBusNumber()
         self.Scanbus = newGen.GetScanBusIndex()
+        self.St = newGen.St
         self.MbaseSAV = newGen.Mbase
         self.MbaseDYD = 0.0
-        self.St = newGen.St
         self.H = 0.0
         self.Hpu = 0.0
 
         # Current Status
+        self.IRP_flag = 1       # Inertia response participant flag
         self.Pm = newGen.Pgen   # Voltage Magnitude
         self.Pe = self.Pm       # Initialize as equal
         self.Q = newGen.Qgen    # Q generatred
@@ -68,26 +74,33 @@ class GeneratorAgent(object):
         # then move them to a time sequence list at each step
         # could use current time as an index (would allow for pre-allocation)
 
+        # Parent
+        self.Bus = parentBus
+
         # Children
         self.machine_model = []
         # could be an empty list for each type
-        self.dynamics = []
+        self.gov = None
+        # TODO : add functionality to check and record history
 
 class SlackAgent(GeneratorAgent):
     """Derived from GeneratorAgent for Slack Generator"""
-    def __init__(self, model, newGen):
-        super(SlackAgent, self).__init__(model, newGen)
+    def __init__(self, model, parentBus, newGen):
+        super(SlackAgent, self).__init__(model, parentBus, newGen)
         # attempt at deriving SlackAgent from Generator Agent
         # mostly a placehold class for inheritance confirmation
-        self.Tol = [0.01] # UNDONE: will be set in model params....
+        self.Tol = model.slackTol
         self.Pe_calc = [0.0]
         self.Pe_error = [0.0]
 
+        # TODO : add functionality to check and record history
+
 class LoadAgent(object):
     """Load Agent for LTD Model"""
-    def __init__(self,model, newLoad):
+    def __init__(self,model, parentBus, newLoad):
         # Model Reference
         self.model = model
+        self.Bus = parentBus
 
         # Identification
         self.Id = newLoad.Id
@@ -98,6 +111,13 @@ class LoadAgent(object):
         self.P = newLoad.P   
         self.Q = newLoad.Q 
         self.St = newLoad.St
+
+        # TODO : add functionality record history - changes handled by perturbances
+        # dynamics?
+
+    def getPref(self):
+        """Return reference to PSLF object"""
+        return col.LoadDAO.FindByBusIndexAndId(self.Bus.Scanbus, self.Id)
 
 class AreaAgent(object):
     """Area Agent for LTD Model Collections"""
@@ -117,12 +137,16 @@ class AreaAgent(object):
         self.Load = []
         self.Slack = []
         self.Machines = []
+        # if this is how shunts/SVDs work...
+        self.Shunt = []
+        self.SVD = []
 
     def checkArea(self):
         """Checks if found number of Generators and loads is Correct
         Creates Machine list
         Returns 0 if all valid, -1 for invalid Generators, -2 for invalid loads
         """
+        # Q: check for SVD & shunts?
         self.Machines = self.Slack + self.Gens
 
         if self.Ngen == (len(self.Machines)):

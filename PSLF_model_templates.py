@@ -52,4 +52,5 @@ class genrou():
         self.Xcomp = parts[23]
         self.Accel = parts[24] # not in genrou model, included in WECC
 
-        print("Model Created %d %s" % (self.Busnum,self.Busnam))
+        if m_ref.debug:
+            print("'genrou' Model Created %d %s" % (self.Busnum,self.Busnam))
