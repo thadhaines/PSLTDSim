@@ -47,9 +47,8 @@ class Model(object):
         self.ss_Qload = 0.0
         self.ss_Pload = 0.0
 
-        # for fun stats, not completely utilized
-        self.PLosses = 0.0
-        self.QLosses = 0.0
+        self.ss_Pert_Pdelta = 0.0
+        self.ss_Pert_Qdelta = 0.0
 
         # initialize running (history) values 
         self.r_t = [None]*self.dataPoints
@@ -61,6 +60,12 @@ class Model(object):
         self.r_ss_Qgen = [None]*self.dataPoints
         self.r_ss_Qload = [None]*self.dataPoints
         self.r_ss_Pload = [None]*self.dataPoints
+
+        # for fun stats, not completely utilized
+        self.PLosses = 0.0
+        self.QLosses = 0.0
+        self.r_PLosses = [None]*self.dataPoints
+        self.r_QLosses = [None]*self.dataPoints
         
         # init pslf and solve system
         self.pslf = self.init_PSLF()
@@ -89,7 +94,8 @@ class Model(object):
 
         # Combined Collections
         self.Machines = self.Slack + self.Gens
-        # TODO: have another for log items to simplify log step
+        # TODO: As logging capability added to agents, add to Log collection
+        self.Log = [self] + self.Load + self.Bus + self.Machines
 
         # Check mirror accuracy in each Area, create machines list for each area
         for x in range(self.Narea):
@@ -261,19 +267,24 @@ class Model(object):
         while self.c_t <= self.endTime:
             print("%.2f\t%d" % (self.c_t, self.c_dp))
             # step perturbances
+            self.ss_Pert_Pdelta = 0.0
+            self.ss_Pert_Qdelta = 0.0
             for x in range(len(self.Perturbance)):
                 self.Perturbance[x].step()
 
             # step distribution
+            #self.LTD_Solve() #NOTE: currently commented out until soln params clearly defined
+            self.pslf.SolveCase()
+            self.sumPower() # may not be correct place to do this - debug for log
+
             # step machine dynamics
             # step model dynamics
+
             # step log
+            for x in range(len(self.Log)):
+                self.Log[x].logStep()
 
-            ## testing loads 
-            for x in range(len(self.Load)):
-                self.Load[x].logStep()
-
-            # step time
+            # step time and data point
             self.r_t[self.c_dp] = self.c_t
             self.c_dp += 1
             self.c_t += self.timeStep
@@ -306,6 +317,7 @@ class Model(object):
         perType = 'Step' TODO: Add other types like 'Ramp'
         perParams = list of specific perturbance parameters, will vary
             for a step: perParams = [targetAttr, tStart, newVal]
+        * NOTE: could be refactored to seperate file
         """
 
         #Locate target in mirror
@@ -339,6 +351,7 @@ class Model(object):
         for ndx in range(len(self.Machines)):
             #Sum all generator values if status = 1
             if self.Machines[ndx].St == 1:
+                self.Machines[ndx].getPvals()
                 self.ss_Pe += self.Machines[ndx].Pe
                 self.ss_Pm += self.Machines[ndx].Pm
                 self.ss_Qgen += self.Machines[ndx].Q
@@ -346,12 +359,31 @@ class Model(object):
         for ndx in range(len(self.Load)):
             #Sum all loads with status == 1
             if self.Load[ndx].St == 1:
+                self.Load[ndx].getPvals()
                 self.ss_Qload += self.Load[ndx].Q
                 self.ss_Pload += self.Load[ndx].P
 
-        self.PLosses = self.ss_Pe - self.ss_Pload
-        self.QLosses = self.ss_Qgen - self.ss_Qload
+        # NOTE: Commented out perturbance delta due to where sumPower() is placed,
+        # if placed before case is solved, these are required to correctly
+        # account for losses
+        self.PLosses = self.ss_Pe - self.ss_Pload #+ self.ss_Pert_Pdelta
+        self.QLosses = self.ss_Qgen - self.ss_Qload #+ self.ss_Pert_Qdelta
         self.ss_Pacc = self.ss_Pm - self.ss_Pe
+
+    def logStep(self):
+        """Update Log information"""
+        self.r_f[self.c_dp] = self.c_f
+        self.r_ss_Pe[self.c_dp] = self.ss_Pe
+        self.r_ss_Pm[self.c_dp] = self.ss_Pm
+        self.r_ss_Pacc[self.c_dp] = self.ss_Pacc
+
+        self.r_ss_Qgen[self.c_dp] = self.ss_Qgen
+        self.r_ss_Qload[self.c_dp] = self.ss_Qload
+        self.r_ss_Pload[self.c_dp] = self.ss_Pload
+
+        self.r_PLosses[self.c_dp] = self.PLosses
+        self.r_QLosses[self.c_dp] = self.QLosses
+
 
     # Information Display
     def dispCaseP(self):

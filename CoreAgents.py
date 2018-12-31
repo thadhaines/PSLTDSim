@@ -33,6 +33,10 @@ class BusAgent(object):
         self.Vm = newBus.Vm     # Voltage Magnitude
         self.Va = newBus.Va     # Voltage Angle (radians)
 
+        # History
+        self.r_Vm = [None]*self.model.dataPoints
+        self.r_Va = [None]*self.model.dataPoints
+
     def __str__(self):
         """Possible useful identification function"""
         tag = "Bus "+self.Busnam+" in Area "+self.Area
@@ -48,11 +52,18 @@ class BusAgent(object):
         self.Vm = pObj.Vm
         self.Va = pObj.Va
 
+    def logStep(self):
+        """Put current values into log"""
+        self.getPval()
+        self.r_Vm[self.model.c_dp] = self.Vm
+        self.r_Va[self.model.c_dp] = self.Va
+
 class GeneratorAgent(object):
     """Generator Agent for LTD Model"""
     def __init__(self, model, parentBus, newGen):
-        # Model Reference
+        # Model/Parent Reference
         self.model = model
+        self.Bus = parentBus
 
         # Identification 
         self.Id = newGen.Id
@@ -72,24 +83,39 @@ class GeneratorAgent(object):
         self.IRP_flag = 1       # Inertia response participant flag
         self.Pm = newGen.Pgen   # Voltage Magnitude
         self.Pe = self.Pm       # Initialize as equal
-        self.Q = newGen.Qgen    # Q generatred
-
-        # NOTE: the idea is to have current status variables for easy access,
-        # then move them to a time sequence list at each step
-        # could use current time as an index (would allow for pre-allocation)
-
-        # Parent
-        self.Bus = parentBus
+        self.Q = newGen.Qgen    # Q generatred       
+        
+        # History 
+        self.r_Pm = [None]*model.dataPoints
+        self.r_Pe = [None]*model.dataPoints
+        self.r_Q = [None]*model.dataPoints
+        self.r_St = [None]*model.dataPoints
 
         # Children
         self.machine_model = []
         # could be an empty list for each type
         self.gov = None
+        self.exc = None
         # TODO : add functionality to check and record history
 
     def getPref(self):
         """Return reference to PSLF object"""
         return col.GeneratorDAO.FindByBusIndexAndId(self.Scanbus,self.Id)
+
+    def getPvals(self):
+        """Make current status reflect PSLF values"""
+        pRef = self.getPref()
+        self.Pe = pRef.Pgen
+        self.Q = pRef.Qgen
+        self.St = pRef.St
+
+    def logStep(self):
+        """Step to record log history"""
+        self.getPvals()
+        self.r_Pe[self.model.c_dp] = self.Pe
+        self.r_Pm[self.model.c_dp] = self.Pm
+        self.r_Q[self.model.c_dp] = self.Q
+        self.r_St[self.model.c_dp] = self.St
 
 class SlackAgent(GeneratorAgent):
     """Derived from GeneratorAgent for Slack Generator"""
@@ -98,15 +124,26 @@ class SlackAgent(GeneratorAgent):
         # attempt at deriving SlackAgent from Generator Agent
         # mostly a placehold class for inheritance confirmation
         self.Tol = model.slackTol
-        self.Pe_calc = [0.0]
-        self.Pe_error = [0.0]
+        self.Pe_calc = 0.0
+        self.Pe_error = 0.0
 
-        # TODO : add functionality to check and record history
+        self.r_Pe_calc = [None]*model.dataPoints
+        self.r_Pe_error = [None]*model.dataPoints
 
+    def logStep(self):
+        """Step to record log history"""
+        self.getPvals()
+        self.r_Pe[self.model.c_dp] = self.Pe
+        self.r_Pm[self.model.c_dp] = self.Pm
+        self.r_Q[self.model.c_dp] = self.Q
+        self.r_St[self.model.c_dp] = self.St
+        self.r_Pe_calc[self.model.c_dp] = self.Pe_calc
+        self.r_Pe_error[self.model.c_dp] = self.Pe_error
+       
 class LoadAgent(object):
     """Load Agent for LTD Model"""
     def __init__(self,model, parentBus, newLoad):
-        # Model Reference
+        # Model/Parent Reference
         self.model = model
         self.Bus = parentBus
 
