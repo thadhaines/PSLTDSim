@@ -1,9 +1,9 @@
 """Place for Pertrubance Agents"""
 
 class LoadStepAgent(object):
-    """Used for steps of P,Q, or St on Loads
+    """Used for steps of P, Q, or St on Loads
     targetObj is a python mirror agent object reference
-    targetAttr is a string ( 'P' 'Q' 'St' )
+    perParams is a list: [targetAttr, tStart, newVal]
     """
 
     def __init__(self, model, targetObj, perParams):
@@ -21,20 +21,25 @@ class LoadStepAgent(object):
             if self.model.c_t < self.tStart:
                 return
             if self.model.c_t >= self.tStart:
-                #Update correct attribute in mirror and PSLF
+                #Update correct attribute in PSLF
                 if self.attr == 'St':
-                    self.mObj.St = self.newVal
-                    self.pObj.St = self.newVal
+                    if self.newVal == 1:
+                        self.pObj.SetInService()
+                    else:
+                        self.pObj.SetOutOfService()
+
                 elif self.attr == 'P':
-                    self.mObj.P = self.newVal
                     self.pObj.P = self.newVal
+                    self.pObj.SetInService()
                 elif self.attr == 'Q':
-                    self.mObj.Q = self.newVal
                     self.pObj.Q = self.newVal
+                    self.pObj.SetInService()
 
                 # Save Changes in PSLF
-                # NOTE: getPval of agents will have to refresh P Q and St each step
                 self.pObj.Save()
+                # Update mirror
+                self.mObj.getPvals()
+
                 self.ProcessFlag = 0
                 if self.model.debug:
                     print("Load Step on Bus %d Processed" % self.mObj.Bus.Extnum )

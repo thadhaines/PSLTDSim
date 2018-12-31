@@ -120,12 +120,29 @@ class LoadAgent(object):
         self.Q = newLoad.Q 
         self.St = newLoad.St
 
-        # TODO : add functionality record history - changes handled by perturbances
+        # History 
+        self.r_P = [None]*model.dataPoints
+        self.r_Q = [None]*model.dataPoints
+        self.r_St = [None]*model.dataPoints
+
         # dynamics?
 
     def getPref(self):
         """Return reference to PSLF object"""
         return col.LoadDAO.FindByBusIndexAndId(self.Bus.Scanbus, self.Id)
+
+    def getPvals(self):
+        """Make current status reflect PSLF values"""
+        pRef = self.getPref()
+        self.P = pRef.P
+        self.Q = pRef.Q
+        self.St = pRef.St
+
+    def logStep(self):
+        """Step to record log history"""
+        self.r_P[self.model.c_dp] = self.P
+        self.r_Q[self.model.c_dp] = self.Q
+        self.r_St[self.model.c_dp] = self.St
 
 class AreaAgent(object):
     """Area Agent for LTD Model Collections"""

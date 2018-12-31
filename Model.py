@@ -86,7 +86,10 @@ class Model(object):
         self.Perturbance = []
 
         self.init_mirror()
+
+        # Combined Collections
         self.Machines = self.Slack + self.Gens
+        # TODO: have another for log items to simplify log step
 
         # Check mirror accuracy in each Area, create machines list for each area
         for x in range(self.Narea):
@@ -265,6 +268,10 @@ class Model(object):
             # step machine dynamics
             # step model dynamics
             # step log
+
+            ## testing loads 
+            for x in range(len(self.Load)):
+                self.Load[x].logStep()
 
             # step time
             self.r_t[self.c_dp] = self.c_t
