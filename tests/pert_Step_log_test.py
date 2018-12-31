@@ -60,6 +60,7 @@ mir = Model(locations, simParams, 1)
 mir.addPert('Load',[3,'2'],'Step',['St',2,1])
 mir.addPert('Load',[3,'2'],'Step',['St',9,0])
 mir.addPert('Load',[3,'2'],'Step',['P',4,50.0])
+mir.addPert('Load',[3],'Step',['Q',6,10.0])
 mir.runSim()
 
 print("Log and Step check:")
