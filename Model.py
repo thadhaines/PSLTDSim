@@ -2,6 +2,8 @@
 
 from __main__ import *
 from parseDyd import *
+from findFunctions import *
+from PerturbanceAgents import *
 
 # load .NET dll
 import clr              
@@ -73,6 +75,7 @@ class Model(object):
         self.Narea = self.pslf.GetCasepar('Narea')
         self.Nzone = self.pslf.GetCasepar('Nzone')
         self.Nbrsec = self.pslf.GetCasepar('Nbrsec') 
+        self.Sbase = self.pslf.GetCasepar('Sbase')
 
         ## Agent Collections
         self.Area = []
@@ -255,6 +258,9 @@ class Model(object):
         while self.c_t <= self.endTime:
             print("%.2f\t%d" % (self.c_t, self.c_dp))
             # step perturbances
+            for x in range(len(self.Perturbance)):
+                self.Perturbance[x].step()
+
             # step distribution
             # step machine dynamics
             # step model dynamics
@@ -285,6 +291,32 @@ class Model(object):
 	        1,	# solnType, 1 == full, 2 == DC, 3 == decoupled 
 	        0, # reorder
             )
+
+    def addPert(self, tarType, idList, perType, perParams):
+        """Add Perturbance to model.
+        tarType = 'Load' TODO: Add other types like 'Gen'
+        idList = [Busnumber, id] id is optional, first object chosen by default
+        perType = 'Step' TODO: Add other types like 'Ramp'
+        perParams = list of specific perturbance parameters, will vary
+            for a step: perParams = [targetAttr, tStart, newVal]
+        """
+
+        #Locate target in mirror
+        if tarType == 'Load':
+            if len(idList) < 2:
+                targetObj = findLoadOnBus(self, idList[0])
+            else:
+                targetObj = findLoadOnBus(self, idList[0], idList[1])
+
+        #Create Perturbance Agent
+        if (perType == 'Step') and targetObj:
+            # perParams = [targetAttr, tStart, newVal]
+            newStepAgent = LoadStepAgent(self, targetObj, perParams)
+            self.Perturbance.append(newStepAgent)
+            print("Perturbance Step added")
+            return
+
+        print("Perturbance Agent error - not added.")
 
     def sumPower(self):
         """Function to sum all Pe, Pm, P, and Q of system

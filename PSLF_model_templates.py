@@ -31,7 +31,7 @@ class genrou():
             self.Mbase = float(mbase[1]) # in MVA
         else:
             parts.insert(6, 'BASE MVA')
-            self.Mbase = 100.00 # TODO: add model Sbase (mbase)
+            self.Mbase = m_ref.Sbase # TODO: test behavior
         
         self.Tpdo  = parts[7]
         self.Tppdo = parts[8]

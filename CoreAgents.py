@@ -38,9 +38,13 @@ class BusAgent(object):
         tag = "Bus "+self.Busnam+" in Area "+self.Area
         return tag
 
+    def getPref(self):
+        """Return reference to PSLF object"""
+        return col.BusDAO.FindByIndex(self.Scanbus)
+
     def getPval(self):
         """Get most recent PSLF values"""
-        pObj = col.BusDAO.FindByIndex(self.Scanbus)
+        pObj = self.getPref()
         self.Vm = pObj.Vm
         self.Va = pObj.Va
 
@@ -82,6 +86,10 @@ class GeneratorAgent(object):
         # could be an empty list for each type
         self.gov = None
         # TODO : add functionality to check and record history
+
+    def getPref(self):
+        """Return reference to PSLF object"""
+        return col.GeneratorDAO.FindByBusIndexAndId(self.Scanbus,self.Id)
 
 class SlackAgent(GeneratorAgent):
     """Derived from GeneratorAgent for Slack Generator"""

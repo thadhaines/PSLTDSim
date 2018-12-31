@@ -56,7 +56,8 @@ execfile('CoreAgents.py')
 execfile('Model.py')
 
 # mirror arguments: locations, simParams, debug flag
-mir = Model(locations, simParams, 0)
+mir = Model(locations, simParams, 1)
+mir.addPert('Load',[3,'2'],'Step',['St',2,1])
 mir.runSim()
 
 raw_input("Press <Enter> to Continue. . . . ")
