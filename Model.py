@@ -6,7 +6,7 @@ from findFunctions import *
 from PerturbanceAgents import *
 
 # load .NET dll
-import clr              
+import clr # Common Language Runtime
 clr.AddReferenceToFileAndPath(locations[0])
 import GE.Pslf.Middleware as mid
 import GE.Pslf.Middleware.Collections as col
@@ -69,8 +69,7 @@ class Model(object):
         
         # init pslf and solve system
         self.pslf = self.init_PSLF()
-        #self.LTD_Solve() #NOTE: currently commented out until soln params clearly defined
-        self.pslf.SolveCase()
+        self.LTD_Solve()
 
         # init_mirror
         ## Case Parameters
@@ -261,11 +260,13 @@ class Model(object):
     # Simulation Methods
     def runSim(self):
         """Function to run LTD simulation"""
-        print("\nStarting Simulation...")
-        print("Time\tData Point")
+        print("\n*** Starting Simulation")
+        
 
         while self.c_t <= self.endTime:
-            print("%.2f\t%d" % (self.c_t, self.c_dp))
+            print("\n*** Data Point %d" % self.c_dp)
+            print("*** Simulation time: %.2f" % (self.c_t))
+
             # step perturbances
             self.ss_Pert_Pdelta = 0.0
             self.ss_Pert_Qdelta = 0.0
@@ -273,14 +274,14 @@ class Model(object):
                 self.Perturbance[x].step()
 
             # step distribution
-            #self.LTD_Solve() #NOTE: currently commented out until soln params clearly defined
-            self.pslf.SolveCase()
+            self.LTD_Solve()
+
             self.sumPower() # may not be correct place to do this - debug for log
 
             # step machine dynamics
             # step model dynamics
 
-            # step log
+            # step logs of Agents with ability
             for x in range(len(self.Log)):
                 self.Log[x].logStep()
 
@@ -289,25 +290,24 @@ class Model(object):
             self.c_dp += 1
             self.c_t += self.timeStep
 
-        print("___________________")
-        print("Simulation Complete\n")
-
+        print("_______________________")
+        print("    Simulation Complete\n")
 
     def LTD_Solve(self):
-        """Function to use custom solve parameters
-        Local file manipulation requierd to perform without PSLF errors.
+        """Solves power flow using custom solve parameters
+        Only option not default is area interchange adjustment (turned off)
         """
         return self.pslf.SolveCase(
-            25, # maxIterations, 
-	        0, 	# iterationsBeforeVarLimits, 
+            25, # maxIterations, Solpar.Itnrmx
+	        0, 	# iterationsBeforeVarLimits, Solpar.Itnrvl
 	        0,	# flatStart, 
-	        1,	# tapAdjustment, 
-	        1,	# switchedShuntAdjustment, 
-	        1,	# phaseShifterAdjustment, 
-	        1,	# gcdAdjustment, ?
-	        0,	# areaInterchangeAdjustment, <- only setting NOT default?
+	        1,	# tapAdjustment, Solpar.Tapadj
+	        1,	# switchedShuntAdjustment, Solpar.Swsadj
+	        1,	# phaseShifterAdjustment, Solpar.Psadj
+	        0,	# gcdAdjustment, probably Solpar.GcdFlag
+	        0,	# areaInterchangeAdjustment, 
 	        1,	# solnType, 1 == full, 2 == DC, 3 == decoupled 
-	        0, # reorder
+	        0,  # reorder (in dypar default = 0)
             )
 
     def addPert(self, tarType, idList, perType, perParams):
@@ -317,7 +317,7 @@ class Model(object):
         perType = 'Step' TODO: Add other types like 'Ramp'
         perParams = list of specific perturbance parameters, will vary
             for a step: perParams = [targetAttr, tStart, newVal]
-        * NOTE: could be refactored to seperate file
+        * NOTE: could be refactored to a seperate file
         """
 
         #Locate target in mirror
@@ -340,6 +340,7 @@ class Model(object):
     def sumPower(self):
         """Function to sum all Pe, Pm, P, and Q of system
         NOTE: Only matches real power until SVD and Shunts are modeled
+        TODO: split apart for more concise usage during simulation
         """
         # reset system sums
         self.ss_Pe = 0.0
