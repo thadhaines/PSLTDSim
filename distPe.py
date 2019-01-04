@@ -1,4 +1,3 @@
-
 def distPe(model, deltaPacc):
     """Distribute Pe among generators until global slack error below tolerance.
     Could be altered later to account for all slack errors.
@@ -6,7 +5,8 @@ def distPe(model, deltaPacc):
         Eeach area has 1 slack generator
         Each system has 1 global slack generator
 
-    NOTE: pretty rough on the mulitple slack generator handling
+    NOTE: pretty rough on the mulitple slack generator handling (i.e. untested)
+    TODO: account for status and mw limits of generators
     """
     fp_Flag = 1
     tol_Flag = 1 # goes to zero once error < tolerance
@@ -23,7 +23,7 @@ def distPe(model, deltaPacc):
             globalSlack = model.Slack[gen]
     
     while tol_Flag:
-        print("Distributing %.2f MW of Pacc, iteration %d" % (Pacc, iteration))
+        print("Distributing %.2f MW of Pacc, Iteration %d" % (Pacc, iteration))
         #for each model area:
         for c_area in range(len(model.Area)):
             if fp_Flag:
@@ -53,7 +53,7 @@ def distPe(model, deltaPacc):
         for gen in range(len(model.Machines)):
             model.Machines[gen].getPvals()
 
-        # Calculate global slack error (average in the future?)
+        # Calculate global slack error (could be an average in the future?)
         error = globalSlack.Pe - globalSlack.Pe_calc
         
         # exit while loop if tolerance met

@@ -7,6 +7,8 @@ Goal:  Use Ironpython and PSLF to simulate longterm dynamics.
   * Parse .dyd files
   * Handle H (inertia)
   * Add perturbances to loads
+  * Distribute changes in Pacc
+  * Exectute Combined Swing equation (unverified)
   * Log values of interest
   * Generate terminal output
 ### Notes:

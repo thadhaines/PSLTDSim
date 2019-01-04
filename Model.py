@@ -5,6 +5,7 @@ from parseDyd import *
 from findFunctions import *
 from PerturbanceAgents import *
 from distPe import *
+from combinedSwing import *
 
 # load .NET dll
 import clr # Common Language Runtime
@@ -35,8 +36,11 @@ class Model(object):
         # r_ ... running
 
         self.c_dp = 0 # current data Point
-        self.c_f = 1.0
         self.c_t = 0.0
+
+        self.c_f = 1.0
+        self.c_fdot = 0.0
+        self.c_deltaF = 0.0
 
         self.ss_H = 0.0 # placeholder, Hsys used in maths
 
@@ -53,7 +57,11 @@ class Model(object):
 
         # initialize running (history) values 
         self.r_t = [None]*self.dataPoints
+
         self.r_f = [None]*self.dataPoints
+        self.r_deltaF = [None]*self.dataPoints
+        self.r_fdot = [None]*self.dataPoints
+
         self.r_ss_Pe = [None]*self.dataPoints
         self.r_ss_Pm = [None]*self.dataPoints
         self.r_ss_Pacc = [None]*self.dataPoints
@@ -275,8 +283,10 @@ class Model(object):
         print("\n*** Starting Simulation")
         
         # handle initalization value of Pe for [c_dp-1] functionality
+        # NOTE: will probably have to add more to use proper integration
         self.r_ss_Pe.append(self.sumPe())
         self.r_ss_Pacc.append(0.0)
+        self.r_f.append(1.0)
 
         while self.c_t <= self.endTime:
             print("\n*** Data Point %d" % self.c_dp)
@@ -300,15 +310,19 @@ class Model(object):
                 )
             
             self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
-            # distribute the negative of the Pacc delta to machines
 
-            #self.LTD_Solve() # will be replaced with distribute function
+            # distribute Pacc delta to machines
             distPe(self, self.r_Pacc_delta[self.c_dp])
 
+            # update system Pe after PSLF power flow solution
             self.ss_Pe = self.sumPe()
+            
+            # step System dynamics
+            combinedSwing(self, self.ss_Pacc)
 
             # step machine dynamics
-            # step model dynamics
+
+            
 
             # step log of Agents with ability
             for x in range(len(self.Log)):
@@ -324,6 +338,8 @@ class Model(object):
 
         # remove initialization values
         self.r_ss_Pe.pop(len(self.r_ss_Pe) -1)
+        self.r_ss_Pacc.pop(len(self.r_ss_Pacc) -1)
+        self.r_f.pop(len(self.r_f) -1)
 
     def LTD_Solve(self):
         """Solves power flow using custom solve parameters
@@ -445,6 +461,9 @@ class Model(object):
     def logStep(self):
         """Update Log information"""
         self.r_f[self.c_dp] = self.c_f
+        self.r_fdot[self.c_dp] = self.c_fdot
+        self.r_deltaF[self.c_dp] = self.c_deltaF
+
         self.r_ss_Pe[self.c_dp] = self.ss_Pe
         self.r_ss_Pm[self.c_dp] = self.ss_Pm
         self.r_ss_Pacc[self.c_dp] = self.ss_Pacc
