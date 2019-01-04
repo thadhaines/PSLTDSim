@@ -109,6 +109,13 @@ class GeneratorAgent(object):
         self.Q = pRef.Qgen
         self.St = pRef.St
 
+    def setPvals(self):
+        """Send current mirror values to PSLF"""
+        pRef = self.getPref()
+        pRef.Pgen = self.Pe
+        pRef.St = self.St
+        pRef.Save()
+
     def logStep(self):
         """Step to record log history"""
         self.getPvals()
@@ -121,8 +128,9 @@ class SlackAgent(GeneratorAgent):
     """Derived from GeneratorAgent for Slack Generator"""
     def __init__(self, model, parentBus, newGen):
         super(SlackAgent, self).__init__(model, parentBus, newGen)
-        # attempt at deriving SlackAgent from Generator Agent
-        # mostly a placehold class for inheritance confirmation
+        self.globalSlack = 0
+        #self.areaSlack = 0 # may not be needed
+
         self.Tol = model.slackTol
         self.Pe_calc = 0.0
         self.Pe_error = 0.0

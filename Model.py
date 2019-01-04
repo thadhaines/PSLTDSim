@@ -4,6 +4,7 @@ from __main__ import *
 from parseDyd import *
 from findFunctions import *
 from PerturbanceAgents import *
+from distPe import *
 
 # load .NET dll
 import clr # Common Language Runtime
@@ -56,6 +57,7 @@ class Model(object):
         self.r_ss_Pe = [None]*self.dataPoints
         self.r_ss_Pm = [None]*self.dataPoints
         self.r_ss_Pacc = [None]*self.dataPoints
+        self.r_Pacc_delta = [None]*self.dataPoints
 
         self.r_ss_Qgen = [None]*self.dataPoints
         self.r_ss_Qload = [None]*self.dataPoints
@@ -90,6 +92,7 @@ class Model(object):
         self.Perturbance = []
 
         self.init_mirror()
+        self.findGlobalSlack()
 
         # Combined Collections
         self.Machines = self.Slack + self.Gens
@@ -257,11 +260,23 @@ class Model(object):
                     self.Machines[gen].machine_model.append(self.PSLFmach[pdmod])
                     break
 
+    def findGlobalSlack(self):
+        """Locates and sets the global slack generator"""
+        #NOTE: Not complete
+        if len(self.Slack) < 2:
+            self.Slack[0].globalSlack = 1
+        else:
+            print("More than 1 slack generator found... Setting first to global... ")
+            self.Slack[0].globalSlack = 1
+
     # Simulation Methods
     def runSim(self):
         """Function to run LTD simulation"""
         print("\n*** Starting Simulation")
         
+        # handle initalization value of Pe for [c_dp-1] functionality
+        self.r_ss_Pe.append(self.sumPe())
+        self.r_ss_Pacc.append(0.0)
 
         while self.c_t <= self.endTime:
             print("\n*** Data Point %d" % self.c_dp)
@@ -272,16 +287,30 @@ class Model(object):
             self.ss_Pert_Qdelta = 0.0
             for x in range(len(self.Perturbance)):
                 self.Perturbance[x].step()
+            # account for any load changes
+            self.ss_Pload, self.ss_Qload = self.sumLoad()
 
             # step distribution
-            self.LTD_Solve()
+            self.ss_Pm = self.sumPm()
+            
+            self.ss_Pacc = (
+                self.ss_Pm 
+                - self.r_ss_Pe[self.c_dp-1] 
+                - self.ss_Pert_Pdelta
+                )
+            
+            self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
+            # distribute the negative of the Pacc delta to machines
 
-            self.sumPower() # may not be correct place to do this - debug for log
+            #self.LTD_Solve() # will be replaced with distribute function
+            distPe(self, self.r_Pacc_delta[self.c_dp])
+
+            self.ss_Pe = self.sumPe()
 
             # step machine dynamics
             # step model dynamics
 
-            # step logs of Agents with ability
+            # step log of Agents with ability
             for x in range(len(self.Log)):
                 self.Log[x].logStep()
 
@@ -292,6 +321,9 @@ class Model(object):
 
         print("_______________________")
         print("    Simulation Complete\n")
+
+        # remove initialization values
+        self.r_ss_Pe.pop(len(self.r_ss_Pe) -1)
 
     def LTD_Solve(self):
         """Solves power flow using custom solve parameters
@@ -337,8 +369,47 @@ class Model(object):
 
         print("Perturbance Agent error - not added.")
 
+
+    def sumPm(self):
+        """Returns sum of all mechanical power from active machines"""
+        sysPm = 0.0
+        for ndx in range(len(self.Machines)):
+            #Sum all generator values if status = 1
+            if self.Machines[ndx].St == 1:               
+                sysPm += self.Machines[ndx].Pm
+
+        return sysPm
+
+    def sumPe(self):
+        """Returns sum of all electrical power from active machines
+        Uses most recent PSLF values (update included in function)
+        """
+        sysPe = 0.0
+        for ndx in range(len(self.Machines)):
+            #Sum all generator values if status = 1
+            if self.Machines[ndx].St == 1:
+                self.Machines[ndx].getPvals()
+                sysPe += self.Machines[ndx].Pe
+
+        return sysPe
+
+    def sumLoad(self):
+        """Returns system sums of active PSLF load as [Pload, Qload]"""
+        Pload = 0.0
+        Qload = 0.0
+        for ndx in range(len(self.Load)):
+            self.Load[ndx].getPvals()
+            #Sum all loads with status == 1
+            if self.Load[ndx].St == 1:
+                Pload += self.Load[ndx].P
+                Qload += self.Load[ndx].Q
+
+        return [Pload,Qload]
+
     def sumPower(self):
-        """Function to sum all Pe, Pm, P, and Q of system
+        """Not used - for reference on calculating losses only - to be removed
+        
+        Function to sum all Pe, Pm, P, and Q of system
         NOTE: Only matches real power until SVD and Shunts are modeled
         TODO: split apart for more concise usage during simulation
         """
