@@ -16,10 +16,6 @@ class BusAgent(object):
         self.Scanbus = newBus.GetScanBusIndex()
         self.Type = newBus.Type
 
-        # Current Status
-        self.Vm = newBus.Vm     # Voltage Magnitude
-        self.Va = newBus.Va     # Voltage Angle (radians)
-        
         # Case Parameters
         self.Nload = len(col.LoadDAO.FindByBus(self.Scanbus))
         self.Ngen = len(col.GeneratorDAO.FindByBus(self.Scanbus))
@@ -29,21 +25,45 @@ class BusAgent(object):
         self.Slack = []
         self.Load = []
 
+        # if this is how shunts/SVDs work...
+        self.Shunt = []
+        self.SVD = []
+
+        # Current Status
+        self.Vm = newBus.Vm     # Voltage Magnitude
+        self.Va = newBus.Va     # Voltage Angle (radians)
+
+        # History
+        self.r_Vm = [None]*self.model.dataPoints
+        self.r_Va = [None]*self.model.dataPoints
+
     def __str__(self):
+        """Possible useful identification function"""
         tag = "Bus "+self.Busnam+" in Area "+self.Area
         return tag
 
+    def getPref(self):
+        """Return reference to PSLF object"""
+        return col.BusDAO.FindByIndex(self.Scanbus)
+
     def getPval(self):
         """Get most recent PSLF values"""
-        pObj = col.BusDAO.FindByIndex(self.Scanbus)
+        pObj = self.getPref()
         self.Vm = pObj.Vm
         self.Va = pObj.Va
 
+    def logStep(self):
+        """Put current values into log"""
+        self.getPval()
+        self.r_Vm[self.model.c_dp] = self.Vm
+        self.r_Va[self.model.c_dp] = self.Va
+
 class GeneratorAgent(object):
     """Generator Agent for LTD Model"""
-    def __init__(self, model, newGen):
-        # Model Reference
+    def __init__(self, model, parentBus, newGen):
+        # Model/Parent Reference
         self.model = model
+        self.Bus = parentBus
 
         # Identification 
         self.Id = newGen.Id
@@ -53,37 +73,86 @@ class GeneratorAgent(object):
         self.Busnam = newGen.GetBusName()
         self.Busnum = newGen.GetBusNumber()
         self.Scanbus = newGen.GetScanBusIndex()
-        self.Mbase = newGen.Mbase
         self.St = newGen.St
+        self.MbaseSAV = newGen.Mbase
+        self.MbaseDYD = 0.0
         self.H = 0.0
+        self.Hpu = 0.0
 
         # Current Status
+        self.IRP_flag = 1       # Inertia response participant flag
         self.Pm = newGen.Pgen   # Voltage Magnitude
         self.Pe = self.Pm       # Initialize as equal
-        self.Q = newGen.Qgen    # Q generatred
-
-        # NOTE: the idea is to have current status variables for easy access,
-        # then move them to a time sequence list at each step
-        # could use current time as an index (would allow for pre-allocation)
+        self.Q = newGen.Qgen    # Q generatred       
+        
+        # History 
+        self.r_Pm = [None]*model.dataPoints
+        self.r_Pe = [None]*model.dataPoints
+        self.r_Q = [None]*model.dataPoints
+        self.r_St = [None]*model.dataPoints
 
         # Children
-        self.dynamics = []
+        self.machine_model = []
+        # could be an empty list for each type
+        self.gov = None
+        self.exc = None
+
+    def getPref(self):
+        """Return reference to PSLF object"""
+        return col.GeneratorDAO.FindByBusIndexAndId(self.Scanbus,self.Id)
+
+    def getPvals(self):
+        """Make current status reflect PSLF values"""
+        pRef = self.getPref()
+        self.Pe = pRef.Pgen
+        self.Q = pRef.Qgen
+        self.St = pRef.St
+
+    def setPvals(self):
+        """Send current mirror values to PSLF"""
+        pRef = self.getPref()
+        pRef.Pgen = self.Pe
+        pRef.St = self.St
+        pRef.Save()
+
+    def logStep(self):
+        """Step to record log history"""
+        self.getPvals()
+        self.r_Pe[self.model.c_dp] = self.Pe
+        self.r_Pm[self.model.c_dp] = self.Pm
+        self.r_Q[self.model.c_dp] = self.Q
+        self.r_St[self.model.c_dp] = self.St
 
 class SlackAgent(GeneratorAgent):
     """Derived from GeneratorAgent for Slack Generator"""
-    def __init__(self, model, newGen):
-        super(SlackAgent, self).__init__(model, newGen)
-        # attempt at deriving SlackAgent from Generator Agent
-        # mostly a placehold class for inheritance confirmation
-        self.Tol = 0.01 # UNDONE: will be set in model params....
+    def __init__(self, model, parentBus, newGen):
+        super(SlackAgent, self).__init__(model, parentBus, newGen)
+        self.globalSlack = 0
+        #self.areaSlack = 0 # may not be needed
+
+        self.Tol = model.slackTol
         self.Pe_calc = 0.0
         self.Pe_error = 0.0
 
+        self.r_Pe_calc = [None]*model.dataPoints
+        self.r_Pe_error = [None]*model.dataPoints
+
+    def logStep(self):
+        """Step to record log history"""
+        self.getPvals()
+        self.r_Pe[self.model.c_dp] = self.Pe
+        self.r_Pm[self.model.c_dp] = self.Pm
+        self.r_Q[self.model.c_dp] = self.Q
+        self.r_St[self.model.c_dp] = self.St
+        self.r_Pe_calc[self.model.c_dp] = self.Pe_calc
+        self.r_Pe_error[self.model.c_dp] = self.Pe_error
+       
 class LoadAgent(object):
     """Load Agent for LTD Model"""
-    def __init__(self,model, newLoad):
-        # Model Reference
+    def __init__(self,model, parentBus, newLoad):
+        # Model/Parent Reference
         self.model = model
+        self.Bus = parentBus
 
         # Identification
         self.Id = newLoad.Id
@@ -94,6 +163,30 @@ class LoadAgent(object):
         self.P = newLoad.P   
         self.Q = newLoad.Q 
         self.St = newLoad.St
+
+        # History 
+        self.r_P = [None]*model.dataPoints
+        self.r_Q = [None]*model.dataPoints
+        self.r_St = [None]*model.dataPoints
+
+        # dynamics?
+
+    def getPref(self):
+        """Return reference to PSLF object"""
+        return col.LoadDAO.FindByBusIndexAndId(self.Bus.Scanbus, self.Id)
+
+    def getPvals(self):
+        """Make current status reflect PSLF values"""
+        pRef = self.getPref()
+        self.P = pRef.P
+        self.Q = pRef.Q
+        self.St = pRef.St
+
+    def logStep(self):
+        """Step to record log history"""
+        self.r_P[self.model.c_dp] = self.P
+        self.r_Q[self.model.c_dp] = self.Q
+        self.r_St[self.model.c_dp] = self.St
 
 class AreaAgent(object):
     """Area Agent for LTD Model Collections"""
@@ -112,16 +205,27 @@ class AreaAgent(object):
         self.Gens = []
         self.Load = []
         self.Slack = []
+        self.Machines = []
+        # if this is how shunts/SVDs work...
+        self.Shunt = []
+        self.SVD = []
 
     def checkArea(self):
-        """Checks if found number of Generators and loads is Correct"""
-        if self.Ngen == (len(self.Gens)+len(self.Slack)):
+        """Checks if found number of Generators and loads is Correct
+        Creates Machine list
+        Returns 0 if all valid, -1 for invalid Generators, -2 for invalid loads
+        """
+        # Q: check for SVD & shunts?
+        self.Machines = self.Slack + self.Gens
+
+        if self.Ngen == (len(self.Machines)):
             if self.model.debug: 
                 print("Gens correct in Area:\t%d" % self.Area)
             
         else:
             print("*** Gen Error: %d/%d found. Area:\t%d" % 
-                  ((len(self.Gens)+len(self.Slack)), self.Ngen, self.Area))
+                  (len(self.Machines), self.Ngen, self.Area))
+            return -1
 
         if self.Nload == len(self.Load):
             if self.model.debug: 
@@ -129,3 +233,6 @@ class AreaAgent(object):
         else:
             print("*** Load Error: %d/%d found. Area:\t%d" % 
                   (len(self.Load), self.Nload, self.Area))
+            return -2
+
+        return 0
