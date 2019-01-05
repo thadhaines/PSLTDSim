@@ -29,11 +29,11 @@ class Model(object):
         self.debug = debug
         self.dataPoints = int(self.endTime//self.timeStep + 1)
 
-        # Simulation Variables
-        # r_ ... running (time series)
+        # Simulation Variable Prefix Key
         # c_ ... current
         # ss_ .. system sum
-        # r_ ... running
+        # r_ ... running (time series)
+        
 
         self.c_dp = 0 # current data Point
         self.c_t = 0.0
@@ -104,6 +104,7 @@ class Model(object):
 
         # Combined Collections
         self.Machines = self.Slack + self.Gens
+
         # TODO: As logging capability added to agents, add to Log collection
         self.Log = [self] + self.Load + self.Bus + self.Machines
 
@@ -125,7 +126,7 @@ class Model(object):
         self.init_H()
 
         # Handle system inertia
-        # NOTE: H is MW*sec unless noted as PU or in PSLF models
+        # NOTE: H is typically MW*sec unless noted as PU or in PSLF models
         if self.Hinput > 0.0:
             self.Hsys = self.Hinput
         else:
@@ -248,7 +249,7 @@ class Model(object):
     def init_H(self):
         """Link H and Mbase from PSLF dyd dynamic models to mirror machines
         Will calculate ss_H
-        Will account for multiple gens on same bus using Busnam as 2nd check (though possibly extra)
+        Will account for multiple gens on same bus using Busnam as 2nd check (possibly extra/non useful)
         """
         # pdmod = pslf dynamic model
         for pdmod in range(len(self.PSLFmach)):
@@ -270,7 +271,7 @@ class Model(object):
 
     def findGlobalSlack(self):
         """Locates and sets the global slack generator"""
-        #NOTE: Not complete
+        #NOTE: Not even close to complete
         if len(self.Slack) < 2:
             self.Slack[0].globalSlack = 1
         else:
@@ -283,7 +284,7 @@ class Model(object):
         print("\n*** Starting Simulation")
         
         # handle initalization value of Pe for [c_dp-1] functionality
-        # NOTE: will probably have to add more to use proper integration
+        # NOTE: will have to add more history values to use adams-bashforth integration
         self.r_ss_Pe.append(self.sumPe())
         self.r_ss_Pacc.append(0.0)
         self.r_f.append(1.0)
@@ -291,6 +292,9 @@ class Model(object):
         while self.c_t <= self.endTime:
             print("\n*** Data Point %d" % self.c_dp)
             print("*** Simulation time: %.2f" % (self.c_t))
+
+            # step System dynamics
+            combinedSwing(self, self.ss_Pacc)
 
             # step perturbances
             self.ss_Pert_Pdelta = 0.0
@@ -316,13 +320,12 @@ class Model(object):
 
             # update system Pe after PSLF power flow solution
             self.ss_Pe = self.sumPe()
-            
+
             # step System dynamics
-            combinedSwing(self, self.ss_Pacc)
+            # NOTE: Affects when frequency effects occur
+            # combinedSwing(self, self.ss_Pacc)
 
             # step machine dynamics
-
-            
 
             # step log of Agents with ability
             for x in range(len(self.Log)):
@@ -360,12 +363,13 @@ class Model(object):
 
     def addPert(self, tarType, idList, perType, perParams):
         """Add Perturbance to model.
-        tarType = 'Load' TODO: Add other types like 'Gen'
+        tarType = 'Load'
         idList = [Busnumber, id] id is optional, first object chosen by default
-        perType = 'Step' TODO: Add other types like 'Ramp'
+        perType = 'Step'
         perParams = list of specific perturbance parameters, will vary
             for a step: perParams = [targetAttr, tStart, newVal]
-        * NOTE: could be refactored to a seperate file
+        NOTE: could be refactored to a seperate file
+        TODO: Add other tarTypes ('Gen') and perTypes 'Ramp'
         """
 
         #Locate target in mirror
@@ -477,6 +481,7 @@ class Model(object):
 
 
     # Information Display
+    #TODO: refactor to dispFunctions.py
     def dispCaseP(self):
         """Display current Case Parameters"""
         print("*** Case Parameters ***")

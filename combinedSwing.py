@@ -1,12 +1,11 @@
 def combinedSwing(model, Pacc, freqFlag=1):
-    """Calculates fdot and integrates to find next f. Pacc in MW*sec
+    """Calculates fdot and integrates to find next f. 
+    Pacc in MW*sec, f and fdot are PU
     FreqFlag optional - bypass frequency effects - set to 0 to account for
     Currently Ignores system damping
-
-    NOTE: not verified! - it does stuff, but maybe not correctly.... feels 1 step too fast
     """
     
-    # Handle frequency effect optoins
+    # Handle frequency effect option
     if freqFlag != 1:
         f = model.c_f
     else:
@@ -15,7 +14,8 @@ def combinedSwing(model, Pacc, freqFlag=1):
     PaccPU = Pacc/model.Sbase
     HsysPU = model.Hsys/model.Sbase
 
-    #ignore system damping for now, unsure how to calculate deltaF at this point, requires fdot
+    #ignore system damping for now
+    # NOTE: Unsure how to calculate deltaF is it requires fdot
     Dsys = 0
     deltaF = 0
 
@@ -26,5 +26,6 @@ def combinedSwing(model, Pacc, freqFlag=1):
     # lazy integration
     model.c_f = model.c_f + (model.timeStep*fdot)
 
+    # for logging
     deltaF = model.c_f - model.r_f[model.c_dp -1]
     model.c_deltaF = deltaF

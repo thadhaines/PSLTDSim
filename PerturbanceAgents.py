@@ -24,10 +24,10 @@ class LoadStepAgent(object):
                 return
 
             if self.model.c_t >= self.tStart:
-                # Perform step
+                # Perform Perturbance step
                 # Get most recent PSLF reference
                 self.pObj = self.mObj.getPref()
-                #Update correct attribute in PSLF
+                # Update correct attribute in PSLF
                 if self.attr == 'St':
                     if self.newVal == 1:
                         self.pObj.SetInService()

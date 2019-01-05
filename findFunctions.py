@@ -1,4 +1,4 @@
-"""Functions to return object reference from mirror"""
+"""Functions to return object reference from mirror (model)"""
 
 def findGenOnBus(mirror, Busnum, Id=None):
     """Find first generator on bus unless Id specified

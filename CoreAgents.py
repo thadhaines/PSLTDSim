@@ -96,7 +96,6 @@ class GeneratorAgent(object):
         # could be an empty list for each type
         self.gov = None
         self.exc = None
-        # TODO : add functionality to check and record history
 
     def getPref(self):
         """Return reference to PSLF object"""

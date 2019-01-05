@@ -48,11 +48,12 @@ def cleanDydStr(str):
         
         clean.append(float(d[n]))
 
+    """ 
     # debug
-    #for x in range(len(clean)):
-    #    print(x, clean[x], type(clean[x]))
-    #print(len(clean))
-
+    for x in range(len(clean)):
+        print(x, clean[x], type(clean[x]))
+    print(len(clean))
+    """
     return clean
 
 def parseDyd(m_ref,dydLoc):

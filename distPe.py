@@ -6,7 +6,7 @@ def distPe(model, deltaPacc):
         Each system has 1 global slack generator
 
     NOTE: pretty rough on the mulitple slack generator handling (i.e. untested)
-    TODO: account for status and mw limits of generators
+    TODO: account for status, IRP_flag, and mw limits of generators
     """
     fp_Flag = 1
     tol_Flag = 1 # goes to zero once error < tolerance

@@ -1,18 +1,19 @@
-"""Classes that take lines from dydParser and create pseudo PSLF models in mirror
-Pretty basic at the moment. Doesn't account for in line comments (common in WECC)
-A more adaptive parser would be ideal.
+"""Classes take lines from dydParser and create PSLF model data objects in mirror (model)
+Pretty basic at the moment. 
+A more adaptive parser would be ideal, though may be unpossible 
 """
 
 class genrou():
     """Generator class for the pslf gensal model parameters
     Class parameters populated by parsed line elements from a CLEAN dyd line
-    NOTE: There has got to be a better way to do this. Hardcoded indexes are a bad idea
+    NOTE: There may be a better way to do this. Hardcoded indexes feel like a bad idea
     """
     def __init__(self, parts, m_ref):
-        #for later reference if desired
+        #for later reference/debug if desired
         self.dydLine = parts
 
-        #for underdefined models, add zeros, length specific to model type
+        #for underdefined models, add zeros
+        # NOTE: length specific to model type
         if len(parts)<25:
             short = 25-len(parts)
             for x in range(short):
@@ -50,7 +51,7 @@ class genrou():
         self.Ra = parts[21]
         self.Rcomp = parts[22]
         self.Xcomp = parts[23]
-        self.Accel = parts[24] # not in genrou model, included in WECC
+        self.Accel = parts[24] # not described in available PSLF manual genrou model, included in WECC
 
         if m_ref.debug:
             print("'genrou' Model Created %d %s" % (self.Busnum,self.Busnam))
