@@ -1,0 +1,289 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\geometry{
+	letterpaper, 
+	portrait, 
+	top=.75in,
+	left=.8in,
+	right=.75in,
+	bottom=.5in		} 	% Page Margins
+	
+%% additional packages for nice things
+\usepackage{amsmath} 	% for most math
+\usepackage{commath} 	% for abs
+\usepackage{lastpage}	% for page count
+\usepackage{amssymb} 	% for therefore
+\usepackage{graphicx} 	% for image handling
+\usepackage{wrapfig} 	% wrap figures
+\usepackage[none]{hyphenat} % for no hyphenations
+\usepackage{booktabs} 	% enhanced table qualities
+\usepackage{array} 		% for >{} column characterisctis
+\usepackage{physics} 	% for easier derivative \dv....
+\usepackage{tikz} 		% for graphic@!
+\usepackage{circuitikz} % for circuits!
+\usetikzlibrary{arrows.meta} % for loads
+\usepackage[thicklines]{cancel}	% for cancels
+\usepackage{xcolor}		% for color cancels
+\usepackage[per-mode=fraction]{siunitx} % for si units and num
+\usepackage{fancyhdr} 	% for header
+\usepackage{comment}	% for ability to comment out large sections
+\usepackage{multicol}	% for multiple columns using multicols
+\usepackage[framed,numbered]{matlab-prettifier} % matlab sytle listing
+\usepackage{marvosym} 	% for boltsymbol lightning
+\usepackage{pdflscape} 	% for various landscape pages in portrait docs.
+\usepackage{float}
+\usepackage{fancyvrb}	% for Verbatim (a tab respecting verbatim)
+\usepackage{enumitem}	% for [resume] functionality of enumerate
+
+%% package config 
+\sisetup{output-exponent-marker=\ensuremath{\mathrm{E}}} % for engineer E
+\renewcommand{\CancelColor}{\color{red}}	% for color cancels
+\lstset{aboveskip=2pt,belowskip=2pt} % for more compact table
+\def\arraystretch{1.4} % adjust size of arrays
+%\arraycolsep=1.4pt\def
+\setlength{\parindent}{0cm} % Remove indentation from paragraphs
+\setlength{\columnsep}{0.5cm}
+\lstset{
+	style      = Matlab-editor,
+	basicstyle = \ttfamily\footnotesize, % if you want to use Courier - not really used?
+}
+\renewcommand*{\pd}[3][]{\ensuremath{\dfrac{\partial^{#1} #2}{\partial #3}}} % for larger pd fracs
+\renewcommand{\real}[1]{\mathbb{R}\left\{ #1 \right\}}	% for REAL symbol
+\newcommand{\imag}[1]{\mathbb{I}\left\{ #1 \right\}}	% for IMAG symbol
+\definecolor{m}{rgb}{1,0,1}	% for MATLAB matching magenta
+	
+%% custom macros
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}} % for simple \numberthis command
+\newcommand{\equal}{=} % so circuitikz can have an = in the labels
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+%% Header
+\pagestyle{fancy} % for header stuffs
+\fancyhf{}
+\rhead{Thad Haines \\ Page \thepage\ of \pageref{LastPage}}
+\chead{Long Term Dynamic Simulation Thoughts \\ January 7, 2019}
+\lhead{Research \\ }
+% spacing
+\headheight 29 pt
+\headsep 6 pt
+
+\begin{document}
+	\paragraph{Recent Progress:}
+	\begin{enumerate}
+		\item Task: Set area interchange off in solution parameter code.
+		\subitem Accomplished by creating an \verb|LTD_Solve| function inside the Model. \\
+		Missing .p file errors resolved by setting gcdAdjustment = 0
+		
+		\item Task: Develop required elements for a simple 'swing only' run including:
+		\begin{itemize}
+			\item Simple dyd parser
+			\item H linking system
+			\item Load perturbance agent
+			\item Pacc distribution function
+			\item Combined swing equation (unverified correctness)
+			\item logStep for Mirror, Bus, Load, and Generators
+		\end{itemize}
+		
+		\item GitHub repository updated:\\
+		See: \verb|https://github.com/thadhaines/LTD_sim|
+		
+	\end{enumerate}
+	\paragraph{Current Tasks:}
+	\begin{enumerate}
+		\item Verify Swing only run results with known PSLF results.
+		
+		\item Develop better data output functionality.
+		\subitem Will probably include a csv output, a matlab \& python csv reader script, and basic plotting templates/functions
+		
+		\item Initialization of mirror from PSLF system continued:
+		\subitem Shunts and SVDs have yet to be modeled. They are required to accurately calculate system Q losses.
+		
+		\item Investigate line current data in PSLF:
+		\subitem A FlowtabrDAO exists that can find flow between busses. A way to initialize bus connections between areas has yet to be devised.
+		
+		\item Identify Slack bus programatically. (No Progress since last time)
+		\subitem Can locate when only 1 Slack exists. If more than one Slack, maybe identify by generator with most busses under control? Proving more difficult than expected. Can identify in PSLF via the \verb|summ()| or \verb|isld()| commands. 
+		
+	\end{enumerate}
+	\paragraph{Current Questions:}
+	\begin{enumerate}
+		
+	%	\item Should another powerflow be computed once dynamic responses have been recorded to PSLF / python mirror? (as noted in CM 5h)
+		
+		\item Next step after verification of current progress to model the \verb|genrou| or \verb|gensal|?
+		
+		\item Is there any available/relevant event data that may help us to verify simulations of specific instances (wind ramps or other behavior) that the novel research will focus on? (Same as last time)
+	\end{enumerate}
+	\begin{comment}
+	\paragraph{Random Thoughts:}
+	\begin{enumerate}
+	\item Numerical integration at beginning of simulation may require extra care as to avoid out of index errors. -Maybe not because python can do limited negative indexing.
+	\end{enumerate}
+	\end{comment}
+\pagebreak
+\paragraph{System Under Investigation}
+Power systems are large and complicated structures composed of many connected objects. Each power system object has a functional purpose and reacts to various changes differently. These objects can be modeled mathematically as transfer functions that alter certain parameters (states) of the objects themselves, or the system as a whole, over time. \\
+
+Software exists to model transient (fast) reactions of power systems. These involve small time steps so that models can have fast time constants and capture the oscillatory nature of power system responses. While these models have their place, it may be desirable to calculate slower, more long term dynamic responses to gradual perturbances such as wind ramps, daily load cycles, or balancing authority type situations. \\
+
+PSLF is a commercial power systems analysis software package by GE that is regarded as an industry standard. Many working and accepted system models exist that are compatible with PSLF. Additionally, GE has enabled other code languages to interface with their software for a more customized experimentation and simulation process. However, this code support is not completely functional at this time (dynamic simulation is not fully supported).\\ %Luckily, there seems to be enough functionality to perform LTD. \\
+
+The first goal of this project is to design a simulation framework that performs long term dynamic (LTD) simulations using available PSLF systems, dynamic data, and modified dynamic models. An Agent Based modeling approach will be taken to accommodate a wide variety of power systems and enable the independent development of features. 
+%This approach enables tong term events will be programmed perturbances Additional This software solution will be used to simulate system responses to programmable long term events. 
+The specialized functionality of the framework will attempt to facilitate investigating system reactions that may have been previously overlooked, difficult, or computationally heavy, to simulate.   \\
+%Since power systems vary greatly, a flexible simulation environment must be able to handle many unique system scenarios. 
+
+When performing such LTD simulations, certain simplifying assumptions can be made:
+\begin{enumerate}
+	\item The system is stable (synchronized)
+	\item Because of the synchronized assumption, the system has only 1 frequency and is altered by the aggregate swing equation
+	\[ \dot{f}_{sys} = \dfrac{1}{2H_{sys} } \left( \dfrac{P_{acc, sys} }{f_{sys}(t)} - D_{sys}\Delta f{sys}(t)  \right)  \]
+	\item Time steps of 1 second (or larger) will allow for ignoring transient rotor windings and generator damping time constants. 
+	\item Dynamic models that have time constants smaller than the system time step (1 second) must be reworked to avoid mathematical errors.
+	\item Accelerating power will be distributed to system generators participating in the inertial response according to a ratio of object inertias.
+\end{enumerate}
+
+The specific software used will be PSLF (for powerflow calculations), the PSLF .NET API, and Ironpython. This choice is due to the alleged trustworthiness of the systems modeled in PSLF and the future possibility of a python API. Additionally, long term simulations my be performed through PSLF to verify LTD simulation results. It is believed that the custom LTD code will perform the desired simulations much faster than PSLF alone and will exhibit reasonable accuracy. The python code shall allow for modular expansion and future development options.
+
+\pagebreak
+\paragraph{Conceptual model}
+\begin{enumerate}
+\item Software requirements: PSLF and middleware.dll, Ironpython, and Visual Studio with Python Development Tools.
+\item The PSLF .sav and .dyd files contain data that describes any given system.
+\item The python code will establish a 'mirror' of the PSLF system in python with data available from the solved system power flow, case parameters from the API, and dynamic model information parsed from the .dyd file.
+\item Ironpython code will interact with PSLF to solve the .sav file power flow numerous times and record data as system states change.
+
+\item A routine of agent steps will be developed that is capable of:
+	\begin{enumerate}
+		\item Calculating accelerating power  (Pm-Pe-Perturbance) where:
+		\begin{enumerate}
+			\item Pm will be collected from generators in the system
+			\item Pe will be a summation of the previous time steps solved power flow
+			\item Perturbance data will be summed per time step from all perturbance agents.
+		\end{enumerate}
+		\item Distributing electric power among generators in python 'mirror' according to machine inertia:
+		\[ P_{e,i} = P_{e,i}(t)-\Delta P_{acc,sys}(t)\dfrac{H_{i}}{H_{sys}} \]
+		Note that this will only affect generators participating in the inertial response.
+		\item Updating PSLF system with newly calculated generator powers and voltages.
+		\item Performing power flow solution of PSLF system .
+		\item Checking slack bus error adherence and repeating power distribution as required.
+		\item Calculating system frequency response.
+		\item Calculating all object dynamic responses in a prioritized manner.
+		\item Possibly performing one more power flow so system is balanced after mechanical response?
+		\item Logging states and increasing system time.
+		%\item Once electric power is distributed satisfactorily, mechanical power must be calculated by the dynamic response of each generator.
+		%\item This dynamic response will calculate new mechanical power and voltage levels of the system that will then be used to calculate change in system frequency via the aggregate swing equation.
+		%\item Changes to state will then be logged, system time increased, and the process repeated ad infinitum.
+	\end{enumerate}
+\item After a simulation, desired output and system data shall be saved as a python binary object. This object could be processed into other data types for use in other software (MATLAB).
+\item Quick display functionality may be built into the python mirror to view system activity immediately following execution using the \verb|matplotlib.pyplot| library.
+\end{enumerate}
+
+\pagebreak
+\paragraph{Simulation Model}
+Using an agent based approach, each object in the simulation will be activated in various substeps per each time step. These steps will be carried out in a loop once the system has been initialized for a predetermined amount of time / time steps unless an error occurs.\\
+It is assumed that transfer function models may be simplified to state space arrays, or something equivalent, that can be populated by specific model parameters. Once solved, i.e. slope is found, other numerical techniques can be employed to predict the next system state. Alternatively, python ode solvers may be used if applicable.
+\subparagraph{Substeps :}(Performed each time step/ main model step)
+\begin{enumerate}
+	\item Perterubance step: A perturbance object will be programmed / configured before the simulation and attached to the environment. These agents will alter the power into/out of other system agents (such as generators and loads). Once this step is complete a total system Perturbance can be calculated.
+	\item[2 a.] Distribution Step: Once $P_{acc}$ is calculated, it will be distributed to the system. These new values will be updated in the PSLF system.
+	% , or python mirror, depending on the most current object. (Probably update python, then save to PSLF, though the order may change depending on which process seems smarter / easier)
+	\item[2 b.] Power Flow Solution : Using the PSLF powerflow solver allows the system to find balance. If slack error is too great, the error will be sent back to the beginning of the Distribution Step to be processed  by non-Slack generators again. Note: Since this computation happens at the end of the Distribution Step, it may not be a unique step and more of a "while: slack error $>$ some error tolerance".\\
+	Once the slack bus is below error, Electric power has been adequately distributed and will be sent to the Dynamics step as well as being summed for the next time step.
+	\item[3.] Dynamics step: Using current and history values, agent related models are simulated to calculate responses to the change in accelerating power and frequency. This will probably involve state space solutions to ODEs (transfer functions) and numerical integration (PSLF uses Adams-Bashforth). Additionally, prioritization may have to occur so that proper 'model chains' may be executed in a realistic manner.
+\end{enumerate}
+
+
+\pagebreak
+
+\begin{minipage}[t]{.5\textwidth}
+\subparagraph{Agents:} Each agent keeps track of its own history data and references to PSLF.  PSLF references are numerous and may only apply to certain agents. Some examples are: id, longId, Area, Zone, Bus number, Bus name, Scan bus number, External Number
+\\
+\textbf{Core Agents}
+\begin{itemize}
+	\item Bus: Keeps track of Voltage Magnitude and Angle
+	\begin{enumerate}
+		\item Useful for data collection 
+		\item As each bus steps, it steps each attached Generator (or other LTD element) 
+		\item bus voltage and angle will change after each individual element step.
+	\end{enumerate}
+	\item Line / Branch: to keep track of line current 
+	\item Loads: For perturbance access and history of P, Q, and status.
+	\item Generators: Slack, non-slack 
+	\begin{enumerate}
+		\item Track Pe, Pm, Q, and status.
+		\item Slack gen keeps track of expected Pe for error correction applications
+		\item Will have a participation flag \\(default = 1)
+		\item will have dynamic model list (probably prioritized), that will execute each step
+	\end{enumerate} 
+	\item Perturbance: to simulate known/possible events
+	\begin{enumerate}
+		\item Various Types: steps, ramps, sines
+		\item Applied to generators, loads, or other controllable element (breakers?).
+		\item Control of P, Q, V, status
+		\item Additional type: noise (adaptive or set range) - to add an element of randomness to simulation. Possibly un-necessary.
+	\end{enumerate} 
+	
+\end{itemize}
+
+\end{minipage} \hspace{1 em}\begin{minipage}[t]{.5\textwidth}
+%\columnbreak
+\textbf{Additional Agents}
+\begin{itemize}
+	\item Balancing Authority
+	\item Power Plant Supervisor
+	\item Microgrid / Battery
+	\item Area
+	\item Shunt \& SVD
+\end{itemize}
+\subparagraph{Model:} Initializes PSLF, mirror, and agents. Keeps track of global system parameters and dictates step and substep operations/sequence.
+\begin{itemize}
+	\item Required Inputs:
+	\begin{enumerate}
+		\item File locations for PSLF
+		\item time step
+		\item simulation end time
+		\item Slack error tolerance
+	\end{enumerate}
+	\item Optional Inputs:
+	\begin{enumerate}
+		\item H of system (else calculated)
+		\item D of system (else calculated)
+		\item Debug flag
+	\end{enumerate}
+	\item Keeps current value and hisotry of:
+	\begin{enumerate}
+		\item time
+		\item system frequency
+		\item power summations:  $P_{acc} \ P_{e} \ P_{m} \ P_{perturb}$
+	\end{enumerate}
+\end{itemize}
+\paragraph{Additional Required Functions / Content:}
+\begin{itemize}
+	\item .dyd parser / PSLF dynamic model builder
+	\item Dynamic go between (for model init)
+	\item LTD model library
+	\item Data Collector / Exporter (MATLAB?)
+	\item Data Presenter (grapher)
+\end{itemize}
+\end{minipage}
+
+\begin{comment}
+\begin{landscape}
+	\begin{center}
+		\includegraphics[height=\textheight]{stajcar_flowchar_edit.png}
+	\end{center}
+\end{landscape}
+\begin{landscape}
+	\begin{center}
+		\includegraphics[height=\textheight]{LTD_basis.pdf}
+	\end{center}
+\end{landscape}
+\end{comment}
+
+\end{document}
