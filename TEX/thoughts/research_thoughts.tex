@@ -167,6 +167,7 @@ The specific software used will be PSLF (for powerflow calculations), the PSLF .
 			\item Perturbance data will be summed per time step from all perturbance agents.
 		\end{enumerate}
 		\item Distributing electric power among generators in python 'mirror' according to machine inertia:
+		% Will require some more time logic/explanation
 		\[ P_{e,i} = P_{e,i}(t)-\Delta P_{acc,sys}(t)\dfrac{H_{i}}{H_{sys}} \]
 		Note that this will only affect generators participating in the inertial response.
 		\item Updating PSLF system with newly calculated generator powers and voltages.
