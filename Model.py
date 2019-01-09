@@ -1,17 +1,28 @@
 """Model for agent based LTD simulations"""
 
-from __main__ import *
-from parseDyd import *
-from findFunctions import *
-from PerturbanceAgents import *
-from distPe import *
-from combinedSwing import *
+"""
+    NOTE: Should be refactored so that initialize functions are independent
+    of class object. i.e. The creation of 'initModelFunctions.py' could contain
+    all init functions. This could allow for the model to not contain any PSLF 
+    objects mapped to 'self'. This in turn would enable easier data export to MATLAB via
+    pickle, Python 3, and numpy/scipy libraries which appear unavailable in ironpython.
+"""
+import datetime
 
-# load .NET dll
-import clr # Common Language Runtime
-clr.AddReferenceToFileAndPath(locations[0])
-import GE.Pslf.Middleware as mid
-import GE.Pslf.Middleware.Collections as col
+if __name__ == "__main__":
+    from __main__ import *
+    from parseDyd import *
+    from findFunctions import *
+    from PerturbanceAgents import *
+    from distPe import *
+    from combinedSwing import *
+
+    # load .NET dll
+    print("This will run in Execfile, but not Import")
+    import clr # Common Language Runtime
+    clr.AddReferenceToFileAndPath(locations[0])
+    import GE.Pslf.Middleware as mid
+    import GE.Pslf.Middleware.Collections as col 
 
 class Model(object):
     """Model class for LTD Model"""
@@ -19,6 +30,8 @@ class Model(object):
         """Carries out initialization 
         This includes: PSLF, python mirror, and dynamics
         """
+        self.__module__ = "Model"
+        self.created = datetime.datetime.now()
         # Simulation Parameters
         self.locations = locations
         self.timeStep = simParams[0]
@@ -78,6 +91,7 @@ class Model(object):
         self.r_QLosses = [None]*self.dataPoints
         
         # init pslf and solve system
+        # TODO: remove from __init__ for pickle functionality
         self.pslf = self.init_PSLF()
         self.LTD_Solve()
 
@@ -98,6 +112,7 @@ class Model(object):
         self.Load = []
         self.Slack = []
         self.Perturbance = []
+
 
         self.init_mirror()
         self.findGlobalSlack()
@@ -133,10 +148,12 @@ class Model(object):
             self.Hsys = self.ss_H
 
     # Initiazliaze Methods
+    
     def init_PSLF(self):
         """Initialize instance of PSLF with given paths. 
         Returns pslf object, prints error code, or crashes.
         """
+
         # create pslf instance / object
         pslf = mid.Pslf(self.locations[1])   
         # load .sav file
@@ -149,10 +166,11 @@ class Model(object):
             print("Failure to load .sav")
             print("Error code: %d" % test)
             return None
-
+    
     def init_mirror(self):
         """Create python mirror of PSLF system
         Handles Buses, Generators, and Loads
+        Uses col
         TODO: Add shunts, SVD, and lines
         """
         # Useful variable notation key:
@@ -507,3 +525,16 @@ class Model(object):
         print("Qload:\t%.3f" % self.ss_Qload)
         print("Qloss:\t%.3f" % self.QLosses)
         print("***_______________________***")
+
+    def __repr__(self):
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
+
+        # additional outputs
+        tag2 = "Created from:\t%s\n" %(self.locations[2])
+        created = str(self.created)
+        tag3 = "Created on:\t\t%s" %(created)
+
+        return(tag1+tag2+tag3)

@@ -4,7 +4,8 @@
 # workaround for interactive mode runs (Use only if required)
 import os
 print(os.getcwd())
-#os.chdir("C:\\Users\\thad\\Source\\Repos\\thadhaines\\LTD_sim\\")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+print(os.getcwd())
 
 # Simulation Parameters
 timeStep = 1.0
@@ -76,4 +77,11 @@ for x in range(len(mir.Load[1].r_P)):
         mir.Machines[0].r_Pe[x],
         mir.Machines[1].r_Pe[x],))
 
-raw_input("Press <Enter> to Continue. . . . ")
+# Testing of data export
+from saveMirror import *
+
+print(Model.__module__)# = "Model"
+
+saveMirror(mir,'exportTest')
+
+#raw_input("Press <Enter> to Continue. . . . ")

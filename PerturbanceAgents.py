@@ -4,6 +4,7 @@ class LoadStepAgent(object):
     """Performs steps of P, Q, or St on Loads - calculates Perturbance deltas
     targetObj is a python mirror agent object reference
     perParams is a list: [targetAttr, tStart, newVal]
+    Updated to NOT save any PSLF objects attached to self.
     """
 
     def __init__(self, model, targetObj, perParams):
@@ -26,30 +27,30 @@ class LoadStepAgent(object):
             if self.model.c_t >= self.tStart:
                 # Perform Perturbance step
                 # Get most recent PSLF reference
-                self.pObj = self.mObj.getPref()
+                pObj = self.mObj.getPref()
                 # Update correct attribute in PSLF
                 if self.attr == 'St':
                     if self.newVal == 1:
-                        self.pObj.SetInService()
-                        self.model.ss_Pert_Pdelta += self.pObj.P
-                        self.model.ss_Pert_Qdelta += self.pObj.Q
+                        pObj.SetInService()
+                        self.model.ss_Pert_Pdelta += pObj.P
+                        self.model.ss_Pert_Qdelta += pObj.Q
                     else:
-                        self.pObj.SetOutOfService()
-                        self.model.ss_Pert_Pdelta -= self.pObj.P
-                        self.model.ss_Pert_Qdelta -= self.pObj.Q
+                        pObj.SetOutOfService()
+                        self.model.ss_Pert_Pdelta -= pObj.P
+                        self.model.ss_Pert_Qdelta -= pObj.Q
 
                 elif self.attr == 'P':
-                    oldVal = self.pObj.P
-                    self.pObj.P = self.newVal
+                    oldVal = pObj.P
+                    pObj.P = self.newVal
                     self.model.ss_Pert_Pdelta += self.newVal - oldVal
 
                 elif self.attr == 'Q':
-                    oldVal = self.pObj.Q
-                    self.pObj.Q = self.newVal
-                    self.model.ss_Pert_Qdelta += self.newVal - oldVal
+                    oldVal = pObj.Q
+                    pObj.Q = self.newVal
+                    model.ss_Pert_Qdelta += self.newVal - oldVal
 
                 # Save Changes in PSLF
-                self.pObj.Save()
+                pObj.Save()
                 # Update mirror
                 self.mObj.getPvals()
 
