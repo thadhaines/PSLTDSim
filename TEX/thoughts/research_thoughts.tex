@@ -97,11 +97,13 @@
 	\begin{enumerate}
 		\item Verify Swing only run results with known PSLF results.
 		
-		\item Develop better data output functionality.
-		\subitem Will probably include a csv output, a matlab \& python csv reader script, and basic plotting templates/functions
+		\item Develop data output functionality.
+		\subitem Option1: csv output. Requires additional code to create a csv, and then matlab \& python csv reader scripts. 
+		\subitem Option2: .mat output. Requires 'Pickeling' object from ironpython to python 3 where scipy/numpy would be used to export a .mat file.
+		\subitem Additional basic plotting templates/functions should also be created.
 		
 		\item Initialization of mirror from PSLF system continued:
-		\subitem Shunts and SVDs have yet to be modeled. They are required to accurately calculate system Q losses.
+		\subitem Shunts and SVDs have yet to be modeled. They are required to accurately calculate system Q losses. This isn't super important at the moment.
 		
 		\item Investigate line current data in PSLF:
 		\subitem A FlowtabrDAO exists that can find flow between busses. A way to initialize bus connections between areas has yet to be devised.

@@ -4,8 +4,8 @@
 # workaround for interactive mode runs (Use only if required)
 import os
 print(os.getcwd())
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-print(os.getcwd())
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#print(os.getcwd())
 
 # Simulation Parameters
 timeStep = 1.0
@@ -54,6 +54,7 @@ simParams = (
 del timeStep, endTime, slackTol, Hsys, Dsys
 
 # these files will change after refactor
+execfile('initPSLF.py')
 execfile('CoreAgents.py')
 execfile('Model.py')
 

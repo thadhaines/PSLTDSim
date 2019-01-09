@@ -6,15 +6,20 @@ def saveMirror(mir, savName):
     """
 
     #NOTE - this crashes if any PSLF data objects are saved inside the mirror
-    from __main__ import Model, BusAgent
+    # from __main__ import Model, BusAgent
     import pickle as p
+
+    from Model import Model
+    from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgent
+
     Model.pslf = None
     mir.pslf = None
     # None of these attempts have changed what is written in pickle
+    # Possibly because they're not written that way in the mirror?
     
     print(Model.__module__)
     #Model.__module__ = 'Model' # Alterations of module lead to Model.Model doesn't match Model.Model...
-    print(Model.__module__)
+    print(BusAgent.__module__)
     savName = savName + '.pkl'    
 
     f = open(savName, "wb")
