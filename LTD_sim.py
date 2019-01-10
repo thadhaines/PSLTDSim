@@ -1,8 +1,17 @@
 """Developement file that acts as main"""
 """VS may require default ironpython environment (no bit declaration)"""
 
-# workaround for interactive mode runs (Use only if required)
 import os
+import datetime
+
+from parseDyd import *
+from findFunctions import *
+from PerturbanceAgents import *
+from distPe import *
+from combinedSwing import *
+from saveMirror import saveMirror
+
+# workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #print(os.getcwd())
@@ -21,7 +30,7 @@ fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"
 pslfPath = r"C:\Program Files (x86)\GE PSLF"  
 
 # fast debug case switching
-test_case = 0
+test_case = 2
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = r"C:\LTD\pslf_systems\eele554\ee554.dyd"
@@ -55,23 +64,26 @@ del timeStep, endTime, slackTol, Hsys, Dsys
 
 # these files will change after refactor
 execfile('initPSLF.py')
-execfile('CoreAgents.py')
-execfile('Model.py')
 
+# imports must occur after intiPSLF.py
+from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgent
+from Model import Model
+    
 # mirror arguments: locations, simParams, debug flag
 mir = Model(locations, simParams, 1)
 
-# Pertrubances configured for test case (ee554 files)
-mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step in
-mir.addPert('Load',[3,'2'],'Step',['St',15,0]) # step out
+# Pertrubances configured for test case (mini wecc)
+# mini wecc blows up.
+mir.addPert('Load',[8],'Step',['P',2,4385]) # step down 
+mir.addPert('Load',[8],'Step',['P',12,4400]) # step up
 mir.runSim()
 
-print("Log and Step check of Load '2', Pacc, and sys f:")
+print("Log and Step check of Load, Pacc, and sys f:")
 print("Time\tSt\tPacc\tsys f\tdelta f\t\tSlackPe\tGen2Pe")
 for x in range(len(mir.Load[1].r_P)):
     print("%d\t%d\t%.2f\t%.5f\t%.6f\t%.2f\t%.2f" % (
         mir.r_t[x],
-        mir.Load[1].r_St[x],
+        mir.Load[0].r_St[x],
         mir.r_ss_Pacc[x],
         mir.r_f[x],
         mir.r_deltaF[x],
@@ -79,10 +91,7 @@ for x in range(len(mir.Load[1].r_P)):
         mir.Machines[1].r_Pe[x],))
 
 # Testing of data export
-from saveMirror import *
-
-print(Model.__module__)# = "Model"
-
-saveMirror(mir,'exportTest')
+from saveMirror import saveMirror
+saveMirror(mir,'exportTest02')
 
 #raw_input("Press <Enter> to Continue. . . . ")

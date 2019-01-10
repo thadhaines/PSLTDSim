@@ -1,20 +1,10 @@
 """Model for agent based LTD simulations"""
 
 """
-    NOTE: Should be refactored so that initialize functions are independent
-    of class object. i.e. The creation of 'initModelFunctions.py' could contain
-    all init functions. This could allow for the model to not contain any PSLF 
-    objects mapped to 'self'. This in turn would enable easier data export to MATLAB via
-    pickle, Python 3, and numpy/scipy libraries which appear unavailable in ironpython.
+    NOTE: Should probably be refactored 
 """
-import datetime
-from __main__ import *
-from parseDyd import *
-from findFunctions import *
-from PerturbanceAgents import *
-from distPe import *
-from combinedSwing import *
 
+from __main__ import *
 
 class Model(object):
     """Model class for LTD Model"""
@@ -93,7 +83,7 @@ class Model(object):
         self.Narea = PSLF.GetCasepar('Narea')
         self.Nzone = PSLF.GetCasepar('Nzone')
         self.Nbrsec = PSLF.GetCasepar('Nbrsec') 
-        self.Sbase = PSLF.GetCasepar('Sbase')
+        self.Sbase = float(PSLF.GetCasepar('Sbase'))
 
         ## Agent Collections
         self.Area = []
@@ -484,5 +474,3 @@ class Model(object):
         tag3 = "Created on:\t\t%s" %(created)
 
         return(tag1+tag2+tag3)
-
-#Model.__module__= "Model"
