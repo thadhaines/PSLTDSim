@@ -1,5 +1,5 @@
 """Script will attempt to take pickled object and output data in a mat file"""
-#NOTE: Python 3.6+ script
+#NOTE: Uses 32-bit Python 3.6+ script
 
 # for required linking of model files
 import sys
@@ -7,9 +7,10 @@ import os
 import scipy.io as sio
 
 print(os.getcwd())
-os.chdir(r"C:\Users\thad\source\repos\thadhaines\LTD_sim\Data_Exporter")
-print(os.getcwd())
-sys.path.append(r"C:\Users\thad\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\thad\source\repos\thadhaines\LTD_sim\Data_Exporter")
+#print(os.getcwd())
+#sys.path.append(r"C:\Users\thad\source\repos\thadhaines\LTD_sim")
+sys.path.append(r"D:\Users\jhaines\source\Repos\thadhaines\LTD_sim")
 from readMirror import readMirror
 
 mir = readMirror('exportTest01.pkl')
@@ -39,7 +40,7 @@ sio.savemat('yurp',d)
 """
 Results:
     Runs in interactive mode - has an error when trying to run normally that
-    results in: ModuleNotFoundError: No module named 'Image'
+    results in: ModuleNotFoundError: No module named 'Image' - fixed by installing Image
 
     sio.savemat only creates .mat files - it does not append to existing ones
 

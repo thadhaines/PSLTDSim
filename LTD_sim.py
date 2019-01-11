@@ -70,10 +70,10 @@ from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgen
 from Model import Model
     
 # mirror arguments: locations, simParams, debug flag
-mir = Model(locations, simParams, 1)
+mir = Model(locations, simParams, 0)
 
 # Pertrubances configured for test case (mini wecc)
-# mini wecc blows up.
+# mini wecc blows up easy...
 mir.addPert('Load',[8],'Step',['P',2,4385]) # step down 
 mir.addPert('Load',[8],'Step',['P',12,4400]) # step up
 mir.runSim()
@@ -92,6 +92,6 @@ for x in range(len(mir.Load[1].r_P)):
 
 # Testing of data export
 from saveMirror import saveMirror
-saveMirror(mir,'exportTest02')
+saveMirror(mir,'exportTestMini')
 
 #raw_input("Press <Enter> to Continue. . . . ")

@@ -5,7 +5,8 @@ def saveMirror(mir, savName):
 
     savName = savName + '.pkl'    
     f = open(savName, "wb")
-    pickle.dump(mir, f,protocol=-1) #  for highest, produces binary
+    print("Pickling Mirror object...")
+    pickle.dump(mir, f,protocol=-1) #  for highest, produces binary (other protocols may be faster)
     f.close
     print("Mirror object pickled to binary as '%s'" % savName)
 

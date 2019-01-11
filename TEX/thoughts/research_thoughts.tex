@@ -66,7 +66,7 @@
 \pagestyle{fancy} % for header stuffs
 \fancyhf{}
 \rhead{Thad Haines \\ Page \thepage\ of \pageref{LastPage}}
-\chead{Long Term Dynamic Simulation Thoughts \\ January 7, 2019}
+\chead{Long Term Dynamic Simulation Thoughts \\ January 11, 2019}
 \lhead{Research \\ }
 % spacing
 \headheight 29 pt
@@ -95,11 +95,10 @@
 	\end{enumerate}
 	\paragraph{Current Tasks:}
 	\begin{enumerate}
-		\item Verify Swing only run results with known PSLF results.
+		\item Verify Swing only run results with known PSLF results. ()
 		
-		\item Develop data output functionality.
-		\subitem Option1: csv output. Requires additional code to create a csv, and then matlab \& python csv reader scripts. 
-		\subitem Option2: .mat output. Requires 'Pickeling' object from ironpython to python 3 where scipy/numpy would be used to export a .mat file.
+		\item Refine data output functionality.
+		\subitem End result: .mat output. Requires 'Pickeling' object from ironpython to python 3 where scipy is used to export a .mat file. An algorithm that will compile python data into a dictionary must be written.
 		\subitem Additional basic plotting templates/functions should also be created.
 		
 		\item Initialization of mirror from PSLF system continued:
