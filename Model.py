@@ -1,17 +1,10 @@
 """Model for agent based LTD simulations"""
 
-from __main__ import *
-from parseDyd import *
-from findFunctions import *
-from PerturbanceAgents import *
-from distPe import *
-from combinedSwing import *
+"""
+    NOTE: Should probably be refactored 
+"""
 
-# load .NET dll
-import clr # Common Language Runtime
-clr.AddReferenceToFileAndPath(locations[0])
-import GE.Pslf.Middleware as mid
-import GE.Pslf.Middleware.Collections as col
+from __main__ import *
 
 class Model(object):
     """Model class for LTD Model"""
@@ -19,6 +12,9 @@ class Model(object):
         """Carries out initialization 
         This includes: PSLF, python mirror, and dynamics
         """
+        global PSLF
+        __module__= "Model"
+        self.created = datetime.datetime.now()
         # Simulation Parameters
         self.locations = locations
         self.timeStep = simParams[0]
@@ -33,7 +29,6 @@ class Model(object):
         # c_ ... current
         # ss_ .. system sum
         # r_ ... running (time series)
-        
 
         self.c_dp = 0 # current data Point
         self.c_t = 0.0
@@ -78,18 +73,17 @@ class Model(object):
         self.r_QLosses = [None]*self.dataPoints
         
         # init pslf and solve system
-        self.pslf = self.init_PSLF()
         self.LTD_Solve()
 
         # init_mirror
         ## Case Parameters
-        self.Ngen = self.pslf.GetCasepar('Ngen')
-        self.Nbus = self.pslf.GetCasepar('Nbus')
-        self.Nload = self.pslf.GetCasepar('Nload')
-        self.Narea = self.pslf.GetCasepar('Narea')
-        self.Nzone = self.pslf.GetCasepar('Nzone')
-        self.Nbrsec = self.pslf.GetCasepar('Nbrsec') 
-        self.Sbase = self.pslf.GetCasepar('Sbase')
+        self.Ngen = PSLF.GetCasepar('Ngen')
+        self.Nbus = PSLF.GetCasepar('Nbus')
+        self.Nload = PSLF.GetCasepar('Nload')
+        self.Narea = PSLF.GetCasepar('Narea')
+        self.Nzone = PSLF.GetCasepar('Nzone')
+        self.Nbrsec = PSLF.GetCasepar('Nbrsec') 
+        self.Sbase = float(PSLF.GetCasepar('Sbase'))
 
         ## Agent Collections
         self.Area = []
@@ -98,6 +92,7 @@ class Model(object):
         self.Load = []
         self.Slack = []
         self.Perturbance = []
+
 
         self.init_mirror()
         self.findGlobalSlack()
@@ -133,26 +128,10 @@ class Model(object):
             self.Hsys = self.ss_H
 
     # Initiazliaze Methods
-    def init_PSLF(self):
-        """Initialize instance of PSLF with given paths. 
-        Returns pslf object, prints error code, or crashes.
-        """
-        # create pslf instance / object
-        pslf = mid.Pslf(self.locations[1])   
-        # load .sav file
-        load_test = pslf.LoadCase(self.locations[2])     
-
-        if load_test == 0:
-            print(self.locations[2] + " Successfully loaded.")
-            return pslf
-        else:
-            print("Failure to load .sav")
-            print("Error code: %d" % test)
-            return None
-
     def init_mirror(self):
         """Create python mirror of PSLF system
         Handles Buses, Generators, and Loads
+        Uses col
         TODO: Add shunts, SVD, and lines
         """
         # Useful variable notation key:
@@ -257,6 +236,7 @@ class Model(object):
                 b_check = self.PSLFmach[pdmod].Busnum == self.Machines[gen].Busnum
                 n_check = self.PSLFmach[pdmod].Busnam == self.Machines[gen].Busnam
                 if self.debug:
+                    #NOTE: this printout shows a double check isn't useful as currently implemented
                     print(b_check, n_check)
                 if (b_check == 1) and (n_check == 1):
                     self.Machines[gen].Hpu = self.PSLFmach[pdmod].H
@@ -348,7 +328,9 @@ class Model(object):
         """Solves power flow using custom solve parameters
         Only option not default is area interchange adjustment (turned off)
         """
-        return self.pslf.SolveCase(
+        global PSLF
+
+        return PSLF.SolveCase(
             25, # maxIterations, Solpar.Itnrmx
 	        0, 	# iterationsBeforeVarLimits, Solpar.Itnrvl
 	        0,	# flatStart, 
@@ -369,7 +351,7 @@ class Model(object):
         perParams = list of specific perturbance parameters, will vary
             for a step: perParams = [targetAttr, tStart, newVal]
         NOTE: could be refactored to a seperate file
-        TODO: Add other tarTypes ('Gen') and perTypes 'Ramp'
+        TODO: Add other tarTypes ('Gen') and perTypes ('Ramp')
         """
 
         #Locate target in mirror
@@ -479,31 +461,16 @@ class Model(object):
         self.r_PLosses[self.c_dp] = self.PLosses
         self.r_QLosses[self.c_dp] = self.QLosses
 
+    def __repr__(self):
+        """Display more useful data for model"""
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
 
-    # Information Display
-    #TODO: refactor to dispFunctions.py
-    def dispCaseP(self):
-        """Display current Case Parameters"""
-        print("*** Case Parameters ***")
-        print(".sav ==\t%s" % self.locations[2])
-        print("%d Areas" % self.Narea)
-        print("%d Zones" % self.Nzone)
-        print("%d Busses" % self.Nbus)
-        print("%d Generators" % self.Ngen)
-        print("%d Loads" % self.Nload)
-        print("***_________________***")
+        # additional outputs
+        tag2 = "Created from:\t%s\n" %(self.locations[2])
+        created = str(self.created)
+        tag3 = "Created on:\t\t%s" %(created)
 
-    def dispPow(self):
-        """Display System Sumation power values"""
-        print("*** System Power Overview ***")
-        print("Pm:\t%.3f" % self.ss_Pm)
-        print("Pe:\t%.3f" % self.ss_Pe)
-        print("Pacc:\t%.3f" % self.ss_Pacc)
-        print("Pload:\t%.3f" % self.ss_Pload)
-        print("Ploss:\t%.3f" % self.PLosses)
-        print("*_*")
-        #NOTE: Q values are meaningless until Shunts and SVDs are accounted for
-        print("Qgen:\t%.3f" % self.ss_Qgen)
-        print("Qload:\t%.3f" % self.ss_Qload)
-        print("Qloss:\t%.3f" % self.QLosses)
-        print("***_______________________***")
+        return(tag1+tag2+tag3)

@@ -4,7 +4,7 @@
 # workaround for interactive mode runs (Use only if required)
 import os
 print(os.getcwd())
-#os.chdir("C:\\Users\\thad\\Source\\Repos\\thadhaines\\LTD_sim\\")
+os.chdir("C:\\Users\\thad\\Source\\Repos\\thadhaines\\LTD_sim\\")
 
 # Simulation Parameters
 timeStep = 1.0

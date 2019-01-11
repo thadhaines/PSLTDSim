@@ -1,11 +1,14 @@
 """LTD Core Agent Definitions
 Currently includes: Bus, Generator, Slack, Load, and Area agents.
 None of which are fully developed.
+Most of which use PSLF library col ; must be imported before use
 """
 
 class BusAgent(object):
     """Bus Agent for LTD Model"""
     def __init__(self, model, newBus):
+        #required for col usage
+        from __main__ import col
         # Model Reference
         self.model = model
 
@@ -17,6 +20,7 @@ class BusAgent(object):
         self.Type = newBus.Type
 
         # Case Parameters
+        #TODO: remove col from init
         self.Nload = len(col.LoadDAO.FindByBus(self.Scanbus))
         self.Ngen = len(col.GeneratorDAO.FindByBus(self.Scanbus))
 
@@ -44,6 +48,8 @@ class BusAgent(object):
 
     def getPref(self):
         """Return reference to PSLF object"""
+        #required for col usage
+        from __main__ import col
         return col.BusDAO.FindByIndex(self.Scanbus)
 
     def getPval(self):
@@ -73,15 +79,15 @@ class GeneratorAgent(object):
         self.Busnam = newGen.GetBusName()
         self.Busnum = newGen.GetBusNumber()
         self.Scanbus = newGen.GetScanBusIndex()
-        self.St = newGen.St
-        self.MbaseSAV = newGen.Mbase
+        self.St = int(newGen.St)
+        self.MbaseSAV = float(newGen.Mbase)
         self.MbaseDYD = 0.0
         self.H = 0.0
         self.Hpu = 0.0
 
         # Current Status
         self.IRP_flag = 1       # Inertia response participant flag
-        self.Pm = newGen.Pgen   # Voltage Magnitude
+        self.Pm = float(newGen.Pgen)   # Voltage Magnitude
         self.Pe = self.Pm       # Initialize as equal
         self.Q = newGen.Qgen    # Q generatred       
         
@@ -99,14 +105,16 @@ class GeneratorAgent(object):
 
     def getPref(self):
         """Return reference to PSLF object"""
+        #required for col usage
+        from __main__ import col
         return col.GeneratorDAO.FindByBusIndexAndId(self.Scanbus,self.Id)
 
     def getPvals(self):
         """Make current status reflect PSLF values"""
         pRef = self.getPref()
-        self.Pe = pRef.Pgen
-        self.Q = pRef.Qgen
-        self.St = pRef.St
+        self.Pe = float(pRef.Pgen)
+        self.Q = float(pRef.Qgen)
+        self.St = int(pRef.St)
 
     def setPvals(self):
         """Send current mirror values to PSLF"""
@@ -160,9 +168,9 @@ class LoadAgent(object):
         self.Zone = newLoad.Zone
 
         # Current Status
-        self.P = newLoad.P   
-        self.Q = newLoad.Q 
-        self.St = newLoad.St
+        self.P = float(newLoad.P)
+        self.Q = float(newLoad.Q)
+        self.St = int(newLoad.St)
 
         # History 
         self.r_P = [None]*model.dataPoints
@@ -173,14 +181,16 @@ class LoadAgent(object):
 
     def getPref(self):
         """Return reference to PSLF object"""
+        #required for col usage
+        from __main__ import col
         return col.LoadDAO.FindByBusIndexAndId(self.Bus.Scanbus, self.Id)
 
     def getPvals(self):
         """Make current status reflect PSLF values"""
         pRef = self.getPref()
-        self.P = pRef.P
-        self.Q = pRef.Q
-        self.St = pRef.St
+        self.P = float(pRef.P)
+        self.Q = float(pRef.Q)
+        self.St = int(pRef.St)
 
     def logStep(self):
         """Step to record log history"""
@@ -191,6 +201,7 @@ class LoadAgent(object):
 class AreaAgent(object):
     """Area Agent for LTD Model Collections"""
     def __init__(self, model, areaNum):
+        from __main__ import col
         # Model Reference
         self.model = model
 
@@ -198,6 +209,7 @@ class AreaAgent(object):
         self.Area = areaNum
 
         # Case Parameters
+        #TODO: remove col from init.
         self.Ngen = len(col.GeneratorDAO.FindByArea(self.Area))
         self.Nload = len(col.LoadDAO.FindByArea(self.Area))
 

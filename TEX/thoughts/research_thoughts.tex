@@ -66,7 +66,7 @@
 \pagestyle{fancy} % for header stuffs
 \fancyhf{}
 \rhead{Thad Haines \\ Page \thepage\ of \pageref{LastPage}}
-\chead{Long Term Dynamic Simulation Thoughts \\ January 7, 2019}
+\chead{Long Term Dynamic Simulation Thoughts \\ January 11, 2019}
 \lhead{Research \\ }
 % spacing
 \headheight 29 pt
@@ -95,13 +95,14 @@
 	\end{enumerate}
 	\paragraph{Current Tasks:}
 	\begin{enumerate}
-		\item Verify Swing only run results with known PSLF results.
+		\item Verify Swing only run results with known PSLF results. ()
 		
-		\item Develop better data output functionality.
-		\subitem Will probably include a csv output, a matlab \& python csv reader script, and basic plotting templates/functions
+		\item Refine data output functionality.
+		\subitem End result: .mat output. Requires 'Pickeling' object from ironpython to python 3 where scipy is used to export a .mat file. An algorithm that will compile python data into a dictionary must be written.
+		\subitem Additional basic plotting templates/functions should also be created.
 		
 		\item Initialization of mirror from PSLF system continued:
-		\subitem Shunts and SVDs have yet to be modeled. They are required to accurately calculate system Q losses.
+		\subitem Shunts and SVDs have yet to be modeled. They are required to accurately calculate system Q losses. This isn't super important at the moment.
 		
 		\item Investigate line current data in PSLF:
 		\subitem A FlowtabrDAO exists that can find flow between busses. A way to initialize bus connections between areas has yet to be devised.
@@ -167,6 +168,7 @@ The specific software used will be PSLF (for powerflow calculations), the PSLF .
 			\item Perturbance data will be summed per time step from all perturbance agents.
 		\end{enumerate}
 		\item Distributing electric power among generators in python 'mirror' according to machine inertia:
+		% Will require some more time logic/explanation
 		\[ P_{e,i} = P_{e,i}(t)-\Delta P_{acc,sys}(t)\dfrac{H_{i}}{H_{sys}} \]
 		Note that this will only affect generators participating in the inertial response.
 		\item Updating PSLF system with newly calculated generator powers and voltages.
