@@ -2,24 +2,24 @@
 """VS may require default ironpython environment (no bit declaration)"""
 
 import os
-import datetime
+import __builtin__
 
 from parseDyd import *
-from findFunctions import *
-from PerturbanceAgents import *
 from distPe import *
 from combinedSwing import *
 from saveMirror import saveMirror
+from findFunctions import *
+from PerturbanceAgents import *
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #print(os.getcwd())
 
 # Simulation Parameters
 timeStep = 1.0
 endTime = 20.0
-slackTol = 1.0
+slackTol = 5.0
 Hsys = 0.0 # MW*sec of entire system, if !> 0.0, will be calculated in code
 Dsys = 0.0 # PU; TODO: Incoroporate into simulation (probably)
 
@@ -68,19 +68,23 @@ execfile('initPSLF.py')
 # imports must occur after intiPSLF.py
 from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgent
 from Model import Model
-    
+
+execfile('makeGlobals.py')
+
 # mirror arguments: locations, simParams, debug flag
 mir = Model(locations, simParams, 0)
 
 # Pertrubances configured for test case (mini wecc)
-# mini wecc blows up easy...
+# mini wecc slackTolerance should be conidered
 mir.addPert('Load',[8],'Step',['P',2,4385]) # step down 
-mir.addPert('Load',[8],'Step',['P',12,4400]) # step up
+mir.addPert('Load',[8],'Step',['P',12,4420]) # step up
+mir.addPert('Load',[8],'Step',['P',17,400]) # step to norm
+
 mir.runSim()
 
 print("Log and Step check of Load, Pacc, and sys f:")
 print("Time\tSt\tPacc\tsys f\tdelta f\t\tSlackPe\tGen2Pe")
-for x in range(len(mir.Load[1].r_P)):
+for x in range(mir.c_dp):
     print("%d\t%d\t%.2f\t%.5f\t%.6f\t%.2f\t%.2f" % (
         mir.r_t[x],
         mir.Load[0].r_St[x],
@@ -92,6 +96,13 @@ for x in range(len(mir.Load[1].r_P)):
 
 # Testing of data export
 from saveMirror import saveMirror
-saveMirror(mir,'exportTestMini')
+# Saving doesn't work in interactive mode.... truncates pickle data
+saveMirror(mir,'exportTestMiniF5Mir')
 
-#raw_input("Press <Enter> to Continue. . . . ")
+from makeModelDictionary import makeModelDictionary
+from saveModelDictionary import saveModelDictionary
+
+d = makeModelDictionary(mir)
+saveModelDictionary(d,'exportTestMiniF5D')
+
+raw_input("Press <Enter> to Continue. . . . ")

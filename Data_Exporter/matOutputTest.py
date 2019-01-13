@@ -1,41 +1,36 @@
 """Script will attempt to take pickled object and output data in a mat file"""
-#NOTE: Uses 32-bit Python 3.6+ script
+#NOTE: Uses >>32-bit<< Python 3.6+ script
 
-# for required linking of model files
 import sys
 import os
 import scipy.io as sio
+import numpy as np
 
+# for required linking of model files
 print(os.getcwd())
-#os.chdir(r"C:\Users\thad\source\repos\thadhaines\LTD_sim\Data_Exporter")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim\Data_Exporter")
 #print(os.getcwd())
 #sys.path.append(r"C:\Users\thad\source\repos\thadhaines\LTD_sim")
-sys.path.append(r"D:\Users\jhaines\source\Repos\thadhaines\LTD_sim")
+#sys.path.append(r"D:\Users\jhaines\source\Repos\thadhaines\LTD_sim")
+sys.path.append(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+
 from readMirror import readMirror
+from loadModelDictionary import loadModelDictionary
 
-mir = readMirror('exportTest01.pkl')
+mir = readMirror('exportTestMiniF5Mir.pkl')
 
-# data for dictionary
-a = [867,5309]
-b = 'junkbond'
-c = [1,2,3,4]
+# to test differenece between making a dictionary with numpy arrays.
+dict1 = loadModelDictionary('exportTestMiniF5D.pkl')
+# dict2 = makeModelDictionaryPY3(mir)
 
-# dictionary
-d = {'num':a,
-     'trader': b}
+# For reference
+#combinedD = {'VarName' : dict}
+#sio.savemat('nameOfMat',combinedD)
 
-# appending of data to dictionary [key] = value
-d['test'] = c
-d['newVar'] = mir.Bus[1].r_Vm
-# becomes a MATLAB structure
-d['dict'] = {"data" : [12,23,4,5], "data2":['more', 'data','yet','again'],'yeah':[584.8546]}
+unchanged = { 'unchagned' : dict1 }
 
-# Simiarl name could be generated iteratively while stepping through model.
-dataName = "bus3_Vm" 
-
-# writing .mat files
-sio.savemat('nameOfMat.mat', {dataName:mir.Bus[3].r_Vm})
-sio.savemat('yurp',d)
+sio.savemat('test1', unchanged)
+sio.savemat('test2', dict1)
 
 """
 Results:
@@ -44,12 +39,13 @@ Results:
 
     sio.savemat only creates .mat files - it does not append to existing ones
 
-    A way of working through model data and creating, then appending 
-    unique dictionary keys and assocaited data to a single dictionary.
-    This one dictionary will then be written to a .mat file.
+    Nested structures don't seem to be saved correctly
+    Possibly using numpy arrays to solve problem...
+    steps:
+        export model from ipy, import into 3.7, create dictionay with np arrys,
+        export dictionary to matlab....
 
-    Additionally, this dictionary can contain other dictionaries that will
-    'clean up' the data structure that will wind up in MATLAB. 
-    'Could' mimic structure of python mirror as it may result in easier
-    understanding of 'what's going on'
+        requires altering getDataDict in Model, CoreAgents...
+
+        number of nests may be causing an issue....
 """
