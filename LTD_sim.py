@@ -13,7 +13,8 @@ from PerturbanceAgents import *
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 #print(os.getcwd())
 
 # Simulation Parameters
@@ -30,7 +31,7 @@ fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"
 pslfPath = r"C:\Program Files (x86)\GE PSLF"  
 
 # fast debug case switching
-test_case = 2
+test_case = 1
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = r"C:\LTD\pslf_systems\eele554\ee554.dyd"
@@ -76,9 +77,9 @@ mir = Model(locations, simParams, 0)
 
 # Pertrubances configured for test case (mini wecc)
 # mini wecc slackTolerance should be conidered
-mir.addPert('Load',[8],'Step',['P',2,4385]) # step down 
-mir.addPert('Load',[8],'Step',['P',12,4420]) # step up
-mir.addPert('Load',[8],'Step',['P',17,400]) # step to norm
+#mir.addPert('Load',[8],'Step',['P',2,4385]) # step down 
+#mir.addPert('Load',[8],'Step',['P',12,4420]) # step up
+#mir.addPert('Load',[8],'Step',['P',17,400]) # step to norm
 
 mir.runSim()
 
@@ -97,12 +98,23 @@ for x in range(mir.c_dp):
 # Testing of data export
 from saveMirror import saveMirror
 # Saving doesn't work in interactive mode.... truncates pickle data
-saveMirror(mir,'exportTestMiniF5Mir')
+#saveMirror(mir,'exportTestMicroMirW')
 
 from makeModelDictionary import makeModelDictionary
 from saveModelDictionary import saveModelDictionary
 
-d = makeModelDictionary(mir)
-saveModelDictionary(d,'exportTestMiniF5D')
+#d = makeModelDictionary(mir)
+#saveModelDictionary(d,'exportTestMicroW')
 
-raw_input("Press <Enter> to Continue. . . . ")
+#raw_input("Press <Enter> to Continue. . . . ")
+
+# export multiple dictionaries to track problem with export
+b2 = mir.Bus[3].getDataDict()
+g3 = mir.Gens[3].getDataDict()
+s1 = mir.getDataDict()
+L2 = mir.Load[2].getDataDict()
+
+saveModelDictionary(b2,'bus')
+saveModelDictionary(g3,'gen')
+saveModelDictionary(s1,'sys')
+saveModelDictionary(L2,'load')

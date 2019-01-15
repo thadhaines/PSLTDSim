@@ -8,44 +8,45 @@ import numpy as np
 
 # for required linking of model files
 print(os.getcwd())
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim\Data_Exporter")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim\Data_Exporter")
+os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\LTD_sim\Data_Exporter")
 #print(os.getcwd())
 #sys.path.append(r"C:\Users\thad\source\repos\thadhaines\LTD_sim")
-#sys.path.append(r"D:\Users\jhaines\source\Repos\thadhaines\LTD_sim")
+sys.path.append(r"D:\Users\jhaines\source\Repos\thadhaines\LTD_sim")
 sys.path.append(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 
 from readMirror import readMirror
 from loadModelDictionary import loadModelDictionary
 
-mir = readMirror('exportTestMiniF5Mir.pkl')
+#mir = readMirror('exportTestMicroMirW.pkl')
 
-# to test differenece between making a dictionary with numpy arrays.
-dict1 = loadModelDictionary('exportTestMiniF5D.pkl')
-# dict2 = makeModelDictionaryPY3(mir)
+gen = loadModelDictionary('gen.pkl')
+bus = loadModelDictionary('bus.pkl')
+sy1 = loadModelDictionary('sys.pkl')
+load = loadModelDictionary('load.pkl')
 
 # For reference
 #combinedD = {'VarName' : dict}
 #sio.savemat('nameOfMat',combinedD)
 
-unchanged = { 'unchagned' : dict1 }
-
-sio.savemat('test1', unchanged)
-sio.savemat('test2', dict1)
+sio.savemat('gen', gen)
+sio.savemat('bus', bus)
+sio.savemat('sys', sy1)
+sio.savemat('load', load)
 
 """
 Results:
-    Runs in interactive mode - has an error when trying to run normally that
-    results in: ModuleNotFoundError: No module named 'Image' - fixed by installing Image
+    Runs in interactive mode, though writing dictionary doesn't work in interactive
+    May get: ModuleNotFoundError: No module named 'Image' - fixed by installing Image
 
     sio.savemat only creates .mat files - it does not append to existing ones
 
     Nested structures don't seem to be saved correctly
-    Possibly using numpy arrays to solve problem...
+   
     steps:
-        export model from ipy, import into 3.7, create dictionay with np arrys,
+        export model dictionary from ipy, import into 3.7, 
         export dictionary to matlab....
 
-        requires altering getDataDict in Model, CoreAgents...
-
-        number of nests may be causing an issue....
+        number of nests may be causing an issue as individual 
+        dictionaries can be exported correctly
 """
