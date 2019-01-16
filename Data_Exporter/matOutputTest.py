@@ -20,6 +20,7 @@ from loadModelDictionary import loadModelDictionary
 
 #mir = readMirror('exportTestMicroMirW.pkl')
 
+#d = loadModelDictionary('fullSysDict.pkl')
 gen = loadModelDictionary('gen.pkl')
 bus = loadModelDictionary('bus.pkl')
 sy1 = loadModelDictionary('sys.pkl')
@@ -29,8 +30,12 @@ load = loadModelDictionary('load.pkl')
 #combinedD = {'VarName' : dict}
 #sio.savemat('nameOfMat',combinedD)
 
-sio.savemat('gen', gen)
-sio.savemat('bus', bus)
+busCol = {'bus' : bus}
+genCol = {'gen': gen}
+
+#sio.savemat('system', d)
+sio.savemat('gen', genCol)
+sio.savemat('bus', busCol)
 sio.savemat('sys', sy1)
 sio.savemat('load', load)
 
@@ -49,4 +54,6 @@ Results:
 
         number of nests may be causing an issue as individual 
         dictionaries can be exported correctly
+
+        Variable name (all numbers) not allowed - must append character to be MATLAB complient
 """

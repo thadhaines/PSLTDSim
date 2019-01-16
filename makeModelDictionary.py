@@ -1,6 +1,7 @@
 def makeModelDictionary(mir):
     """Makes dictionary of available Model data"""
     # TODO: make less nested, may enable easier MATLAB import...
+    # TODO: append character to variable names that are only number 
 
     rootD = mir.getDataDict()
 
@@ -47,7 +48,7 @@ def makeModelDictionary(mir):
                 busD['slack'] = slackD
 
             # generate unique name for lone bus dit
-            strBusName = str(mir.Area[c_area].Bus[c_bus].Extnum) # .zfill(3) if padding is desired
+            strBusName = 'b' + str(mir.Area[c_area].Bus[c_bus].Extnum).zfill(3) #if padding is desired
 
             # add lone bus to area bus dictionary
             areaBusD[strBusName] = busD
@@ -56,12 +57,11 @@ def makeModelDictionary(mir):
         areaD['bus'] = areaBusD
 
         # generate unique name for area dictionary
-        strAreaName = str(mir.Area[c_area].Area) # .zfill(3)
+        strAreaName = 'A' + str(mir.Area[c_area].Area).zfill(3)
         # combine area dictionary into root area dictionary
         rootAreaD[strAreaName] = areaD
 
     # combine all areas to root D
-    #rootD['area'] = rootAreaD
-    # removes Area from dictionary
-    rootD['bus'] = rootAreaD
+    rootD['area'] = rootAreaD
+
     return rootD          
