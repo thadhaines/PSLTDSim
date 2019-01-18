@@ -1,14 +1,13 @@
 """LTD Core Agent Definitions
 Currently includes: Bus, Generator, Slack, Load, and Area agents.
 None of which are fully developed.
-Most of which use PSLF library col ; must be imported before use
+Most of which use PSLF library col
 """
 
 class BusAgent(object):
     """Bus Agent for LTD Model"""
     def __init__(self, model, newBus):
-        #required for col usage
-        from __main__ import col
+
         # Model Reference
         self.model = model
 
@@ -20,7 +19,6 @@ class BusAgent(object):
         self.Type = newBus.Type
 
         # Case Parameters
-        #TODO: remove col from init
         self.Nload = len(col.LoadDAO.FindByBus(self.Scanbus))
         self.Ngen = len(col.GeneratorDAO.FindByBus(self.Scanbus))
 
@@ -38,8 +36,8 @@ class BusAgent(object):
         self.Va = newBus.Va     # Voltage Angle (radians)
 
         # History
-        self.r_Vm = [None]*self.model.dataPoints
-        self.r_Va = [None]*self.model.dataPoints
+        self.r_Vm = [0.0]*self.model.dataPoints
+        self.r_Va = [0.0]*self.model.dataPoints
 
     def __str__(self):
         """Possible useful identification function"""
@@ -48,8 +46,6 @@ class BusAgent(object):
 
     def getPref(self):
         """Return reference to PSLF object"""
-        #required for col usage
-        from __main__ import col
         return col.BusDAO.FindByIndex(self.Scanbus)
 
     def getPval(self):
@@ -63,6 +59,15 @@ class BusAgent(object):
         self.getPval()
         self.r_Vm[self.model.c_dp] = self.Vm
         self.r_Va[self.model.c_dp] = self.Va
+
+    def getDataDict(self):
+        """Return collected data in dictionary form"""
+        d = {'Vm': self.r_Vm,
+             'Va': self.r_Va,
+             'BusName': self.Busnam,
+             'BusNum': self.Extnum,
+             }
+        return d
 
 class GeneratorAgent(object):
     """Generator Agent for LTD Model"""
@@ -92,21 +97,19 @@ class GeneratorAgent(object):
         self.Q = newGen.Qgen    # Q generatred       
         
         # History 
-        self.r_Pm = [None]*model.dataPoints
-        self.r_Pe = [None]*model.dataPoints
-        self.r_Q = [None]*model.dataPoints
-        self.r_St = [None]*model.dataPoints
+        self.r_Pm = [0.0]*model.dataPoints
+        self.r_Pe = [0.0]*model.dataPoints
+        self.r_Q = [0.0]*model.dataPoints
+        self.r_St = [0.0]*model.dataPoints
 
         # Children
         self.machine_model = []
-        # could be an empty list for each type
+        # TODO: implement proportional governor
         self.gov = None
         self.exc = None
 
     def getPref(self):
         """Return reference to PSLF object"""
-        #required for col usage
-        from __main__ import col
         return col.GeneratorDAO.FindByBusIndexAndId(self.Scanbus,self.Id)
 
     def getPvals(self):
@@ -131,6 +134,18 @@ class GeneratorAgent(object):
         self.r_Q[self.model.c_dp] = self.Q
         self.r_St[self.model.c_dp] = self.St
 
+    def getDataDict(self):
+        """Return collected data in dictionary form"""
+        d = {'Pe': self.r_Pe,
+             'Pm': self.r_Pm,
+             'Q': self.r_Q,
+             'St': self.r_St,
+             'Mbase' : self.MbaseDYD,
+             'Hpu' : self.Hpu,
+             'Slack' : 0,
+             }
+        return d
+
 class SlackAgent(GeneratorAgent):
     """Derived from GeneratorAgent for Slack Generator"""
     def __init__(self, model, parentBus, newGen):
@@ -142,8 +157,8 @@ class SlackAgent(GeneratorAgent):
         self.Pe_calc = 0.0
         self.Pe_error = 0.0
 
-        self.r_Pe_calc = [None]*model.dataPoints
-        self.r_Pe_error = [None]*model.dataPoints
+        self.r_Pe_calc = [0.0]*model.dataPoints
+        self.r_Pe_error = [0.0]*model.dataPoints
 
     def logStep(self):
         """Step to record log history"""
@@ -154,6 +169,20 @@ class SlackAgent(GeneratorAgent):
         self.r_St[self.model.c_dp] = self.St
         self.r_Pe_calc[self.model.c_dp] = self.Pe_calc
         self.r_Pe_error[self.model.c_dp] = self.Pe_error
+
+    def getDataDict(self):
+        """Return collected data in dictionary form"""
+        d = {'Pe': self.r_Pe,
+             'Pm': self.r_Pm,
+             'Q': self.r_Q,
+             'St': self.r_St,
+             'Mbase' : self.MbaseDYD,
+             'Hpu' : self.Hpu,
+             'Pe_calc' : self.r_Pe_calc,
+             'Pe_error' : self.r_Pe_error,
+             'Slack' : 1,
+             }
+        return d
        
 class LoadAgent(object):
     """Load Agent for LTD Model"""
@@ -173,16 +202,14 @@ class LoadAgent(object):
         self.St = int(newLoad.St)
 
         # History 
-        self.r_P = [None]*model.dataPoints
-        self.r_Q = [None]*model.dataPoints
-        self.r_St = [None]*model.dataPoints
+        self.r_P = [0.0]*model.dataPoints
+        self.r_Q = [0.0]*model.dataPoints
+        self.r_St = [0.0]*model.dataPoints
 
         # dynamics?
 
     def getPref(self):
         """Return reference to PSLF object"""
-        #required for col usage
-        from __main__ import col
         return col.LoadDAO.FindByBusIndexAndId(self.Bus.Scanbus, self.Id)
 
     def getPvals(self):
@@ -198,10 +225,20 @@ class LoadAgent(object):
         self.r_Q[self.model.c_dp] = self.Q
         self.r_St[self.model.c_dp] = self.St
 
+    def getDataDict(self):
+        """Return collected data in dictionary form"""
+        d = {'P': self.r_P,
+             'Q': self.r_Q,
+             'St': self.r_St,
+             }
+        return d
+
 class AreaAgent(object):
     """Area Agent for LTD Model Collections"""
+    #NOTE: Account for zones in the future?
+
     def __init__(self, model, areaNum):
-        from __main__ import col
+        #from __main__ import col
         # Model Reference
         self.model = model
 
@@ -209,7 +246,6 @@ class AreaAgent(object):
         self.Area = areaNum
 
         # Case Parameters
-        #TODO: remove col from init.
         self.Ngen = len(col.GeneratorDAO.FindByArea(self.Area))
         self.Nload = len(col.LoadDAO.FindByArea(self.Area))
 
@@ -218,9 +254,18 @@ class AreaAgent(object):
         self.Load = []
         self.Slack = []
         self.Machines = []
+        self.Bus = []
         # if this is how shunts/SVDs work...
         self.Shunt = []
         self.SVD = []
+
+    def getDataDict(self):
+        """Return collected data in dictionary form"""
+        d = {'AreaNum': self.Area,
+             'Ngen': self.Ngen,
+             'Nload': self.Nload,
+             }
+        return d
 
     def checkArea(self):
         """Checks if found number of Generators and loads is Correct

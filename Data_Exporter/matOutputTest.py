@@ -1,55 +1,59 @@
 """Script will attempt to take pickled object and output data in a mat file"""
-#NOTE: Uses 32-bit Python 3.6+ script
+#NOTE: Uses >>32-bit<< Python 3.6+ script
 
-# for required linking of model files
 import sys
 import os
 import scipy.io as sio
+import numpy as np
 
+# for required linking of model files
 print(os.getcwd())
-#os.chdir(r"C:\Users\thad\source\repos\thadhaines\LTD_sim\Data_Exporter")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim\Data_Exporter")
+os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\LTD_sim\Data_Exporter")
 #print(os.getcwd())
 #sys.path.append(r"C:\Users\thad\source\repos\thadhaines\LTD_sim")
 sys.path.append(r"D:\Users\jhaines\source\Repos\thadhaines\LTD_sim")
+sys.path.append(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+
 from readMirror import readMirror
+from loadModelDictionary import loadModelDictionary
 
-mir = readMirror('exportTest01.pkl')
+#mir = readMirror('exportTestMicroMirW.pkl')
 
-# data for dictionary
-a = [867,5309]
-b = 'junkbond'
-c = [1,2,3,4]
+#d = loadModelDictionary('fullSysDict.pkl')
+gen = loadModelDictionary('gen.pkl')
+bus = loadModelDictionary('bus.pkl')
+sy1 = loadModelDictionary('sys.pkl')
+load = loadModelDictionary('load.pkl')
 
-# dictionary
-d = {'num':a,
-     'trader': b}
+# For reference
+#combinedD = {'VarName' : dict}
+#sio.savemat('nameOfMat',combinedD)
 
-# appending of data to dictionary [key] = value
-d['test'] = c
-d['newVar'] = mir.Bus[1].r_Vm
-# becomes a MATLAB structure
-d['dict'] = {"data" : [12,23,4,5], "data2":['more', 'data','yet','again'],'yeah':[584.8546]}
+busCol = {'bus' : bus}
+genCol = {'gen': gen}
 
-# Simiarl name could be generated iteratively while stepping through model.
-dataName = "bus3_Vm" 
-
-# writing .mat files
-sio.savemat('nameOfMat.mat', {dataName:mir.Bus[3].r_Vm})
-sio.savemat('yurp',d)
+#sio.savemat('system', d)
+sio.savemat('gen', genCol)
+sio.savemat('bus', busCol)
+sio.savemat('sys', sy1)
+sio.savemat('load', load)
 
 """
 Results:
-    Runs in interactive mode - has an error when trying to run normally that
-    results in: ModuleNotFoundError: No module named 'Image' - fixed by installing Image
+    Runs in interactive mode, though writing dictionary doesn't work in interactive
+    May get: ModuleNotFoundError: No module named 'Image' - fixed by installing Image
 
     sio.savemat only creates .mat files - it does not append to existing ones
 
-    A way of working through model data and creating, then appending 
-    unique dictionary keys and assocaited data to a single dictionary.
-    This one dictionary will then be written to a .mat file.
+    Nested structures don't seem to be saved correctly
+   
+    steps:
+        export model dictionary from ipy, import into 3.7, 
+        export dictionary to matlab....
 
-    Additionally, this dictionary can contain other dictionaries that will
-    'clean up' the data structure that will wind up in MATLAB. 
-    'Could' mimic structure of python mirror as it may result in easier
-    understanding of 'what's going on'
+        number of nests may be causing an issue as individual 
+        dictionaries can be exported correctly
+
+        Variable name (all numbers) not allowed - must append character to be MATLAB complient
 """

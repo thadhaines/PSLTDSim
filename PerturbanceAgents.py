@@ -17,6 +17,23 @@ class LoadStepAgent(object):
         self.tStart = perParams[1]
         self.newVal = perParams[2]
 
+    def __repr__(self):
+        """Display more useful data for model"""
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
+
+        # additional outputs
+        tag2 = "Stepping %s on Bus %d at time %.2f to %.2f" %(
+            self.attr,
+            self.mObj.Bus.Extnum,
+            self.tStart,
+            self.newVal,
+            )
+
+        return(tag1+tag2)
+
     def step(self):
 
         if self.ProcessFlag:
@@ -57,5 +74,5 @@ class LoadStepAgent(object):
                 self.ProcessFlag = 0
                 if self.model.debug:
                     # TODO: Make this output more informative
-                    print("Load Step on Bus %d Processed" % self.mObj.Bus.Extnum )
+                    print(self)
                 return

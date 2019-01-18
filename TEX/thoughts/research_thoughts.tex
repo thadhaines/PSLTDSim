@@ -66,7 +66,7 @@
 \pagestyle{fancy} % for header stuffs
 \fancyhf{}
 \rhead{Thad Haines \\ Page \thepage\ of \pageref{LastPage}}
-\chead{Long Term Dynamic Simulation Thoughts \\ January 11, 2019}
+\chead{Long Term Dynamic Simulation Thoughts \\ January 16, 2019}
 \lhead{Research \\ }
 % spacing
 \headheight 29 pt
@@ -85,8 +85,9 @@
 			\item H linking system
 			\item Load perturbance agent
 			\item Pacc distribution function
-			\item Combined swing equation (unverified correctness)
+			\item Combined swing equation (unverified, seems functional - waiting on data export to verify with PSLF results)
 			\item logStep for Mirror, Bus, Load, and Generators
+			\item Data Export -> MATLAB import semi-functional
 		\end{itemize}
 		
 		\item GitHub repository updated:\\
@@ -95,14 +96,15 @@
 	\end{enumerate}
 	\paragraph{Current Tasks:}
 	\begin{enumerate}
-		\item Verify Swing only run results with known PSLF results. ()
+		\item Verify Swing only run results with known PSLF results.
 		
 		\item Refine data output functionality.
-		\subitem End result: .mat output. Requires 'Pickeling' object from ironpython to python 3 where scipy is used to export a .mat file. An algorithm that will compile python data into a dictionary must be written.
+		\subitem End result: .mat file containing structured data.
+		\subitem (Best way of accomplishing this is on going.)
 		\subitem Additional basic plotting templates/functions should also be created.
 		
 		\item Initialization of mirror from PSLF system continued:
-		\subitem Shunts and SVDs have yet to be modeled. They are required to accurately calculate system Q losses. This isn't super important at the moment.
+		\subitem Shunts and SVDs have yet to be modeled. They are required to accurately calculate system Q losses. 
 		
 		\item Investigate line current data in PSLF:
 		\subitem A FlowtabrDAO exists that can find flow between busses. A way to initialize bus connections between areas has yet to be devised.
@@ -132,7 +134,7 @@ Power systems are large and complicated structures composed of many connected ob
 
 Software exists to model transient (fast) reactions of power systems. These involve small time steps so that models can have fast time constants and capture the oscillatory nature of power system responses. While these models have their place, it may be desirable to calculate slower, more long term dynamic responses to gradual perturbances such as wind ramps, daily load cycles, or balancing authority type situations. \\
 
-PSLF is a commercial power systems analysis software package by GE that is regarded as an industry standard. Many working and accepted system models exist that are compatible with PSLF. Additionally, GE has enabled other code languages to interface with their software for a more customized experimentation and simulation process. However, this code support is not completely functional at this time (dynamic simulation is not fully supported).\\ %Luckily, there seems to be enough functionality to perform LTD. \\
+PSLF is a commercial power systems analysis software package by GE that is regarded as an industry standard. Many working and accepted system models exist that are compatible with PSLF. Additionally, GE has enabled Python to interface with their software for a more customized experimentation and simulation process. However, the Python code support is not completely functional at this time (dynamic simulation is not fully supported).\\ %Luckily, there seems to be enough functionality to perform LTD. \\
 
 The first goal of this project is to design a simulation framework that performs long term dynamic (LTD) simulations using available PSLF systems, dynamic data, and modified dynamic models. An Agent Based modeling approach will be taken to accommodate a wide variety of power systems and enable the independent development of features. 
 %This approach enables tong term events will be programmed perturbances Additional This software solution will be used to simulate system responses to programmable long term events. 
@@ -149,7 +151,7 @@ When performing such LTD simulations, certain simplifying assumptions can be mad
 	\item Accelerating power will be distributed to system generators participating in the inertial response according to a ratio of object inertias.
 \end{enumerate}
 
-The specific software used will be PSLF (for powerflow calculations), the PSLF .NET API, and Ironpython. This choice is due to the alleged trustworthiness of the systems modeled in PSLF and the future possibility of a python API. Additionally, long term simulations my be performed through PSLF to verify LTD simulation results. It is believed that the custom LTD code will perform the desired simulations much faster than PSLF alone and will exhibit reasonable accuracy. The python code shall allow for modular expansion and future development options.
+PSLF will be used for power flow calculations and system information and the PSLF .NET API sill be used communication between Ironpython and PSLF. This choice is due to the alleged trustworthiness of the systems modeled in PSLF and the future possibility of a python API. Additionally, long term simulations my be performed through PSLF to verify LTD simulation results. It is believed that the custom LTD code will perform the desired simulations much faster than PSLF alone and will exhibit reasonable accuracy. The python code shall allow for modular expansion and future development options.
 
 \pagebreak
 \paragraph{Conceptual model}

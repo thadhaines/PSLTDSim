@@ -12,9 +12,12 @@ class Model(object):
         """Carries out initialization 
         This includes: PSLF, python mirror, and dynamics
         """
+        
         global PSLF
+        from datetime import datetime
+
         __module__= "Model"
-        self.created = datetime.datetime.now()
+        self.created = datetime.now()
         # Simulation Parameters
         self.locations = locations
         self.timeStep = simParams[0]
@@ -51,29 +54,33 @@ class Model(object):
         self.ss_Pert_Qdelta = 0.0
 
         # initialize running (history) values 
-        self.r_t = [None]*self.dataPoints
+        self.r_t = [0.0]*self.dataPoints
 
-        self.r_f = [None]*self.dataPoints
-        self.r_deltaF = [None]*self.dataPoints
-        self.r_fdot = [None]*self.dataPoints
+        self.r_f = [0.0]*self.dataPoints
+        self.r_deltaF = [0.0]*self.dataPoints
+        self.r_fdot = [0.0]*self.dataPoints
 
-        self.r_ss_Pe = [None]*self.dataPoints
-        self.r_ss_Pm = [None]*self.dataPoints
-        self.r_ss_Pacc = [None]*self.dataPoints
-        self.r_Pacc_delta = [None]*self.dataPoints
+        self.r_ss_Pe = [0.0]*self.dataPoints
+        self.r_ss_Pm = [0.0]*self.dataPoints
+        self.r_ss_Pacc = [0.0]*self.dataPoints
+        self.r_Pacc_delta = [0.0]*self.dataPoints
 
-        self.r_ss_Qgen = [None]*self.dataPoints
-        self.r_ss_Qload = [None]*self.dataPoints
-        self.r_ss_Pload = [None]*self.dataPoints
+        self.r_ss_Qgen = [0.0]*self.dataPoints
+        self.r_ss_Qload = [0.0]*self.dataPoints
+        self.r_ss_Pload = [0.0]*self.dataPoints
 
-        # for fun stats, not completely utilized
+        # for fun stats, not completely utilized - yet
         self.PLosses = 0.0
         self.QLosses = 0.0
-        self.r_PLosses = [None]*self.dataPoints
-        self.r_QLosses = [None]*self.dataPoints
+        self.r_PLosses = [0.0]*self.dataPoints
+        self.r_QLosses = [0.0]*self.dataPoints
         
-        # init pslf and solve system
-        self.LTD_Solve()
+        # initial system solve
+        try:
+            self.LTD_Solve()
+        except ValueError as e:
+                print("*** Error Caught")
+                print(e)
 
         # init_mirror
         ## Case Parameters
@@ -224,6 +231,7 @@ class Model(object):
                 areaAgent.Load.append(newLoadAgent)
 
         self.Bus.append(newBusAgent)
+        areaAgent.Bus.append(newBusAgent)
 
     def init_H(self):
         """Link H and Mbase from PSLF dyd dynamic models to mirror machines
@@ -273,7 +281,7 @@ class Model(object):
             print("\n*** Data Point %d" % self.c_dp)
             print("*** Simulation time: %.2f" % (self.c_t))
 
-            # step System dynamics
+            # step System Wide dynamics
             combinedSwing(self, self.ss_Pacc)
 
             # step perturbances
@@ -287,25 +295,35 @@ class Model(object):
             # step distribution
             self.ss_Pm = self.sumPm()
             
+            # Find current system Pacc
             self.ss_Pacc = (
                 self.ss_Pm 
                 - self.r_ss_Pe[self.c_dp-1] 
                 - self.ss_Pert_Pdelta
                 )
             
+            # Find current Pacc Delta
             self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
 
             # distribute Pacc delta to machines
-            distPe(self, self.r_Pacc_delta[self.c_dp])
+            # Check for convergence
+            try:
+                distPe(self, self.r_Pacc_delta[self.c_dp])
+            except ValueError as e:
+                # catches error thown for non-convergene
+                print("*** Error Caught, Simulation Stopping...")
+                print(e)
+                break;
 
             # update system Pe after PSLF power flow solution
             self.ss_Pe = self.sumPe()
 
             # step System dynamics
-            # NOTE: Affects when frequency effects occur
+            # NOTE: Affects when frequency effects occur, for reference only - will be removed once dynamics more developed
             # combinedSwing(self, self.ss_Pacc)
 
             # step machine dynamics
+            # TODO: create proportional gain gov to test changes to Pm
 
             # step log of Agents with ability
             for x in range(len(self.Log)):
@@ -330,7 +348,7 @@ class Model(object):
         """
         global PSLF
 
-        return PSLF.SolveCase(
+        errorCode = PSLF.SolveCase(
             25, # maxIterations, Solpar.Itnrmx
 	        0, 	# iterationsBeforeVarLimits, Solpar.Itnrvl
 	        0,	# flatStart, 
@@ -342,6 +360,14 @@ class Model(object):
 	        1,	# solnType, 1 == full, 2 == DC, 3 == decoupled 
 	        0,  # reorder (in dypar default = 0)
             )
+
+        if self.debug: print('Power Flow Solution returns: %d' % errorCode)
+
+        if errorCode == -1:
+            '''Solution did not converge'''
+            raise ValueError('PSLF power flow solution did not converge.')
+            return
+
 
     def addPert(self, tarType, idList, perType, perParams):
         """Add Perturbance to model.
@@ -366,7 +392,8 @@ class Model(object):
             # perParams = [targetAttr, tStart, newVal]
             newStepAgent = LoadStepAgent(self, targetObj, perParams)
             self.Perturbance.append(newStepAgent)
-            print("Perturbance Step added")
+            print("Perturbance Agent added!")
+            print(newStepAgent)
             return
 
         print("Perturbance Agent error - not added.")
@@ -460,6 +487,24 @@ class Model(object):
 
         self.r_PLosses[self.c_dp] = self.PLosses
         self.r_QLosses[self.c_dp] = self.QLosses
+
+    def getDataDict(self):
+        """Return collected data in dictionary form"""
+        d = {'t': self.r_t,
+             'f': self.r_f,
+             'fdot': self.r_fdot,
+             'deltaF': self.r_deltaF,
+             'N': self.c_dp,
+             'Pe': self.r_ss_Pe,
+             'Pm': self.r_ss_Pm,
+             'Pacc': self.r_ss_Pacc,
+             'Qgen': self.r_ss_Qgen,
+             'Pload': self.r_ss_Pload,
+             'Qload': self.r_ss_Qload,
+             'Sbase' : self.Sbase,
+             'Hsys' : self.Hsys,
+             }
+        return d
 
     def __repr__(self):
         """Display more useful data for model"""
