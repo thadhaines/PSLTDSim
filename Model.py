@@ -281,7 +281,7 @@ class Model(object):
             print("\n*** Data Point %d" % self.c_dp)
             print("*** Simulation time: %.2f" % (self.c_t))
 
-            # step System dynamics
+            # step System Wide dynamics
             combinedSwing(self, self.ss_Pacc)
 
             # step perturbances
@@ -295,12 +295,14 @@ class Model(object):
             # step distribution
             self.ss_Pm = self.sumPm()
             
+            # Find current system Pacc
             self.ss_Pacc = (
                 self.ss_Pm 
                 - self.r_ss_Pe[self.c_dp-1] 
                 - self.ss_Pert_Pdelta
                 )
             
+            # Find current Pacc Delta
             self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
 
             # distribute Pacc delta to machines
@@ -308,6 +310,7 @@ class Model(object):
             try:
                 distPe(self, self.r_Pacc_delta[self.c_dp])
             except ValueError as e:
+                # catches error thown for non-convergene
                 print("*** Error Caught, Simulation Stopping...")
                 print(e)
                 break;
@@ -316,10 +319,11 @@ class Model(object):
             self.ss_Pe = self.sumPe()
 
             # step System dynamics
-            # NOTE: Affects when frequency effects occur
+            # NOTE: Affects when frequency effects occur, for reference only - will be removed once dynamics more developed
             # combinedSwing(self, self.ss_Pacc)
 
             # step machine dynamics
+            # TODO: create proportional gain gov to test changes to Pm
 
             # step log of Agents with ability
             for x in range(len(self.Log)):

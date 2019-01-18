@@ -104,7 +104,7 @@ class GeneratorAgent(object):
 
         # Children
         self.machine_model = []
-        # could be an empty list for each type?
+        # TODO: implement proportional governor
         self.gov = None
         self.exc = None
 
