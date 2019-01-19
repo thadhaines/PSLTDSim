@@ -4,6 +4,8 @@
 import os
 import __builtin__
 
+execfile('mergeDicts.py')
+
 from parseDyd import *
 from distPe import *
 from combinedSwing import *
@@ -14,7 +16,7 @@ from PerturbanceAgents import *
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 #print(os.getcwd())
 
 # Simulation Parameters
@@ -103,31 +105,7 @@ from saveMirror import saveMirror
 from makeModelDictionary import makeModelDictionary
 from saveModelDictionary import saveModelDictionary
 
-# still not entirely working
-#d = makeModelDictionary(mir)
-#saveModelDictionary(d,'fullSysDict')
+D = makeModelDictionary(mir)
+saveModelDictionary(D,'fullSysDict')
 
 #raw_input("Press <Enter> to Continue. . . . ")
-
-# export multiple dictionaries to track problem with export
-# individual dictionarys ok - moving on to collections...
-# collection works, though character must be appended to variable name for MATLAB validity
-busCol = {}
-for c_bus in range(len(mir.Bus)):
-    singleBusD = mir.Bus[c_bus].getDataDict()
-    sBusName= 'b'+str(singleBusD['BusNum']).zfill(3)
-    busCol[sBusName] = singleBusD
-
-genCol = {}
-for c_gen in range(len(mir.Gens)):
-    singleGenD = mir.Gens[c_gen].getDataDict()
-    sGenName= 'g'+str(mir.Gens[c_gen].Busnum).zfill(3)
-    genCol[sGenName] = singleGenD
-
-s1 = mir.getDataDict()
-L2 = mir.Load[2].getDataDict()
-
-saveModelDictionary(busCol,'bus')
-saveModelDictionary(genCol,'gen')
-saveModelDictionary(s1,'sys')
-saveModelDictionary(L2,'load')

@@ -11,8 +11,19 @@ def loadModelDictionary(fileLocation):
     #sys.path.append(r"C:\Users\thad\source\repos\thadhaines\LTD_sim")
     #print(os.getcwd())
 
-    f = open(fileLocation,"rb")
+    #f = open(fileLocation,"rb")
+    '''
+    content = ''
+    outsize = 0
+    with open(fileLocation, 'rb') as infile:
+        content = infile.read()
+    with open(fileLocation, 'wb') as output:
+        for line in content.splitlines():
+            outsize += len(line) + 1
+            output.write(line + str.encode('\n'))
+    '''
 
+    f = open(fileLocation,"rb")
     mir = pickle.load(f)
     f.close()
     print("Model Dictionary Loaded.")

@@ -4,6 +4,8 @@ def readMirror(fileLocation):
         Imports must match those in LTD_sim 
         Values returned from PSLF objects must be cast to python types
         ( PSLF often returns single or int 16 -> cast as float or int )
+
+        Possibly not needed due to MATLAB data functionality
     """
     import os
     import sys
