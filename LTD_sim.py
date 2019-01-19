@@ -9,7 +9,6 @@ execfile('mergeDicts.py')
 from parseDyd import *
 from distPe import *
 from combinedSwing import *
-from saveMirror import saveMirror
 from findFunctions import *
 from PerturbanceAgents import *
 
@@ -33,7 +32,7 @@ fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"
 pslfPath = r"C:\Program Files (x86)\GE PSLF"  
 
 # fast debug case switching
-test_case = 2
+test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = r"C:\LTD\pslf_systems\eele554\ee554.dyd"
@@ -77,11 +76,8 @@ execfile('makeGlobals.py')
 # mirror arguments: locations, simParams, debug flag
 mir = Model(locations, simParams, 0)
 
-# Pertrubances configured for test case (mini wecc)
-# mini wecc slackTolerance should be conidered
-mir.addPert('Load',[8],'Step',['P',2,4385]) # step down 
-mir.addPert('Load',[8],'Step',['P',12,4420]) # step up
-mir.addPert('Load',[8],'Step',['P',17,400]) # step to norm
+# Pertrubances configured for test case (eele)
+mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step on 
 
 mir.runSim()
 
@@ -98,14 +94,16 @@ for x in range(mir.c_dp):
         mir.Machines[1].r_Pe[x],))
 
 # Testing of data export
-from saveMirror import saveMirror
-# Saving doesn't work in interactive mode.... truncates pickle data
-#saveMirror(mir,'exportTestMicroMirW')
-
 from makeModelDictionary import makeModelDictionary
 from saveModelDictionary import saveModelDictionary
 
-D = makeModelDictionary(mir)
-saveModelDictionary(D,'fullSysDict')
+dictName = 'fullSysDictEw'
 
+D = makeModelDictionary(mir)
+savedName = saveModelDictionary(D,dictName)
+
+# use cmd to run python 3 script...
+systemString = "py -3-32 makeMat.py " + savedName +" " + dictName
+os.system(systemString)
+# causes EOFError: Ran out of input when run in script... works from cmd
 #raw_input("Press <Enter> to Continue. . . . ")

@@ -68,10 +68,21 @@ def parseDyd(m_ref,dydLoc):
 
     while line:
         if line[0] == '#' or line[0] =='\n':
-            # line is a comment, skip
-            line = next(file, None)
-            continue
-        
+
+            if line[0] == '\n':
+                # line blank, skip
+                line = next(file, None)
+                continue
+
+            if line[1] == '!':
+                # line is a custom LTD model, remove shebang
+                line = line[2:]
+                print(line)
+            else:
+                # line is a comment
+                line = next(file, None)
+                continue
+
         #print(line) # Debug
         parts = line.split()
         
@@ -82,6 +93,8 @@ def parseDyd(m_ref,dydLoc):
             newPmod = pmod.genrou(cleanLine, m_ref)
             m_ref.PSLFmach.append(newPmod)
             foundModels += 1
+
+        # TODO: add functionality for pgov (LTD model)
   
         line = next(file,  None) # get next line, if there is one
 
