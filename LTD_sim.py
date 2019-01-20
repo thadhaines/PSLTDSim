@@ -2,6 +2,8 @@
 """VS may require default ironpython environment (no bit declaration)"""
 
 import os
+import subprocess
+import signal
 import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
@@ -77,11 +79,12 @@ execfile('makeGlobals.py')
 mir = Model(locations, simParams, 0)
 
 # Pertrubances configured for test case (eele)
-mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step on 
-mir.addPert('Load',[3,'2'],'Step',['St',12,0]) # step off 
+mir.addPert('Load',[3],'Step',['P',2,80]) # step to 80 MW 
+#mir.addPert('Load',[3,'2'],'Step',['St',12,0]) # step off 
 
 mir.runSim()
 
+# Terminal display output
 print("Log and Step check of Load, Pacc, and sys f:")
 print("Time\tSt\tPacc\tsys f\tdelta f\t\tSlackPe\tGen2Pe")
 for x in range(mir.c_dp):
@@ -97,15 +100,22 @@ for x in range(mir.c_dp):
 # Testing of data export
 from makeModelDictionary import makeModelDictionary
 from saveModelDictionary import saveModelDictionary
-dictName = 'autoMat'
+dictName = 'noGovPdown'
 
 D = makeModelDictionary(mir)
 savedName = saveModelDictionary(D,dictName)
 
-# use cmd to run python 3 32 bit script...
-systemString = "py -3-32 makeMat.py " + savedName +" " + dictName + " 0"
 # run a command prompt command
-import subprocess
-subprocess.Popen(systemString)
+# use cmd to run python 3 32 bit script...
+cmd = "py -3-32 makeMat.py " + savedName +" " + dictName + " 0"
+
+matProc = subprocess.Popen(cmd)
+matReturnCode = matProc.wait()
+matProc.send_signal(signal.SIGTERM)
+
+# attempts to delete .pkl file fails -> in use by another process
+#del matProc
+#os.remove(savedName)
+#print('%s Deleted.' % savedName)
 
 raw_input("Press <Enter> to Continue. . . . ")

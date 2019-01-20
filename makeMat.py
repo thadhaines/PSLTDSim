@@ -29,10 +29,12 @@ def makeMat(dictLoc, varName, delDict):
         os.remove(dictLoc)
         print('%s Deleted.')
 
+    return
+
 if __name__ == "__main__":
     dictLoc = sys.argv[1]
     varName = sys.argv[2]
-    delDict = int(sys.argv[3])
+    delDict = 0
     makeMat(dictLoc, varName, delDict)
 
 """
