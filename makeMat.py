@@ -8,14 +8,12 @@ import numpy as np
 
 from loadModelDictionary import loadModelDictionary
 
-def makeMat(dictLoc, varName):
+def makeMat(dictLoc, varName, delDict):
     """Create varName.mat file from system dictionary
     Meant to be run from command....
     """
-    print(dictLoc)
-    print(varName)
     print(sys.version)
-
+    print('Creating %s.mat from %s...' % (varName, dictLoc))
     d = loadModelDictionary(dictLoc)
 
     # For reference
@@ -24,12 +22,18 @@ def makeMat(dictLoc, varName):
 
     mirD ={varName:d}
     sio.savemat(varName, mirD)
-    print(varName +'.mat saved')
+    print(varName +'.mat saved!')
+
+    # remove pickled dictionary
+    if delDict:
+        os.remove(dictLoc)
+        print('%s Deleted.')
 
 if __name__ == "__main__":
     dictLoc = sys.argv[1]
     varName = sys.argv[2]
-    makeMat(dictLoc, varName)
+    delDict = int(sys.argv[3])
+    makeMat(dictLoc, varName, delDict)
 
 """
 Results:

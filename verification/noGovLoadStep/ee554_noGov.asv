@@ -160,15 +160,12 @@ rFABw = noGovABHw.f -pulledf;
 
 %% make plot
 figure
-plot(pulledtime,rFE,':o','Linewidth',2)
+plot(pulledtime,rFE)
 hold on
-plot(pulledtime,rFAB,':o','Linewidth',2)
-plot(pulledtime,rFEw,':+','Linewidth',2)
-plot(pulledtime,rFABw,':+','Linewidth',2)
+plot(pulledtime,rFAB)
+plot(pulledtime,rFEw)
+plot(pulledtime,rFABw)
 grid on
-xlim([0,16])
 xlabel('Time [sec]')
 ylabel('Relative Frequency [pu]')
-title('PSLF v LTD Relative Frequency')
-legend({'Euler','A.B.','Euler w Freq Fx','A.B. w Freq Fx'},'location','best')
-set(gca,'FontSize',15)
+title('PSLF v LTD Relative Frequency

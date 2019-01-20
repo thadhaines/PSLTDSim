@@ -4,7 +4,11 @@
 import os
 import __builtin__
 
-execfile('mergeDicts.py')
+# workaround for interactive mode runs (Use only if required)
+print(os.getcwd())
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+#print(os.getcwd())
 
 from parseDyd import *
 from distPe import *
@@ -12,11 +16,7 @@ from combinedSwing import *
 from findFunctions import *
 from PerturbanceAgents import *
 
-# workaround for interactive mode runs (Use only if required)
-print(os.getcwd())
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
-#print(os.getcwd())
+execfile('mergeDicts.py')
 
 # Simulation Parameters
 timeStep = 1.0
@@ -78,6 +78,7 @@ mir = Model(locations, simParams, 0)
 
 # Pertrubances configured for test case (eele)
 mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step on 
+mir.addPert('Load',[3,'2'],'Step',['St',12,0]) # step off 
 
 mir.runSim()
 
@@ -96,14 +97,15 @@ for x in range(mir.c_dp):
 # Testing of data export
 from makeModelDictionary import makeModelDictionary
 from saveModelDictionary import saveModelDictionary
-
-dictName = 'fullSysDictEw'
+dictName = 'autoMat'
 
 D = makeModelDictionary(mir)
 savedName = saveModelDictionary(D,dictName)
 
-# use cmd to run python 3 script...
-systemString = "py -3-32 makeMat.py " + savedName +" " + dictName
-os.system(systemString)
-# causes EOFError: Ran out of input when run in script... works from cmd
-#raw_input("Press <Enter> to Continue. . . . ")
+# use cmd to run python 3 32 bit script...
+systemString = "py -3-32 makeMat.py " + savedName +" " + dictName + " 0"
+# run a command prompt command
+import subprocess
+subprocess.Popen(systemString)
+
+raw_input("Press <Enter> to Continue. . . . ")

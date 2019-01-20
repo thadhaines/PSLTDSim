@@ -2,6 +2,7 @@ def saveModelDictionary(mirD, savName):
     """Creates pickle object of Model dictionary named savName.pkl
     Return savName
     """
+    import os
     import pickle as pickle
 
     savName = savName + '.pkl'    
@@ -9,6 +10,10 @@ def saveModelDictionary(mirD, savName):
     print("Pickling Dictionary object...")
     # create pickle,
     pickle.dump(mirD, f)
+
+    # ensure file written to disk
+    f.flush()
+    os.fsync(f.fileno())
     f.close
 
     # for python 3.4+ importing
@@ -25,6 +30,10 @@ def saveModelDictionary(mirD, savName):
     for line in content.splitlines():
         outsize += len(line) + 1
         output.write(line + str.encode('\n'))
+
+    # ensure file written to disk
+    output.flush()
+    os.fsync(output.fileno())
     output.close()
 
     print("Dictionary object pickled as '%s'" % savName)
