@@ -7,8 +7,8 @@ import signal
 import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
-print(os.getcwd())
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#print(os.getcwd())
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 #print(os.getcwd())
 
@@ -27,6 +27,16 @@ slackTol = 5.0
 Hsys = 0.0 # MW*sec of entire system, if !> 0.0, will be calculated in code
 Dsys = 0.0 # PU; TODO: Incoroporate into simulation (probably)
 
+# Mathematical Options
+# TODO: integrate this into the model as self. ..., use in combinedSwing.py
+freqEffects = 1
+integrationMethod = 'Euler'
+
+# Data Export Parameters
+dictName = 'noGovPdown'
+exportDict = 0
+exportMat = 1 # requies exportDict == 1
+
 # Required Paths
 ## full path to middleware dll
 fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"  
@@ -34,6 +44,7 @@ fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"
 pslfPath = r"C:\Program Files (x86)\GE PSLF"  
 
 # fast debug case switching
+# TODO: enable multiple dyd by putting dydPath in a list and cycling through list during Model init.
 test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
@@ -57,6 +68,7 @@ locations = (
     )
 del fullMiddlewareFilePath, pslfPath, savPath, dydPath
 
+# TODO: Maybe make this a dictionary...
 simParams = (
     timeStep,
     endTime,
@@ -97,25 +109,26 @@ for x in range(mir.c_dp):
         mir.Slack[0].r_Pe[x],
         mir.Machines[1].r_Pe[x],))
 
-# Testing of data export
-from makeModelDictionary import makeModelDictionary
-from saveModelDictionary import saveModelDictionary
-dictName = 'noGovPdown'
+# Data export
+if exportDict:
+    from makeModelDictionary import makeModelDictionary
+    from saveModelDictionary import saveModelDictionary
 
-D = makeModelDictionary(mir)
-savedName = saveModelDictionary(D,dictName)
+    D = makeModelDictionary(mir)
+    savedName = saveModelDictionary(D,dictName)
 
-# run a command prompt command
-# use cmd to run python 3 32 bit script...
-cmd = "py -3-32 makeMat.py " + savedName +" " + dictName + " 0"
+    if exportMat:
+        # run a command prompt command
+        # use cmd to run python 3 32 bit script...
+        cmd = "py -3-32 makeMat.py " + savedName +" " + dictName + " 0"
 
-matProc = subprocess.Popen(cmd)
-matReturnCode = matProc.wait()
-matProc.send_signal(signal.SIGTERM)
+        matProc = subprocess.Popen(cmd)
+        matReturnCode = matProc.wait()
+        matProc.send_signal(signal.SIGTERM)
 
-# attempts to delete .pkl file fails -> in use by another process
+# attempts to delete .pkl file fails -> in use by another process, reslove?
 #del matProc
 #os.remove(savedName)
 #print('%s Deleted.' % savedName)
 
-raw_input("Press <Enter> to Continue. . . . ")
+# raw_input("Press <Enter> to Continue. . . . ") # Not always needed to hold open console

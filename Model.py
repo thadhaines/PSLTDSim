@@ -17,7 +17,10 @@ class Model(object):
         from datetime import datetime
 
         __module__= "Model"
+        # Model Meta Data
         self.created = datetime.now()
+        self.notes = "This is a place for a useful notes or comments about the system."
+
         # Simulation Parameters
         self.locations = locations
         self.timeStep = simParams[0]
@@ -122,6 +125,7 @@ class Model(object):
         self.PSLFexc = []
 
         # read dyd, create pslf models
+        # TODO: incoroprate locations[3] being a list
         parseDyd(self, locations[3])
         
         # link H and mbase to mirror

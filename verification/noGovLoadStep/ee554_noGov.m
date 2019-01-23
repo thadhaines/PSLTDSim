@@ -21,7 +21,7 @@ l_loc = 'best';
 
 %% import pslf data
 
-pslf_data = udread('ee554.1.chf',[]);
+pslf_data = udread('ee554.exc.2.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd')
@@ -158,6 +158,7 @@ rFE = noGov.f - pulledf;
 rFAB = noGovAB.f-pulledf;
 rFABw = noGovABHw.f -pulledf;
 
+%{
 %% make plot
 figure
 plot(pulledtime,rFE,':o','Linewidth',2)
@@ -172,3 +173,5 @@ ylabel('Relative Frequency [pu]')
 title('PSLF v LTD Relative Frequency')
 legend({'Euler','A.B.','Euler w Freq Fx','A.B. w Freq Fx'},'location','best')
 set(gca,'FontSize',15)
+
+%}

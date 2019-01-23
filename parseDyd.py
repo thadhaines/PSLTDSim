@@ -62,6 +62,7 @@ def parseDyd(m_ref,dydLoc):
     these classes will be referenced by the model to populate dynamic properties
     """
 
+    # TODO: test: for dyd in range(len(dydLoc)): -> dydLoc is then replaced with dydLoc[dyd]
     file = open(dydLoc, 'r') # open file to read
     line = next(file) # get first line of file
     foundModels = 0
@@ -77,7 +78,7 @@ def parseDyd(m_ref,dydLoc):
             if line[1] == '!':
                 # line is a custom LTD model, remove shebang
                 line = line[2:]
-                print(line)
+                print(line) # for debug
             else:
                 # line is a comment
                 line = next(file, None)
