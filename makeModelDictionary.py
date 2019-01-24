@@ -46,7 +46,6 @@ def makeModelDictionary(mir):
 
             # combine dictionaries to lone bus dictionary, if they exist
             if Nload>0:
-                #busD['load'] = loadD
                 busD = mergeDicts(busD, loadD)
             if Ngen>0:
                 busD = mergeDicts(busD, genD)
@@ -54,7 +53,7 @@ def makeModelDictionary(mir):
                 busD = mergeDicts(busD, slackD)
 
             # generate unique name for lone bus dit
-            strBusName = ident + str(mir.Area[c_area].Bus[c_bus].Extnum) #.zfill(3) #if padding is desired
+            strBusName = ident + str(mir.Area[c_area].Bus[c_bus].Extnum).zfill(3) #if padding is desired
 
             # add lone bus to area bus dictionary
             areaBusD[strBusName] = busD
@@ -66,7 +65,7 @@ def makeModelDictionary(mir):
         # generate unique name for area dictionary
         strAreaName = 'A' + str(mir.Area[c_area].Area) #.zfill(3)
         # combine area dictionary into root area dictionary
-        mergeDicts()
+        #mergeDicts()
         rootAreaD[strAreaName] = areaD
 
     # combine all areas to root D

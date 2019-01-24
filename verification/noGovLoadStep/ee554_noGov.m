@@ -21,7 +21,7 @@ l_loc = 'best';
 
 %% import pslf data
 
-pslf_data = udread('ee554.exc.2.chf',[]);
+pslf_data = udread('ee554.exc.1.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd')

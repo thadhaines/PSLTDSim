@@ -13,7 +13,7 @@ clear; format compact; clc; close all;
 p_pos = [541 100 1366 651]; % plot position and size
 %% import pslf data
 
-pslf_data = udread('ee554.1.chf',[]);
+pslf_data = udread('ee554.exc.1.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd');

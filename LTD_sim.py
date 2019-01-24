@@ -7,10 +7,10 @@ import signal
 import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
-#print(os.getcwd())
+print(os.getcwd())
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
-#print(os.getcwd())
+os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+print(os.getcwd())
 
 from parseDyd import *
 from distPe import *
@@ -20,63 +20,51 @@ from PerturbanceAgents import *
 
 execfile('mergeDicts.py')
 
-# Simulation Parameters
-timeStep = 1.0
-endTime = 20.0
-slackTol = 5.0
-Hsys = 0.0 # MW*sec of entire system, if !> 0.0, will be calculated in code
-Dsys = 0.0 # PU; TODO: Incoroporate into simulation (probably)
+# Simulation Parameters Dictionary
+simParams = {
+    'timeStep': 1.0,
+    'endTime': 20.0,
+    'slackTol': 5.0,
+    'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
+    'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
-# Mathematical Options
-# TODO: integrate this into the model as self. ..., use in combinedSwing.py
-freqEffects = 1
-integrationMethod = 'Euler'
+    # Mathematical Options
+    'freqEffects' : 0, # w in swing equation will not be assumed 1 if this is true
+    'integrationMethod' : 'Euler',
 
-# Data Export Parameters
-dictName = 'noGovPdown'
-exportDict = 0
-exportMat = 1 # requies exportDict == 1
-
-# Required Paths
-## full path to middleware dll
-fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"  
-## path to folder containing PSLF license
-pslfPath = r"C:\Program Files (x86)\GE PSLF"  
+    # Data Export Parameters
+    'fileName' : 'noGovStepDE',
+    'exportDict' : 1,
+    'exportMat': 1, # requies exportDict == 1 to work
+    }
 
 # fast debug case switching
 # TODO: enable multiple dyd by putting dydPath in a list and cycling through list during Model init.
 test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = r"C:\LTD\pslf_systems\eele554\ee554.dyd"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.dyd"]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
-    dydPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"
+    dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
 elif test_case == 2:
     savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
-    dydPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"
+    dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
 elif test_case == 3:
     # Will no longer run due to parser errors
     savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
-    dydPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"
+    dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
 
-locations = (
-    fullMiddlewareFilePath,
-    pslfPath,
-    savPath,
-    dydPath,
-    )
-del fullMiddlewareFilePath, pslfPath, savPath, dydPath
-
-# TODO: Maybe make this a dictionary...
-simParams = (
-    timeStep,
-    endTime,
-    slackTol,
-    Hsys,
-    Dsys,
-    )
-del timeStep, endTime, slackTol, Hsys, Dsys
+# Required Paths
+locations = {
+    # full path to middleware dll
+    'fullMiddlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
+    # path to folder containing PSLF license
+    'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
+    'savPath' : savPath,
+    'dydPath': dydPath,
+    }
+del savPath, dydPath
 
 # these files will change after refactor
 execfile('initPSLF.py')
@@ -91,8 +79,8 @@ execfile('makeGlobals.py')
 mir = Model(locations, simParams, 0)
 
 # Pertrubances configured for test case (eele)
-mir.addPert('Load',[3],'Step',['P',2,80]) # step to 80 MW 
-#mir.addPert('Load',[3,'2'],'Step',['St',12,0]) # step off 
+mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
+#mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
 
 mir.runSim()
 
@@ -110,15 +98,14 @@ for x in range(mir.c_dp):
         mir.Machines[1].r_Pe[x],))
 
 # Data export
-if exportDict:
+if simParams['exportDict']:
     from makeModelDictionary import makeModelDictionary
     from saveModelDictionary import saveModelDictionary
-
+    dictName = simParams['fileName']
     D = makeModelDictionary(mir)
     savedName = saveModelDictionary(D,dictName)
 
-    if exportMat:
-        # run a command prompt command
+    if  simParams['exportMat']:
         # use cmd to run python 3 32 bit script...
         cmd = "py -3-32 makeMat.py " + savedName +" " + dictName + " 0"
 

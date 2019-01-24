@@ -22,12 +22,13 @@ class Model(object):
         self.notes = "This is a place for a useful notes or comments about the system."
 
         # Simulation Parameters
+        self.simParams = simParams
         self.locations = locations
-        self.timeStep = simParams[0]
-        self.endTime = simParams[1]
-        self.slackTol = simParams[2]
-        self.Hinput = simParams[3]
-        self.Dinput = simParams[4]
+        self.timeStep = simParams['timeStep']
+        self.endTime = simParams['endTime']
+        self.slackTol = simParams['slackTol']
+        self.Hinput = simParams['Hsys']
+        self.Dinput = simParams['Dsys']
         self.debug = debug
         self.dataPoints = int(self.endTime//self.timeStep + 1)
 
@@ -126,7 +127,7 @@ class Model(object):
 
         # read dyd, create pslf models
         # TODO: incoroprate locations[3] being a list
-        parseDyd(self, locations[3])
+        parseDyd(self, locations['dydPath'])
         
         # link H and mbase to mirror
         self.init_H()
@@ -494,6 +495,18 @@ class Model(object):
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
+        dt = self.created
+        dtStrYMD = str(dt.year)+'/'+str(dt.month).zfill(2) +'/'+str(dt.day)
+        dtStrHMS = str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second).zfill(2)
+        meta = { 'integrationMethod' : self.simParams['integrationMethod'],
+                'fileName' : self.simParams['fileName'],
+                'freqEffects' : self.simParams['freqEffects'],
+                'locations' : self.locations,
+                'created' : dtStrYMD+' at '+dtStrHMS,
+                'notes' : self.notes,
+
+            }
+
         d = {'t': self.r_t,
              'f': self.r_f,
              'fdot': self.r_fdot,
@@ -507,6 +520,8 @@ class Model(object):
              'Qload': self.r_ss_Qload,
              'Sbase' : self.Sbase,
              'Hsys' : self.Hsys,
+
+             'meta' : meta,
              }
         return d
 
@@ -518,7 +533,7 @@ class Model(object):
         tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "Created from:\t%s\n" %(self.locations[2])
+        tag2 = "Created from:\t%s\n" %(self.locations['savPath'])
         created = str(self.created)
         tag3 = "Created on:\t\t%s" %(created)
 
