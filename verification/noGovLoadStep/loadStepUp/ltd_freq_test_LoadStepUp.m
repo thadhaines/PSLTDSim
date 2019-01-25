@@ -103,7 +103,7 @@ plot(pulledtime,rFAB*100,':o','Linewidth',2,'color',pltColor.green)
 plot(pulledtime,rFEw*100,'k:+','Linewidth',2)
 plot(pulledtime,rFABw*100,':+','Linewidth',2,'color',pltColor.Lblue)
 grid on
-xlim([0,16])
+%xlim([0,16])
 xlabel('Time [sec]')
 ylabel('Relative Frequency [% pu]')
 title('Relative Frequency, PSLF v LTD')

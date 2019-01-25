@@ -75,31 +75,28 @@
 \begin{document}
 	\paragraph{Recent Progress:}
 	\begin{enumerate}
-		\item Simulation data output as \verb|.mat| achieved.
+		\item Verification of Frequency response continued.
 		
-		\item Verification of Frequency response begun.
-		\subitem Initial 'EE554.sav' 3 Bus load step result plots on page 2.
+		\item Added ability to parse multiple dyd
 		
-		\item Added custom model parsing ability to dyd parser
-		\subitem Any line starting with \verb|#!| in a dyd file will correspond to LTD model parameters.
+		\item Proportional governor agent pgov1 created and tested (proof of concept)
 		
 		\item GitHub repository updated:
 		\subitem \verb|https://github.com/thadhaines/LTD_sim|
 		
 	\end{enumerate}
 \paragraph{Current Tasks:}
-	\begin{enumerate}
-		\item Continue LTD / PSLF verifications (removal of load step test, ... )
-		\item Develop proportional 'droop' machine control.		
+	\begin{enumerate}	
 		\item Refine data output - Dictionary structure, variable naming, functionality, meta...
 		\item Prepare project presentation for Power Meeting (02/05/19?)
+		\item Think about combining files into packaged library
 	\end{enumerate}
 \paragraph{Future Tasks:}(Little to No Progress since last time)
 	\begin{enumerate}
 		
-		\item Basic plotting templates/functions for MATLAB (python3?)
+		\item Basic plotting templates/functions for MATLAB and python3
 		
-		\item Add Shunt and SVD agents to model. 
+		\item An agent for every object: Shunt, SVD, Branch, Transformer, Power Plant, ...
 		
 		\item Investigate line current data in PSLF
 		%\subitem A FlowtabrDAO exists that can find flow between busses. A way to initialize bus connections between areas has yet to be devised.
@@ -113,9 +110,9 @@
 		
 	%	\item Should another powerflow be computed once dynamic responses have been recorded to PSLF / python mirror? (as noted in CM 5h)
 		
-		\item Structure of planned PSLF scenarios? (draw picture?)
+		\item Overview of planned PSLF scenarios? (draw picture?)
 		
-		\item Is there any available/relevant event data that may help us to verify simulations of specific instances (wind ramps or other behavior) that the novel research will focus on? (Same as last time)
+		\item Is there any available/relevant event data that may help us to verify simulations of specific instances (wind ramps or other behavior) that the novel research will focus on?\\ (Same as last time)
 	\end{enumerate}
 	\begin{comment}
  	place for comments
@@ -125,6 +122,18 @@
  	\includegraphics[width=\linewidth]{noGov_LTD04.pdf}
 	\end{comment}
 \pagebreak
+\paragraph{EE544 Base System Results:}Stepping a 20 MW Load on at t=2 \vspace{1em}\\
+\includegraphics[width=\linewidth]{noGovExcLoadStepUpsys.pdf}
+\includegraphics[width=\linewidth]{noGovExcLoadStepUpfreq}
+\pagebreak \\
+Stepping off a 20 MW Load at t=2 \vspace{1em}\\
+\includegraphics[width=\linewidth]{noGovExcLoadStepDsys}
+\includegraphics[width=\linewidth]{noGovExcLoadStepDfreq}
+\pagebreak
 
-
+\paragraph{pgov1 Tests:}Stepping 20 MW of load down at t=2, then 30 MW up at t=32.\\
+pgov1 on only gen 1:  \vspace{1em}\\
+\includegraphics[width=\linewidth]{pgov1x1}
+pgov1 on both gens:\\
+\includegraphics[width=\linewidth]{pgov1x2}
 \end{document}
