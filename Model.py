@@ -17,14 +17,18 @@ class Model(object):
         from datetime import datetime
 
         __module__= "Model"
+        # Model Meta Data
         self.created = datetime.now()
+        self.notes = "This is a place for a useful notes or comments about the system."
+
         # Simulation Parameters
+        self.simParams = simParams
         self.locations = locations
-        self.timeStep = simParams[0]
-        self.endTime = simParams[1]
-        self.slackTol = simParams[2]
-        self.Hinput = simParams[3]
-        self.Dinput = simParams[4]
+        self.timeStep = simParams['timeStep']
+        self.endTime = simParams['endTime']
+        self.slackTol = simParams['slackTol']
+        self.Hinput = simParams['Hsys']
+        self.Dinput = simParams['Dsys']
         self.debug = debug
         self.dataPoints = int(self.endTime//self.timeStep + 1)
 
@@ -100,6 +104,8 @@ class Model(object):
         self.Slack = []
         self.Perturbance = []
 
+        self.Dynamics = []
+
 
         self.init_mirror()
         self.findGlobalSlack()
@@ -122,7 +128,8 @@ class Model(object):
         self.PSLFexc = []
 
         # read dyd, create pslf models
-        parseDyd(self, locations[3])
+        # TODO: incoroprate locations[3] being a list
+        parseDyd(self, locations['dydPath'])
         
         # link H and mbase to mirror
         self.init_H()
@@ -277,12 +284,20 @@ class Model(object):
         self.r_ss_Pacc.append(0.0)
         self.r_f.append(1.0)
 
+        for x in range(len(self.Dynamics)):
+                self.Dynamics[x].stepInitDynamics()        
+
         while self.c_t <= self.endTime:
             print("\n*** Data Point %d" % self.c_dp)
             print("*** Simulation time: %.2f" % (self.c_t))
 
             # step System Wide dynamics
             combinedSwing(self, self.ss_Pacc)
+
+            # step Individual Agent Dynamics
+            # TODO: create proportional gain gov to test changes to Pm
+            for x in range(len(self.Dynamics)):
+                self.Dynamics[x].stepDynamics()
 
             # step perturbances
             self.ss_Pert_Pdelta = 0.0
@@ -292,20 +307,20 @@ class Model(object):
             # account for any load changes
             self.ss_Pload, self.ss_Qload = self.sumLoad()
 
-            # step distribution
+            # Find current mirror system Pm 
             self.ss_Pm = self.sumPm()
             
-            # Find current system Pacc
+            # Find current mirror system Pacc
             self.ss_Pacc = (
                 self.ss_Pm 
                 - self.r_ss_Pe[self.c_dp-1] 
                 - self.ss_Pert_Pdelta
                 )
             
-            # Find current Pacc Delta
+            # Find current mirror system Pacc Delta
             self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
 
-            # distribute Pacc delta to machines
+            # distribute Pacc delta to machines and solve PSLF
             # Check for convergence
             try:
                 distPe(self, self.r_Pacc_delta[self.c_dp])
@@ -321,9 +336,7 @@ class Model(object):
             # step System dynamics
             # NOTE: Affects when frequency effects occur, for reference only - will be removed once dynamics more developed
             # combinedSwing(self, self.ss_Pacc)
-
-            # step machine dynamics
-            # TODO: create proportional gain gov to test changes to Pm
+            # step machine dynamics?
 
             # step log of Agents with ability
             for x in range(len(self.Log)):
@@ -344,6 +357,7 @@ class Model(object):
 
     def LTD_Solve(self):
         """Solves power flow using custom solve parameters
+        Returns PSLF errorCode if available
         Only option not default is area interchange adjustment (turned off)
         """
         global PSLF
@@ -490,6 +504,18 @@ class Model(object):
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
+        dt = self.created
+        dtStrYMD = str(dt.year)+'/'+str(dt.month).zfill(2) +'/'+str(dt.day)
+        dtStrHMS = str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second).zfill(2)
+        meta = { 'integrationMethod' : self.simParams['integrationMethod'],
+                'fileName' : self.simParams['fileName'],
+                'freqEffects' : self.simParams['freqEffects'],
+                'locations' : self.locations,
+                'created' : dtStrYMD+' at '+dtStrHMS,
+                'notes' : self.notes,
+
+            }
+
         d = {'t': self.r_t,
              'f': self.r_f,
              'fdot': self.r_fdot,
@@ -503,6 +529,8 @@ class Model(object):
              'Qload': self.r_ss_Qload,
              'Sbase' : self.Sbase,
              'Hsys' : self.Hsys,
+
+             'meta' : meta,
              }
         return d
 
@@ -514,7 +542,7 @@ class Model(object):
         tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "Created from:\t%s\n" %(self.locations[2])
+        tag2 = "Created from:\t%s\n" %(self.locations['savPath'])
         created = str(self.created)
         tag3 = "Created on:\t\t%s" %(created)
 

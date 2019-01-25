@@ -56,36 +56,62 @@ def cleanDydStr(str):
     """
     return clean
 
-def parseDyd(m_ref,dydLoc):
+def parseDyd(model,dydLoc):
     """Function that parses dyd information to mirror PSLFdyanmics list
     Will parse particular dyd models to intermediate classes
     these classes will be referenced by the model to populate dynamic properties
     """
+    import __builtin__
 
-    file = open(dydLoc, 'r') # open file to read
-    line = next(file) # get first line of file
-    foundModels = 0
+    # TODO: test: multiple dyds...
+    for dyd in range(len(dydLoc)): #-> dydLoc is then replaced with dydLoc[dyd]
+        file = open(dydLoc[dyd], 'r') # open file to read
+        line = next(file) # get first line of file
+        foundPModels = 0
+        foundLTDModels = 0
 
-    while line:
-        if line[0] == '#' or line[0] =='\n':
-            # line is a comment, skip
-            line = next(file, None)
-            continue
+        while line:
+            if line[0] == '#' or line[0] =='\n':
+
+                if line[0] == '\n':
+                    # line blank, skip
+                    line = next(file, None)
+                    continue
+
+                if line[1] == '!':
+                    # line is a custom LTD model, remove shebang
+                    line = line[2:]
+                    
+                else:
+                    # line is a comment
+                    line = next(file, None)
+                    continue
+
+            #print(line) # Debug
+            parts = line.split()
         
-        #print(line) # Debug
-        parts = line.split()
-        
-        if parts[0] == "genrou":
-            if m_ref.debug:
-                print("testing gen %s" % parts[1])
-            cleanLine = cleanDydStr(line)
-            newPmod = pmod.genrou(cleanLine, m_ref)
-            m_ref.PSLFmach.append(newPmod)
-            foundModels += 1
+            if parts[0] == "genrou":
+                if model.debug:
+                    print("testing gen %s" % parts[1])
+                cleanLine = cleanDydStr(line)
+                newPmod = pmod.genrou(model, cleanLine)
+                model.PSLFmach.append(newPmod)
+                foundPModels += 1
+
+            # LTD Models (proof of concept)
+            if parts[0] == "pgov1":
+                cleanLine = cleanDydStr(line)
+                newLTDmod = pgov1Agent(model, cleanLine)
+
+                # create refereces to agent in Generator and model
+                newLTDmod.Gen.gov.append(newLTDmod)
+                model.Dynamics.append(newLTDmod)
+                print(line) # for debug
+                foundLTDModels += 1
   
-        line = next(file,  None) # get next line, if there is one
+            line = next(file,  None) # get next line, if there is one
 
-    file.close() # close file
+        file.close() # close file
 
-    if m_ref.debug == 1:
-        print("Parsed %d models from dyd:  %s" % (foundModels, dydLoc))
+    if model.debug == 1:
+        print("Parsed %d models from dyd:  %s" % (foundPModels, dydLoc))

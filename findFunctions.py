@@ -11,7 +11,7 @@ def findGenOnBus(mirror, Busnum, Id=None):
             if Id == None:
                 return mirror.Machines[x]
 
-            if Id == mirror.Machines.Id:
+            if Id == mirror.Machines[x].Id:
                 return mirror.Machines[x]
     if Id:
         print("Generator on Bus %d with Id '%s'not Found" % (Busnum,Id))

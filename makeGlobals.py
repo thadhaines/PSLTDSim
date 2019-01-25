@@ -15,7 +15,6 @@ __builtin__.LoadAgent = LoadAgent
 __builtin__.parseDyd = parseDyd
 __builtin__.distPe = distPe
 __builtin__.combinedSwing = combinedSwing
-__builtin__.saveMirror = saveMirror
 
 # FindFunctions
 __builtin__.findLoadOnBus = findLoadOnBus
@@ -23,3 +22,6 @@ __builtin__.findGenOnBus = findGenOnBus
 
 #PertrubanceAgents
 __builtin__.LoadStepAgent = LoadStepAgent
+
+# Dynamic Agents
+__builtin__.pgov1Agent = pgov1Agent

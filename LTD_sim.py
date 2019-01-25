@@ -2,87 +2,93 @@
 """VS may require default ironpython environment (no bit declaration)"""
 
 import os
+import subprocess
+import signal
 import __builtin__
+
+# workaround for interactive mode runs (Use only if required)
+print(os.getcwd())
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+print(os.getcwd())
 
 from parseDyd import *
 from distPe import *
 from combinedSwing import *
-from saveMirror import saveMirror
 from findFunctions import *
 from PerturbanceAgents import *
-
-# workaround for interactive mode runs (Use only if required)
-print(os.getcwd())
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
-#print(os.getcwd())
-
-# Simulation Parameters
-timeStep = 1.0
-endTime = 20.0
-slackTol = 5.0
-Hsys = 0.0 # MW*sec of entire system, if !> 0.0, will be calculated in code
-Dsys = 0.0 # PU; TODO: Incoroporate into simulation (probably)
-
-# Required Paths
-## full path to middleware dll
-fullMiddlewareFilePath = r"C:\Program Files (x86)\GE PSLF\PslfMiddleware"  
-## path to folder containing PSLF license
-pslfPath = r"C:\Program Files (x86)\GE PSLF"  
-
-# fast debug case switching
-test_case = 2
-if test_case == 0:
-    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = r"C:\LTD\pslf_systems\eele554\ee554.dyd"
-elif test_case == 1:
-    savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
-    dydPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"
-elif test_case == 2:
-    savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
-    dydPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"
-elif test_case == 3:
-    # Will no longer run due to parser errors
-    savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
-    dydPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"
-
-locations = (
-    fullMiddlewareFilePath,
-    pslfPath,
-    savPath,
-    dydPath,
-    )
-del fullMiddlewareFilePath, pslfPath, savPath, dydPath
-
-simParams = (
-    timeStep,
-    endTime,
-    slackTol,
-    Hsys,
-    Dsys,
-    )
-del timeStep, endTime, slackTol, Hsys, Dsys
-
-# these files will change after refactor
-execfile('initPSLF.py')
-
-# imports must occur after intiPSLF.py
+from pgov1Agent import *
+# imports must occur after intiPSLF.py? - Doesn't seem true anymore
 from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgent
 from Model import Model
 
+execfile('mergeDicts.py')
+
+# Simulation Parameters Dictionary
+simParams = {
+    'timeStep': 1.0,
+    'endTime': 60.0,
+    'slackTol': 5.0,
+    'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
+    'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
+
+    # Mathematical Options
+    'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
+    'integrationMethod' : 'Euler',
+
+    # Data Export Parameters
+    'fileName' : 'pgov1Test2',
+    'exportDict' : 1,
+    'exportMat': 1, # requies exportDict == 1 to work
+    }
+
+# fast debug case switching
+# TODO: test multiple dyd by putting dydPath in a list
+test_case = 0
+if test_case == 0:
+    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.dyd",
+               r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
+               ]
+elif test_case == 1:
+    savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
+    dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
+elif test_case == 2:
+    savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
+    dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
+elif test_case == 3:
+    # Will no longer run due to parser errors
+    savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
+    dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
+
+# Required Paths
+locations = {
+    # full path to middleware dll
+    'fullMiddlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
+    # path to folder containing PSLF license
+    'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
+    'savPath' : savPath,
+    'dydPath': dydPath,
+    }
+del savPath, dydPath
+
+# these files will change after refactor
+execfile('initPSLF.py')
 execfile('makeGlobals.py')
 
 # mirror arguments: locations, simParams, debug flag
 mir = Model(locations, simParams, 0)
 
-# Pertrubances configured for test case (mini wecc)
-# mini wecc slackTolerance should be conidered
-mir.addPert('Load',[8],'Step',['P',2,4385]) # step down 
-mir.addPert('Load',[8],'Step',['P',12,4420]) # step up
-mir.addPert('Load',[8],'Step',['P',17,400]) # step to norm
+# Pertrubances configured for test case (eele)
+mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
+mir.addPert('Load',[3],'Step',['P',32,110]) # step load up to 110 MW
+#mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
 
 mir.runSim()
 
+mir.notes = "Testing of the pgov1. Seems to work, had to add gain for speed."
+
+# Terminal display output
 print("Log and Step check of Load, Pacc, and sys f:")
 print("Time\tSt\tPacc\tsys f\tdelta f\t\tSlackPe\tGen2Pe")
 for x in range(mir.c_dp):
@@ -94,40 +100,27 @@ for x in range(mir.c_dp):
         mir.r_deltaF[x],
         mir.Slack[0].r_Pe[x],
         mir.Machines[1].r_Pe[x],))
+print('End of simulation data.')
 
-# Testing of data export
-from saveMirror import saveMirror
-# Saving doesn't work in interactive mode.... truncates pickle data
-#saveMirror(mir,'exportTestMicroMirW')
+# Data export
+if simParams['exportDict']:
+    from makeModelDictionary import makeModelDictionary
+    from saveModelDictionary import saveModelDictionary
+    dictName = simParams['fileName']
+    D = makeModelDictionary(mir)
+    savedName = saveModelDictionary(D,dictName)
 
-from makeModelDictionary import makeModelDictionary
-from saveModelDictionary import saveModelDictionary
+    if  simParams['exportMat']:
+        # use cmd to run python 3 32 bit script...
+        cmd = "py -3-32 makeMat.py " + savedName +" " + dictName + " 0"
 
-# still not entirely working
-#d = makeModelDictionary(mir)
-#saveModelDictionary(d,'fullSysDict')
+        matProc = subprocess.Popen(cmd)
+        matReturnCode = matProc.wait()
+        matProc.send_signal(signal.SIGTERM)
 
-#raw_input("Press <Enter> to Continue. . . . ")
+# attempts to delete .pkl file fails -> in use by another process, reslove?
+#del matProc
+#os.remove(savedName)
+#print('%s Deleted.' % savedName)
 
-# export multiple dictionaries to track problem with export
-# individual dictionarys ok - moving on to collections...
-# collection works, though character must be appended to variable name for MATLAB validity
-busCol = {}
-for c_bus in range(len(mir.Bus)):
-    singleBusD = mir.Bus[c_bus].getDataDict()
-    sBusName= 'b'+str(singleBusD['BusNum']).zfill(3)
-    busCol[sBusName] = singleBusD
-
-genCol = {}
-for c_gen in range(len(mir.Gens)):
-    singleGenD = mir.Gens[c_gen].getDataDict()
-    sGenName= 'g'+str(mir.Gens[c_gen].Busnum).zfill(3)
-    genCol[sGenName] = singleGenD
-
-s1 = mir.getDataDict()
-L2 = mir.Load[2].getDataDict()
-
-saveModelDictionary(busCol,'bus')
-saveModelDictionary(genCol,'gen')
-saveModelDictionary(s1,'sys')
-saveModelDictionary(L2,'load')
+# raw_input("Press <Enter> to Continue. . . . ") # Not always needed to hold open console

@@ -48,8 +48,6 @@ def distPe(model, deltaPacc):
 
         fp_Flag = 0
         # Pe is distributed to all generators in all areas, solve Power flow
-        
-        # TODO: add convergence check
         model.LTD_Solve()
 
         #Update mirror with Pe from power flow solution

@@ -11,7 +11,7 @@ from __main__ import *
 
 # load .NET dll
 import clr # Common Language Runtime
-clr.AddReferenceToFileAndPath(locations[0])
+clr.AddReferenceToFileAndPath(locations['fullMiddlewareFilePath'])
 import GE.Pslf.Middleware as mid
 import GE.Pslf.Middleware.Collections as col 
 
@@ -20,12 +20,12 @@ __builtin__.col = col
 
 # create pslf instance / object
 global PSFL 
-__builtin__.PSLF = mid.Pslf(locations[1])   
+__builtin__.PSLF = mid.Pslf(locations['pslfPath'])   
 # load .sav file
-load_test = __builtin__.PSLF.LoadCase(locations[2])     
+load_test = __builtin__.PSLF.LoadCase(locations['savPath'])     
 
 if load_test == 0:
-    print(locations[2] + " Successfully loaded.")
+    print(locations['savPath'] + " Successfully loaded.")
 else:
     print("Failure to load .sav")
     print("Error code: %d" % load_test)

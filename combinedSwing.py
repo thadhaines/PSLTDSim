@@ -1,12 +1,11 @@
-def combinedSwing(model, Pacc, freqFlag=1):
-    """Calculates fdot and integrates to find next f. 
+def combinedSwing(model, Pacc):
+    """Calculates fdot, integrates to find next f, calculates deltaF. 
     Pacc in MW*sec, f and fdot are PU
-    FreqFlag optional - bypass frequency effects - set to 0 to account for
     Currently Ignores system damping
     """
     
     # Handle frequency effect option
-    if freqFlag != 1:
+    if model.simParams['freqEffects'] == 1:
         f = model.c_f
     else:
         f = 1
@@ -15,7 +14,7 @@ def combinedSwing(model, Pacc, freqFlag=1):
     HsysPU = model.Hsys/model.Sbase
 
     #ignore system damping for now
-    # NOTE: Unsure how to calculate deltaF is it requires fdot
+    # NOTE: Unsure how to calculate deltaF is it requires fdot -> Statespace
     Dsys = 0
     deltaF = 0
 
@@ -23,8 +22,13 @@ def combinedSwing(model, Pacc, freqFlag=1):
     fdot = 1/(2*HsysPU)*(PaccPU/f - Dsys*deltaF)
     model.c_fdot = fdot
 
-    # lazy integration
-    model.c_f = model.c_f + (model.timeStep*fdot)
+    # Adams Bashforth
+    if model.simParams['integrationMethod'] == 'AB':
+        model.c_f = model.c_f + (model.timeStep*fdot)*(1.5*model.r_f[model.c_dp-1] -0.5*model.r_f[model.c_dp-2])
+    else:
+        # Euler Integration - chosen by default
+        # matches PSLF better than the adams bashforth method in ee554 load case
+        model.c_f = model.c_f + (model.timeStep*fdot)
 
     # for logging
     deltaF = model.c_f - model.r_f[model.c_dp -1]

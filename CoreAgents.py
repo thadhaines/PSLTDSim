@@ -105,7 +105,7 @@ class GeneratorAgent(object):
         # Children
         self.machine_model = []
         # TODO: implement proportional governor
-        self.gov = None
+        self.gov = []
         self.exc = None
 
     def getPref(self):

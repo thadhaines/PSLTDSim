@@ -8,7 +8,7 @@ class genrou():
     Class parameters populated by parsed line elements from a CLEAN dyd line
     NOTE: There may be a better way to do this. Hardcoded indexes feel like a bad idea
     """
-    def __init__(self, parts, m_ref):
+    def __init__(self, model, parts):
         #for later reference/debug if desired
         self.dydLine = parts
 
@@ -32,7 +32,7 @@ class genrou():
             self.Mbase = float(mbase[1]) # in MVA
         else:
             parts.insert(6, 'BASE MVA')
-            self.Mbase = m_ref.Sbase # TODO: test behavior
+            self.Mbase = model.Sbase # TODO: test behavior
         
         self.Tpdo  = parts[7]
         self.Tppdo = parts[8]
@@ -53,5 +53,5 @@ class genrou():
         self.Xcomp = parts[23]
         self.Accel = parts[24] # not described in available PSLF manual genrou model, included in WECC
 
-        if m_ref.debug:
+        if model.debug:
             print("'genrou' Model Created %d %s" % (self.Busnum,self.Busnam))
