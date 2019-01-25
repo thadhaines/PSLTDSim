@@ -8,8 +8,8 @@ import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 print(os.getcwd())
 
 from parseDyd import *
@@ -17,23 +17,24 @@ from distPe import *
 from combinedSwing import *
 from findFunctions import *
 from PerturbanceAgents import *
+from pgov1Agent import *
 
 execfile('mergeDicts.py')
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 20.0,
+    'endTime': 60.0,
     'slackTol': 5.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
     # Mathematical Options
-    'freqEffects' : 0, # w in swing equation will not be assumed 1 if this is true
+    'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileName' : 'noGovStepDE',
+    'fileName' : 'pgov1Test',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
@@ -80,9 +81,12 @@ mir = Model(locations, simParams, 0)
 
 # Pertrubances configured for test case (eele)
 mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
+mir.addPert('Load',[3],'Step',['P',32,110]) # step load up to 110 MW
 #mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
 
 mir.runSim()
+
+mir.notes = "Testing of the pgov1. Seems to work, had to add gain for speed."
 
 # Terminal display output
 print("Log and Step check of Load, Pacc, and sys f:")

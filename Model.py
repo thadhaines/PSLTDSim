@@ -104,6 +104,8 @@ class Model(object):
         self.Slack = []
         self.Perturbance = []
 
+        self.Dynamics = []
+
 
         self.init_mirror()
         self.findGlobalSlack()
@@ -289,6 +291,11 @@ class Model(object):
             # step System Wide dynamics
             combinedSwing(self, self.ss_Pacc)
 
+            # step Individual Agent Dynamics
+            # TODO: create proportional gain gov to test changes to Pm
+            for x in range(len(self.Dynamics)):
+                self.Dynamics[x].stepDynamics()
+
             # step perturbances
             self.ss_Pert_Pdelta = 0.0
             self.ss_Pert_Qdelta = 0.0
@@ -297,20 +304,20 @@ class Model(object):
             # account for any load changes
             self.ss_Pload, self.ss_Qload = self.sumLoad()
 
-            # step distribution
+            # Find current mirror system Pm 
             self.ss_Pm = self.sumPm()
             
-            # Find current system Pacc
+            # Find current mirror system Pacc
             self.ss_Pacc = (
                 self.ss_Pm 
                 - self.r_ss_Pe[self.c_dp-1] 
                 - self.ss_Pert_Pdelta
                 )
             
-            # Find current Pacc Delta
+            # Find current mirror system Pacc Delta
             self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
 
-            # distribute Pacc delta to machines
+            # distribute Pacc delta to machines and solve PSLF
             # Check for convergence
             try:
                 distPe(self, self.r_Pacc_delta[self.c_dp])
@@ -326,9 +333,7 @@ class Model(object):
             # step System dynamics
             # NOTE: Affects when frequency effects occur, for reference only - will be removed once dynamics more developed
             # combinedSwing(self, self.ss_Pacc)
-
-            # step machine dynamics
-            # TODO: create proportional gain gov to test changes to Pm
+            # step machine dynamics?
 
             # step log of Agents with ability
             for x in range(len(self.Log)):
@@ -349,6 +354,7 @@ class Model(object):
 
     def LTD_Solve(self):
         """Solves power flow using custom solve parameters
+        Returns PSLF errorCode if available
         Only option not default is area interchange adjustment (turned off)
         """
         global PSLF

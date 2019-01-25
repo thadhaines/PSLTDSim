@@ -22,3 +22,6 @@ __builtin__.findGenOnBus = findGenOnBus
 
 #PertrubanceAgents
 __builtin__.LoadStepAgent = LoadStepAgent
+
+# Dynamic Agents
+__builtin__.pgov1Agent = pgov1Agent
