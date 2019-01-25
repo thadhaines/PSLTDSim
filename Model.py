@@ -284,6 +284,9 @@ class Model(object):
         self.r_ss_Pacc.append(0.0)
         self.r_f.append(1.0)
 
+        for x in range(len(self.Dynamics)):
+                self.Dynamics[x].stepInitDynamics()        
+
         while self.c_t <= self.endTime:
             print("\n*** Data Point %d" % self.c_dp)
             print("*** Simulation time: %.2f" % (self.c_t))

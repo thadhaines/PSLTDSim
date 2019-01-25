@@ -18,6 +18,9 @@ from combinedSwing import *
 from findFunctions import *
 from PerturbanceAgents import *
 from pgov1Agent import *
+# imports must occur after intiPSLF.py? - Doesn't seem true anymore
+from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgent
+from Model import Model
 
 execfile('mergeDicts.py')
 
@@ -34,17 +37,19 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileName' : 'pgov1Test',
+    'fileName' : 'pgov1Test2',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
 
 # fast debug case switching
-# TODO: enable multiple dyd by putting dydPath in a list and cycling through list during Model init.
+# TODO: test multiple dyd by putting dydPath in a list
 test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.dyd"]
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.dyd",
+               r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
+               ]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
@@ -69,11 +74,6 @@ del savPath, dydPath
 
 # these files will change after refactor
 execfile('initPSLF.py')
-
-# imports must occur after intiPSLF.py
-from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgent
-from Model import Model
-
 execfile('makeGlobals.py')
 
 # mirror arguments: locations, simParams, debug flag
@@ -100,6 +100,7 @@ for x in range(mir.c_dp):
         mir.r_deltaF[x],
         mir.Slack[0].r_Pe[x],
         mir.Machines[1].r_Pe[x],))
+print('End of simulation data.')
 
 # Data export
 if simParams['exportDict']:

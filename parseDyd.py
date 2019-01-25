@@ -98,11 +98,13 @@ def parseDyd(model,dydLoc):
                 model.PSLFmach.append(newPmod)
                 foundPModels += 1
 
-            # TODO: add functionality for pgov1Agent... (LTD model)
+            # LTD Models (proof of concept)
             if parts[0] == "pgov1":
                 cleanLine = cleanDydStr(line)
-                # for proof of concept
                 newLTDmod = pgov1Agent(model, cleanLine)
+
+                # create refereces to agent in Generator and model
+                newLTDmod.Gen.gov.append(newLTDmod)
                 model.Dynamics.append(newLTDmod)
                 print(line) # for debug
                 foundLTDModels += 1
