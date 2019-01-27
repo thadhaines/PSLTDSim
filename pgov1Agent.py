@@ -25,11 +25,16 @@ class pgov1Agent():
 
     def stepDynamics(self):
         """ Perform droop control"""
-        self.Gen.Pm = self.Gen.Pm + self.K*self.model.c_deltaF
+        possiblePm = self.Gen.Pm + self.K*self.model.c_deltaF
+
+        if possilbePm <= self.mwCap:
+            self.Gen.Pm = possiblePm
+        else:
+            self.Gen.Pm = self.mwCap
 
     def stepInitDynamics(self):
-        """ Once H has been initialized, check to see if K has to be recalculated"""
-        # TODO: recheck for different DYD base after H has been init 
+        """ Once H has been initialized, check if K has to be recalculated"""
+
         print('Checking for updated model information...')
 
         if self.Gen.MbaseSAV != self.Gen.MbaseDYD:

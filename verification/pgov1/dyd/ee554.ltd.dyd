@@ -2,7 +2,7 @@
 # Similar format to dyd files.
 # commented and empty lines are ignored during parsing.
 # A shebang follwed immediately by the LTD model name is how models are entered
-# Double quoted variable names in model parameters are also ignored
+# Double quoted variable names in model parameters also ignored
 
 # pgov1  busnum busnam basekv id : #9 mwcap droop k1
 #!pgov1   21 "21" 22.00 "1 " : #9 mwcap=100.0 "droop" 0.05 "k1" 1.0
