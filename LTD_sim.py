@@ -8,7 +8,7 @@ import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 print(os.getcwd())
 
@@ -27,8 +27,8 @@ execfile('mergeDicts.py')
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 60.0,
-    'slackTol': 5.0,
+    'endTime': 100.0,
+    'slackTol': 10.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
@@ -37,7 +37,7 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileName' : 'pgov1Test2',
+    'fileName' : 'pgov1Test3',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
@@ -47,8 +47,8 @@ simParams = {
 test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.dyd",
-               r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
+              # r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
                ]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
@@ -81,7 +81,7 @@ mir = Model(locations, simParams, 0)
 
 # Pertrubances configured for test case (eele)
 mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
-mir.addPert('Load',[3],'Step',['P',32,110]) # step load up to 110 MW
+mir.addPert('Load',[3],'Step',['P',42,110]) # step load up to 110 MW
 #mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
 
 mir.runSim()

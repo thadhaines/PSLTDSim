@@ -21,13 +21,24 @@ class pgov1Agent():
         #TODO: handle not finding the gen better.
         if self.Gen:
             self.Mbase = self.Gen.MbaseSAV 
-            self.K = -1*self.k1*self.Mbase / self.model.Sbase / self.droop
+            self.K = -self.k1*self.Mbase / self.model.Sbase / self.droop
 
     def stepDynamics(self):
         """ Perform droop control"""
-        possiblePm = self.Gen.Pm + self.K*self.model.c_deltaF
+        #NOTE: based off of change in f between steps, not system f
+        """
+        deltaOmega = 1 - self.model.c_f
 
-        if possilbePm <= self.mwCap:
+        if self.model.c_deltaF != 0.0:
+            damping = (self.Gen.Pm-self.Gen.r_Pm[self.model.c_dp-1])/self.model.c_deltaF
+
+        else:
+            damping = 0.0
+
+        possiblePm = self.Gen.Pm + self.K*deltaOmega - damping
+        """
+        possiblePm = self.Gen.Pm + self.K*self.model.c_deltaF
+        if possiblePm <= self.mwCap:
             self.Gen.Pm = possiblePm
         else:
             self.Gen.Pm = self.mwCap
