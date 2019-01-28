@@ -17,9 +17,9 @@ clear; format compact; clc; close all;
 % load('pgov1Test.mat')
 % mir = pgov1Test;
 % clear pgov1Test
-load('pgov1Test3.mat')
-mir = pgov1Test3;
-clear pgov1Test3
+load('pgov1Test4.mat')
+mir = pgov1Test4;
+clear pgov1Test4
 t_1 = mir.t;
 f_1 = mir.f;
 
