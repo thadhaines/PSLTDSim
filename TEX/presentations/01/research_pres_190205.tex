@@ -21,7 +21,7 @@
 \usefonttheme{professionalfonts}
 
 
-\title{Long Term Simulation of Power System Dynamics using Time Sequenced Power Flows}
+\title{Long-Term Simulation of Power System Dynamics using Time Sequenced Power Flows}
 \author{Thad Haines}
 \institute[MT TECH]{Montana Tech - Master's Thesis Research Project}
 \date{February 5th, 2019}
@@ -38,9 +38,10 @@
 \subsection{Overview of Project}
 %------------------------------------------------
 \begin{frame}
-Overview of what the plan is \\
-system assumptions\\
-goals
+TODO:\\
+What is LTD - why use it \\
+system assumptions/main methods of LTD\\
+goals of research/ code
 \end{frame}
 %------------------------------------------------
 
@@ -50,8 +51,10 @@ goals
 %\subsection{Overview of Project}
 %------------------------------------------------
 \begin{frame}
+TODO:\\
 Overview of parts involved in simulation (sequence diagram)\\
-other explanations about computery stuff
+other explanations about computery stuff: ipy vs py? \\
+flow chart of predicted work flow.
 \end{frame}
 %------------------------------------------------
 
@@ -115,6 +118,7 @@ Detailed Frequency Response
 \begin{frame}[fragile]
 Proportional gain control of generator $P_M$ 
 \begin{figure}
+	% this may not be the system we really want... maybe no sbase and k1
 	\includegraphics[width=\linewidth]{pgov1}
 \end{figure}
 Entered into system via parsed text file:
@@ -147,6 +151,7 @@ pgov1 on Gen 1 \& Gen 2
 %------------------------------------------------
 \begin{frame}
 \begin{itemize}
+	\item Much more work to do.
 	\item Frequency effects should be accounted for in swing equation.
 	\item Euler Integration tracks PSLF mean frequency well.
 	\item Custom dynamic model implementation seems realizable. 

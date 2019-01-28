@@ -1,5 +1,6 @@
 Proportional gain control of generator $P_M$
 \begin{figure}
+	% this may not be the system we really want... maybe no sbase and k1
 	\includegraphics[width=\linewidth]{pgov1}
 \end{figure}
 Entered into system via parsed text file:

@@ -21,7 +21,10 @@ class pgov1Agent():
         #TODO: handle not finding the gen better.
         if self.Gen:
             self.Mbase = self.Gen.MbaseSAV 
-            self.K = -self.k1*self.Mbase / self.model.Sbase / self.droop
+            #self.K = -self.k1*self.Mbase / self.model.Sbase / self.droop
+            # gain changed to be part of mwCap? Seems like again of 100 makes this gov match PSLF models.
+            # unfrotunately, 100 is a common number in this system.
+            self.K = -self.k1*self.Mbase /self.model.Sbase/ self.droop * self.mwCap
 
     def stepDynamics(self):
         """ Perform droop control"""

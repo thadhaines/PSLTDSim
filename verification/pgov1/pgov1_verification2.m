@@ -17,12 +17,12 @@ clear; format compact; clc; close all;
 % load('pgov1Test.mat')
 % mir = pgov1Test;
 % clear pgov1Test
-load('pgov1Test4.mat')
-mir = pgov1Test4;
-clear pgov1Test4
+load('pgov1Test7.mat')
+mir = pgov1Test7;
+clear pgov1Test7
 t_1 = mir.t;
 f_1 = mir.f;
-
+N = mir.N
 %% plot definitions
 p_pos = [400 200 1421 734];
 bfz = 15;

@@ -8,7 +8,7 @@ import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 print(os.getcwd())
 
@@ -24,11 +24,17 @@ from Model import Model
 
 execfile('mergeDicts.py')
 
+simNotes = """Adjusted governor to be on gen 1 only, 
+            k1=1, time to be 30 seconds, step now 10 MW.
+            changed slackTol to 5.
+            Altred droop equation to be multiplied by mwCap (100)
+            expected SS freq = 0.995"""
+
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 35.0,
-    'slackTol': 10.0,
+    'endTime': 30.0,
+    'slackTol': 5.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
@@ -37,7 +43,7 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileName' : 'pgov1Test4',
+    'fileName' : 'pgov1Test9',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
@@ -80,14 +86,14 @@ execfile('makeGlobals.py')
 mir = Model(locations, simParams, 0)
 
 # Pertrubances configured for test case (eele)
-mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
+mir.addPert('Load',[3],'Step',['P',2,110]) # quick 2 MW step
 #mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
 #mir.addPert('Load',[3],'Step',['P',42,110]) # step load up to 110 MW
 #mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
 
 mir.runSim()
 
-mir.notes = "Testing of the pgov1. Seems to work, had to add gain for speed."
+mir.notes = simNotes
 
 # Terminal display output
 print("Log and Step check of Load, Pacc, and sys f:")
