@@ -75,7 +75,7 @@ Generators are identical. \\PSLF models have exciters.
 %------------------------------------------------
 
 %************************************************
-\section{Validation}
+\section{Frequency Validation}
 %________________________________________________
 \subsection{+20 MW Load Step at t=2}
 %------------------------------------------------
@@ -113,38 +113,43 @@ Detailed Frequency Response
 %************************************************
 \section{Proof of Concept}
 %________________________________________________
-\subsection{Dynamic model 'pgov1'}
+\subsection{Dynamic model 'pgov1' defined}
 %------------------------------------------------
 \begin{frame}[fragile]
-Proportional gain control of generator $P_M$ 
+pgov1 : Proportional gain control of $P_M$ \\
 \begin{figure}
-	% this may not be the system we really want... maybe no sbase and k1
 	\includegraphics[width=\linewidth]{pgov1}
 \end{figure}
 Entered into system via parsed text file:
 \begin{lstlisting}[basicstyle=\footnotesize]
-# pgov1  busnum busnam basekv id : #9 mwcap droop k1
-#!pgov1   21 "21" 22.00 "1 " : #9 mwcap=100.0 0.05 13.0
+# model  busnum busnam basekv id : #9 mwcap droop
+#!pgov1   11 "11" 22.00 "1 " : #9 mwcap=100.0 0.05
 \end{lstlisting}
 \end{frame}
 
 %________________________________________________
-\subsection{Dynamic model 'pgov1' experiment: -20 MW t=2, +30 MW t=32}
+\subsection{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}
 %------------------------------------------------
 \begin{frame}
-pgov1 on Gen 1
+pgov1 on Gen 1, 1 second time step
 \begin{figure}
-	\includegraphics[width=\linewidth]{pgov1x1.pdf}
+	\includegraphics[width=\linewidth]{pgov1A}
 \end{figure}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-pgov1 on Gen 1 \& Gen 2
+pgov1 on Gen 1, 0.5 second time step
 \begin{figure}
-\includegraphics[width=\linewidth]{pgov1x2.pdf}
+\includegraphics[width=\linewidth]{pgov1C}
 \end{figure}
 \end{frame}
-
+%------------------------------------------------
+\begin{frame}
+pgov1 on both Gens, 0.5 second time step
+\begin{figure}
+	\includegraphics[width=\linewidth]{pgov1Bh}
+\end{figure}
+\end{frame}
 
 %************************************************
 \section{Current Conclusions}

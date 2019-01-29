@@ -21,7 +21,7 @@
 \headcommand {\beamer@framepages {4}{4}}
 \headcommand {\beamer@sectionpages {4}{4}}
 \headcommand {\beamer@subsectionpages {4}{4}}
-\headcommand {\sectionentry {4}{Validation}{5}{Validation}{0}}
+\headcommand {\sectionentry {4}{Frequency Validation}{5}{Frequency Validation}{0}}
 \headcommand {\beamer@subsectionpages {5}{4}}
 \headcommand {\beamer@subsectionentry {0}{4}{1}{5}{+20 MW Load Step at t=2}}
 \headcommand {\slideentry {4}{1}{1}{5/5}{+20 MW Load Step at t=2}{0}}
@@ -38,22 +38,24 @@
 \headcommand {\beamer@subsectionpages {7}{8}}
 \headcommand {\sectionentry {5}{Proof of Concept}{9}{Proof of Concept}{0}}
 \headcommand {\beamer@subsectionpages {9}{8}}
-\headcommand {\beamer@subsectionentry {0}{5}{1}{9}{Dynamic model 'pgov1'}}
-\headcommand {\slideentry {5}{1}{1}{9/9}{Dynamic model 'pgov1'}{0}}
+\headcommand {\beamer@subsectionentry {0}{5}{1}{9}{Dynamic model 'pgov1' defined}}
+\headcommand {\slideentry {5}{1}{1}{9/9}{Dynamic model 'pgov1' defined}{0}}
 \headcommand {\beamer@framepages {9}{9}}
 \headcommand {\beamer@subsectionpages {9}{9}}
-\headcommand {\beamer@subsectionentry {0}{5}{2}{10}{Dynamic model 'pgov1' experiment: -20 MW t=2, +30 MW t=32}}
-\headcommand {\slideentry {5}{2}{1}{10/10}{Dynamic model 'pgov1' experiment: -20 MW t=2, +30 MW t=32}{0}}
+\headcommand {\beamer@subsectionentry {0}{5}{2}{10}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}}
+\headcommand {\slideentry {5}{2}{1}{10/10}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
 \headcommand {\beamer@framepages {10}{10}}
-\headcommand {\slideentry {5}{2}{2}{11/11}{Dynamic model 'pgov1' experiment: -20 MW t=2, +30 MW t=32}{0}}
+\headcommand {\slideentry {5}{2}{2}{11/11}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
 \headcommand {\beamer@framepages {11}{11}}
-\headcommand {\beamer@sectionpages {9}{11}}
-\headcommand {\beamer@subsectionpages {10}{11}}
-\headcommand {\sectionentry {6}{Current Conclusions}{12}{Current Conclusions}{0}}
-\headcommand {\slideentry {6}{0}{1}{12/12}{}{0}}
+\headcommand {\slideentry {5}{2}{3}{12/12}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
 \headcommand {\beamer@framepages {12}{12}}
-\headcommand {\beamer@partpages {1}{12}}
-\headcommand {\beamer@subsectionpages {12}{12}}
-\headcommand {\beamer@sectionpages {12}{12}}
-\headcommand {\beamer@documentpages {12}}
-\headcommand {\gdef \inserttotalframenumber {12}}
+\headcommand {\beamer@sectionpages {9}{12}}
+\headcommand {\beamer@subsectionpages {10}{12}}
+\headcommand {\sectionentry {6}{Current Conclusions}{13}{Current Conclusions}{0}}
+\headcommand {\slideentry {6}{0}{1}{13/13}{}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\beamer@partpages {1}{13}}
+\headcommand {\beamer@subsectionpages {13}{13}}
+\headcommand {\beamer@sectionpages {13}{13}}
+\headcommand {\beamer@documentpages {13}}
+\headcommand {\gdef \inserttotalframenumber {13}}

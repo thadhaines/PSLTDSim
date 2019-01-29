@@ -14,13 +14,13 @@
 
 \begin{document}
         \begin{tikzpicture}[auto, node distance=1cm,>=triangle 45]
-        \node [input, name=input, label=1.0] {};
+        \node [input, name=input, label=$\omega_{PU}(t)$] {};
         \node [sum, right=of input,label={55:$\Delta\omega_{PU}$}] (sum1) {$\Sigma$};
-        \node [block, right=of sum1] (gain) {$-1\dfrac{M_{base}}{S_{base}}\dfrac{k1}{R}$};
+        \node [block, right=of sum1] (gain) {$-1 \dfrac{S_{base}}{R}$};
         \node [sum, right= of gain] (sum2) {$\Sigma$};
         \node [output, right=of sum2, label=$P_M(t)$] (output) {};
         
-        \node [input, name=omega, below= of sum1,label={[label distance=.1cm]0:$\omega_{PU}(t)$} ] {};
+        \node [input, name=omega, below= of sum1,label={[label distance=.1cm]0:$\omega_{PU}(t-1)$} ] {};
        	\node [input, name=Pm0, below= of sum2,label={[label distance=.1cm]0:$P_{M}
        		(t-1)$} ]{};
        

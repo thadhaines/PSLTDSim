@@ -1,10 +1,9 @@
-Proportional gain control of generator $P_M$
+pgov1 : Proportional gain control of $P_M$ \\
 \begin{figure}
-	% this may not be the system we really want... maybe no sbase and k1
 	\includegraphics[width=\linewidth]{pgov1}
 \end{figure}
 Entered into system via parsed text file:
 \begin{lstlisting}[basicstyle=\footnotesize]
-# pgov1  busnum busnam basekv id : #9 mwcap droop k1
-#!pgov1   21 "21" 22.00 "1 " : #9 mwcap=100.0 0.05 13.0
+# model  busnum busnam basekv id : #9 mwcap droop
+#!pgov1   11 "11" 22.00 "1 " : #9 mwcap=100.0 0.05
 \end{lstlisting}
