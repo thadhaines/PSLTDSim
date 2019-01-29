@@ -24,16 +24,19 @@ from Model import Model
 
 execfile('mergeDicts.py')
 
-simNotes = """Adjusted governor to be on both gens, 
-            time to be 60 seconds, step now 1 MW down and then up.
-            changed slackTol to 1. Timestep = 0.5
-            expected SS freq = 1"""
+simNotes = """
+Gov on gen 1 and 2, 
+sim time = 60 seconds, step now 1 MW down and then up.
+changed slackTol to 5. Timestep = 0.5
+expected SS freq = 1
+added test of setting machine Pe = (Pm+Pe)/2 AFTER dynamic step
+"""
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.5,
     'endTime': 60.0,
-    'slackTol': 3.0,
+    'slackTol': 5.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
@@ -42,7 +45,7 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileName' : 'pgov1TestB',
+    'fileName' : 'pgov1TestB1a',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }

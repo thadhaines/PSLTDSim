@@ -38,13 +38,36 @@
 \subsection{Overview of Project}
 %------------------------------------------------
 \begin{frame}
-TODO:\\
-What is LTD - why use it \\
-system assumptions/main methods of LTD\\
-goals of research/ code
+What is long-term simulation?
+\begin{figure}
+	\vspace{-1em}
+	\includegraphics[angle=-90,origin=c,width=.9\linewidth]{GEtimeScales}
+\end{figure}
 \end{frame}
 %------------------------------------------------
+\begin{frame}
+This long-term simulation assumes:
+\begin{itemize}
+	\item System is stable.
+	\item System frequency is governed combined PU swing equation:
+\end{itemize}
+	\[ \dot{\omega}_{sys} = \dfrac{1}{2H_{sys} } \left( \dfrac{P_{acc, sys} }{\omega_{sys}(t)} - D_{sys}\Delta\omega_{sys}(t)  \right)  \]
+	\begin{itemize}
+		\item Large time steps (1 second).
+		\item Fast dynamics are mostly ignored.
+	\end{itemize}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+Project Goals:
+\begin{itemize}
+	\item Design simulation framework for long-term dynamic (LTD) simulations using PSLF systems, dynamic data, and modified dynamic models.
+	\item Investigate  system reactions that may be impractical to simulate using other software methods.
+	\item Write a master's thesis.
+\end{itemize}
 
+\end{frame}
+%------------------------------------------------
 %************************************************
 \section{Simulation Model}
 %________________________________________________

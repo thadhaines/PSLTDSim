@@ -1,4 +1,4 @@
-%%  pgov1_verification.m
+%%  pgov1_verification3.m
 %   Thad Haines         Research
 %   Program Purpose:    Import data from LTD .mat
 %                       Make plots 
@@ -15,9 +15,9 @@
 clear; format compact; clc; close all; 
 
 %% import LTD data
-load('pgov1TestBhres.mat')
-mir = pgov1TestB;
-clear pgov1TestB
+load('pgov1TestB1a.mat')
+mir = pgov1TestB1a;
+clear pgov1TestB1a
 
 t_1 = mir.t;
 f_1 = mir.f;
