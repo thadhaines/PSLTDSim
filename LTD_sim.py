@@ -24,9 +24,17 @@ from Model import Model
 
 execfile('mergeDicts.py')
 
+simNotes = """
+Gov on gen 1 and 2, 
+sim time = 60 seconds, step now 1 MW down and then up.
+changed slackTol to 5. Timestep = 0.5
+expected SS freq = 1
+added test of setting machine Pe = (Pm+Pe)/2 AFTER dynamic step
+"""
+
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1.0,
+    'timeStep': 0.5,
     'endTime': 60.0,
     'slackTol': 5.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
@@ -37,7 +45,7 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileName' : 'pgov1Test2',
+    'fileName' : 'pgov1TestB1a',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
@@ -47,8 +55,8 @@ simParams = {
 test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.dyd",
-               r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
+              r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
                ]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
@@ -77,16 +85,18 @@ execfile('initPSLF.py')
 execfile('makeGlobals.py')
 
 # mirror arguments: locations, simParams, debug flag
-mir = Model(locations, simParams, 0)
+mir = Model(locations, simParams, 1)
 
 # Pertrubances configured for test case (eele)
-mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
-mir.addPert('Load',[3],'Step',['P',32,110]) # step load up to 110 MW
+mir.addPert('Load',[3],'Step',['P',2,101]) # quick 2 MW step
+mir.addPert('Load',[3],'Step',['P',30,100]) # quick 2 MW step
+#mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
+#mir.addPert('Load',[3],'Step',['P',42,110]) # step load up to 110 MW
 #mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
 
 mir.runSim()
 
-mir.notes = "Testing of the pgov1. Seems to work, had to add gain for speed."
+mir.notes = simNotes
 
 # Terminal display output
 print("Log and Step check of Load, Pacc, and sys f:")

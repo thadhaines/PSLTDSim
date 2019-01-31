@@ -11,18 +11,18 @@
 %   01/25/19    07:30   update of outputs
 
 %% init
-clear; format compact; clc; %close all; 
+clear; format compact; clc; close all; 
 
 %% import LTD data
 % load('pgov1Test.mat')
 % mir = pgov1Test;
 % clear pgov1Test
-load('pgov1Test2.mat')
-mir = pgov1Test2;
-clear pgov1Test2
+load('pgov1TestA.mat')
+mir = pgov1TestA;
+clear pgov1TestA
 t_1 = mir.t;
 f_1 = mir.f;
-
+N = mir.N
 %% plot definitions
 p_pos = [400 200 1421 734];
 bfz = 15;

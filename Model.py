@@ -128,7 +128,7 @@ class Model(object):
         self.PSLFexc = []
 
         # read dyd, create pslf models
-        # TODO: incoroprate locations[3] being a list
+        # TODO: handle dyd replacement of previous models...
         parseDyd(self, locations['dydPath'])
         
         # link H and mbase to mirror
@@ -146,7 +146,7 @@ class Model(object):
         """Create python mirror of PSLF system
         Handles Buses, Generators, and Loads
         Uses col
-        TODO: Add shunts, SVD, and lines
+        TODO: Add agents for every object: shunts, SVD, xfmr, branch sections, ...
         """
         # Useful variable notation key:
         # c_ .. current
@@ -295,29 +295,34 @@ class Model(object):
             combinedSwing(self, self.ss_Pacc)
 
             # step Individual Agent Dynamics
-            # TODO: create proportional gain gov to test changes to Pm
+            # TODO: Investigate Pe, Pm link with multiple pgov1
             for x in range(len(self.Dynamics)):
                 self.Dynamics[x].stepDynamics()
 
-            # step perturbances
+            # TEST: setting pe = (pm+pe)/2
+            for x in range(len(self.Machines)):
+                self.Machines[x].Pe = (self.Machines[x].Pm+self.Machines[x].Pe) /2
+
+            # Step Perturbance Agents
             self.ss_Pert_Pdelta = 0.0
             self.ss_Pert_Qdelta = 0.0
             for x in range(len(self.Perturbance)):
                 self.Perturbance[x].step()
-            # account for any load changes
+
+            # Account for any load changes from Perturbances
             self.ss_Pload, self.ss_Qload = self.sumLoad()
 
-            # Find current mirror system Pm 
+            # Sum current system Pm 
             self.ss_Pm = self.sumPm()
             
-            # Find current mirror system Pacc
+            # Calculate current system Pacc
             self.ss_Pacc = (
                 self.ss_Pm 
                 - self.r_ss_Pe[self.c_dp-1] 
                 - self.ss_Pert_Pdelta
                 )
             
-            # Find current mirror system Pacc Delta
+            # Find current system Pacc Delta
             self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
 
             # distribute Pacc delta to machines and solve PSLF
@@ -328,15 +333,11 @@ class Model(object):
                 # catches error thown for non-convergene
                 print("*** Error Caught, Simulation Stopping...")
                 print(e)
+                #TODO: pop useless void data from agents...
                 break;
 
             # update system Pe after PSLF power flow solution
             self.ss_Pe = self.sumPe()
-
-            # step System dynamics
-            # NOTE: Affects when frequency effects occur, for reference only - will be removed once dynamics more developed
-            # combinedSwing(self, self.ss_Pacc)
-            # step machine dynamics?
 
             # step log of Agents with ability
             for x in range(len(self.Log)):

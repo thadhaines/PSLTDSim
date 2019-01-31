@@ -133,7 +133,7 @@ Long term simulations my be performed by the GE dynamic simulation (PSDS) to ver
 		\end{enumerate}
 		\item Distributing electric power among generators in python 'mirror' according to machine inertia:
 		% Will require some more time logic/explanation
-		\[ P_{e,i} = P_{e,i}(t)-\Delta P_{acc,sys}(t)\dfrac{H_{i}}{H_{sys}} \]
+		\[ P_{e,i}(t) = P_{e,i}(t-1)-\Delta P_{acc,sys}(t)\dfrac{H_{i}}{H_{sys}} \]
 		Note that this will only affect generators participating in the inertial response.
 		\item Updating PSLF system with newly calculated generator powers and voltages.
 		\item Performing PSLF power flow solution of system.

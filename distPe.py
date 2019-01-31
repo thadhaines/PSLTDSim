@@ -22,8 +22,10 @@ def distPe(model, deltaPacc):
         if model.Slack[gen].globalSlack:
             globalSlack = model.Slack[gen]
     
+
+
     while tol_Flag:
-        print("Distributing %.2f MW of Pacc, Iteration %d" % (Pacc, iteration))
+        print("*** LTD: Distributing %.2f MW of Pacc, Iteration %d" % (Pacc, iteration))
         #for each model area:
         for c_area in range(len(model.Area)):
             if fp_Flag:
@@ -39,9 +41,10 @@ def distPe(model, deltaPacc):
                 model.Area[c_area].Slack[0].Pe = model.Area[c_area].Slack[0].Pe_calc      
                 model.Area[c_area].Slack[0].setPvals()
 
-            #Distribute delta Pacc to all non-slack gens in area
+            #list of all non slack machines
             gens = model.Area[c_area].Gens
 
+            #Distribute delta Pacc to all non-slack gens in area
             for c_gen in range(len(gens)):
                 gens[c_gen].Pe = gens[c_gen].Pe - Pacc * (gens[c_gen].H/Hsys)
                 gens[c_gen].setPvals()
@@ -55,10 +58,14 @@ def distPe(model, deltaPacc):
             model.Machines[gen].getPvals()
 
         # Calculate global slack error (could be an average in the future?)
-        error = globalSlack.Pe - globalSlack.Pe_calc
+        # reacquire global slack?
+        error = globalSlack.Pe_calc - globalSlack.Pe
         
+        if model.debug:
+            print('expected: %.2f\tactual: %.2f\terror: %.2f' % (globalSlack.Pe_calc, globalSlack.Pe, error) )
+
         # exit while loop if tolerance met
-        if abs(error) < tol:
+        if abs(error) <= tol:
             globalSlack.Pe_error = error
             tol_Flag = 0
             continue
