@@ -75,6 +75,7 @@
 \begin{document}
 	\paragraph{Recent Progress:}
 	\begin{enumerate}
+		\item Committee presentation draft completed. (for 02/05/19)
 		\item Verification of Frequency response continued.
 		
 		\item Added ability to parse multiple dyd
@@ -86,14 +87,18 @@
 		
 	\end{enumerate}
 \paragraph{Current Tasks:}
-	\begin{enumerate}	
-		\item Prepare project presentation for Power Meeting (02/05/19?)
+	\begin{enumerate}
+		\item Revisit Adams-Bashforth integration - current calculation may be wrong.
+		\item Add simulation data export folder to simulation parameters
 		\item Handle data during non-converging scenarios
 		\item Refine data output - Dictionary structure, variable naming, functionality, meta...
 	\end{enumerate}
-\paragraph{Future Tasks:}(Little to No Progress since last time)
+\paragraph{Future Tasks:}(Little to No Progress since last time / Things coming down the pipe)
 	\begin{enumerate}
-		\item Package code into library
+		\item Enable multiple dyd files to overwrite / replace previously defined agents/parameters
+		\item pgov2 $\rightarrow$ account for multiple governors, use $\beta$ (area frequency response characteristic) in place of R (machine droop)
+		\item Package code into library (think of a nice name)
+		\item Find option to suppress PSLF terminal output.
 		\item Basic plotting templates/functions for MATLAB and python3
 		
 		\item An agent for every object: Shunt, SVD, Branch, Transformer, Power Plant, ...
@@ -110,7 +115,7 @@
 		
 	%	\item Should another powerflow be computed once dynamic responses have been recorded to PSLF / python mirror? (as noted in CM 5h)
 		
-		\item Overview of planned PSLF scenarios? (draw picture?)
+		\item Overview of planned PSLF scenarios? $\rightarrow$ General MiniWecc event descriptions?
 		
 		\item Is there any available/relevant event data that may help us to verify simulations of specific instances (wind ramps or other behavior) that the novel research will focus on?\\ (Same as last time)
 	\end{enumerate}
@@ -120,7 +125,7 @@
  	
  	\includegraphics[width=\linewidth]{noGov_LTD01.pdf}
  	\includegraphics[width=\linewidth]{noGov_LTD04.pdf}
-	\end{comment}
+
 \pagebreak
 \paragraph{EE544 Base System Results:}Stepping a 20 MW Load on at t=2 \vspace{1em}\\
 \includegraphics[width=\linewidth]{noGovExcLoadStepUpsys.pdf}
@@ -136,4 +141,5 @@ pgov1 on only gen 1:  \vspace{1em}\\
 \includegraphics[width=\linewidth]{pgov1x1}
 pgov1 on both gens:\\
 \includegraphics[width=\linewidth]{pgov1x2}
+	\end{comment}
 \end{document}
