@@ -15,9 +15,9 @@
 clear; format compact; clc; %close all; 
 
 %% import LTD data
-load('pgov1TestB1.mat')
-mir = pgov1TestB1;
-clear pgov1TestB1
+load('pgov1TestD.mat')
+mir = pgov1TestD;
+clear pgov1TestD
 
 t_1 = mir.t;
 f_1 = mir.f;

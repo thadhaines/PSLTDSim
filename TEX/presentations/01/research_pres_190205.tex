@@ -56,9 +56,10 @@ This simulation assumes:
 	\item System frequency is described by the combined PU swing equation:
 	\setcounter{assumptions}{\value{enumi}} % allow for break in counting
 \end{enumerate}
-	\[ \dot{\omega}_{sys} = \dfrac{1}{2H_{sys} } \left( \dfrac{P_{acc, sys} }{\omega_{sys}(t)} - D_{sys}\Delta\omega_{sys}(t)  \right)  \]
+	\[ \dot{\omega}_{sys} = \dfrac{1}{2H_{sys} } \left( \dfrac{P_{acc, sys} }{\omega_{sys}(t)} - D_{sys}\Delta\omega_{sys}(t)  \right)\] 
 \begin{enumerate}
 	\setcounter{enumi}{\value{assumptions}}
+		\item No system damping $(D_{sys} = 0)$.
 		\item Time steps of 1 or 0.5 seconds.
 		\item Fast dynamics are 'mostly' ignored.
 \end{enumerate}

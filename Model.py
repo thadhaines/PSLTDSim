@@ -299,9 +299,9 @@ class Model(object):
             for x in range(len(self.Dynamics)):
                 self.Dynamics[x].stepDynamics()
 
-            # TEST: setting pe = (pm+pe)/2
+            # TEST: setting pe = pm
             for x in range(len(self.Machines)):
-                self.Machines[x].Pe = (self.Machines[x].Pm+self.Machines[x].Pe) /2
+                self.Machines[x].Pe = self.Machines[x].Pm
 
             # Step Perturbance Agents
             self.ss_Pert_Pdelta = 0.0
