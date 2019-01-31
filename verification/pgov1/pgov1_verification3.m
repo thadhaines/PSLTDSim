@@ -12,12 +12,12 @@
 %   01/28/19    16:30   update to compare PSLF to LTD gov steps of 1 MW
 
 %% init
-clear; format compact; clc; close all; 
+clear; format compact; clc; %close all; 
 
 %% import LTD data
-load('pgov1TestB1a.mat')
-mir = pgov1TestB1a;
-clear pgov1TestB1a
+load('pgov1TestB1.mat')
+mir = pgov1TestB1;
+clear pgov1TestB1
 
 t_1 = mir.t;
 f_1 = mir.f;

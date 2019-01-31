@@ -1,4 +1,5 @@
 \documentclass[14pt, unknownkeysallowed]{beamer}
+
 \usepackage{tikz}
 \usepackage{comment}
 \usepackage{fancyvrb}
@@ -21,10 +22,13 @@
 \usefonttheme{professionalfonts}
 
 
-\title{Long-Term Simulation of Power System Dynamics using Time Sequenced Power Flows}
+%\title{Long-Term Simulation of Power System Dynamics using Time Sequenced Power Flows}
+\title{Long-Term Power System Dynamic Simulation using Time Sequenced Power Flows}
 \author{Thad Haines}
 \institute[MT TECH]{Montana Tech - Master's Thesis Research Project}
 \date{February 5th, 2019}
+
+\newcounter{assumptions}
 
 \begin{document}
 
@@ -38,32 +42,34 @@
 \subsection{Overview of Project}
 %------------------------------------------------
 \begin{frame}
-What is long-term simulation?
+What are long-term dynamics (LTD)? \tiny[1] \vspace{-2em}\\
 \begin{figure}
-	\vspace{-1em}
-	\includegraphics[angle=-90,origin=c,width=.9\linewidth]{GEtimeScales}
+	\includegraphics[angle=-90,origin=c,width=1.05\linewidth]{GEtimeScales} 
 \end{figure}
 \end{frame}
+
 %------------------------------------------------
 \begin{frame}
-This long-term simulation assumes:
-\begin{itemize}
-	\item System is stable.
-	\item System frequency is governed combined PU swing equation:
-\end{itemize}
+This simulation assumes:
+\begin{enumerate}
+	\item System remains stable.
+	\item System frequency is described by the combined PU swing equation:
+	\setcounter{assumptions}{\value{enumi}} % allow for break in counting
+\end{enumerate}
 	\[ \dot{\omega}_{sys} = \dfrac{1}{2H_{sys} } \left( \dfrac{P_{acc, sys} }{\omega_{sys}(t)} - D_{sys}\Delta\omega_{sys}(t)  \right)  \]
-	\begin{itemize}
-		\item Large time steps (1 second).
-		\item Fast dynamics are mostly ignored.
-	\end{itemize}
+\begin{enumerate}
+	\setcounter{enumi}{\value{assumptions}}
+		\item Time steps of 1 or 0.5 seconds.
+		\item Fast dynamics are 'mostly' ignored.
+\end{enumerate}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
 Project Goals:
 \begin{itemize}
-	\item Design simulation framework for long-term dynamic (LTD) simulations using PSLF systems, dynamic data, and modified dynamic models.
-	\item Investigate  system reactions that may be impractical to simulate using other software methods.
-	\item Write a master's thesis.
+	\item Develop computer software for LTD simulations using PSLF systems $(.sav)$, dynamic data $(.dyd)$, and customized dynamic models.
+	\item Use software to investigate system reactions that may be impractical to simulate using other approaches.
+	\item Write a master's thesis about it.
 \end{itemize}
 
 \end{frame}
@@ -71,20 +77,37 @@ Project Goals:
 %************************************************
 \section{Simulation Model}
 %________________________________________________
-%\subsection{Overview of Project}
+\subsection{Coding decisions, approaches, and software operation.}
 %------------------------------------------------
 \begin{frame}
-TODO:\\
-Overview of parts involved in simulation (sequence diagram)\\
-other explanations about computery stuff: ipy vs py? \\
-flow chart of predicted work flow.
+Python will be used because:
+\begin{itemize}
+	\item PSLF communication
+	\item Free
+	\item Community Libraries
+	\item Object Oriented Programming (Agent-Based Modeling)
+\end{itemize}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+\begin{itemize}
+	\item Agent\\ An autonomous individual object with properties and methods in a computer simulation.
+	\item Agent-Based Modeling\\ The idea that a system can be modeled using agents in an environment, and a description of agent-agent and agent-environment interactions. \tiny[2]
+\end{itemize}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+\vspace{-.75em}
+\begin{figure}
+	\includegraphics[height=1.07\textheight]{systemInit01.pdf}
+\end{figure}
 \end{frame}
 %------------------------------------------------
 
 %************************************************
 \section{EE554 System}
 %________________________________________________
-\subsection{System Used for Initial Frequency Validation}
+\subsection{System Used for Initial Frequency Validation and Proof of Concept.}
 %------------------------------------------------
 \begin{frame}
 EE554.sav test system:
@@ -98,7 +121,7 @@ Generators are identical. \\PSLF models have exciters.
 %------------------------------------------------
 
 %************************************************
-\section{Frequency Validation}
+\section{Initial Frequency Validation}
 %________________________________________________
 \subsection{+20 MW Load Step at t=2}
 %------------------------------------------------
@@ -140,37 +163,60 @@ Detailed Frequency Response
 %------------------------------------------------
 \begin{frame}[fragile]
 pgov1 : Proportional gain control of $P_M$ \\
+
 \begin{figure}
 	\includegraphics[width=\linewidth]{pgov1}
-\end{figure}
+\end{figure}\vspace{-1em}
 Entered into system via parsed text file:
-\begin{lstlisting}[basicstyle=\footnotesize]
+\begin{lstlisting}[frame=single, basicstyle=\footnotesize]
 # model  busnum busnam basekv id : #9 mwcap droop
 #!pgov1   11 "11" 22.00 "1 " : #9 mwcap=100.0 0.05
-\end{lstlisting}
+\end{lstlisting}\vspace{-0.5em}
+\footnotesize Model adapted from [3]
 \end{frame}
 
 %________________________________________________
 \subsection{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}
 %------------------------------------------------
 \begin{frame}
-pgov1 on Gen 1, 1 second time step
+pgov1 on Gen 1, $t_\text{step}=$1 second
 \begin{figure}
 	\includegraphics[width=\linewidth]{pgov1A}
 \end{figure}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-pgov1 on Gen 1, 0.5 second time step
+pgov1 on Gen 1, $t_\text{step}=$0.5 second
 \begin{figure}
 \includegraphics[width=\linewidth]{pgov1C}
 \end{figure}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-pgov1 on both Gens, 0.5 second time step
+pgov1 on both Gens, $t_\text{step}=$0.5 second
 \begin{figure}
 	\includegraphics[width=\linewidth]{pgov1Bh}
+\end{figure}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+pgov1 on both Gens, $t_\text{step}=$0.5 sec., alt. $P_e$
+\begin{figure}
+	\includegraphics[width=\linewidth]{pgov1B1a}
+\end{figure}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+pgov1 on both Gens, $t_\text{step}=$1 sec., alt. $P_e$
+\begin{figure}
+	\includegraphics[width=\linewidth]{pgov1B1full}
+\end{figure}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+Detail, $t_\text{step}=$1 sec., alt. $P_e$
+\begin{figure}
+	\includegraphics[width=\linewidth]{pgov1B1detail}
 \end{figure}
 \end{frame}
 
@@ -180,25 +226,27 @@ pgov1 on both Gens, 0.5 second time step
 \begin{frame}
 \begin{itemize}
 	\item Much more work to do.
+\end{itemize}
+However,
+\begin{itemize}
 	\item Frequency effects should be accounted for in swing equation.
 	\item Euler Integration tracks PSLF mean frequency well.
 	\item Custom dynamic model implementation seems realizable. 
 \end{itemize}
 \end{frame}
 %------------------------------------------------
-\begin{comment}
-\subsection{References}
+
 \begin{frame}
-\resizebox{.8\textwidth}{.4\textheight}{
+References\vspace{1em}\\
+%\resizebox{.8\textwidth}{.4\textheight}{
 \begin{minipage}{\textwidth}
+	\footnotesize
 	\begin{itemize}
-	\item[[1]] https://spectrum.ieee.org/energy/policy/rebuilding-puerto-ricos-power-grid-the-inside-story
-	\item[[2]] https://www.economist.com/united-states/2017/10/19/the-story-of-puerto-ricos-power-grid-is-the-story-of-puerto-rico
-	\item[[3]] https://twitter.com/AEEONLINE/status/1006493557908279297/photo/1
-	\item[[4]] https://www.nytimes.com/2018/08/14/us/puerto-rico-electricity-power.html
+	\item[[1] GE Energy. "Mechanics of Running PSLF Dynamics" Phoenix, AZ, 2015
+	\item[[2] Rand, W. (2018). Agent-Based Modeling: What is Agent-Based Modeling? [Online] Available: https://www.youtube.com/watch?v=FVmQbfsOkGc
+	\item[[3] P.M. Anderson and A.A. Fouad, Power System Control and Stability, 2nd ed. IEEE Press, 2003, p20.
 \end{itemize}
 \end{minipage}
-}
+%}
 \end{frame}
-\end{comment}
 \end{document}

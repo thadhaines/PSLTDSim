@@ -14,52 +14,66 @@
 \headcommand {\beamer@sectionpages {2}{4}}
 \headcommand {\beamer@subsectionpages {2}{4}}
 \headcommand {\sectionentry {2}{Simulation Model}{5}{Simulation Model}{0}}
-\headcommand {\slideentry {2}{0}{1}{5/5}{}{0}}
+\headcommand {\beamer@subsectionpages {5}{4}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{5}{Coding decisions, approaches, and software operation.}}
+\headcommand {\slideentry {2}{1}{1}{5/5}{Coding decisions, approaches, and software operation.}{0}}
 \headcommand {\beamer@framepages {5}{5}}
-\headcommand {\beamer@sectionpages {5}{5}}
-\headcommand {\beamer@subsectionpages {5}{5}}
-\headcommand {\sectionentry {3}{EE554 System}{6}{EE554 System}{0}}
-\headcommand {\beamer@subsectionpages {6}{5}}
-\headcommand {\beamer@subsectionentry {0}{3}{1}{6}{System Used for Initial Frequency Validation}}
-\headcommand {\slideentry {3}{1}{1}{6/6}{System Used for Initial Frequency Validation}{0}}
+\headcommand {\slideentry {2}{1}{2}{6/6}{Coding decisions, approaches, and software operation.}{0}}
 \headcommand {\beamer@framepages {6}{6}}
-\headcommand {\beamer@sectionpages {6}{6}}
-\headcommand {\beamer@subsectionpages {6}{6}}
-\headcommand {\sectionentry {4}{Frequency Validation}{7}{Frequency Validation}{0}}
-\headcommand {\beamer@subsectionpages {7}{6}}
-\headcommand {\beamer@subsectionentry {0}{4}{1}{7}{+20 MW Load Step at t=2}}
-\headcommand {\slideentry {4}{1}{1}{7/7}{+20 MW Load Step at t=2}{0}}
+\headcommand {\slideentry {2}{1}{3}{7/7}{Coding decisions, approaches, and software operation.}{0}}
 \headcommand {\beamer@framepages {7}{7}}
-\headcommand {\slideentry {4}{1}{2}{8/8}{+20 MW Load Step at t=2}{0}}
+\headcommand {\beamer@sectionpages {5}{7}}
+\headcommand {\beamer@subsectionpages {5}{7}}
+\headcommand {\sectionentry {3}{EE554 System}{8}{EE554 System}{0}}
+\headcommand {\beamer@subsectionpages {8}{7}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{8}{System Used for Initial Frequency Validation and Proof of Concept.}}
+\headcommand {\slideentry {3}{1}{1}{8/8}{System Used for Initial Frequency Validation and Proof of Concept.}{0}}
 \headcommand {\beamer@framepages {8}{8}}
-\headcommand {\beamer@subsectionpages {7}{8}}
-\headcommand {\beamer@subsectionentry {0}{4}{2}{9}{-20 MW Load Step at t=2}}
-\headcommand {\slideentry {4}{2}{1}{9/9}{-20 MW Load Step at t=2}{0}}
+\headcommand {\beamer@sectionpages {8}{8}}
+\headcommand {\beamer@subsectionpages {8}{8}}
+\headcommand {\sectionentry {4}{Initial Frequency Validation}{9}{Initial Frequency Validation}{0}}
+\headcommand {\beamer@subsectionpages {9}{8}}
+\headcommand {\beamer@subsectionentry {0}{4}{1}{9}{+20 MW Load Step at t=2}}
+\headcommand {\slideentry {4}{1}{1}{9/9}{+20 MW Load Step at t=2}{0}}
 \headcommand {\beamer@framepages {9}{9}}
-\headcommand {\slideentry {4}{2}{2}{10/10}{-20 MW Load Step at t=2}{0}}
+\headcommand {\slideentry {4}{1}{2}{10/10}{+20 MW Load Step at t=2}{0}}
 \headcommand {\beamer@framepages {10}{10}}
-\headcommand {\beamer@sectionpages {7}{10}}
 \headcommand {\beamer@subsectionpages {9}{10}}
-\headcommand {\sectionentry {5}{Proof of Concept}{11}{Proof of Concept}{0}}
-\headcommand {\beamer@subsectionpages {11}{10}}
-\headcommand {\beamer@subsectionentry {0}{5}{1}{11}{Dynamic model 'pgov1' defined}}
-\headcommand {\slideentry {5}{1}{1}{11/11}{Dynamic model 'pgov1' defined}{0}}
+\headcommand {\beamer@subsectionentry {0}{4}{2}{11}{-20 MW Load Step at t=2}}
+\headcommand {\slideentry {4}{2}{1}{11/11}{-20 MW Load Step at t=2}{0}}
 \headcommand {\beamer@framepages {11}{11}}
-\headcommand {\beamer@subsectionpages {11}{11}}
-\headcommand {\beamer@subsectionentry {0}{5}{2}{12}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}}
-\headcommand {\slideentry {5}{2}{1}{12/12}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
+\headcommand {\slideentry {4}{2}{2}{12/12}{-20 MW Load Step at t=2}{0}}
 \headcommand {\beamer@framepages {12}{12}}
-\headcommand {\slideentry {5}{2}{2}{13/13}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
+\headcommand {\beamer@sectionpages {9}{12}}
+\headcommand {\beamer@subsectionpages {11}{12}}
+\headcommand {\sectionentry {5}{Proof of Concept}{13}{Proof of Concept}{0}}
+\headcommand {\beamer@subsectionpages {13}{12}}
+\headcommand {\beamer@subsectionentry {0}{5}{1}{13}{Dynamic model 'pgov1' defined}}
+\headcommand {\slideentry {5}{1}{1}{13/13}{Dynamic model 'pgov1' defined}{0}}
 \headcommand {\beamer@framepages {13}{13}}
-\headcommand {\slideentry {5}{2}{3}{14/14}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
+\headcommand {\beamer@subsectionpages {13}{13}}
+\headcommand {\beamer@subsectionentry {0}{5}{2}{14}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}}
+\headcommand {\slideentry {5}{2}{1}{14/14}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
 \headcommand {\beamer@framepages {14}{14}}
-\headcommand {\beamer@sectionpages {11}{14}}
-\headcommand {\beamer@subsectionpages {12}{14}}
-\headcommand {\sectionentry {6}{Current Conclusions}{15}{Current Conclusions}{0}}
-\headcommand {\slideentry {6}{0}{1}{15/15}{}{0}}
+\headcommand {\slideentry {5}{2}{2}{15/15}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
 \headcommand {\beamer@framepages {15}{15}}
-\headcommand {\beamer@partpages {1}{15}}
-\headcommand {\beamer@subsectionpages {15}{15}}
-\headcommand {\beamer@sectionpages {15}{15}}
-\headcommand {\beamer@documentpages {15}}
-\headcommand {\gdef \inserttotalframenumber {15}}
+\headcommand {\slideentry {5}{2}{3}{16/16}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\slideentry {5}{2}{4}{17/17}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\slideentry {5}{2}{5}{18/18}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\slideentry {5}{2}{6}{19/19}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\beamer@sectionpages {13}{19}}
+\headcommand {\beamer@subsectionpages {14}{19}}
+\headcommand {\sectionentry {6}{Current Conclusions}{20}{Current Conclusions}{0}}
+\headcommand {\slideentry {6}{0}{1}{20/20}{}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\slideentry {6}{0}{2}{21/21}{}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\beamer@partpages {1}{21}}
+\headcommand {\beamer@subsectionpages {20}{21}}
+\headcommand {\beamer@sectionpages {20}{21}}
+\headcommand {\beamer@documentpages {21}}
+\headcommand {\gdef \inserttotalframenumber {21}}
