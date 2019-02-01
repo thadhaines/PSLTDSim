@@ -31,8 +31,10 @@
 \headcommand {\beamer@subsectionentry {0}{5}{1}{7}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}}
 \headcommand {\slideentry {5}{1}{1}{7/7}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
 \headcommand {\beamer@framepages {7}{7}}
-\headcommand {\beamer@partpages {1}{7}}
-\headcommand {\beamer@subsectionpages {7}{7}}
-\headcommand {\beamer@sectionpages {7}{7}}
-\headcommand {\beamer@documentpages {7}}
-\headcommand {\gdef \inserttotalframenumber {7}}
+\headcommand {\slideentry {5}{1}{2}{8/8}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\beamer@partpages {1}{8}}
+\headcommand {\beamer@subsectionpages {7}{8}}
+\headcommand {\beamer@sectionpages {7}{8}}
+\headcommand {\beamer@documentpages {8}}
+\headcommand {\gdef \inserttotalframenumber {8}}

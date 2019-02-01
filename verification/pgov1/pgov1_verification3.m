@@ -12,7 +12,7 @@
 %   01/28/19    16:30   update to compare PSLF to LTD gov steps of 1 MW
 
 %% init
-clear; format compact; clc; %close all; 
+clear; format compact; clc; close all; 
 
 %% import LTD data
 load('pgov1TestIAB1.mat')
@@ -61,7 +61,7 @@ title_str = 'Generator Power Distribution';
 subplot(2, 2, [1 2])
 hold on
 % PSLF data
-plot(t,pslf_data.Data(:,pg_col(1)),'.--','linewidth',3,'color',pltC.grey)
+plot(t,pslf_data.Data(:,pg_col(1)),'-','linewidth',3,'color',pltC.grey)
 plot(t,pslf_data.Data(:,pg_col(2)),'linewidth',1,'color',[0,0,0])
 
 % LTD data
@@ -69,11 +69,17 @@ stairs(t_1,mir.A1.S011.S0.Pe,':o','linewidth',1.5,'color',pltC.magenta)
 stairs(t_1,mir.A1.G021.G0.Pe,':s','linewidth',1,'color',pltC.dgreen)
 
 stairs(t_1,mir.A1.S011.S0.Pm,':+','linewidth',1.5,'color',pltC.Lblue)
-stairs(t_1,mir.A1.G021.G0.Pm,':+','linewidth',1,'color',pltC.grey)
+stairs(t_1,mir.A1.G021.G0.Pm,':+','linewidth',1,'color','k')
 xlim([0, 60])
 
 y_label = 'MW';
 grid on
+ax = gca;
+ax.GridColor = [.65 .65 .65];  % [R, G, B];
+ax.YMinorGrid = 'on';
+ax.YMinorTick = 'on';
+ax.GridAlpha = 1;
+
 set(gca,'FontSize',.85*bfz)
 legend({'PSLF Gen 1','PSLF Gen 2','Gen 1 Pe','Gen 2 Pe','Gen 1 Pm','Gen 2 Pm'}, ...
     'Fontsize',bfz*.9,'location',l_loc) % Legend
@@ -81,7 +87,7 @@ set(gcf,'Position',p_pos)
 title(title_str, 'Fontsize',bfz)
 ylabel(y_label, 'Fontsize',bfz)
 xlabel('Time [sec]', 'Fontsize',bfz)
-
+ylim([49.3, 51.4])
 %% plot generator frequency
 subplot(2, 2, [3 4])
 title_str = 'System Frequency';
@@ -91,7 +97,14 @@ stairs(t_1,f_1,':+','linewidth',1.5,'color','k')
 
 xlim([0,60])
 y_label = 'Frequency [pu]';
+
 grid on
+ax = gca;
+ax.GridColor = [.65 .65 .65];  % [R, G, B];
+ax.YMinorGrid = 'on';
+ax.YMinorTick = 'on';
+ax.GridAlpha = 1;
+
 set(gca,'FontSize',.85*bfz)
 legend({'PSLF mean','LTD'}, ...
     'Fontsize',bfz*.9,'location',l_loc) % Legend
@@ -146,6 +159,6 @@ set(gcf,'Position',p_pos)
 %% pdf out
 if print_f == 1
     set(gcf,'color','w'); % to remove border of figure
-    export_fig('XXXXXX','-pdf'); % to print fig
+    export_fig('pgov1IAB2','-pdf'); % to print fig
 end % end print f
 %}

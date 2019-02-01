@@ -8,7 +8,7 @@ import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 print(os.getcwd())
 
@@ -27,15 +27,14 @@ execfile('mergeDicts.py')
 simNotes = """
 pgov1 on gen 1,
 sim time = 60 seconds, step 1 MW up then up.
-changed slackTol to 0.25. Timestep = 0.5
+changed slackTol to 0.25. Timestep = 1
 expected SS freq = 1
-added test of setting machine Pe = Pm at end of dynamic step (only changes Pe of governed machines)
-Adjust of distPe to remove slack from redistribute.
+added test of setting machine Pe = Pm at after dynamic step
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.5,
+    'timeStep': 1.0,
     'endTime': 60.0,
     'slackTol': .05,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
@@ -43,10 +42,10 @@ simParams = {
 
     # Mathematical Options
     'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
-    'integrationMethod' : 'AB',
+    'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileName' : 'pgov1TestIAB1a',
+    'fileName' : 'pgov1TestIAB1b',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
