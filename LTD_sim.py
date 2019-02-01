@@ -8,7 +8,7 @@ import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 print(os.getcwd())
 
@@ -25,27 +25,28 @@ from Model import Model
 execfile('mergeDicts.py')
 
 simNotes = """
-Gov on gen 1 and 2, 
-sim time = 60 seconds, step now 1 MW down and then up.
-changed slackTol to 1. Timestep = 1
+pgov1 on gen 1,
+sim time = 60 seconds, step 1 MW up then up.
+changed slackTol to 0.25. Timestep = 0.5
 expected SS freq = 1
-added test of setting machine Pe = Pm AFTER dynamic step but before distPe
+added test of setting machine Pe = Pm at end of dynamic step (only changes Pe of governed machines)
+Adjust of distPe to remove slack from redistribute.
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1,
+    'timeStep': 0.5,
     'endTime': 60.0,
-    'slackTol': 1.0,
+    'slackTol': .05,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
     # Mathematical Options
     'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
-    'integrationMethod' : 'Euler',
+    'integrationMethod' : 'AB',
 
     # Data Export Parameters
-    'fileName' : 'pgov1TestD1',
+    'fileName' : 'pgov1TestIAB1a',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
@@ -56,7 +57,7 @@ test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
-              r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
+             # r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
                ]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
@@ -88,8 +89,9 @@ execfile('makeGlobals.py')
 mir = Model(locations, simParams, 1)
 
 # Pertrubances configured for test case (eele)
-mir.addPert('Load',[3],'Step',['P',2,101]) # quick 2 MW step
-mir.addPert('Load',[3],'Step',['P',30,100]) # quick 2 MW step
+mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
+mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
+#mir.addPert('Load',[3],'Step',['P',42,99]) # quick 1 MW step
 #mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
 #mir.addPert('Load',[3],'Step',['P',42,110]) # step load up to 110 MW
 #mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 

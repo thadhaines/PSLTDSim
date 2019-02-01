@@ -30,11 +30,15 @@ def distPe(model, deltaPacc):
         for c_area in range(len(model.Area)):
             if fp_Flag:
                 #distribute to slack on First pass and set Pe_calc
-                model.Area[c_area].Slack[0].Pe = ( 
-                    model.Area[c_area].Slack[0].Pe - Pacc*(model.Area[c_area].Slack[0].H/Hsys)
-                    )
+                slackPacc = Pacc*(model.Area[c_area].Slack[0].H/Hsys)
+                model.Area[c_area].Slack[0].Pe = model.Area[c_area].Slack[0].Pe - slackPacc 
                 model.Area[c_area].Slack[0].Pe_calc = model.Area[c_area].Slack[0].Pe
                 model.Area[c_area].Slack[0].setPvals()
+                # remove handled Pacc from rest of system distribution
+                Pacc = Pacc - slackPacc
+                # create new H without slack gen to distribute to
+                HsysDist = Hsys - model.Area[c_area].Slack[0].H
+                fp_Flag = 0
 
             else:
                 # Reset slack generators to estimated value
@@ -46,10 +50,9 @@ def distPe(model, deltaPacc):
 
             #Distribute delta Pacc to all non-slack gens in area
             for c_gen in range(len(gens)):
-                gens[c_gen].Pe = gens[c_gen].Pe - Pacc * (gens[c_gen].H/Hsys)
+                gens[c_gen].Pe = gens[c_gen].Pe - Pacc * (gens[c_gen].H/HsysDist) 
                 gens[c_gen].setPvals()
 
-        fp_Flag = 0
         # Pe is distributed to all generators in all areas, solve Power flow
         model.LTD_Solve()
 
@@ -58,8 +61,7 @@ def distPe(model, deltaPacc):
             model.Machines[gen].getPvals()
 
         # Calculate global slack error (could be an average in the future?)
-        # reacquire global slack?
-        error = globalSlack.Pe_calc - globalSlack.Pe
+        error = globalSlack.Pe_calc - globalSlack.Pe 
         
         if model.debug:
             print('expected: %.2f\tactual: %.2f\terror: %.2f' % (globalSlack.Pe_calc, globalSlack.Pe, error) )

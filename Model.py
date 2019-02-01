@@ -283,6 +283,7 @@ class Model(object):
         self.r_ss_Pe.append(self.sumPe())
         self.r_ss_Pacc.append(0.0)
         self.r_f.append(1.0)
+        self.r_fdot.append(0.0)
 
         for x in range(len(self.Dynamics)):
                 self.Dynamics[x].stepInitDynamics()        
@@ -295,11 +296,10 @@ class Model(object):
             combinedSwing(self, self.ss_Pacc)
 
             # step Individual Agent Dynamics
-            # TODO: Investigate Pe, Pm link with multiple pgov1
             for x in range(len(self.Dynamics)):
                 self.Dynamics[x].stepDynamics()
 
-            # TEST: setting pe = pm
+            # set pe = pm
             for x in range(len(self.Machines)):
                 self.Machines[x].Pe = self.Machines[x].Pm
 
@@ -318,7 +318,7 @@ class Model(object):
             # Calculate current system Pacc
             self.ss_Pacc = (
                 self.ss_Pm 
-                - self.r_ss_Pe[self.c_dp-1] 
+                - self.r_ss_Pe[self.c_dp-1]
                 - self.ss_Pert_Pdelta
                 )
             
@@ -355,6 +355,7 @@ class Model(object):
         self.r_ss_Pe.pop(len(self.r_ss_Pe) -1)
         self.r_ss_Pacc.pop(len(self.r_ss_Pacc) -1)
         self.r_f.pop(len(self.r_f) -1)
+        self.r_fdot.pop(len(self.r_fdot)-1)
 
     def LTD_Solve(self):
         """Solves power flow using custom solve parameters
@@ -484,6 +485,7 @@ class Model(object):
         # account for losses
         self.PLosses = self.ss_Pe - self.ss_Pload #+ self.ss_Pert_Pdelta
         self.QLosses = self.ss_Qgen - self.ss_Qload #+ self.ss_Pert_Qdelta
+
         self.ss_Pacc = self.ss_Pm - self.ss_Pe
 
     def logStep(self):

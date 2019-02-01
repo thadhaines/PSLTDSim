@@ -24,7 +24,7 @@ def combinedSwing(model, Pacc):
 
     # Adams Bashforth
     if model.simParams['integrationMethod'] == 'AB':
-        model.c_f = model.c_f + (model.timeStep*fdot)*(1.5*model.r_f[model.c_dp-1] -0.5*model.r_f[model.c_dp-2])
+        model.c_f = model.c_f + 1.5*model.timeStep*fdot  -0.5*model.timeStep*model.r_fdot[model.c_dp-1]
     else:
         # Euler Integration - chosen by default
         # matches PSLF better than the adams bashforth method in ee554 load case
