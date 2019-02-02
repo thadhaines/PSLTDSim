@@ -1,7 +1,7 @@
 \beamer@sectionintoc {1}{Introduction}{2}{0}{1}
 \beamer@subsectionintoc {1}{1}{Overview of Project}{2}{0}{1}
-\beamer@sectionintoc {2}{Simulation Model}{5}{0}{2}
-\beamer@subsectionintoc {2}{1}{Coding decisions, approaches, and software operation.}{5}{0}{2}
+\beamer@sectionintoc {2}{Simulation Model}{4}{0}{2}
+\beamer@subsectionintoc {2}{1}{Assumptions, Coding Decisions, Approaches, and Software Operation.}{4}{0}{2}
 \beamer@sectionintoc {3}{EE554 System}{8}{0}{3}
 \beamer@subsectionintoc {3}{1}{System Used for Initial Frequency Validation and Proof of Concept.}{8}{0}{3}
 \beamer@sectionintoc {4}{Initial Frequency Validation}{9}{0}{4}
@@ -10,4 +10,4 @@
 \beamer@sectionintoc {5}{Proof of Concept}{13}{0}{5}
 \beamer@subsectionintoc {5}{1}{Dynamic model 'pgov1' defined}{13}{0}{5}
 \beamer@subsectionintoc {5}{2}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{14}{0}{5}
-\beamer@sectionintoc {6}{Current Conclusions}{20}{0}{6}
+\beamer@sectionintoc {6}{Current Conclusions}{19}{0}{6}

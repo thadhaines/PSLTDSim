@@ -60,6 +60,11 @@ class BusAgent(object):
         self.r_Vm[self.model.c_dp] = self.Vm
         self.r_Va[self.model.c_dp] = self.Va
 
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_Vm = self.r_Vm[:N]
+        self.r_Va = self.r_Va[:N]
+
     def getDataDict(self):
         """Return collected data in dictionary form"""
         d = {'Vm': self.r_Vm,
@@ -134,6 +139,13 @@ class GeneratorAgent(object):
         self.r_Q[self.model.c_dp] = self.Q
         self.r_St[self.model.c_dp] = self.St
 
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_Pe = self.r_Pe[:N]
+        self.r_Pm = self.r_Pm[:N]
+        self.r_Q  =self.r_Q[:N]
+        self.r_St = self.r_St[:N]
+
     def getDataDict(self):
         """Return collected data in dictionary form"""
         d = {'Pe': self.r_Pe,
@@ -169,6 +181,15 @@ class SlackAgent(GeneratorAgent):
         self.r_St[self.model.c_dp] = self.St
         self.r_Pe_calc[self.model.c_dp] = self.Pe_calc
         self.r_Pe_error[self.model.c_dp] = self.Pe_error
+
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_Pe = self.r_Pe[:N]
+        self.r_Pm = self.r_Pm[:N]
+        self.r_Q = self.r_Q[:N]
+        self.r_St = self.r_St[:N]
+        self.r_Pe_calc = self.r_Pe_calc[:N]
+        self.r_Pe_error = self.r_Pe_error[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
@@ -224,6 +245,12 @@ class LoadAgent(object):
         self.r_P[self.model.c_dp] = self.P
         self.r_Q[self.model.c_dp] = self.Q
         self.r_St[self.model.c_dp] = self.St
+
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_P = self.r_P[:N]
+        self.r_Q = self.r_Q[:N]
+        self.r_St = self.r_St[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""

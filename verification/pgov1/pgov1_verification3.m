@@ -15,16 +15,16 @@
 clear; format compact; clc; close all; 
 
 %% import LTD data
-load('pgov1TestIAB1.mat')
-mir = pgov1TestIAB1;
-clear pgov1TestIAB1
+load('pgov1TestB.mat')
+mir = pgov1TestB;
+clear pgov1TestB
 
 t_1 = mir.t;
 f_1 = mir.f;
 N = mir.N
 
 %% import pslf data
-pslf_data = udread('ee554.exc.3.chf',[]);
+pslf_data = udread('ee554.exc.4.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd')
@@ -87,7 +87,9 @@ set(gcf,'Position',p_pos)
 title(title_str, 'Fontsize',bfz)
 ylabel(y_label, 'Fontsize',bfz)
 xlabel('Time [sec]', 'Fontsize',bfz)
-ylim([49.3, 51.4])
+%ylim([49.3, 51.4])
+
+
 %% plot generator frequency
 subplot(2, 2, [3 4])
 title_str = 'System Frequency';
@@ -112,6 +114,7 @@ legend({'PSLF mean','LTD'}, ...
 title(title_str, 'Fontsize',bfz)
 ylabel(y_label, 'Fontsize',bfz)
 xlabel('Time [sec]', 'Fontsize',bfz)
+%ylim([0.9992, 1.0004])
 %{
 % Older plots
 %% plot pslf Voltage

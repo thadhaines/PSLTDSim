@@ -10,7 +10,7 @@ import __builtin__
 print(os.getcwd())
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
-print(os.getcwd())
+#print(os.getcwd())
 
 from parseDyd import *
 from distPe import *
@@ -18,25 +18,24 @@ from combinedSwing import *
 from findFunctions import *
 from PerturbanceAgents import *
 from pgov1Agent import *
-# imports must occur after intiPSLF.py? - Doesn't seem true anymore
 from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgent
 from Model import Model
+from makeModelDictionary import makeModelDictionary
+from saveModelDictionary import saveModelDictionary
 
 execfile('mergeDicts.py')
 
 simNotes = """
-pgov1 on gen 1,
-sim time = 60 seconds, step 1 MW up then up.
+-20 MW load step at t=2
+sim time = 20 seconds, 
 changed slackTol to 0.25. Timestep = 1
-expected SS freq = 1
-added test of setting machine Pe = Pm at after dynamic step
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 60.0,
-    'slackTol': .05,
+    'endTime': 20.0,
+    'slackTol': 30,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
@@ -45,18 +44,19 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileName' : 'pgov1TestIAB1b',
+    'fileDirectory' : r"\\verification\\noGovLoadStep\\loadStepDown\\", # relative path must exist before simulation
+    'fileName' : 'quickie',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
 
 # fast debug case switching
-# TODO: test multiple dyd by putting dydPath in a list
+# TODO: enable new dyd replacement
 test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
-             # r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
+               #r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
                ]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
@@ -80,7 +80,7 @@ locations = {
     }
 del savPath, dydPath
 
-# these files will change after refactor
+# these files will change after refactor, required after locations definition
 execfile('initPSLF.py')
 execfile('makeGlobals.py')
 
@@ -88,21 +88,22 @@ execfile('makeGlobals.py')
 mir = Model(locations, simParams, 1)
 
 # Pertrubances configured for test case (eele)
-mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
-mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
-#mir.addPert('Load',[3],'Step',['P',42,99]) # quick 1 MW step
-#mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
-#mir.addPert('Load',[3],'Step',['P',42,110]) # step load up to 110 MW
+# step up and down (pgov test)
+#mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
+#mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
+
+# single steps up or down
+mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
 #mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
 
 mir.runSim()
 
 mir.notes = simNotes
 
-# Terminal display output
+# Terminal display output for immediate results
 print("Log and Step check of Load, Pacc, and sys f:")
 print("Time\tSt\tPacc\tsys f\tdelta f\t\tSlackPe\tGen2Pe")
-for x in range(mir.c_dp):
+for x in range(mir.c_dp-1):
     print("%d\t%d\t%.2f\t%.5f\t%.6f\t%.2f\t%.2f" % (
         mir.r_t[x],
         mir.Load[0].r_St[x],
@@ -115,15 +116,19 @@ print('End of simulation data.')
 
 # Data export
 if simParams['exportDict']:
-    from makeModelDictionary import makeModelDictionary
-    from saveModelDictionary import saveModelDictionary
+    # Change current working directory to data destination.
+    cwd = os.getcwd()
+    if simParams['fileDirectory'] :
+        os.chdir(cwd + simParams['fileDirectory'])
+
     dictName = simParams['fileName']
     D = makeModelDictionary(mir)
     savedName = saveModelDictionary(D,dictName)
+    os.chdir(cwd)
 
     if  simParams['exportMat']:
         # use cmd to run python 3 32 bit script...
-        cmd = "py -3-32 makeMat.py " + savedName +" " + dictName + " 0"
+        cmd = "py -3-32 makeMat.py " + savedName +" " + dictName  + " "+ simParams['fileDirectory'] 
 
         matProc = subprocess.Popen(cmd)
         matReturnCode = matProc.wait()
