@@ -8,7 +8,7 @@ import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 #print(os.getcwd())
 
@@ -56,7 +56,7 @@ test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
-               #r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
+               #r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd", #pgov1 on gen 2
                ]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
@@ -69,7 +69,7 @@ elif test_case == 3:
     savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
     dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
 
-# Required Paths
+# Required Paths Dictionary
 locations = {
     # full path to middleware dll
     'fullMiddlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
@@ -98,7 +98,7 @@ mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
 
 mir.runSim()
 
-mir.notes = simNotes
+mir.notes = simNotes # update notes before export
 
 # Terminal display output for immediate results
 print("Log and Step check of Load, Pacc, and sys f:")

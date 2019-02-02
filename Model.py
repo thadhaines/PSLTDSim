@@ -333,7 +333,7 @@ class Model(object):
                 )
             
             # Find current system Pacc Delta
-            # NOTE: this is variable as of 2/2/19
+            # NOTE: unused variable as of 2/2/19
             self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
 
             # Distribute Pacc to system machines Pe and solve PSLF
