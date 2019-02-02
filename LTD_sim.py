@@ -8,7 +8,7 @@ import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 #print(os.getcwd())
 
@@ -26,16 +26,16 @@ from saveModelDictionary import saveModelDictionary
 execfile('mergeDicts.py')
 
 simNotes = """
--20 MW load step at t=2
-sim time = 20 seconds, 
+pgov1 test: gov on gen 1
+sim time = 60 seconds, 
 changed slackTol to 0.25. Timestep = 1
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1.0,
-    'endTime': 20.0,
-    'slackTol': 30,
+    'timeStep': 0.5,
+    'endTime': 60.0,
+    'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
@@ -44,8 +44,8 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileDirectory' : r"\\verification\\noGovLoadStep\\loadStepDown\\", # relative path must exist before simulation
-    'fileName' : 'quickie',
+    'fileDirectory' : r"\\verification\\pgov1\\", # relative path must exist before simulation
+    'fileName' : 'pgov1TestC',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
@@ -89,11 +89,11 @@ mir = Model(locations, simParams, 1)
 
 # Pertrubances configured for test case (eele)
 # step up and down (pgov test)
-#mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
-#mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
+mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
+mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
 
 # single steps up or down
-mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
+#mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
 #mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
 
 mir.runSim()

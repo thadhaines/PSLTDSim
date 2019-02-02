@@ -275,39 +275,51 @@ class Model(object):
     def runSim(self):
         """Function to run LTD simulation"""
         print("\n*** Starting Simulation")
+        # set flag for non-convergence
         sysCrash = 0
-        # handle initalization value of Pe for [c_dp-1] functionality
-        # NOTE: will have to add more history values to use adams-bashforth integration
+
+        # Initalization value of Pe for [c_dp-1] functionality
+        # NOTE: python does negative indexing, 
+        # These values are appeneded now and popped once simulation ends
         self.r_ss_Pe.append(self.sumPe())
         self.r_ss_Pacc.append(0.0)
         self.r_f.append(1.0)
         self.r_fdot.append(0.0)
 
+        # Step Initialize Dynamic Agents
         for x in range(len(self.Dynamics)):
                 self.Dynamics[x].stepInitDynamics()        
 
+        # Start Simulation loop
         while self.c_t <= self.endTime:
             print("\n*** Data Point %d" % self.c_dp)
             print("*** Simulation time: %.2f" % (self.c_t))
 
-            # step System Wide dynamics
+            # Step System Wide dynamics
             combinedSwing(self, self.ss_Pacc)
+            if self.c_f <= 0.0:
+                # check for silly frequency
+                N = self.c_dp - 1
+                sysCrash = 1
+                break;
 
-            # step Individual Agent Dynamics
+            # Step Individual Agent Dynamics
             for x in range(len(self.Dynamics)):
                 self.Dynamics[x].stepDynamics()
 
-            # set pe = pm
-            #for x in range(len(self.Machines)):
-            #    self.Machines[x].Pe = self.Machines[x].Pm
+            # set pe = pm (dynamic action)
+            for x in range(len(self.Machines)):
+                self.Machines[x].Pe = self.Machines[x].Pm
+            
+            # Initialize Pertrubance delta
+            self.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
+            self.ss_Pert_Qdelta = 0.0 # intended for system loss calculations
 
             # Step Perturbance Agents
-            self.ss_Pert_Pdelta = 0.0
-            self.ss_Pert_Qdelta = 0.0
             for x in range(len(self.Perturbance)):
                 self.Perturbance[x].step()
 
-            # Account for any load changes from Perturbances
+            # Sum system loads to Account for any load changes from Perturbances
             self.ss_Pload, self.ss_Qload = self.sumLoad()
 
             # Sum current system Pm 
@@ -316,16 +328,17 @@ class Model(object):
             # Calculate current system Pacc
             self.ss_Pacc = (
                 self.ss_Pm 
-                - self.r_ss_Pe[self.c_dp-1]
+                - self.r_ss_Pe[self.c_dp-1] # Most recent PSLF sum
                 - self.ss_Pert_Pdelta
                 )
             
             # Find current system Pacc Delta
+            # NOTE: this is variable as of 2/2/19
             self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
 
-            # Distribute Pacc delta to machines and solve PSLF
+            # Distribute Pacc to system machines Pe and solve PSLF
             try:
-                distPe(self, self.r_Pacc_delta[self.c_dp])
+                distPe(self, self.ss_Pacc )
             # Check for convergence
             except ValueError as e:
                 # Catches error thown for non-convergene
@@ -333,8 +346,6 @@ class Model(object):
                 print(e)
                 # Pop void data from agents that log
                 N = self.c_dp
-                for x in range(len(self.Log)):
-                    self.Log[x].popUnsetData(N)
                 sysCrash = 1
                 break;
 
@@ -354,7 +365,10 @@ class Model(object):
         print("    Simulation Complete\n")
 
         # remove initialization values
-        if sysCrash != 1 :
+        if sysCrash == 1:
+            for x in range(len(self.Log)):
+                    self.Log[x].popUnsetData(N)
+        else:
             self.r_ss_Pe.pop(len(self.r_ss_Pe) -1)
             self.r_ss_Pacc.pop(len(self.r_ss_Pacc) -1)
             self.r_f.pop(len(self.r_f) -1)

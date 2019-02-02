@@ -55,8 +55,8 @@ hold on
 plot(t,pslf_data.Data(:,pg_col(1)),'.--','linewidth',3,'color',pltC.grey)
 plot(t,pslf_data.Data(:,pg_col(2)),'linewidth',1,'color',[0,0,0])
 % LTD data
-stairs(t_1,noGov.A1.S11.S0.Pe,':o','linewidth',1.5,'color',pltC.magenta)
-stairs(t_1,noGov.A1.G21.G0.Pe,':s','linewidth',1,'color',pltC.dgreen)
+stairs(t_1,noGov.A1.S011.S0.Pe,':o','linewidth',1.5,'color',pltC.magenta)
+stairs(t_1,noGov.A1.G021.G0.Pe,':s','linewidth',1,'color',pltC.dgreen)
 
 
 y_label = 'MW';
@@ -101,8 +101,8 @@ hold on
 plot(t,pslf_data.Data(:,v_col(1)),'.--','linewidth',3,'color',pltC.grey)
 plot(t,pslf_data.Data(:,v_col(2)),'linewidth',1,'color',[0,0,0])
 %LTD data
-stairs(t_1,noGov.A1.S11.Vm,':o','linewidth',1.5,'color',pltC.magenta)
-stairs(t_1,noGov.A1.G21.Vm,':s','linewidth',1,'color',pltC.dgreen)
+stairs(t_1,noGov.A1.S011.Vm,':o','linewidth',1.5,'color',pltC.magenta)
+stairs(t_1,noGov.A1.G021.Vm,':s','linewidth',1,'color',pltC.dgreen)
 
 y_label = 'Voltage [pu]';
 grid on
@@ -120,8 +120,8 @@ hold on
 plot(t,pslf_data.Data(:,qg_col(1)),'.--','linewidth',3,'color',pltC.grey)
 plot(t,pslf_data.Data(:,qg_col(2)),'linewidth',1,'color',[0,0,0])
 
-stairs(t_1,noGov.A1.S11.S0.Q,':o','linewidth',1.5,'color',pltC.magenta)
-stairs(t_1,noGov.A1.G21.G0.Q,':s','linewidth',1,'color',pltC.dgreen)
+stairs(t_1,noGov.A1.S011.S0.Q,':o','linewidth',1.5,'color',pltC.magenta)
+stairs(t_1,noGov.A1.G021.G0.Q,':s','linewidth',1,'color',pltC.dgreen)
 
 title_str = 'Reactive Power Generated';
 y_label = 'MVAR';

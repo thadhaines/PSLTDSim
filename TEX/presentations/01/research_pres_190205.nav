@@ -63,15 +63,17 @@
 \headcommand {\beamer@framepages {17}{17}}
 \headcommand {\slideentry {5}{2}{5}{18/18}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
 \headcommand {\beamer@framepages {18}{18}}
-\headcommand {\beamer@sectionpages {13}{18}}
-\headcommand {\beamer@subsectionpages {14}{18}}
-\headcommand {\sectionentry {6}{Current Conclusions}{19}{Current Conclusions}{0}}
-\headcommand {\slideentry {6}{0}{1}{19/19}{}{0}}
+\headcommand {\slideentry {5}{2}{6}{19/19}{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}{0}}
 \headcommand {\beamer@framepages {19}{19}}
-\headcommand {\slideentry {6}{0}{2}{20/20}{}{0}}
+\headcommand {\beamer@sectionpages {13}{19}}
+\headcommand {\beamer@subsectionpages {14}{19}}
+\headcommand {\sectionentry {6}{Current Conclusions}{20}{Current Conclusions}{0}}
+\headcommand {\slideentry {6}{0}{1}{20/20}{}{0}}
 \headcommand {\beamer@framepages {20}{20}}
-\headcommand {\beamer@partpages {1}{20}}
-\headcommand {\beamer@subsectionpages {19}{20}}
-\headcommand {\beamer@sectionpages {19}{20}}
-\headcommand {\beamer@documentpages {20}}
-\headcommand {\gdef \inserttotalframenumber {20}}
+\headcommand {\slideentry {6}{0}{2}{21/21}{}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\beamer@partpages {1}{21}}
+\headcommand {\beamer@subsectionpages {20}{21}}
+\headcommand {\beamer@sectionpages {20}{21}}
+\headcommand {\beamer@documentpages {21}}
+\headcommand {\gdef \inserttotalframenumber {21}}

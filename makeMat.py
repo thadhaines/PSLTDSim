@@ -38,8 +38,8 @@ def makeMat(dictLoc, varName, fileDirectory):
     return
 
 if __name__ == "__main__":
-    varName = sys.argv[2]
     dictLoc = sys.argv[1]
+    varName = sys.argv[2]
     fileDirectory = sys.argv[3]
     makeMat(dictLoc, varName, fileDirectory)
 

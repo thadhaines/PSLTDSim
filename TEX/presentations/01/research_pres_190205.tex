@@ -58,7 +58,7 @@ Project Goals:
 		\item Dynamic data ($.dyd$ files)
 		\item Power-flow solver
 	\end{itemize}
-	\item Create power system models compatible with long time steps.
+	\item Create power system models compatible with LTD time steps.
 	\item Investigate long-term events.
 	\begin{itemize}
 		\item AGC
@@ -200,6 +200,13 @@ pgov1 on Gen 1, $t_\text{step}=$1.0 second
 pgov1 on Gen 1, $t_\text{step}=$0.5 second
 \begin{figure}
 \includegraphics[width=\linewidth]{pgov1TestC}
+\end{figure}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+pgov1 on Gen 1, $t_\text{step}=$0.5 second AB
+\begin{figure}
+	\includegraphics[width=\linewidth]{pgov1TestCab}
 \end{figure}
 \end{frame}
 
