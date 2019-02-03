@@ -17,6 +17,11 @@ class LoadStepAgent(object):
         self.tStart = perParams[1]
         self.newVal = perParams[2]
 
+        if len(perParams) > 3 :
+            self.stepType = perParams[3]
+        else:
+            self.stepType = 'abs'
+
     def __repr__(self):
         """Display more useful data for model"""
         # mimic default __repr__
@@ -25,11 +30,12 @@ class LoadStepAgent(object):
         tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "Stepping %s on Bus %d at time %.2f to %.2f" %(
+        tag2 = "Stepping %s on Bus %d at time %.2f to %.2f %s" %(
             self.attr,
             self.mObj.Bus.Extnum,
             self.tStart,
             self.newVal,
+            self.stepType,
             )
 
         return(tag1+tag2)
@@ -58,8 +64,12 @@ class LoadStepAgent(object):
 
                 elif self.attr == 'P':
                     oldVal = pObj.P
-                    pObj.P = self.newVal
-                    self.model.ss_Pert_Pdelta += self.newVal - oldVal
+                    if self.stepType == 'rel':
+                        pObj.P += self.newVal # relative step
+                    else:
+                        pObj.P = self.newVal # absolute step
+
+                    self.model.ss_Pert_Pdelta += pObj.P - oldVal
 
                 elif self.attr == 'Q':
                     oldVal = pObj.Q

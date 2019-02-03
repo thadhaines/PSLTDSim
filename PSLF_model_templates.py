@@ -3,7 +3,7 @@ Pretty basic at the moment.
 A more adaptive parser would be ideal, though may be unpossible 
 """
 
-class genrou():
+class genrou(object):
     """Generator class for the pslf gensal model parameters
     Class parameters populated by parsed line elements from a CLEAN dyd line
     NOTE: There may be a better way to do this. Hardcoded indexes feel like a bad idea
@@ -54,4 +54,16 @@ class genrou():
         self.Accel = parts[24] # not described in available PSLF manual genrou model, included in WECC
 
         if model.debug:
-            print("'genrou' Model Created %d %s" % (self.Busnum,self.Busnam))
+            print("\t...'genrou' Model Created %d %s" % (self.Busnum,self.Busnam))
+
+    def __repr__(self):
+        """Display more useful data for model"""
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
+
+        # additional outputs
+        tag2 = "%s %s\n" %(str(self.Busnum).zfill(3), self.Busnam)
+
+        return(tag1+tag2)

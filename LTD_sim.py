@@ -44,8 +44,8 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileDirectory' : r"\\verification\\pgov1\\", # relative path must exist before simulation
-    'fileName' : 'pgov1TestC',
+    'fileDirectory' : r"\\verification\\miniWeccTest01\\", # relative path must exist before simulation
+    'fileName' : 'plotTest01',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }

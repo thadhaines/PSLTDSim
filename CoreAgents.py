@@ -44,6 +44,18 @@ class BusAgent(object):
         tag = "Bus "+self.Busnam+" in Area "+self.Area
         return tag
 
+    def __repr__(self):
+        """Display more useful data for model"""
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s> " % (module,hex(id(self)))
+
+        # additional outputs
+        tag2 = "%s %s" %(str(self.Extnum).zfill(3), self.Busnam)
+
+        return(tag1+tag2)
+
     def getPref(self):
         """Return reference to PSLF object"""
         return col.BusDAO.FindByIndex(self.Scanbus)
@@ -112,6 +124,18 @@ class GeneratorAgent(object):
         # TODO: implement proportional governor
         self.gov = []
         self.exc = None
+        
+    def __repr__(self):
+        """Display more useful data for model"""
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s> " % (module,hex(id(self)))
+
+        # additional outputs
+        tag2 = "%s %s" %(str(self.Busnum).zfill(3), self.Busnam)
+
+        return(tag1+tag2)
 
     def getPref(self):
         """Return reference to PSLF object"""
@@ -228,6 +252,19 @@ class LoadAgent(object):
         self.r_St = [0.0]*model.dataPoints
 
         # dynamics?
+
+    def __repr__(self):
+        """Display more useful data for model"""
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s> " % (module,hex(id(self)))
+
+        # additional outputs
+        tag2 = "%s %s" %(str(self.Bus.Extnum).zfill(3), self.Bus.Busnam)
+
+        return(tag1+tag2)
+
 
     def getPref(self):
         """Return reference to PSLF object"""

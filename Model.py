@@ -116,6 +116,7 @@ class Model(object):
 
         # Check mirror accuracy in each Area, create machines list for each area
         for c_area in range(self.Narea):
+            if self.debug: print("*** Verifying area data...")
             valid = self.Area[c_area].checkArea()
             if valid != 0:
                 print("Mirror inaccurate in Area %d, error code: %d" % (c_area, valid))
@@ -139,6 +140,8 @@ class Model(object):
         else:
             self.Hsys = self.ss_H
 
+        print("*** Python Mirror intialized.")
+
     # Initiazliaze Methods
     def init_mirror(self):
         """Create python mirror of PSLF system by 'crawling' area busses
@@ -158,6 +161,7 @@ class Model(object):
         f_load = 0
 
         if self.debug: 
+            print("*** Crawling system for agents...")
             print("Extnum\tgen\tload\tBusnam")
 
         while f_bus < self.Nbus:
@@ -241,26 +245,27 @@ class Model(object):
     def init_H(self):
         """Link H and Mbase from PSLF dyd dynamic models to mirror machines
         Will calculate ss_H
-        Will account for multiple gens on same bus using Busnam as 2nd check (possibly extra/non useful)
         """
-        # pdmod = pslf dynamic model
-        for pdmod in range(len(self.PSLFmach)):
-            for gen in range(len(self.Machines)):
-                b_check = self.PSLFmach[pdmod].Busnum == self.Machines[gen].Busnum
-                n_check = self.PSLFmach[pdmod].Busnam == self.Machines[gen].Busnam
-                if self.debug:
-                    #NOTE: this printout shows a double check isn't useful as currently implemented
-                    print(b_check, n_check)
-                if (b_check == 1) and (n_check == 1):
-                    self.Machines[gen].Hpu = self.PSLFmach[pdmod].H
-                    self.Machines[gen].MbaseDYD = self.PSLFmach[pdmod].Mbase
-                    # NOTE: PSLF .sav Mbase and .dyd Mbase may be different
-                    # dyd values overwrite any sav values (Via PSLF user manual)
-                    self.Machines[gen].H = self.PSLFmach[pdmod].H *self.PSLFmach[pdmod].Mbase
-                    self.ss_H += self.Machines[gen].H 
-                    # add refernece to PSLF machine model in python mirror
-                    self.Machines[gen].machine_model.append(self.PSLFmach[pdmod])
-                    break
+        # pdmod = pSLF dYNAMIC modLE
+        if self.debug: print("*** Linking PSLF H to python environment...")
+        linkedModels = 0
+
+        for pdmod in range(len(self.PSLFmach)): # for each found pslf model
+            mirrorGen = findGenOnBus(self, self.PSLFmach[pdmod].Busnum)
+
+            if mirrorGen:
+                mirrorGen.Hpu = self.PSLFmach[pdmod].H
+                mirrorGen.MbaseDYD = self.PSLFmach[pdmod].Mbase
+                # NOTE: PSLF .sav Mbase and .dyd Mbase may be different
+                # dyd values overwrite any sav values (Via PSLF user manual)
+                mirrorGen.H = self.PSLFmach[pdmod].H *self.PSLFmach[pdmod].Mbase
+                self.ss_H += mirrorGen.H 
+                # add refernece to PSLF machine model in python mirror
+                mirrorGen.machine_model.append(self.PSLFmach[pdmod])
+                if self.debug: print("PSLF model linked to %s" % mirrorGen)
+                linkedModels +=1
+
+        if self.debug: print("*** Linked %d/%d PSLF models to system." % (linkedModels,len(self.PSLFmach)))
 
     def findGlobalSlack(self):
         """Locates and sets the global slack generator"""
@@ -422,14 +427,14 @@ class Model(object):
 
         #Create Perturbance Agent
         if (perType == 'Step') and targetObj:
-            # perParams = [targetAttr, tStart, newVal]
+            # perParams = [targetAttr, tStart, newVal, type='r']
             newStepAgent = LoadStepAgent(self, targetObj, perParams)
             self.Perturbance.append(newStepAgent)
-            print("Perturbance Agent added!")
+            print("*** Perturbance Agent added!")
             print(newStepAgent)
             return
 
-        print("Perturbance Agent error - not added.")
+        print("*** Perturbance Agent error - nothing added.")
 
 
     def sumPm(self):
