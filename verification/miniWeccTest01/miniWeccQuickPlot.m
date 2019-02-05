@@ -1,25 +1,24 @@
 %%  miniWeccQuickPlot.m
 %   Thad Haines         Research
 %   Program Purpose:    Import data from LTD .mat
-%                       Make plots 
+%                       Make plots
 %                       Attempt at universal plotter
 
-%                       Relies on udread.m and jplot.m
-%                       print_f requires altmany export fig
 %
 %   History:
 %   02/03/19    14:05   init
 %   02/03/19    14:05   addition of multiple loads and legend
+%   02/04/19    18:40   correction of slack info, more legends
 
 %% init
-clear; format compact; clc; close all; 
+clear; format compact; clc; close all;
 
 %% Global Flags
 makeLegend = 1;
 debug = 0;
 
 %% import LTD data
-dataName = 'miniWeccTest02.mat' %  'plotTest01.mat'%
+dataName = 'miniWeccTest02.mat' % 'plotTest01.mat'%
 % Assumes 1 generator or load per bus... Dictionary does have info available to allow for better looping
 
 load(dataName)
@@ -34,7 +33,7 @@ figure
 title('System Frequency')
 hold on
 plot(mir.t,mir.f)
-
+grid on
 %% plot all load power in all areas with state == 1
 figure
 title('System P Loading')
@@ -66,6 +65,7 @@ for area = 1:max(size(mir.areaN)) % for each area
 end
 if makeLegend
     legend(legNames)
+    grid on
 end
 clear area curArea areaBus load curLoad P St curLoadbus loadOnBus name legNames
 
@@ -73,90 +73,148 @@ clear area curArea areaBus load curLoad P St curLoadbus loadOnBus name legNames
 figure
 title('System Pe Generated')
 hold on
+legNames ={};
 for area = 1:max(size(mir.areaN)) % for each area
-    fprintf('area %d\n',mir.areaN(area) )
+    if debug
+        fprintf('area %d\n',mir.areaN(area) )
+    end
     curArea = ['A',int2str(area)];
     
+    for slack = 1:max(size(mir.(curArea).slackBusN))
+        curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
+        stairs(mir.t, mir.(curArea).(curSlack).S1.Pe)
+        name = [(curArea),'.',(curSlack)];
+        legNames{end+1} = name;
+    end
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
+        
         stairs(mir.t, mir.(curArea).(curGen).G1.Pe)
+        name = [(curArea),'.',(curGen)];
+        legNames{end+1} = name;
     end
-    for slack = 1:max(size(mir.(curArea).slackBusN))
-        curGen = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        stairs(mir.t, mir.(curArea).(curGen).S1.Pe)
-    end
+    
 end
-clear area curArea gen curGen slack
+if makeLegend
+    legend(legNames)
+    grid on
+end
+clear area curArea gen curGen slack curSlack legNames name
 
 %% plot all gen Q from all areas
 figure
 title('System Q Generated')
 hold on
+legNames = {};
 for area = 1:max(size(mir.areaN)) % for each area
-    fprintf('area %d\n',mir.areaN(area) )
+    if debug
+        fprintf('area %d\n',mir.areaN(area) )
+    end
     curArea = ['A',int2str(area)];
+    
+    for slack = 1:max(size(mir.(curArea).slackBusN))
+        curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
+        stairs(mir.t, mir.(curArea).(curSlack).S1.Q)
+        name = [(curArea),'.',(curSlack)];
+        legNames{end+1} = name;
+    end
     
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         stairs(mir.t, mir.(curArea).(curGen).G1.Q)
+        name = [(curArea),'.',(curGen)];
+        legNames{end+1} = name;
+        
     end
-    for slack = 1:max(size(mir.(curArea).slackBusN))
-        curGen = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        stairs(mir.t, mir.(curArea).(curGen).S1.Q)
-    end
+    
 end
-clear area curArea gen curGen slack
+if makeLegend
+    legend(legNames)
+    grid on
+end
+clear area curArea gen curGen slack curSlack legNames name
 
 %% plot all bus voltages from all areas
 figure
 subplot(2, 1, 1)
 title('System Bus Voltages')
 hold on
+legNames = {};
 for area = 1:max(size(mir.areaN)) % for each area
-    fprintf('area %d\n',mir.areaN(area) )
+    if debug
+        fprintf('area %d\n',mir.areaN(area) )
+    end
     curArea = ['A',int2str(area)];
     
-    for slack = 1:max(size(mir.(curArea).genBusN))
-        curGen = ['G',int2str(mir.(curArea).genBusN(slack))];
-        stairs(mir.t, mir.(curArea).(curGen).Vm)
-    end    
+    for slack = 1:max(size(mir.(curArea).slackBusN))
+        curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
+        stairs(mir.t, mir.(curArea).(curSlack).Vm)
+        name = [(curArea),'.',(curSlack)];
+        legNames{end+1} = name;
+    end
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         stairs(mir.t, mir.(curArea).(curGen).Vm)
+        name = [(curArea),'.',(curGen)];
+        legNames{end+1} = name;
     end
     for load = 1:max(size(mir.(curArea).loadBusN))
         curLoadbus = ['L',int2str(mir.(curArea).loadBusN(load))];
         stairs(mir.t, mir.(curArea).(curLoadbus).Vm)
+        name = [(curArea),'.',(curLoadbus)];
+        legNames{end+1} = name;
     end
     for xbus = 1:max(size(mir.(curArea).xBusN))
         curXbus = ['x',int2str(mir.(curArea).xBusN(xbus))];
         stairs(mir.t, mir.(curArea).(curXbus).Vm)
+        name = [(curArea),'.',(curXbus)];
+        legNames{end+1} = name;
     end
+end
+if makeLegend
+    legend(legNames)
+    grid on
 end
 
 subplot(2, 1, 2)
 title('System Bus Angles')
 hold on
+legNames ={};
 for area = 1:max(size(mir.areaN)) % for each area
-    fprintf('area %d\n',mir.areaN(area) )
+    if debug
+        fprintf('area %d\n',mir.areaN(area) )
+    end
     curArea = ['A',int2str(area)];
     
-    for slack = 1:max(size(mir.(curArea).genBusN))
-        curGen = ['G',int2str(mir.(curArea).genBusN(slack))];
-        stairs(mir.t, rad2deg(mir.(curArea).(curGen).Va))
-    end    
+    for slack = 1:max(size(mir.(curArea).slackBusN))
+        curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
+        stairs(mir.t, rad2deg(mir.(curArea).(curSlack).Va))
+        name = [(curArea),'.',(curSlack)];
+        legNames{end+1} = name;
+    end
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         stairs(mir.t, rad2deg(mir.(curArea).(curGen).Va))
+        name = [(curArea),'.',(curGen)];
+        legNames{end+1} = name;
     end
     for load = 1:max(size(mir.(curArea).loadBusN))
         curLoadbus = ['L',int2str(mir.(curArea).loadBusN(load))];
         stairs(mir.t, rad2deg(mir.(curArea).(curLoadbus).Va))
+        name = [(curArea),'.',(curLoadbus)];
+        legNames{end+1} = name;
     end
     for xbus = 1:max(size(mir.(curArea).xBusN))
         curXbus = ['x',int2str(mir.(curArea).xBusN(xbus))];
         stairs(mir.t, rad2deg(mir.(curArea).(curXbus).Va))
+        name = [(curArea),'.',(curXbus)];
+        legNames{end+1} = name;
     end
 end
-clear area curArea slack gen load xbus curLoad curLoadbus curXbus curGen
+
+if makeLegend
+    legend(legNames)
+    grid on
+end
+clear area curArea slack gen load xbus curLoad curLoadbus curXbus curGen curSlack legNames name
