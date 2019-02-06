@@ -1,0 +1,97 @@
+\documentclass[tikz, margin=3mm]{standalone}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+% flow chart of simulation (zoomed out view)
+% uses relative positioning
+
+% Terminal
+\tikzstyle{terminal} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, text width=3cm, draw=black]
+
+% Process
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered,text width=3cm, draw=black]
+
+% Decision
+\tikzstyle{decision} = [diamond, aspect=1.8, minimum width=2cm, minimum height=1cm, text centered, text width=2cm, draw=black]
+
+% Subprocess
+\newcommand\ppbb{path picture bounding box}
+\tikzset{
+	subprocess/.style = {rectangle, draw=black, 
+		minimum width=3.3cm, minimum height=1cm, inner xsep=3mm,
+		text width =\pgfkeysvalueof{/pgf/minimum width}-2*\pgfkeysvalueof{/pgf/inner xsep},
+		align=flush center,
+		path picture={\draw 
+			([xshift =2mm] \ppbb.north west) -- ([xshift= 2mm] \ppbb.south west)
+			([xshift=-2mm] \ppbb.north east) -- ([xshift=-2mm] \ppbb.south east);
+		},% end of path picture
+	}
+}
+
+\begin{document}
+\begin{tikzpicture}[node distance=2cm]
+% Placement of nodes
+\node (start) [terminal] {Run Simulation};
+\node (init) [subprocess, below of=start] {Initialize Python System};
+\node (tStep) [process, below of=init] {$t = t+1$};
+\node (dyStep) [process, below of=tStep,text width=4cm] {Run ODEs \\ Step Dynamic Agents};
+\node (PeEst) [process, below of=dyStep] {Begin next $P_{e,i}(t)$ estimate \\ ($P_{e,i}(t) = P_{m,i}(t)$)};
+\node (stepPert) [process, below of=PeEst, text width=4cm] {Step Perturbance Agents \\ (Agents update PSLF)};
+\node (sumPert) [process, below of=stepPert] {$\Sigma\Delta P_{pert}(t)$};
+\node (sumPm) [process, below of=sumPert] {$\Sigma P_{m}(t)$};
+\node (calcPacc)[process, below of=sumPm,  text width=8cm] {$P_{acc, sys} = \Sigma P_m(t)-\Sigma P_e(t-1)- \Sigma \Delta P_{pert}(t)$};
+\node (distPe) [subprocess, below of=calcPacc] {Distribrute $P_{acc, sys}$ \\acording to $\frac{H_i}{H_{sys}}$};
+\node (updatePSLF) [process, below of=distPe] {Update PSLF System};
+\node (runPF) [process, below of=updatePSLF] {Run Power-Flow};
+
+\node (pfConv) [decision, below of=runPF, yshift=-.5cm, text width=3cm] {Convergence?};
+\node (pfFail) [process, right of=pfConv, xshift=3.85cm] {Stop Simulation};
+
+\node (slackErr) [decision, below of=pfConv, yshift=-1.1cm, text width=3cm] {Slack Error?};
+\node (slackTol) [process, left of=slackErr, xshift=-3.85cm] {Distribute Slack Error \\ $P_{acc, sys} = error$};
+
+\node (updatePython) [process, below of=slackErr,yshift=-0.5cm] {Update Python System};
+\node (sumPe) [process,below of=updatePython] {$\Sigma P_{e,i}(t)$};
+\node (log) [process, below of=sumPe, text width = 4cm] {Step Logging Agents};
+\node (loop) [decision, below of=log, yshift=-.5cm] {$t<t_{end}$};
+\node (dataOut) [terminal, below of=loop, yshift=-.25cm] {Output Data};
+
+% Placement of edges
+\draw [arrow] (start) -- (init);
+\draw [arrow] (init) -- (tStep);
+\draw [arrow] (tStep) -- (dyStep);
+\draw [arrow] (dyStep) -- (PeEst);
+\draw [arrow] (PeEst) -- (stepPert);
+\draw [arrow] (stepPert) -- (sumPert);
+\draw [arrow] (sumPert) -- (sumPm);
+\draw [arrow] (sumPm) -- (calcPacc);
+\draw [arrow] (calcPacc) -- (distPe);
+\draw [arrow] (distPe) -- (updatePSLF);
+\draw [arrow] (updatePSLF) -- (runPF);
+\draw [arrow] (runPF) -- (pfConv);
+
+% pf convergence bad
+\draw [arrow] (pfConv) --  node[anchor=south] {No} (pfFail);
+\draw [arrow] (pfFail) |-  (dataOut);
+% pf convergence ok
+\draw [arrow] (pfConv) --  node[anchor=west] {Yes} (slackErr);
+
+% slack tolerance bad
+\draw [arrow] (slackErr) --  node[anchor=south] {Unacceptable} (slackTol);
+\draw [arrow] (slackTol) |- (distPe);
+% slack tolerance ok
+\draw [arrow] (slackErr) --  node[anchor=west] {Acceptable} (updatePython);
+
+\draw [arrow] (updatePython) --(sumPe);
+\draw [arrow] (sumPe) --(log);
+\draw [arrow] (log) --(loop);
+
+%loop again
+\draw [arrow] (loop) -- node[anchor=south] {True (Continue Simulation)} +(-8,0) |- (tStep);
+% end simulation
+\draw [arrow] (loop) -- node[anchor=west] {False (End Simulation)} (dataOut);
+
+\end{tikzpicture}
+\end{document}
