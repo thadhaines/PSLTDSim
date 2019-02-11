@@ -37,7 +37,7 @@
 % Placement of nodes
 \node (start) [terminal] {Run Simulation};
 \node (init) [subprocess, right of=start,xshift=4cm] {Initialize LTD System};
-\node (tStep) [process, right of=init,xshift=4cm] {\Large$t = t+1$};
+\node (tStep) [process, right of=init,xshift=4cm] {\Large$t = t+t_{step}$};
 \node (dyStep) [process, below of=tStep,text width=5cm] {Step Dynamic Agents};
 \node (PeEst) [process, below of=dyStep,text width=5cm] {\Large$P_{e,i}(t) = P_{m,i}(t)$};
 \node (stepPert) [process, below of=PeEst, text width=5cm] {Step Perturbance Agents};
@@ -49,7 +49,7 @@
 
 %Convergence nodes
 \node (pfConv) [decision, below of=runPF, yshift=-.5cm, text width=3cm] {Convergence?};
-\node (pfFail) [process, left of=pfConv, xshift=-4cm] {Stop Simulation};
+\node (pfFail) [process, left of=pfConv, xshift=-4cm] {End Simulation};
 %Slack error nodes
 \node (slackErr) [decision, below of=pfConv, yshift=-1.3cm, text width=3cm] {Slack Error?};
 \node (slackTol) [process, right of=slackErr, xshift=6.5cm, text width = 5cm] {Distribute Slack Error \\ \Large$P_{acc, sys} = P_{SlackError}$};
@@ -61,7 +61,7 @@
 \node (dataOut) [terminal, below of=loop, yshift=-.75cm] {Output Data};
 
 %% Note nodes AND edges
-\node [note, left of=updatePSLF, node distance =10cm,text width=5cm](note1){Ensure PSLF has newest estimates of \Large $P_{e,i}$};
+\node [note, left of=updatePSLF, node distance =10cm,text width=5cm](note1){Ensure PSLF has newest \Large $P_{e,i}$ and $V_{set}$};
 \draw [arrow,dotted] (note1) -- (updatePSLF);
 
 \node [note, left of=updateLTD, node distance =10cm, text width=5cm](note2){Use most recent power-flow solutions of: \Large $P_{e,i}\  V_i\  \delta_i \ Q_i$};
