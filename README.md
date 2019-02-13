@@ -19,6 +19,7 @@ Goal:  Use Ironpython and PSLF to simulate longterm dynamics.
 * MATLAB scripts created to verify simulation outputs of:
   * Combined swing equation to steps in load
   * pgov1 response to steps in load
+  * Quick plot (LTDplot) of frequency, P and Q generated, System Loading, and Bus Voltage and Angles.
 ### Notes:
 * For smaller test cases with only 1 Slack generator, the mirror seems to be 
 accurate, however, for the full WECC (with 84 Slack generators), the global
