@@ -129,7 +129,7 @@ class GeneratorAgent(object):
         self.IRP_flag = 1       # Inertia response participant flag
         self.Pe = float(newGen.Pgen)   # Generated Power
         self.Pm = self.Pe       # Initialize as equal
-        self.Q = newGen.Qgen    # Q generatred       
+        self.Q = float(newGen.Qgen)    # Q generatred       
         
         # History 
         self.r_Pm = [0.0]*model.dataPoints

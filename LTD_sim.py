@@ -9,7 +9,7 @@ import __builtin__
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 #os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
 #print(os.getcwd())
 
@@ -27,9 +27,7 @@ from saveModelDictionary import saveModelDictionary
 execfile('mergeDicts.py')
 
 simNotes = """
-pgov1 test: gov on gen 1
-sim time = 60 seconds, 
-changed slackTol to 0.25. Timestep = 1
+Initial test of GE 4 machine, 2 area system.
 """
 
 # Simulation Parameters Dictionary
@@ -45,15 +43,15 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileDirectory' : r"\\verification\\miniWeccTest01\\", # relative path must exist before simulation
-    'fileName' : 'plotTest01',
+    'fileDirectory' : r"\\verification\\GE4machine\\", # relative path must exist before simulation
+    'fileName' : 'ge4test01',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
 
 # fast debug case switching
 # TODO: enable new dyd replacement
-test_case = 0
+test_case = 4
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
@@ -69,6 +67,9 @@ elif test_case == 3:
     # Will no longer run due to parser errors
     savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
     dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
+elif test_case == 4:
+    savPath = r"C:\LTD\pslf_systems\GE_ex\g4_a.sav"
+    dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",]
 
 # Required Paths Dictionary
 locations = {
@@ -90,12 +91,12 @@ mir = Model(locations, simParams, 1)
 
 # Pertrubances configured for test case (eele)
 # step up and down (pgov test)
-mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
-mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
+#mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
+#mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
 
-# single steps up or down
-#mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
-#mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
+# GE 4 machine test
+mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up at t=2
+mir.addPert('Load',[5],'Step',['P',22,-4,'rel']) # step back to normalt 20 seconds later
 
 mir.runSim()
 
@@ -134,10 +135,5 @@ if simParams['exportDict']:
         matProc = subprocess.Popen(cmd)
         matReturnCode = matProc.wait()
         matProc.send_signal(signal.SIGTERM)
-
-# attempts to delete .pkl file fails -> in use by another process, reslove?
-#del matProc
-#os.remove(savedName)
-#print('%s Deleted.' % savedName)
 
 # raw_input("Press <Enter> to Continue. . . . ") # Not always needed to hold open console
