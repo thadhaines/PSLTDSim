@@ -66,7 +66,7 @@
 \pagestyle{fancy} % for header stuffs
 \fancyhf{}
 \rhead{Thad Haines \\ Page \thepage\ of \pageref{LastPage}}
-\chead{Long Term Dynamic Simulation Thoughts \\ January 21, 2019}
+\chead{Long-Term Dynamic Simulation Thoughts \\ February 11, 2019}
 \lhead{Research \\ }
 % spacing
 \headheight 29 pt
@@ -84,24 +84,25 @@ page 1 -> separte weekly talking points file.
 \end{comment}
 
 \paragraph{Introduction:}
-Power systems are large and complicated structures composed of many connected objects. Each power system object has a functional purpose and reacts to various changes differently. These objects can be modeled mathematically as transfer functions that alter certain parameters (states) of the objects themselves, or the system as a whole, over time. \\
+Power systems are large and complicated structures composed of many connected objects. Each power system object has a functional purpose and reacts to various changes differently. These objects are often modeled mathematically as transfer functions or state equations that alter certain parameters (states) of the objects themselves, or the system as a whole, over time. \\
 
-Software exists to model transient (fast) reactions of power systems. These involve small time steps so that models can have fast time constants and capture the oscillatory nature of power system responses. While these models have their place, it may be desirable to calculate slower, more long term dynamic responses to gradual perturbances such as wind ramps, daily load cycles, or balancing authority type situations. \\
+A wide variety of software exists to model transient (fast) reactions of power systems. These softwares involve small time steps so that models can have fast time constants and capture the oscillatory nature of power system responses. While these models have their place, it may be desirable to calculate slower, more long-term dynamic responses to gradual perturbances, or disturbances, such as wind ramps, daily load cycles, or balancing authority type situations. \\
 
-General Electric's Positive Sequence Load Flow (PSLF) is a commercial power systems analysis software package that is regarded as an industry standard. Many working and accepted system models exist that are compatible with PSLF. Additionally, GE has created a Python interface to their software for a more customized experimentation and simulation process. However, the Python code support is not completely functional at this time (dynamic simulation is not fully supported). %Luckily, there seems to be enough functionality to perform LTD. \\
+General Electric's Positive Sequence Load Flow (PSLF) is a commercial power systems analysis software package that is regarded as an industry standard. Many working and accepted system models exist that are compatible with PSLF. Additionally, GE has created a .NET interface to their software for a more customized experimentation and simulation process. %Luckily, there seems to be enough functionality to perform LTD. \\
 
 \paragraph{Goals:}
-The first goal of this project is to design a simulation framework that performs long term dynamic (LTD) simulations using available PSLF systems, dynamic data, and modified dynamic models. An Agent Based modeling approach will be taken to accommodate a wide variety of power systems and enable the independent and modular development of features. \\
+The first goal of this project is to develop software that performs long-term dynamic (LTD) simulations using available PSLF systems, dynamic data, and modified/custom dynamic models. An Agent Based modeling approach will be taken to accommodate a wide variety of power systems and enable the independent and modular development of features. \\
 
-%This approach enables tong term events will be programmed perturbances Additional This software solution will be used to simulate system responses to programmable long term events. 
+%This approach enables tong term events will be programmed perturbances Additional This software solution will be used to simulate system responses to programmable long-term events. 
 Once complete, the specialized functionality of the software framework will attempt to facilitate investigating system reactions that may have been previously overlooked, computationally heavy, or programmatically difficult to simulate via other methods.
 %Since power systems vary greatly, a flexible simulation environment must be able to handle many unique system scenarios. 
 \paragraph{System Under Investigation:}
-When performing such LTD simulations on multi-machine power systems, certain simplifying assumptions can be made:
+When performing such LTD simulations on multi-machine power systems, certain simplifying assumptions will be made:
 \begin{enumerate}
-	\item The system is stable (synchronized)
-	\item Because of the synchronized assumption, the system has only 1 frequency and is altered by the aggregate PU swing equation
+	\item The system is synchronized.
+	\item The system has only 1 frequency and it is altered by the aggregate PU swing equation
 	\[ \dot{f}_{sys} = \dfrac{1}{2H_{sys} } \left( \dfrac{P_{acc, sys} }{f_{sys}(t)} - D_{sys}\Delta f{sys}(t)  \right)  \]
+	\item System damping $D_{sys}$ is ignored (set to 0).
 	\item Time steps of 1 second (or larger) will allow for ignoring transient rotor windings and generator damping time constants. 
 	\item Existing dynamic models with time constants smaller than the system time step (1 second) must be reworked to avoid mathematical errors.
 	\item Accelerating power will be distributed to system generators participating in the inertial response according to a ratio of object inertias.
@@ -109,9 +110,12 @@ When performing such LTD simulations on multi-machine power systems, certain sim
 
 \pagebreak
 \paragraph{Conceptual Model:}
-Ironpython will communicate to PSLF via the .NET API to gather and/or update system data (states) and run PSLF power flow calculations. Ironpython then saves various collected data and exports a .mat file by running a Python 3 script.\\
+Ironpython (IPY) will take file locations of PSLF .sav (power system information file) and .dyd (PSLF dynamic model information) files that will be used to generate a python 'mirror' of a PSLF power system. 
+IPY will communicate to PSLF via the .NET API to gather and/or update system data (states) and run PSLF power-flow calculations. 
+Between power-flow calculations, custom dynamic models will react to the most recent power-flow data to change associated IPY 'mirror' and PSLF states.  
+Finally IPY will save/export collected data and exports a .mat file by running a Python 3 script.\\
 
-Long term simulations my be performed by the GE dynamic simulation (PSDS) to verify LTD simulation results. It is believed that the custom LTD code will perform the desired simulations much faster than PSDS and will exhibit reasonable accuracy. 
+Long-term simulations my be performed by the GE dynamic simulation (PSDS) to validate LTD simulation results. It is believed that the custom LTD code will perform the desired simulations much faster than PSDS and will exhibit reasonable accuracy to solve engineering problems. 
 \paragraph{Conceptual Model Details of Note:}
 \begin{enumerate}
 \item Software requirements: PSLF with middleware.dll, Ironpython, Python 3, and Visual Studio with Python Development Tools (plus GitHub extension).
@@ -149,11 +153,11 @@ Long term simulations my be performed by the GE dynamic simulation (PSDS) to ver
 \item After a simulation, desired data may be saved as a pickled python object, dictionary, or MATLAB .mat file.
 \item Quick display functionality may be built into the python mirror to view system activity immediately following execution using the \verb|matplotlib.pyplot| library.
 \end{enumerate}
-
+ 
 \pagebreak
 \paragraph{Simulation Model:}
 Using an agent based approach, each object in the simulation will be activated in various substeps per each time step. These steps will be carried out in a loop once the system has been initialized for a predetermined amount of time / time steps unless an error occurs or the system fails to converge.\vspace{1em}\\ 
-It is assumed that transfer function models may be simplified to state space arrays, or something equivalent, that can be populated by specific model parameters. Once solved, i.e. slope is found, other numerical techniques can be employed to predict the next system state. Alternatively, Ironpython ode solvers may be used if applicable and available.
+It is assumed that transfer function models may be simplified to state space arrays, or something equivalent, that can be populated by specific model parameters. Once solved, i.e. slope is found, other numerical techniques can be employed to predict the next system state. Alternatively, Ironpython, or available .NET, ode solvers may be used if applicable and available.
 \subparagraph{Substeps :}(Performed each time step/ main model step)
 \begin{enumerate}
 	\item Perterubance step: A perturbance object will be programmed / configured before the simulation and attached to the environment. These agents will alter the power into/out of other system agents (such as generators and loads). Once this step is complete a total system Perturbance can be calculated.
@@ -161,7 +165,7 @@ It is assumed that transfer function models may be simplified to state space arr
 	% , or python mirror, depending on the most current object. (Probably update python, then save to PSLF, though the order may change depending on which process seems smarter / easier)
 	\item[2 b.] Power Flow Solution : Using the PSLF powerflow solver allows the system to find balance. If slack error is too great, the error will be sent back to the beginning of the Distribution Step to be processed  by non-Slack generators again. Note: Since this computation happens at the end of the Distribution Step, it may not be a unique step and more of a "while: slack error $>$ some error tolerance".\\
 	Once the slack bus is below error, Electric power has been adequately distributed and will be sent to the Dynamics step as well as being summed for the next time step.
-	\item[3.] Dynamics step: Using current and history values, agent related models are simulated to calculate responses to the change in accelerating power and frequency. This will probably involve state space solutions to ODEs (transfer functions) and numerical integration (PSLF uses Adams-Bashforth). Additionally, prioritization may have to occur so that proper 'model chains' may be executed in a realistic manner.
+	\item[3.] Dynamics step: Using current and history values, agent related models are simulated to calculate responses to the change in accelerating power and frequency. This will probably involve state space solutions to ODEs (transfer functions) and numerical integration (PSLF uses Adams-Bashforth, a different method may have to be used due to timestep size). Additionally, prioritization may have to occur so that proper 'model chains' may be executed in a realistic manner.
 \end{enumerate}
 
 

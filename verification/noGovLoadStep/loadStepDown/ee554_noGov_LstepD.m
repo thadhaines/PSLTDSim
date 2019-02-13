@@ -35,8 +35,11 @@ load('noGovStepDAB.mat') % ab
 load('noGovStepDABw.mat') % ab freq fx
 load('noGovStepDE.mat') % euler
 load('noGovStepDEw.mat') % euler freq fx
-t_1 = noGovStepDE.t;
-f_1 = noGovStepDE.f;
+
+load('quickie.mat')
+noGovStepDE = quickie;
+t_1 = quickie.t;
+f_1 = quickie.f;
 
 %% Color definitions
 pltC.grey = [.7, .7, .7];

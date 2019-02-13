@@ -12,16 +12,15 @@ class Model(object):
         """Carries out initialization 
         This includes: PSLF, python mirror, and dynamics
         """
-        
         global PSLF
         from datetime import datetime
 
         __module__= "Model"
         # Model Meta Data
         self.created = datetime.now()
-        self.notes = "This is a place for a useful notes or comments about the system."
+        self.notes = """Notes"""
 
-        # Simulation Parameters
+        # Simulation Parameters from User
         self.simParams = simParams
         self.locations = locations
         self.timeStep = simParams['timeStep']
@@ -37,7 +36,7 @@ class Model(object):
         # ss_ .. system sum
         # r_ ... running (time series)
 
-        self.c_dp = 0 # current data Point
+        self.c_dp = 0 # current data point
         self.c_t = 0.0
 
         self.c_f = 1.0
@@ -86,8 +85,8 @@ class Model(object):
                 print("*** Error Caught")
                 print(e)
 
-        # init_mirror
-        ## Case Parameters
+        # Initialize mirror system (environment)
+        ## Collect Case Parameters from PSLF
         self.Ngen = PSLF.GetCasepar('Ngen')
         self.Nbus = PSLF.GetCasepar('Nbus')
         self.Nload = PSLF.GetCasepar('Nload')
@@ -103,10 +102,9 @@ class Model(object):
         self.Load = []
         self.Slack = []
         self.Perturbance = []
-
         self.Dynamics = []
 
-
+        # initialize mirror = 
         self.init_mirror()
         self.findGlobalSlack()
 
@@ -117,10 +115,11 @@ class Model(object):
         self.Log = [self] + self.Load + self.Bus + self.Machines
 
         # Check mirror accuracy in each Area, create machines list for each area
-        for x in range(self.Narea):
-            valid = self.Area[x].checkArea()
+        for c_area in range(self.Narea):
+            if self.debug: print("*** Verifying area data...")
+            valid = self.Area[c_area].checkArea()
             if valid != 0:
-                print("Mirror inaccurate in Area %d, error code: %d" % (x, valid))
+                print("Mirror inaccurate in Area %d, error code: %d" % (c_area, valid))
 
         # init_dynamics
         self.PSLFmach = []
@@ -134,16 +133,18 @@ class Model(object):
         # link H and mbase to mirror
         self.init_H()
 
-        # Handle system inertia
+        # Handle user input system inertia
         # NOTE: H is typically MW*sec unless noted as PU or in PSLF models
         if self.Hinput > 0.0:
             self.Hsys = self.Hinput
         else:
             self.Hsys = self.ss_H
 
+        print("*** Python Mirror intialized.")
+
     # Initiazliaze Methods
     def init_mirror(self):
-        """Create python mirror of PSLF system
+        """Create python mirror of PSLF system by 'crawling' area busses
         Handles Buses, Generators, and Loads
         Uses col
         TODO: Add agents for every object: shunts, SVD, xfmr, branch sections, ...
@@ -160,6 +161,7 @@ class Model(object):
         f_load = 0
 
         if self.debug: 
+            print("*** Crawling system for agents...")
             print("Extnum\tgen\tload\tBusnam")
 
         while f_bus < self.Nbus:
@@ -243,26 +245,27 @@ class Model(object):
     def init_H(self):
         """Link H and Mbase from PSLF dyd dynamic models to mirror machines
         Will calculate ss_H
-        Will account for multiple gens on same bus using Busnam as 2nd check (possibly extra/non useful)
         """
-        # pdmod = pslf dynamic model
-        for pdmod in range(len(self.PSLFmach)):
-            for gen in range(len(self.Machines)):
-                b_check = self.PSLFmach[pdmod].Busnum == self.Machines[gen].Busnum
-                n_check = self.PSLFmach[pdmod].Busnam == self.Machines[gen].Busnam
-                if self.debug:
-                    #NOTE: this printout shows a double check isn't useful as currently implemented
-                    print(b_check, n_check)
-                if (b_check == 1) and (n_check == 1):
-                    self.Machines[gen].Hpu = self.PSLFmach[pdmod].H
-                    self.Machines[gen].MbaseDYD = self.PSLFmach[pdmod].Mbase
-                    # NOTE: PSLF .sav Mbase and .dyd Mbase may be different
-                    # dyd values overwrite any sav values (Via PSLF user manual)
-                    self.Machines[gen].H = self.PSLFmach[pdmod].H *self.PSLFmach[pdmod].Mbase
-                    self.ss_H += self.Machines[gen].H 
-                    # add refernece to PSLF machine model in python mirror
-                    self.Machines[gen].machine_model.append(self.PSLFmach[pdmod])
-                    break
+        # pdmod = pSLF dYNAMIC modLE
+        if self.debug: print("*** Linking PSLF H to python environment...")
+        linkedModels = 0
+
+        for pdmod in range(len(self.PSLFmach)): # for each found pslf model
+            mirrorGen = findGenOnBus(self, self.PSLFmach[pdmod].Busnum)
+
+            if mirrorGen:
+                mirrorGen.Hpu = self.PSLFmach[pdmod].H
+                mirrorGen.MbaseDYD = self.PSLFmach[pdmod].Mbase
+                # NOTE: PSLF .sav Mbase and .dyd Mbase may be different
+                # dyd values overwrite any sav values (Via PSLF user manual)
+                mirrorGen.H = self.PSLFmach[pdmod].H *self.PSLFmach[pdmod].Mbase
+                self.ss_H += mirrorGen.H 
+                # add refernece to PSLF machine model in python mirror
+                mirrorGen.machine_model.append(self.PSLFmach[pdmod])
+                if self.debug: print("PSLF model linked to %s" % mirrorGen)
+                linkedModels +=1
+
+        if self.debug: print("*** Linked %d/%d PSLF models to system." % (linkedModels,len(self.PSLFmach)))
 
     def findGlobalSlack(self):
         """Locates and sets the global slack generator"""
@@ -277,39 +280,51 @@ class Model(object):
     def runSim(self):
         """Function to run LTD simulation"""
         print("\n*** Starting Simulation")
-        
-        # handle initalization value of Pe for [c_dp-1] functionality
-        # NOTE: will have to add more history values to use adams-bashforth integration
+        # set flag for non-convergence
+        sysCrash = 0
+
+        # Initalization value of Pe for [c_dp-1] functionality
+        # NOTE: python does negative indexing, 
+        # These values are appeneded now and popped once simulation ends
         self.r_ss_Pe.append(self.sumPe())
         self.r_ss_Pacc.append(0.0)
         self.r_f.append(1.0)
+        self.r_fdot.append(0.0)
 
+        # Step Initialize Dynamic Agents
         for x in range(len(self.Dynamics)):
                 self.Dynamics[x].stepInitDynamics()        
 
+        # Start Simulation loop
         while self.c_t <= self.endTime:
             print("\n*** Data Point %d" % self.c_dp)
             print("*** Simulation time: %.2f" % (self.c_t))
 
-            # step System Wide dynamics
+            # Step System Wide dynamics
             combinedSwing(self, self.ss_Pacc)
+            if self.c_f <= 0.0:
+                # check for silly frequency
+                N = self.c_dp - 1
+                sysCrash = 1
+                break;
 
-            # step Individual Agent Dynamics
-            # TODO: Investigate Pe, Pm link with multiple pgov1
+            # Step Individual Agent Dynamics
             for x in range(len(self.Dynamics)):
                 self.Dynamics[x].stepDynamics()
 
-            # TEST: setting pe = (pm+pe)/2
+            # set pe = pm (dynamic action)
             for x in range(len(self.Machines)):
-                self.Machines[x].Pe = (self.Machines[x].Pm+self.Machines[x].Pe) /2
+                self.Machines[x].Pe = self.Machines[x].Pm
+            
+            # Initialize Pertrubance delta
+            self.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
+            self.ss_Pert_Qdelta = 0.0 # intended for system loss calculations
 
             # Step Perturbance Agents
-            self.ss_Pert_Pdelta = 0.0
-            self.ss_Pert_Qdelta = 0.0
             for x in range(len(self.Perturbance)):
                 self.Perturbance[x].step()
 
-            # Account for any load changes from Perturbances
+            # Sum system loads to Account for any load changes from Perturbances
             self.ss_Pload, self.ss_Qload = self.sumLoad()
 
             # Sum current system Pm 
@@ -318,22 +333,25 @@ class Model(object):
             # Calculate current system Pacc
             self.ss_Pacc = (
                 self.ss_Pm 
-                - self.r_ss_Pe[self.c_dp-1] 
+                - self.r_ss_Pe[self.c_dp-1] # Most recent PSLF sum
                 - self.ss_Pert_Pdelta
                 )
             
             # Find current system Pacc Delta
+            # NOTE: unused variable as of 2/2/19
             self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
 
-            # distribute Pacc delta to machines and solve PSLF
-            # Check for convergence
+            # Distribute Pacc to system machines Pe and solve PSLF
             try:
-                distPe(self, self.r_Pacc_delta[self.c_dp])
+                distPe(self, self.ss_Pacc )
+            # Check for convergence
             except ValueError as e:
-                # catches error thown for non-convergene
+                # Catches error thown for non-convergene
                 print("*** Error Caught, Simulation Stopping...")
                 print(e)
-                #TODO: pop useless void data from agents...
+                # Pop void data from agents that log
+                N = self.c_dp
+                sysCrash = 1
                 break;
 
             # update system Pe after PSLF power flow solution
@@ -352,9 +370,14 @@ class Model(object):
         print("    Simulation Complete\n")
 
         # remove initialization values
-        self.r_ss_Pe.pop(len(self.r_ss_Pe) -1)
-        self.r_ss_Pacc.pop(len(self.r_ss_Pacc) -1)
-        self.r_f.pop(len(self.r_f) -1)
+        if sysCrash == 1:
+            for x in range(len(self.Log)):
+                    self.Log[x].popUnsetData(N)
+        else:
+            self.r_ss_Pe.pop(len(self.r_ss_Pe) -1)
+            self.r_ss_Pacc.pop(len(self.r_ss_Pacc) -1)
+            self.r_f.pop(len(self.r_f) -1)
+            self.r_fdot.pop(len(self.r_fdot)-1)
 
     def LTD_Solve(self):
         """Solves power flow using custom solve parameters
@@ -404,14 +427,14 @@ class Model(object):
 
         #Create Perturbance Agent
         if (perType == 'Step') and targetObj:
-            # perParams = [targetAttr, tStart, newVal]
+            # perParams = [targetAttr, tStart, newVal, type='r']
             newStepAgent = LoadStepAgent(self, targetObj, perParams)
             self.Perturbance.append(newStepAgent)
-            print("Perturbance Agent added!")
+            print("*** Perturbance Agent added!")
             print(newStepAgent)
             return
 
-        print("Perturbance Agent error - not added.")
+        print("*** Perturbance Agent error - nothing added.")
 
 
     def sumPm(self):
@@ -484,6 +507,7 @@ class Model(object):
         # account for losses
         self.PLosses = self.ss_Pe - self.ss_Pload #+ self.ss_Pert_Pdelta
         self.QLosses = self.ss_Qgen - self.ss_Qload #+ self.ss_Pert_Qdelta
+
         self.ss_Pacc = self.ss_Pm - self.ss_Pe
 
     def logStep(self):
@@ -503,6 +527,24 @@ class Model(object):
         self.r_PLosses[self.c_dp] = self.PLosses
         self.r_QLosses[self.c_dp] = self.QLosses
 
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_t = self.r_t[:N]
+        self.r_f = self.r_f[:N]
+        self.r_fdot = self.r_fdot[:N]
+        self.r_deltaF = self.r_deltaF[:N]
+
+        self.r_ss_Pe = self.r_ss_Pe[:N]
+        self.r_ss_Pm = self.r_ss_Pm[:N]
+        self.r_ss_Pacc = self.r_ss_Pacc[:N]
+
+        self.r_ss_Qgen = self.r_ss_Qgen[:N]
+        self.r_ss_Qload = self.r_ss_Qload[:N]
+        self.r_ss_Pload = self.r_ss_Pload[:N]
+    
+        self.r_PLosses = self.r_PLosses[:N]
+        self.r_QLosses = self.r_QLosses[:N]
+
     def getDataDict(self):
         """Return collected data in dictionary form"""
         dt = self.created
@@ -514,7 +556,6 @@ class Model(object):
                 'locations' : self.locations,
                 'created' : dtStrYMD+' at '+dtStrHMS,
                 'notes' : self.notes,
-
             }
 
         d = {'t': self.r_t,

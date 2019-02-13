@@ -62,8 +62,9 @@ def parseDyd(model,dydLoc):
     these classes will be referenced by the model to populate dynamic properties
     """
     import __builtin__
+    if model.debug: print("*** Parsing file at %s" % dydLoc)
 
-    # TODO: test: multiple dyds...
+    # TODO: enable multi dyd overwrite
     for dyd in range(len(dydLoc)): #-> dydLoc is then replaced with dydLoc[dyd]
         file = open(dydLoc[dyd], 'r') # open file to read
         line = next(file) # get first line of file
@@ -79,7 +80,7 @@ def parseDyd(model,dydLoc):
                     continue
 
                 if line[1] == '!':
-                    # line is a custom LTD model, remove shebang
+                    # line is a custom LTD model, remove shebang and parse
                     line = line[2:]
                     
                 else:
@@ -92,7 +93,7 @@ def parseDyd(model,dydLoc):
         
             if parts[0] == "genrou":
                 if model.debug:
-                    print("testing gen %s" % parts[1])
+                    print("Creating genrou on bus %s..." % parts[1])
                 cleanLine = cleanDydStr(line)
                 newPmod = pmod.genrou(model, cleanLine)
                 model.PSLFmach.append(newPmod)

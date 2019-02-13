@@ -23,7 +23,7 @@
 
 
 %\title{Long-Term Simulation of Power System Dynamics using Time Sequenced Power Flows}
-\title{Long-Term Power System Dynamic Simulation using Time Sequenced Power Flows}
+\title{Long-Term Power System Dynamic Simulation using Time Sequenced Power-Flows}
 \author{Thad Haines}
 \institute[MT TECH]{Montana Tech - Master's Thesis Research Project}
 \date{February 5th, 2019}
@@ -47,38 +47,49 @@ What are long-term dynamics (LTD)? \tiny[1] \vspace{-2em}\\
 	\includegraphics[angle=-90,origin=c,width=1.05\linewidth]{GEtimeScales} 
 \end{figure}
 \end{frame}
-
-%------------------------------------------------
-\begin{frame}
-This simulation assumes:
-\begin{enumerate}
-	\item System remains stable.
-	\item System frequency is described by the combined PU swing equation:
-	\setcounter{assumptions}{\value{enumi}} % allow for break in counting
-\end{enumerate}
-	\[ \dot{\omega}_{sys} = \dfrac{1}{2H_{sys} } \left( \dfrac{P_{acc, sys} }{\omega_{sys}(t)} - D_{sys}\Delta\omega_{sys}(t)  \right)  \]
-\begin{enumerate}
-	\setcounter{enumi}{\value{assumptions}}
-		\item Time steps of 1 or 0.5 seconds.
-		\item Fast dynamics are 'mostly' ignored.
-\end{enumerate}
-\end{frame}
 %------------------------------------------------
 \begin{frame}
 Project Goals:
 \begin{itemize}
-	\item Develop computer software for LTD simulations using PSLF systems $(.sav)$, dynamic data $(.dyd)$, and customized dynamic models.
-	\item Use software to investigate system reactions that may be impractical to simulate using other approaches.
-	\item Write a master's thesis about it.
+	\item Develop software for LTD simulations.
+	\item Use PSLF:
+	\begin{itemize}
+		\item Systems ($.sav$ files)
+		\item Dynamic data ($.dyd$ files)
+		\item Power-flow solver
+	\end{itemize}
+	\item Create dynamic models compatible with LTD time steps.
+	\item Investigate long-term events.
+	\begin{itemize}
+		\item AGC
+		\item Wind ramps
+	\end{itemize}
 \end{itemize}
-
 \end{frame}
 %------------------------------------------------
+
 %************************************************
 \section{Simulation Model}
 %________________________________________________
-\subsection{Coding decisions, approaches, and software operation.}
+\subsection{Assumptions, Coding Decisions, Approaches, and Software Operation.}
 %------------------------------------------------
+\begin{frame}
+This simulation assumes:
+\begin{enumerate}
+\item Time steps of 0.5 to 1 second.
+\item Fast dynamics are 'mostly' ignored.
+\item System remains synchronized.
+\item System frequency is described by the combined PU swing equation:
+\setcounter{assumptions}{\value{enumi}} % allow for break in counting
+\end{enumerate}
+\[ \dot{\omega}_{sys} = \dfrac{1}{2H_{sys} } \left( \dfrac{P_{acc, sys} }{\omega_{sys}(t)} - D_{sys}\Delta\omega_{sys}(t)  \right)\] 
+\begin{enumerate}
+\setcounter{enumi}{\value{assumptions}}
+\item No system damping $(D_{sys} = 0)$.
+\end{enumerate}
+\end{frame}
+%------------------------------------------------
+
 \begin{frame}
 Python will be used because:
 \begin{itemize}
@@ -86,6 +97,7 @@ Python will be used because:
 	\item Free
 	\item Community Libraries
 	\item Object Oriented Programming (Agent-Based Modeling)
+	\item Scalability
 \end{itemize}
 \end{frame}
 %------------------------------------------------
@@ -159,7 +171,17 @@ Detailed Frequency Response
 %************************************************
 \section{Proof of Concept}
 %________________________________________________
-\subsection{Dynamic model 'pgov1' defined}
+\subsection{Dynamic model testing, 'pgov1' defined}
+%------------------------------------------------
+\begin{frame}
+EE554.sav test system:
+\vspace{-1em}\\
+\begin{figure}
+	\includegraphics[width=\linewidth]{cicuitEE554}
+\end{figure}
+\vspace{-1em}
+tgov1 added to PSLF .dyd file.
+\end{frame}
 %------------------------------------------------
 \begin{frame}[fragile]
 pgov1 : Proportional gain control of $P_M$ \\
@@ -179,44 +201,45 @@ Entered into system via parsed text file:
 \subsection{Dynamic model 'pgov1' experiment: +1 MW t=2, -1 MW t=30}
 %------------------------------------------------
 \begin{frame}
-pgov1 on Gen 1, $t_\text{step}=$1 second
+Governor on Gen 1, $t_\text{step}=$1.0 second
 \begin{figure}
-	\includegraphics[width=\linewidth]{pgov1A}
+	\includegraphics[width=\linewidth]{pgov1TestA}
 \end{figure}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-pgov1 on Gen 1, $t_\text{step}=$0.5 second
+Governor on Gen 1, $t_\text{step}=$0.5 second
 \begin{figure}
-\includegraphics[width=\linewidth]{pgov1C}
+\includegraphics[width=\linewidth]{pgov1TestC}
 \end{figure}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-pgov1 on both Gens, $t_\text{step}=$0.5 second
+Governor on Gen 1, $t_\text{step}=$0.5 second A.B.
 \begin{figure}
-	\includegraphics[width=\linewidth]{pgov1Bh}
+	\includegraphics[width=\linewidth]{pgov1TestCab}
+\end{figure}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+Governor on both Gens, $t_\text{step}=$0.5 second
+\begin{figure}
+	\includegraphics[width=\linewidth]{pgov1TestD}
 \end{figure}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-pgov1 on both Gens, $t_\text{step}=$0.5 sec., alt. $P_e$
+Governor on both Gens, $t_\text{step}=$1 second
 \begin{figure}
-	\includegraphics[width=\linewidth]{pgov1B1a}
+	\includegraphics[width=\linewidth]{pgov1TestB}
 \end{figure}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-pgov1 on both Gens, $t_\text{step}=$1 sec., alt. $P_e$
+Detail, $t_\text{step}=$1 second
 \begin{figure}
-	\includegraphics[width=\linewidth]{pgov1B1full}
-\end{figure}
-\end{frame}
-%------------------------------------------------
-\begin{frame}
-Detail, $t_\text{step}=$1 sec., alt. $P_e$
-\begin{figure}
-	\includegraphics[width=\linewidth]{pgov1B1detail}
+	\includegraphics[width=\linewidth]{pgov1TestBdetail}
 \end{figure}
 \end{frame}
 
@@ -224,10 +247,7 @@ Detail, $t_\text{step}=$1 sec., alt. $P_e$
 \section{Current Conclusions}
 %------------------------------------------------
 \begin{frame}
-\begin{itemize}
-	\item Much more work to do.
-\end{itemize}
-However,
+Conclusions
 \begin{itemize}
 	\item Frequency effects should be accounted for in swing equation.
 	\item Euler Integration tracks PSLF mean frequency well.
@@ -235,7 +255,15 @@ However,
 \end{itemize}
 \end{frame}
 %------------------------------------------------
-
+\begin{frame}
+Future Work
+\begin{itemize}
+	\item Incorporation of more PSLF objects into simulation.
+	\item Creation of additional dynamic models and agents.
+	\item Continue system and event testing and validation.
+\end{itemize}
+\end{frame}
+%------------------------------------------------
 \begin{frame}
 References\vspace{1em}\\
 %\resizebox{.8\textwidth}{.4\textheight}{

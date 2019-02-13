@@ -9,7 +9,7 @@
 %   01/20/19    08:53   init
 
 %% init
-clear; format compact; clc; close all; 
+clear; format compact; clc; %close all; 
 
 p_pos = [541 100 1366 651]; % plot position and size
 %% import pslf data

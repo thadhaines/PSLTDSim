@@ -35,6 +35,11 @@ class BusAgent(object):
         self.Vm = newBus.Vm     # Voltage Magnitude
         self.Va = newBus.Va     # Voltage Angle (radians)
 
+        # Voltage settings
+        #self.Vmax = newBus.Vmax # These values don't seem to be always set
+        #self.Vmin = newBus.Vmin
+        self.Vsched = float(newBus.Vsched)
+
         # History
         self.r_Vm = [0.0]*self.model.dataPoints
         self.r_Va = [0.0]*self.model.dataPoints
@@ -44,21 +49,44 @@ class BusAgent(object):
         tag = "Bus "+self.Busnam+" in Area "+self.Area
         return tag
 
+    def __repr__(self):
+        """Display more useful data for model"""
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s> " % (module,hex(id(self)))
+
+        # additional outputs
+        tag2 = "%s %s" %(str(self.Extnum).zfill(3), self.Busnam)
+
+        return(tag1+tag2)
+
     def getPref(self):
         """Return reference to PSLF object"""
         return col.BusDAO.FindByIndex(self.Scanbus)
 
-    def getPval(self):
+    def getPvals(self):
         """Get most recent PSLF values"""
         pObj = self.getPref()
         self.Vm = pObj.Vm
         self.Va = pObj.Va
 
+    def setPvals(self):
+        """Set PSLF values"""
+        pObj = self.getPref()
+        pObj.Vm = self.Vsched
+        pObj.Save()
+
     def logStep(self):
         """Put current values into log"""
-        self.getPval()
+        self.getPvals()
         self.r_Vm[self.model.c_dp] = self.Vm
         self.r_Va[self.model.c_dp] = self.Va
+
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_Vm = self.r_Vm[:N]
+        self.r_Va = self.r_Va[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
@@ -84,17 +112,24 @@ class GeneratorAgent(object):
         self.Busnam = newGen.GetBusName()
         self.Busnum = newGen.GetBusNumber()
         self.Scanbus = newGen.GetScanBusIndex()
-        self.St = int(newGen.St)
+
+        # Characteristic Data
         self.MbaseSAV = float(newGen.Mbase)
         self.MbaseDYD = 0.0
         self.H = 0.0
         self.Hpu = 0.0
+        self.Pmax = float(newGen.Pmax)
+        self.Qmax = float(newGen.Qmax)
+
+        # Q: Should Vsched = self.Bus.Vsched? seems better utilized in PSLF
+        self.Vsched = float(newGen.Vcsched) # This value seems unused in PSLF
 
         # Current Status
+        self.St = int(newGen.St)
         self.IRP_flag = 1       # Inertia response participant flag
-        self.Pm = float(newGen.Pgen)   # Voltage Magnitude
-        self.Pe = self.Pm       # Initialize as equal
-        self.Q = newGen.Qgen    # Q generatred       
+        self.Pe = float(newGen.Pgen)   # Generated Power
+        self.Pm = self.Pe       # Initialize as equal
+        self.Q = float(newGen.Qgen)    # Q generatred       
         
         # History 
         self.r_Pm = [0.0]*model.dataPoints
@@ -107,6 +142,18 @@ class GeneratorAgent(object):
         # TODO: implement proportional governor
         self.gov = []
         self.exc = None
+        
+    def __repr__(self):
+        """Display more useful data for model"""
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s> " % (module,hex(id(self)))
+
+        # additional outputs
+        tag2 = "%s %s" %(str(self.Busnum).zfill(3), self.Busnam)
+
+        return(tag1+tag2)
 
     def getPref(self):
         """Return reference to PSLF object"""
@@ -133,6 +180,13 @@ class GeneratorAgent(object):
         self.r_Pm[self.model.c_dp] = self.Pm
         self.r_Q[self.model.c_dp] = self.Q
         self.r_St[self.model.c_dp] = self.St
+
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_Pe = self.r_Pe[:N]
+        self.r_Pm = self.r_Pm[:N]
+        self.r_Q  =self.r_Q[:N]
+        self.r_St = self.r_St[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
@@ -169,6 +223,15 @@ class SlackAgent(GeneratorAgent):
         self.r_St[self.model.c_dp] = self.St
         self.r_Pe_calc[self.model.c_dp] = self.Pe_calc
         self.r_Pe_error[self.model.c_dp] = self.Pe_error
+
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_Pe = self.r_Pe[:N]
+        self.r_Pm = self.r_Pm[:N]
+        self.r_Q = self.r_Q[:N]
+        self.r_St = self.r_St[:N]
+        self.r_Pe_calc = self.r_Pe_calc[:N]
+        self.r_Pe_error = self.r_Pe_error[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
@@ -208,6 +271,19 @@ class LoadAgent(object):
 
         # dynamics?
 
+    def __repr__(self):
+        """Display more useful data for model"""
+        # mimic default __repr__
+        T = type(self)
+        module = T.__name__
+        tag1 =  "<%s object at %s> " % (module,hex(id(self)))
+
+        # additional outputs
+        tag2 = "%s %s" %(str(self.Bus.Extnum).zfill(3), self.Bus.Busnam)
+
+        return(tag1+tag2)
+
+
     def getPref(self):
         """Return reference to PSLF object"""
         return col.LoadDAO.FindByBusIndexAndId(self.Bus.Scanbus, self.Id)
@@ -224,6 +300,12 @@ class LoadAgent(object):
         self.r_P[self.model.c_dp] = self.P
         self.r_Q[self.model.c_dp] = self.Q
         self.r_St[self.model.c_dp] = self.St
+
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_P = self.r_P[:N]
+        self.r_Q = self.r_Q[:N]
+        self.r_St = self.r_St[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""

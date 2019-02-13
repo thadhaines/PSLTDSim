@@ -27,7 +27,7 @@ t = pslf_data.Data(:,1);
 %% import LTD data
 load('noGov.mat') % euler f integration
 load('noGovAB.mat') % adams bashforth integration
-load('noGovABHres.mat') % adams bashforth integration, 0.25 timestep
+%load('noGovABHres.mat') % adams bashforth integration, 0.25 timestep
 load('noGovABHw.mat') % accounts for freq in swing equation
 load('noGovEw.mat') % accounts for freq in swing equation
 

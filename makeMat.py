@@ -8,11 +8,16 @@ import numpy as np
 
 from loadModelDictionary import loadModelDictionary
 
-def makeMat(dictLoc, varName, delDict):
+def makeMat(dictLoc, varName, fileDirectory):
     """Create varName.mat file from system dictionary
     Meant to be run from command....
+    if fileDirectory is None, will look in current folder for file
     """
     print(sys.version)
+    if fileDirectory:
+        cwd = os.getcwd()
+        os.chdir(cwd + fileDirectory)
+
     print('Creating %s.mat from %s...' % (varName, dictLoc))
     d = loadModelDictionary(dictLoc)
 
@@ -25,6 +30,7 @@ def makeMat(dictLoc, varName, delDict):
     print(varName +'.mat saved!')
 
     # remove pickled dictionary
+    delDict = None
     if delDict:
         os.remove(dictLoc)
         print('%s Deleted.')
@@ -34,8 +40,8 @@ def makeMat(dictLoc, varName, delDict):
 if __name__ == "__main__":
     dictLoc = sys.argv[1]
     varName = sys.argv[2]
-    delDict = 0
-    makeMat(dictLoc, varName, delDict)
+    fileDirectory = sys.argv[3]
+    makeMat(dictLoc, varName, fileDirectory)
 
 """
 Results:

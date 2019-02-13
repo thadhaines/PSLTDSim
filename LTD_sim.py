@@ -8,9 +8,10 @@ import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
-print(os.getcwd())
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
+#print(os.getcwd())
 
 from parseDyd import *
 from distPe import *
@@ -18,25 +19,22 @@ from combinedSwing import *
 from findFunctions import *
 from PerturbanceAgents import *
 from pgov1Agent import *
-# imports must occur after intiPSLF.py? - Doesn't seem true anymore
 from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgent
 from Model import Model
+from makeModelDictionary import makeModelDictionary
+from saveModelDictionary import saveModelDictionary
 
 execfile('mergeDicts.py')
 
 simNotes = """
-Gov on gen 1 and 2, 
-sim time = 60 seconds, step now 1 MW down and then up.
-changed slackTol to 5. Timestep = 0.5
-expected SS freq = 1
-added test of setting machine Pe = (Pm+Pe)/2 AFTER dynamic step
+Initial test of GE 4 machine, 2 area system.
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.5,
     'endTime': 60.0,
-    'slackTol': 5.0,
+    'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
@@ -45,18 +43,19 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileName' : 'pgov1TestB1a',
+    'fileDirectory' : r"\\verification\\GE4machine\\", # relative path must exist before simulation
+    'fileName' : 'ge4test01',
     'exportDict' : 1,
     'exportMat': 1, # requies exportDict == 1 to work
     }
 
 # fast debug case switching
-# TODO: test multiple dyd by putting dydPath in a list
-test_case = 0
+# TODO: enable new dyd replacement
+test_case = 4
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
-              r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd",
+               #r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd", #pgov1 on gen 2
                ]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
@@ -68,8 +67,11 @@ elif test_case == 3:
     # Will no longer run due to parser errors
     savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
     dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
+elif test_case == 4:
+    savPath = r"C:\LTD\pslf_systems\GE_ex\g4_a.sav"
+    dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",]
 
-# Required Paths
+# Required Paths Dictionary
 locations = {
     # full path to middleware dll
     'fullMiddlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
@@ -80,7 +82,7 @@ locations = {
     }
 del savPath, dydPath
 
-# these files will change after refactor
+# these files will change after refactor, required after locations definition
 execfile('initPSLF.py')
 execfile('makeGlobals.py')
 
@@ -88,20 +90,22 @@ execfile('makeGlobals.py')
 mir = Model(locations, simParams, 1)
 
 # Pertrubances configured for test case (eele)
-mir.addPert('Load',[3],'Step',['P',2,101]) # quick 2 MW step
-mir.addPert('Load',[3],'Step',['P',30,100]) # quick 2 MW step
-#mir.addPert('Load',[3],'Step',['P',2,80]) # step load down to 80 MW 
-#mir.addPert('Load',[3],'Step',['P',42,110]) # step load up to 110 MW
-#mir.addPert('Load',[3,'2'],'Step',['St',2,1]) # step 20 MW load bus on 
+# step up and down (pgov test)
+#mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
+#mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
+
+# GE 4 machine test
+mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up at t=2
+mir.addPert('Load',[5],'Step',['P',22,-4,'rel']) # step back to normalt 20 seconds later
 
 mir.runSim()
 
-mir.notes = simNotes
+mir.notes = simNotes # update notes before export
 
-# Terminal display output
+# Terminal display output for immediate results
 print("Log and Step check of Load, Pacc, and sys f:")
 print("Time\tSt\tPacc\tsys f\tdelta f\t\tSlackPe\tGen2Pe")
-for x in range(mir.c_dp):
+for x in range(mir.c_dp-1):
     print("%d\t%d\t%.2f\t%.5f\t%.6f\t%.2f\t%.2f" % (
         mir.r_t[x],
         mir.Load[0].r_St[x],
@@ -114,23 +118,22 @@ print('End of simulation data.')
 
 # Data export
 if simParams['exportDict']:
-    from makeModelDictionary import makeModelDictionary
-    from saveModelDictionary import saveModelDictionary
+    # Change current working directory to data destination.
+    cwd = os.getcwd()
+    if simParams['fileDirectory'] :
+        os.chdir(cwd + simParams['fileDirectory'])
+
     dictName = simParams['fileName']
     D = makeModelDictionary(mir)
     savedName = saveModelDictionary(D,dictName)
+    os.chdir(cwd)
 
     if  simParams['exportMat']:
         # use cmd to run python 3 32 bit script...
-        cmd = "py -3-32 makeMat.py " + savedName +" " + dictName + " 0"
+        cmd = "py -3-32 makeMat.py " + savedName +" " + dictName  + " "+ simParams['fileDirectory'] 
 
         matProc = subprocess.Popen(cmd)
         matReturnCode = matProc.wait()
         matProc.send_signal(signal.SIGTERM)
-
-# attempts to delete .pkl file fails -> in use by another process, reslove?
-#del matProc
-#os.remove(savedName)
-#print('%s Deleted.' % savedName)
 
 # raw_input("Press <Enter> to Continue. . . . ") # Not always needed to hold open console
