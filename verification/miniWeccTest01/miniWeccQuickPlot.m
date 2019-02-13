@@ -9,6 +9,7 @@
 %   02/03/19    14:05   init
 %   02/03/19    14:05   addition of multiple loads and legend
 %   02/04/19    18:40   correction of slack info, more legends
+%   02/13/19    14:40   addition of x,y labels.
 
 %% init
 clear; format compact; clc; close all;
@@ -17,10 +18,14 @@ clear; format compact; clc; close all;
 makeLegend = 1;
 debug = 0;
 
-%% import LTD data
-dataName = 'miniWeccTest02.mat' % 'plotTest01.mat'%
-% Assumes 1 generator or load per bus... Dictionary does have info available to allow for better looping
+%% import LTD data = Only field that requires user editing 
+dataName = 'plotTest01.mat'% 'miniWeccTest02.mat' % 
 
+% Assumes 1 generator or load per bus... 
+% Dictionary does have info available to allow for better looping
+% TODO: add functionality to loop though multiple gens per bus
+
+%% Handle data in a universal way
 load(dataName)
 dataName = strsplit(dataName,'.');
 % universalise input
@@ -34,6 +39,9 @@ title('System Frequency')
 hold on
 plot(mir.t,mir.f)
 grid on
+xlabel('Time [sec]')
+ylabel('Frequency [pu]')
+
 %% plot all load power in all areas with state == 1
 figure
 title('System P Loading')
@@ -65,8 +73,10 @@ for area = 1:max(size(mir.areaN)) % for each area
 end
 if makeLegend
     legend(legNames)
-    grid on
 end
+grid on
+xlabel('Time [sec]')
+ylabel('Load [MW]')
 clear area curArea areaBus load curLoad P St curLoadbus loadOnBus name legNames
 
 %% plot all gen Pe from all areas
@@ -98,8 +108,10 @@ for area = 1:max(size(mir.areaN)) % for each area
 end
 if makeLegend
     legend(legNames)
-    grid on
 end
+grid on
+xlabel('Time [sec]')
+ylabel('Power [MW]')
 clear area curArea gen curGen slack curSlack legNames name
 
 %% plot all gen Q from all areas
@@ -131,8 +143,10 @@ for area = 1:max(size(mir.areaN)) % for each area
 end
 if makeLegend
     legend(legNames)
-    grid on
 end
+grid on
+xlabel('Time [sec]')
+ylabel('Reactive Power [MVAR]')
 clear area curArea gen curGen slack curSlack legNames name
 
 %% plot all bus voltages from all areas
@@ -176,7 +190,11 @@ if makeLegend
     legend(legNames)
     grid on
 end
+grid on
+xlabel('Time [sec]')
+ylabel('Voltage [pu]')
 
+% Angle Plot
 subplot(2, 1, 2)
 title('System Bus Angles')
 hold on
@@ -215,6 +233,9 @@ end
 
 if makeLegend
     legend(legNames)
-    grid on
 end
+grid on
+xlabel('Time [sec]')
+ylabel('Angle [degree]')
+
 clear area curArea slack gen load xbus curLoad curLoadbus curXbus curGen curSlack legNames name

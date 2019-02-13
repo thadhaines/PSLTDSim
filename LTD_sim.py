@@ -10,6 +10,7 @@ import __builtin__
 print(os.getcwd())
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
 #print(os.getcwd())
 
 from parseDyd import *

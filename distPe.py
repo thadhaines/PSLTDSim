@@ -6,7 +6,7 @@ def distPe(model, deltaPacc):
         Each system has 1 global slack generator
 
     NOTE: pretty rough on the mulitple slack generator handling (i.e. untested)
-    TODO: account for status, IRP_flag, and mw limits of generators
+    TODO: account for status, IRP_flag, and mw limits of generators (Pmax)
     """
     fp_Flag = 1
     tol_Flag = 1 # goes to zero once error < tolerance
@@ -21,8 +21,6 @@ def distPe(model, deltaPacc):
     for gen in range(len(model.Slack)):
         if model.Slack[gen].globalSlack:
             globalSlack = model.Slack[gen]
-    
-
 
     while tol_Flag:
         print("*** LTD: Distributing %.2f MW of Pacc, Iteration %d" % (Pacc, iteration))
@@ -52,6 +50,8 @@ def distPe(model, deltaPacc):
             for c_gen in range(len(gens)):
                 gens[c_gen].Pe = gens[c_gen].Pe - Pacc * (gens[c_gen].H/HsysDist) 
                 gens[c_gen].setPvals()
+                # ensure Vsched in PSLF is correct
+                gens[c_gen].Bus.setPvals()
 
         # Pe is distributed to all generators in all areas, solve Power flow
         model.LTD_Solve()
