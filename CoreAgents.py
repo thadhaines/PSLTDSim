@@ -35,6 +35,11 @@ class BusAgent(object):
         self.Vm = newBus.Vm     # Voltage Magnitude
         self.Va = newBus.Va     # Voltage Angle (radians)
 
+        # Voltage settings
+        #self.Vmax = newBus.Vmax # These values don't seem to be always set
+        #self.Vmin = newBus.Vmin
+        self.Vsched = float(newBus.Vsched)
+
         # History
         self.r_Vm = [0.0]*self.model.dataPoints
         self.r_Va = [0.0]*self.model.dataPoints
@@ -60,15 +65,21 @@ class BusAgent(object):
         """Return reference to PSLF object"""
         return col.BusDAO.FindByIndex(self.Scanbus)
 
-    def getPval(self):
+    def getPvals(self):
         """Get most recent PSLF values"""
         pObj = self.getPref()
         self.Vm = pObj.Vm
         self.Va = pObj.Va
 
+    def setPvals(self):
+        """Set PSLF values"""
+        pObj = self.getPref()
+        pObj.Vm = self.Vsched
+        pObj.Save()
+
     def logStep(self):
         """Put current values into log"""
-        self.getPval()
+        self.getPvals()
         self.r_Vm[self.model.c_dp] = self.Vm
         self.r_Va[self.model.c_dp] = self.Va
 
@@ -101,17 +112,24 @@ class GeneratorAgent(object):
         self.Busnam = newGen.GetBusName()
         self.Busnum = newGen.GetBusNumber()
         self.Scanbus = newGen.GetScanBusIndex()
-        self.St = int(newGen.St)
+
+        # Characteristic Data
         self.MbaseSAV = float(newGen.Mbase)
         self.MbaseDYD = 0.0
         self.H = 0.0
         self.Hpu = 0.0
+        self.Pmax = float(newGen.Pmax)
+        self.Qmax = float(newGen.Qmax)
+
+        # Q: Should Vsched = self.Bus.Vsched? seems better utilized in PSLF
+        self.Vsched = float(newGen.Vcsched) # This value seems unused in PSLF
 
         # Current Status
+        self.St = int(newGen.St)
         self.IRP_flag = 1       # Inertia response participant flag
-        self.Pm = float(newGen.Pgen)   # Voltage Magnitude
-        self.Pe = self.Pm       # Initialize as equal
-        self.Q = newGen.Qgen    # Q generatred       
+        self.Pe = float(newGen.Pgen)   # Generated Power
+        self.Pm = self.Pe       # Initialize as equal
+        self.Q = float(newGen.Qgen)    # Q generatred       
         
         # History 
         self.r_Pm = [0.0]*model.dataPoints

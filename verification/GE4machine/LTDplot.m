@@ -1,4 +1,4 @@
-%%  miniWeccQuickPlot.m
+%%  LTDplot.m
 %   Thad Haines         Research
 %   Program Purpose:    Import data from LTD .mat
 %                       Make plots
@@ -6,10 +6,7 @@
 
 %
 %   History:
-%   02/03/19    14:05   init
-%   02/03/19    14:05   addition of multiple loads and legend
-%   02/04/19    18:40   correction of slack info, more legends
-%   02/13/19    14:40   addition of x,y labels.
+%   02/13/19    10:14   'fork' from developement file
 
 %% init
 clear; format compact; clc; close all;
@@ -19,7 +16,7 @@ makeLegend = 1;
 debug = 0;
 
 %% import LTD data = Only field that requires user editing 
-dataName = 'plotTest01.mat'% 'miniWeccTest02.mat' % 
+dataName = 'ge4test01.mat'
 
 % Assumes 1 generator or load per bus... 
 % Dictionary does have info available to allow for better looping
@@ -53,7 +50,7 @@ for area = 1:max(size(mir.areaN)) % for each area
     end
     curArea = ['A',int2str(area)];
     
-    for load = 1:max(size(mir.(curArea).loadBusN))-1
+    for load = 1:max(size(mir.(curArea).loadBusN))
         curLoadbus = ['L',int2str(mir.(curArea).loadBusN(load))];
         if debug
             disp(curLoadbus)
@@ -77,7 +74,7 @@ end
 grid on
 xlabel('Time [sec]')
 ylabel('Load [MW]')
-clear area curArea areaBus load curLoad P St curLoadbus loadOnBus name legNames
+clear area curArea areaBus load curLoad P St curLoadbus loadOnBus name %legNames
 
 %% plot all gen Pe from all areas
 figure
