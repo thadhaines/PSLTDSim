@@ -385,15 +385,7 @@ class Model(object):
         Only option not default is area interchange adjustment (turned off)
         """
         global PSLF
-        """
-        # open 2 fds
-        null_fds = [os.open(os.devnull, os.O_RDWR) for x in xrange(2)]
-        # save the current file descriptors to a tuple
-        save = os.dup(1), os.dup(2)
-        # put /dev/null fds on 1 and 2
-        os.dup2(null_fds[0], 1)
-        os.dup2(null_fds[1], 2)
-        """
+        
         errorCode = PSLF.SolveCase(
             25, # maxIterations, Solpar.Itnrmx
 	        0, 	# iterationsBeforeVarLimits, Solpar.Itnrvl
@@ -406,14 +398,7 @@ class Model(object):
 	        1,	# solnType, 1 == full, 2 == DC, 3 == decoupled 
 	        0,  # reorder (in dypar default = 0)
             )
-
-        # restore file descriptors so I can print the results
-        os.dup2(save[0], 1)
-        os.dup2(save[1], 2)
-        # close the temporary fds
-        os.close(null_fds[0])
-        os.close(null_fds[1])
-
+        
         if self.debug: print('Power Flow Solution returns: %d' % errorCode)
 
         if errorCode == -1:

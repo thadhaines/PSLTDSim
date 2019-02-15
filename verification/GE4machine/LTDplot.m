@@ -111,6 +111,41 @@ xlabel('Time [sec]')
 ylabel('Power [MW]')
 clear area curArea gen curGen slack curSlack legNames name
 
+%% plot all gen Pm from all areas
+figure
+title('System Pm Generated')
+hold on
+legNames ={};
+for area = 1:max(size(mir.areaN)) % for each area
+    if debug
+        fprintf('area %d\n',mir.areaN(area) )
+    end
+    curArea = ['A',int2str(area)];
+    
+    for slack = 1:max(size(mir.(curArea).slackBusN))
+        curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
+        stairs(mir.t, mir.(curArea).(curSlack).S1.Pm)
+        name = [(curArea),'.',(curSlack)];
+        legNames{end+1} = name;
+    end
+    for gen = 1:max(size(mir.(curArea).genBusN))
+        curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
+        % place for for each gen in Ngen...
+        
+        stairs(mir.t, mir.(curArea).(curGen).G1.Pm)
+        name = [(curArea),'.',(curGen)];
+        legNames{end+1} = name;
+    end
+    
+end
+if makeLegend
+    legend(legNames)
+end
+grid on
+xlabel('Time [sec]')
+ylabel('Mechanical Power [MW]')
+clear area curArea gen curGen slack curSlack legNames name
+
 %% plot all gen Q from all areas
 figure
 title('System Q Generated')

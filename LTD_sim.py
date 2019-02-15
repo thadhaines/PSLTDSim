@@ -8,8 +8,8 @@ import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 #os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
 #print(os.getcwd())
 
@@ -33,7 +33,7 @@ Initial test of GE 4 machine, 2 area system.
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.5,
-    'endTime': 60.0,
+    'endTime': 120.0,
     'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
@@ -69,7 +69,9 @@ elif test_case == 3:
     dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
 elif test_case == 4:
     savPath = r"C:\LTD\pslf_systems\GE_ex\g4_a.sav"
-    dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",]
+    dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",
+               r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd", #pgov1 on slacks
+               ]
 
 # Required Paths Dictionary
 locations = {
@@ -95,8 +97,12 @@ mir = Model(locations, simParams, 1)
 #mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
 
 # GE 4 machine test
-mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up at t=2
-mir.addPert('Load',[5],'Step',['P',22,-4,'rel']) # step back to normalt 20 seconds later
+mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up
+mir.addPert('Load',[5],'Step',['P',52,-4,'rel']) # step back to normal
+
+mir.addPert('Load',[6],'Step',['P',15,4,'rel']) # step 4 MW up
+mir.addPert('Load',[6],'Step',['P',25,4,'rel']) # step 4 MW up
+mir.addPert('Load',[6],'Step',['P',55,-8,'rel']) # step back to normal
 
 mir.runSim()
 
