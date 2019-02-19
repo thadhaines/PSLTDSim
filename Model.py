@@ -167,7 +167,8 @@ class Model(object):
         while f_bus < self.Nbus:
             #while not all busses are found
             a_busses = col.AreaDAO.FindBusesInArea(c_area)
-            n_bus = len(a_busses)
+            #n_bus = len(a_busses)
+            n_bus = a_busses.Count
             if n_bus > 0:
                 #If Current area has buses
                 newAreaAgent = AreaAgent(self, c_area)
@@ -177,8 +178,11 @@ class Model(object):
                     #for each found bus
                     self.incorporateBus(a_busses[c_bus], newAreaAgent)
                     c_ScanBus = a_busses[c_bus].GetScanBusIndex()
-                    n_gen = len(col.GeneratorDAO.FindByBus(c_ScanBus))
-                    n_load = len(col.LoadDAO.FindByBus(c_ScanBus))
+                    #n_gen = len(col.GeneratorDAO.FindByBus(c_ScanBus))
+                    n_gen = col.GeneratorDAO.FindByBus(c_ScanBus).Count
+                    #n_load = len(col.LoadDAO.FindByBus(c_ScanBus))
+                    n_load = col.LoadDAO.FindByBus(c_ScanBus).Count
+
                     f_gen += n_gen
                     f_load += n_load
 
@@ -278,6 +282,9 @@ class Model(object):
 
     # Simulation Methods
     def runSim(self):
+        noPrintStr = "dispar[0].noprint = 1"
+        PSLF.RunEpcl(noPrintStr)
+
         """Function to run LTD simulation"""
         print("\n*** Starting Simulation")
         # set flag for non-convergence

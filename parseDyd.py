@@ -61,7 +61,7 @@ def parseDyd(model,dydLoc):
     Will parse particular dyd models to intermediate classes
     these classes will be referenced by the model to populate dynamic properties
     """
-    import __builtin__
+    #import __builtin__
     if model.debug: print("*** Parsing file at %s" % dydLoc)
 
     # TODO: enable multi dyd overwrite

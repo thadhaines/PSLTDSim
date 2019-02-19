@@ -26,7 +26,8 @@ class genrou(object):
         self.Zone = parts[4]
         self.Rlevel = parts[5]
 
-        if isinstance(parts[6], basestring):
+        #if isinstance(parts[6], basestring):
+        if isinstance(parts[6], str):
             #if '=' in parts[6]:
             mbase = parts[6].split('=')
             self.Mbase = float(mbase[1]) # in MVA

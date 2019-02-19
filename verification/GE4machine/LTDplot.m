@@ -16,7 +16,7 @@ makeLegend = 1;
 debug = 0;
 
 %% import LTD data = Only field that requires user editing 
-dataName = 'ge4test01.mat'
+dataName = 'varName01.mat'
 
 % Assumes 1 generator or load per bus... 
 % Dictionary does have info available to allow for better looping

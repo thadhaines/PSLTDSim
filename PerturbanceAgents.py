@@ -17,6 +17,8 @@ class LoadStepAgent(object):
         self.tStart = perParams[1]
         self.newVal = perParams[2]
 
+        
+
         if len(perParams) > 3 :
             self.stepType = perParams[3]
         else:
@@ -51,14 +53,19 @@ class LoadStepAgent(object):
                 # Perform Perturbance step
                 # Get most recent PSLF reference
                 pObj = self.mObj.getPref()
+                # for EPCL code string
+                self.sb = str(pObj.get__Idx())
+
                 # Update correct attribute in PSLF
                 if self.attr == 'St':
                     if self.newVal == 1:
-                        pObj.SetInService()
+                        #pObj.SetInService()
+                        pertStr = ("load[%s].st = 1" % self.sb)
                         self.model.ss_Pert_Pdelta += pObj.P
                         self.model.ss_Pert_Qdelta += pObj.Q
                     else:
-                        pObj.SetOutOfService()
+                        #pObj.SetOutOfService()
+                        pertStr = ("load[%s].st = 0" % self.sb)
                         self.model.ss_Pert_Pdelta -= pObj.P
                         self.model.ss_Pert_Qdelta -= pObj.Q
 
@@ -69,15 +76,18 @@ class LoadStepAgent(object):
                     else:
                         pObj.P = self.newVal # absolute step
 
+                    pertStr = ("load[%s].p = %f" % (self.sb, pObj.P))
                     self.model.ss_Pert_Pdelta += pObj.P - oldVal
 
                 elif self.attr == 'Q':
                     oldVal = pObj.Q
                     pObj.Q = self.newVal
+                    pertStr = ("load[%s].q = %f" % (self.sb,pObj.Q))
                     model.ss_Pert_Qdelta += self.newVal - oldVal
 
                 # Save Changes in PSLF
-                pObj.Save()
+                #pObj.Save()
+                PSLF.RunEpcl(pertStr)
                 # Update mirror
                 self.mObj.getPvals()
 
