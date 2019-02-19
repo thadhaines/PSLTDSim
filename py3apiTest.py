@@ -23,3 +23,13 @@ print(load.p)
 gen = pslf_queries.find_generator_by_index(0)
 #print gen0 pgen 
 print(gen.pgen)
+
+#crash by running a bunch of epcl
+#OSError: exception: access violation writing 0x0000BB80
+limit = 1738+1
+input("Note non useful above return values - continue to crash via repeated EPCL runs")
+n=0
+while n<limit:
+    n+=1
+    pslf_core.run_epcl("dispar[0].noprint = 1")
+    print(n)

@@ -31,6 +31,7 @@ pythonP = load.P
 epclTest = ("load[%d].p = load[%d].p + %f" % (id,id,Pload))
 while n < limit:
     n+=1
+    #PSLF.RunEpcl("dispar[0].noprint = 1") # also crashes if this is ran instead
     PSLF.RunEpcl(epclTest)
     pythonP += Pload
     pslfP = col.LoadDAO.FindByBusIndexAndId(4, '1').P
