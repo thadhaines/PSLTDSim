@@ -1,6 +1,6 @@
 """Developement file that acts as main"""
 """VS may require default ironpython environment (no bit declaration)"""
-ver = True # for attempting version 3, set to None otherwise
+ver = False # for attempting version 3, set to None otherwise
 
 import os
 import subprocess
@@ -16,7 +16,7 @@ else:
 print(os.getcwd())
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
-os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
 print(os.getcwd())
 
 from parseDyd import *
@@ -37,13 +37,13 @@ else:
 
 
 simNotes = """
-Initial test of GE 4 machine, 2 area system.
+Retest of ipy code before refactor - simple step up and down with govs
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1.0,
-    'endTime': 30.0,
+    'timeStep': 0.5,
+    'endTime': 60.0,
     'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
@@ -53,15 +53,15 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileDirectory' : r"\\verification\\GE4machine\\", # relative path must exist before simulation
-    'fileName' : 'ge4test01',
-    'exportDict' : 0, # when using python 3 no need to export dicts.
+    'fileDirectory' : r"\\verification\\pgov1\\", # relative path must exist before simulation
+    'fileName' : 'pgovAgain01',
+    'exportDict' : 1, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
     }
 
 # fast debug case switching
 # TODO: enable new dyd replacement
-test_case = 4
+test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
@@ -88,8 +88,7 @@ locations = {
     # full path to middleware dll
     'fullMiddlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
     # path to folder containing PSLF license
-    #'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
-    'pslfPath':  r"C:\upslf19",
+    'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
     'savPath' : savPath,
     'dydPath': dydPath,
     }
@@ -104,16 +103,17 @@ else:
     execfile('initPSLF.py')
     execfile('makeGlobals.py')
 
+PSLF.RunEpcl("dispar[0].noprint = 1") # turn off terminal solution details
 # mirror arguments: locations, simParams, debug flag
 mir = Model(locations, simParams, 1)
 
 # Pertrubances configured for test case (eele)
 # step up and down (pgov test)
-#mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
-#mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
+mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
+mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
 
 # GE 4 machine test
-mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up
+#mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up
 #mir.addPert('Load',[5],'Step',['P',52,-4,'rel']) # step back to normal
 #mir.addPert('Load',[5],'Step',['St',2,0]) # turn load off
 #mir.addPert('Load',[5],'Step',['St',3,1]) # turn load on
@@ -123,51 +123,6 @@ mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up
 
 mir.runSim()
 
-"""
-# Testing of repeated epcl calling
-n=0
-limit = 1545
-noPrintStr = "dispar[0].noprint = 1"
-PSLF.RunEpcl(noPrintStr)
-Pload = 0.01
-import time
-while n <limit:
-    n+=1
-    a=mir.Load[0].getPref()
-    sb = str(a.get__Idx())
-    epclTest = ("load[%s].p = load[%s].p + %f" % (sb,sb,Pload))
-    
-    #PSLF.RunEpclScript('test.p') # gets 1541 before crash
-    PSLF.RunEpcl(epclTest) # gets 1540 before crash. memory leak...
-
-    b=mir.Load[0].getPref()
-    mir.Load[0].getPvals() 
-
-    dif = abs(mir.Load[0].P- b.P)/Pload
-    print("%d\t%.2f\tPSLF: %f\tPython: %f" %(n, dif, b.P, mir.Load[0].P))
-    #mir.LTD_Solve() # this line not problem
-
-    del a
-    del b
-    del sb
-    del dif
-
-    if (n%1500 == 0):# attempt to restart PSLF doesn't fix leak
-        PSLF.SaveCase('tempSav')
-        PSLF.Finalize()
-        PSLF.ExitPslf()
-
-        del builtins.PSLF
-        
-        #time.sleep(1)
-        builtins.PSLF = mid.Pslf(locations['pslfPath'])
-        PSLF.LoadCase('tempSav')
-        noPrintStr = "dispar[0].noprint = 1"
-        PSLF.RunEpcl(noPrintStr)
-        resetFlag = 0
-
-
-"""
 mir.notes = simNotes # update notes before export
 
 # Terminal display output for immediate results
@@ -204,7 +159,7 @@ if simParams['exportDict']:
         matReturnCode = matProc.wait()
         matProc.send_signal(signal.SIGTERM)
 
-
+"""
 ## update to make mat using python 3.6
 if simParams['fileDirectory']:
         cwd = os.getcwd()
@@ -214,16 +169,6 @@ sysDict = makeModelDictionary(mir)
 mirD ={'varName01':sysDict}
 import scipy.io as sio
 sio.savemat('varName01', mirD)
-print("saved?")
-
+print("saved")
+"""
 # raw_input("Press <Enter> to Continue. . . . ") # Not always needed to hold open console
-
-"""
-Results:
-The logical choice of using the built-in Save() function to update PSLF doesn't work under pythonnet (python3)
-As a work-around, RunEpcl() has been setup to serve a similar purpose
-This unfortunately causes a memory leak that eventually crashes any code after calling a certain number of EPCL
-Something about a System.Reflection. from the middleware EPCL.CallSpawn...
-I don't think there is anything more to do about it without GE fixing their code.
-However, the code does run in python3 - max simulation time limted by number of EPCL calls. (1540 ish)
-"""

@@ -19,10 +19,10 @@ class BusAgent(object):
         self.Type = newBus.Type
 
         # Case Parameters
-        #self.Nload = len(col.LoadDAO.FindByBus(self.Scanbus))
-        #self.Ngen = len(col.GeneratorDAO.FindByBus(self.Scanbus))
-        self.Nload = col.LoadDAO.FindByBus(self.Scanbus).Count
-        self.Ngen = col.GeneratorDAO.FindByBus(self.Scanbus).Count
+        self.Nload = len(col.LoadDAO.FindByBus(self.Scanbus))
+        self.Ngen = len(col.GeneratorDAO.FindByBus(self.Scanbus))
+        #self.Nload = col.LoadDAO.FindByBus(self.Scanbus).Count
+        #self.Ngen = col.GeneratorDAO.FindByBus(self.Scanbus).Count
 
         # Children
         self.Gens = []
@@ -75,13 +75,13 @@ class BusAgent(object):
 
     def setPvals(self):
         """Set PSLF values"""
-        #pObj = self.getPref()
-        #pObj.Vm = self.Vsched
-        #pObj.Save()
+        pObj = self.getPref()
+        pObj.Vm = self.Vsched
+        pObj.Save()
         # pythonnet workaround Save() -> RunEplc
-        sb = str(self.Scanbus)
-        vmStr = ('volt[%s].vm = %f' % (sb, self.Vsched))
-        PSLF.RunEpcl(vmStr)
+        #sb = str(self.Scanbus)
+        #vmStr = ('volt[%s].vm = %f' % (sb, self.Vsched))
+        #PSLF.RunEpcl(vmStr)
 
     def logStep(self):
         """Put current values into log"""
@@ -174,17 +174,17 @@ class GeneratorAgent(object):
 
     def setPvals(self):
         """Send current mirror values to PSLF"""
-        #pRef = self.getPref()
-        #pRef.Pgen = self.Pe
-        #pRef.St = self.St
-        #pRef.Save()
+        pRef = self.getPref()
+        pRef.Pgen = self.Pe
+        pRef.St = self.St
+        pRef.Save()
         # pythonnet workaround: Replace save with EPCL
-        sb = str(self.Scanbus)
+        #sb = str(self.Scanbus)
         
-        pStr = ("gens[%s].pgen = %f\n" %(sb,self.Pe))
+        #pStr = ("gens[%s].pgen = %f\n" %(sb,self.Pe))
         #PSLF.RunEpcl(pStr)
-        stStr = ("gens[%s].st = %d\n" %(sb,self.St))
-        PSLF.RunEpcl( pStr + stStr)
+        #stStr = ("gens[%s].st = %d\n" %(sb,self.St))
+        #PSLF.RunEpcl( pStr + stStr)
 
 
     def logStep(self):
@@ -342,10 +342,10 @@ class AreaAgent(object):
         self.Area = areaNum
 
         # Case Parameters
-        #self.Ngen = len(col.GeneratorDAO.FindByArea(self.Area))
-        #self.Nload = len(col.LoadDAO.FindByArea(self.Area))
-        self.Ngen = col.GeneratorDAO.FindByArea(self.Area).Count
-        self.Nload = col.LoadDAO.FindByArea(self.Area).Count
+        self.Ngen = len(col.GeneratorDAO.FindByArea(self.Area))
+        self.Nload = len(col.LoadDAO.FindByArea(self.Area))
+        #self.Ngen = col.GeneratorDAO.FindByArea(self.Area).Count
+        #self.Nload = col.LoadDAO.FindByArea(self.Area).Count
 
         # Children
         self.Gens = []
