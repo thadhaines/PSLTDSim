@@ -78,8 +78,16 @@
 		\item Given up on GE for API fixes or updates.
 		
 		\item SQL database for cross instance/code language communication concept proven.
-		\subitem Using SQLite3 is not a great choice - it is not designed for fast use.
-		\subitem Other SQL database packages are being explored - Must be compatible with Ipy32.
+		\subitem Using SQLite3 is may not be a great choice - it is not designed for 'fast' use.
+		\subitem Other SQL database packages could be explored - Must be compatible with Ipy32.
+		
+		\item AMQP (Advanced Message Queuing Protocol) for cross/instance code language communication concept proven.
+		\subitem Results are consistently faster than SQL method
+		\subitem Unsure if it's best to use this alone, or in combination with a SQL database.
+		
+		\item AMQP SQL method for cross/instance code language communication concept proven.
+		\subitem Provides consistently faster SQL access
+		\subitem Probably the way to go forward - More forward thinking required before decision.
 		
 		\item Read papers from the 70's by Mills, Taylor, and Cresap (surprisingly good).
 		
@@ -91,11 +99,12 @@
 	\end{enumerate}
 \paragraph{Current Tasks:}
 	\begin{enumerate}
+		\item Figure out how Python 3 is going to send data to, and receive data from, PSLF.
 		\item Define Agent actions for AGC/LFC (ACE calculations), Shunt Control, $\beta$ calculation
 		\item ODE solver == numpy / scipy \verb|odeint| in Python 3
 		
 		\item Continue experimenting with a multi-area model:\\
-		\includegraphics[width=\linewidth]{g4aSys}
+		\includegraphics[width=.5\linewidth]{g4aSys}
 		\item Investigate line current data (add branch section agents to model)
 		%\subitem A FlowtabrDAO exists that can find flow between busses. A way to initialize bus connections between areas has yet to be devised.
 		
