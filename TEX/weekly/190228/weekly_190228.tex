@@ -66,7 +66,7 @@
 \pagestyle{fancy} % for header stuffs
 \fancyhf{}
 \rhead{Thad Haines \\ Page \thepage\ of \pageref{LastPage}}
-\chead{Talking Points \\ Week of February 25, 2019}
+\chead{Talking Points \\ Weeks of February 25 - March 4, 2019}
 \lhead{Research \\ }
 % spacing
 \headheight 29 pt
@@ -78,23 +78,25 @@
 		\item Given up on GE for API fixes or updates.
 		
 		\item SQL database for cross instance/code language communication concept proven.
-		\subitem Using SQLite3 is may not be a great choice - it is not designed for 'fast' use.
-		\subitem Other SQL database packages could be explored - Must be compatible with Ipy32.
+		\subitem Involves using an SQL database as a common data resource. A timing schedule is  required so that a process doesn't 'step' on another process and cause concurrency issues.
+		\subitem Using SQLite3 is may not be a great choice - it is not designed for 'fast' use but is included with python3 and ironpython.
+		\subitem Other SQL database packages \textit{could} be explored - Must be compatible with Ipy32.
 		
-		\item AMQP (Advanced Message Queuing Protocol) for cross/instance code language communication concept proven.
-		\subitem Results are consistently faster than SQL method
+		\item AMQP (Advanced Message Queuing Protocol) for cross/instance code language communication concept proven. (suggested by Phil)
+		\subitem Involves sending messages to an external service running on the local machine. These messages are then collected via code interfaces.
+		\subitem Results are consistently faster than SQL method ($\approx$10-20 times faster)
 		\subitem Unsure if it's best to use this alone, or in combination with a SQL database.
 		
 		\item AMQP SQL method for cross/instance code language communication concept proven.
-		\subitem Provides consistently faster SQL access
-		\subitem Probably the way to go forward - More forward thinking required before decision.
+		\subitem Provides consistently faster SQL access ($\approx$8-11 times faster than SQL only)
+		\subitem Possibly the way to go - More forward development thinking required before decision.
 		
 		\item Read papers from the 70's by Mills, Taylor, and Cresap (surprisingly good).
 		
 		\item PSLF terminal output can be suppressed by EPCL command : \verb|dispar[0].noprint = 1|
 		
 		\item GitHub repository updated:
-		\subitem \verb|https://github.com/thadhaines/LTD_sim|
+		\subitem \verb|https://github.com/thadhaines/| (SQL and AMQP tests also on GIT)
 		
 	\end{enumerate}
 \paragraph{Current Tasks:}
