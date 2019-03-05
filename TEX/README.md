@@ -1,1 +1,0 @@
-This is a collection of LaTex files associated with the reasearch.
