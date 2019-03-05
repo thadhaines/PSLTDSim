@@ -17,6 +17,8 @@ class LoadStepAgent(object):
         self.tStart = perParams[1]
         self.newVal = perParams[2]
 
+        
+
         if len(perParams) > 3 :
             self.stepType = perParams[3]
         else:
@@ -51,6 +53,7 @@ class LoadStepAgent(object):
                 # Perform Perturbance step
                 # Get most recent PSLF reference
                 pObj = self.mObj.getPref()
+                
                 # Update correct attribute in PSLF
                 if self.attr == 'St':
                     if self.newVal == 1:

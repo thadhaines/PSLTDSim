@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+*.aux
+*.gz
+/verification/pgov1/pgovAgain01.mat
+/verification/pgov1/pgovAgain01.pkl

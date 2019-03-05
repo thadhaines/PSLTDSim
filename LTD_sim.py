@@ -1,17 +1,23 @@
 """Developement file that acts as main"""
 """VS may require default ironpython environment (no bit declaration)"""
+ver = False # for attempting version 3, set to None otherwise
 
 import os
 import subprocess
 import signal
-import __builtin__
+
+if ver:
+    import builtins
+    builtins.ver = ver
+else:
+    import __builtin__
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
-os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
+#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 #os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
-#print(os.getcwd())
+print(os.getcwd())
 
 from parseDyd import *
 from distPe import *
@@ -24,10 +30,14 @@ from Model import Model
 from makeModelDictionary import makeModelDictionary
 from saveModelDictionary import saveModelDictionary
 
-execfile('mergeDicts.py')
+if ver:
+    exec(open("./mergeDicts.py").read())
+else:
+    execfile('mergeDicts.py')
+
 
 simNotes = """
-Initial test of GE 4 machine, 2 area system.
+Retest of ipy code before refactor - simple step up and down with govs
 """
 
 # Simulation Parameters Dictionary
@@ -43,15 +53,15 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileDirectory' : r"\\verification\\GE4machine\\", # relative path must exist before simulation
-    'fileName' : 'ge4test01',
-    'exportDict' : 1,
+    'fileDirectory' : r"\\verification\\pgov1\\", # relative path must exist before simulation
+    'fileName' : 'pgovAgain01',
+    'exportDict' : 1, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
     }
 
 # fast debug case switching
 # TODO: enable new dyd replacement
-test_case = 4
+test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
@@ -68,8 +78,10 @@ elif test_case == 3:
     savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
     dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
 elif test_case == 4:
-    savPath = r"C:\LTD\pslf_systems\GE_ex\g4_a.sav"
-    dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",]
+    savPath = r"C:\LTD\pslf_systems\GE_ex\g4_a1.sav"
+    dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",
+               r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd", #pgov1 on slacks
+               ]
 
 # Required Paths Dictionary
 locations = {
@@ -83,20 +95,31 @@ locations = {
 del savPath, dydPath
 
 # these files will change after refactor, required after locations definition
-execfile('initPSLF.py')
-execfile('makeGlobals.py')
 
+if ver:
+    exec(open("./initPSLF3.py").read())
+    exec(open("./makeGlobals3.py").read())
+else:
+    execfile('initPSLF.py')
+    execfile('makeGlobals.py')
+
+PSLF.RunEpcl("dispar[0].noprint = 1") # turn off terminal solution details
 # mirror arguments: locations, simParams, debug flag
 mir = Model(locations, simParams, 1)
 
 # Pertrubances configured for test case (eele)
 # step up and down (pgov test)
-#mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
-#mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
+mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
+mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
 
 # GE 4 machine test
-mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up at t=2
-mir.addPert('Load',[5],'Step',['P',22,-4,'rel']) # step back to normalt 20 seconds later
+#mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up
+#mir.addPert('Load',[5],'Step',['P',52,-4,'rel']) # step back to normal
+#mir.addPert('Load',[5],'Step',['St',2,0]) # turn load off
+#mir.addPert('Load',[5],'Step',['St',3,1]) # turn load on
+#mir.addPert('Load',[6],'Step',['P',15,4,'rel']) # step 4 MW up
+#mir.addPert('Load',[6],'Step',['P',25,4,'rel']) # step 4 MW up
+#mir.addPert('Load',[6],'Step',['P',55,-8,'rel']) # step back to normal
 
 mir.runSim()
 
@@ -136,4 +159,16 @@ if simParams['exportDict']:
         matReturnCode = matProc.wait()
         matProc.send_signal(signal.SIGTERM)
 
+"""
+## update to make mat using python 3.6
+if simParams['fileDirectory']:
+        cwd = os.getcwd()
+        os.chdir(cwd + simParams['fileDirectory'])
+
+sysDict = makeModelDictionary(mir)
+mirD ={'varName01':sysDict}
+import scipy.io as sio
+sio.savemat('varName01', mirD)
+print("saved")
+"""
 # raw_input("Press <Enter> to Continue. . . . ") # Not always needed to hold open console

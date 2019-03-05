@@ -1,8 +1,13 @@
 """Function to merge a variable number of dictionaries into one. 
 Script adds function to builtins
 Python 2 Compatible"""
+global ver
 
-import __builtin__
+if ver:
+    import builtins
+    builtins.ver = ver
+else:
+    import __builtin__
 
 def mergeDicts(*dict_args):
     """
@@ -14,4 +19,8 @@ def mergeDicts(*dict_args):
         result.update(dictionary)
     return result
 
-__builtin__.mergeDicts = mergeDicts
+
+if ver:
+    builtins.mergeDicts = mergeDicts
+else:
+   __builtin__.mergeDicts = mergeDicts
