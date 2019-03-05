@@ -1,6 +1,12 @@
 # PSLTDSim = Power System Long-Term Dynamic Simulator
 Purpose:  Use Python 3 and PSLF to simulate long-term power system dynamics.
+
+An example of such long-term dynamics:  A wind ramp causes a governor action response, that in turn affects the area control error (ACE), and is later corrected by automatic generator control (AGC [a.k.a. load frequency control or LFC]). 
 ## Current Progress:
+* Code being refactored to:
+    * Utilize Py3<->AMQP<->IPY<-> PSLF workarounds
+    * Enable easier code packaging
+    * Make code structure more clear
 * Code creates python mirror of PSLF areas, busses, generators, and loads.
 * Various functions have been written to:
   * Check accuracy of mirror
@@ -23,7 +29,7 @@ Purpose:  Use Python 3 and PSLF to simulate long-term power system dynamics.
 ### Notes:
 * To workaround GE API issues: Erlang, RabbitMQ, and Ironpython are required.
 * Additional Python packages include:
-    * Python 3: Numpy, Scipy, Pika
+    * Python 3: Numpy, Scipy, Pika, (later Matplotlib)
     * Ironpython: Pika
 * For smaller test cases with only 1 Slack generator, the mirror seems to be 
 accurate, however, for the full WECC (with 84 Slack generators), the global
