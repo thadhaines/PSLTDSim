@@ -4,10 +4,11 @@
 import os
 import subprocess
 import signal
+import time
+import __builtin__
 
 # import custom package and make truly global
 import psltdsim as ltd
-import __builtin__
 __builtin__.ltd = ltd
 
 # workaround for interactive mode runs (Use only if required)
@@ -17,10 +18,8 @@ print(os.getcwd())
 #os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
 print(os.getcwd())
 
-
-
 simNotes = """
-Retest of ipy code before refactor - simple step up and down with govs
+Retest of ipy code after refactor - simple step up and down with govs
 """
 
 # Simulation Parameters Dictionary
@@ -79,36 +78,26 @@ del savPath, dydPath
 
 ltd.init_PSLF(locations)
 
-# PSLF.RunEpcl("dispar[0].noprint = 1") # turn off terminal solution details # use after init...
 # mirror arguments: locations, simParams, debug flag
-mir = ltd.mirror.Mirror(locations, simParams, 1)
+initStart = time.time()
+mir = ltd.mirror.Mirror(locations, simParams, 0)
 
 # Pertrubances configured for test case (eele)
 # step up and down (pgov test)
 ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',2,101]) # quick 1 MW step
 ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',30,100]) # quick 1 MW step
-
+print('Init time: %f' % (time.time() - initStart))
+simStart = time.time()
 mir.runSim()
+print('Simulation time: %f' % (time.time() - simStart))
 
 mir.notes = simNotes # update notes before export
 
-# Terminal display output for immediate results
-print("Log and Step check of Load, Pacc, and sys f:")
-print("Time\tSt\tPacc\tsys f\tdelta f\t\tSlackPe\tGen2Pe")
-for x in range(mir.c_dp-1):
-    print("%d\t%d\t%.2f\t%.5f\t%.6f\t%.2f\t%.2f" % (
-        mir.r_t[x],
-        mir.Load[0].r_St[x],
-        mir.r_ss_Pacc[x],
-        mir.r_f[x],
-        mir.r_deltaF[x],
-        mir.Slack[0].r_Pe[x],
-        mir.Machines[1].r_Pe[x],))
-print('End of simulation data.')
+#ltd.terminal.dispSimResults(mir) # for terminal output
 
-print("statement used as debug stop point.")
-
-# Data export
+#print("statement used as debug stop point.")
+"""
+# Data export - no need to test in ipy
 if simParams['exportDict']:
     # Change current working directory to data destination.
     cwd = os.getcwd()
@@ -128,7 +117,6 @@ if simParams['exportDict']:
         matReturnCode = matProc.wait()
         matProc.send_signal(signal.SIGTERM)
 
-"""
 ## update to make mat using python 3.6
 if simParams['fileDirectory']:
         cwd = os.getcwd()

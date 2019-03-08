@@ -129,8 +129,10 @@ class Mirror(object):
 
     # Simulation Methods
     def runSim(self):
-        noPrintStr = "dispar[0].noprint = 1"
-        PSLF.RunEpcl(noPrintStr)
+        if not self.debug:
+            # block pslf output for normal (non-debug) runs
+            noPrintStr = "dispar[0].noprint = 1"
+            PSLF.RunEpcl(noPrintStr)
 
         """Function to run LTD simulation"""
         print("\n*** Starting Simulation")
@@ -152,8 +154,11 @@ class Mirror(object):
 
         # Start Simulation loop
         while self.c_t <= self.endTime:
-            print("\n*** Data Point %d" % self.c_dp)
-            print("*** Simulation time: %.2f" % (self.c_t))
+            if self.debug:
+                print("\n*** Data Point %d" % self.c_dp)
+                print("*** Simulation time: %.2f" % (self.c_t))
+            else:
+                print "Simulation Time: %7.2f   " % self.c_t, # to print dots each step
 
             # Step System Wide dynamics
             ltd.mirror.combinedSwing(self, self.ss_Pacc)

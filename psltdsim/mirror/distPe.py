@@ -23,7 +23,8 @@ def distPe(mirror, deltaPacc):
             globalSlack = mirror.Slack[gen]
 
     while tol_Flag:
-        print("*** LTD: Distributing %.2f MW of Pacc, Iteration %d" % (Pacc, iteration))
+        if mirror.debug:
+            print("*** LTD: Distributing %.2f MW of Pacc, Iteration %d" % (Pacc, iteration))
         #for each mirror area:
         for c_area in range(len(mirror.Area)):
             if fp_Flag:

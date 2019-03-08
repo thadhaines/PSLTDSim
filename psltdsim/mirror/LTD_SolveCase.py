@@ -3,7 +3,6 @@ def LTD_SolveCase(mirror):
     Returns PSLF errorCode if available
     Only option not default is area interchange adjustment (turned off)
     """
-    #global PSLF
     
     errorCode = PSLF.SolveCase(
         25, # maxIterations, Solpar.Itnrmx
