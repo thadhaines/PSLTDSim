@@ -1,39 +1,22 @@
 """Developement file that acts as main"""
 """VS may require default ironpython environment (no bit declaration)"""
-ver = False # for attempting version 3, set to None otherwise
 
 import os
 import subprocess
 import signal
 
-if ver:
-    import builtins
-    builtins.ver = ver
-else:
-    import __builtin__
+# import custom package and make truly global
+import psltdsim as ltd
+import __builtin__
+__builtin__.ltd = ltd
 
 # workaround for interactive mode runs (Use only if required)
 print(os.getcwd())
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\LTD_sim")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 #os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
 #os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
 print(os.getcwd())
 
-from parseDyd import *
-from distPe import *
-from combinedSwing import *
-from findFunctions import *
-from PerturbanceAgents import *
-from pgov1Agent import *
-from CoreAgents import AreaAgent, BusAgent, GeneratorAgent, SlackAgent, LoadAgent
-from Model import Model
-from makeModelDictionary import makeModelDictionary
-from saveModelDictionary import saveModelDictionary
-
-if ver:
-    exec(open("./mergeDicts.py").read())
-else:
-    execfile('mergeDicts.py')
 
 
 simNotes = """
@@ -94,32 +77,16 @@ locations = {
     }
 del savPath, dydPath
 
-# these files will change after refactor, required after locations definition
+ltd.init_PSLF(locations)
 
-if ver:
-    exec(open("./initPSLF3.py").read())
-    exec(open("./makeGlobals3.py").read())
-else:
-    execfile('initPSLF.py')
-    execfile('makeGlobals.py')
-
-PSLF.RunEpcl("dispar[0].noprint = 1") # turn off terminal solution details
+# PSLF.RunEpcl("dispar[0].noprint = 1") # turn off terminal solution details # use after init...
 # mirror arguments: locations, simParams, debug flag
-mir = Model(locations, simParams, 1)
+mir = ltd.mirror.Mirror(locations, simParams, 1)
 
 # Pertrubances configured for test case (eele)
 # step up and down (pgov test)
-mir.addPert('Load',[3],'Step',['P',2,101]) # quick 1 MW step
-mir.addPert('Load',[3],'Step',['P',30,100]) # quick 1 MW step
-
-# GE 4 machine test
-#mir.addPert('Load',[5],'Step',['P',2,4,'rel']) # step 4 MW up
-#mir.addPert('Load',[5],'Step',['P',52,-4,'rel']) # step back to normal
-#mir.addPert('Load',[5],'Step',['St',2,0]) # turn load off
-#mir.addPert('Load',[5],'Step',['St',3,1]) # turn load on
-#mir.addPert('Load',[6],'Step',['P',15,4,'rel']) # step 4 MW up
-#mir.addPert('Load',[6],'Step',['P',25,4,'rel']) # step 4 MW up
-#mir.addPert('Load',[6],'Step',['P',55,-8,'rel']) # step back to normal
+ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',2,101]) # quick 1 MW step
+ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',30,100]) # quick 1 MW step
 
 mir.runSim()
 
@@ -138,6 +105,8 @@ for x in range(mir.c_dp-1):
         mir.Slack[0].r_Pe[x],
         mir.Machines[1].r_Pe[x],))
 print('End of simulation data.')
+
+print("statement used as debug stop point.")
 
 # Data export
 if simParams['exportDict']:

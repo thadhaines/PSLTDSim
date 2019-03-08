@@ -2,6 +2,9 @@
 Purpose:  Use Python 3 and PSLF to simulate long-term power system dynamics.
 
 An example of such long-term dynamics:  A wind ramp causes a governor action response, that in turn affects the area control error (ACE), and is later corrected by automatic generator control (AGC [a.k.a. load frequency control or LFC]). 
+
+To install from current WIP state: "pip install -e ." from this directory
+
 ## Current Progress:
 * Code being refactored to:
     * Utilize Py3<->AMQP<->IPY<-> PSLF workarounds
