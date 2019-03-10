@@ -1,9 +1,7 @@
-"""Place for Pertrubance Agents"""
-
 class LoadStepAgent(object):
     """Performs steps of P, Q, or St on Loads - calculates Perturbance deltas
     targetObj is a python mirror agent object reference
-    perParams is a list: [targetAttr, tStart, newVal]
+    perParams is a list: [targetAttr, tStart, pertVal]
     Updated to NOT save any PSLF objects attached to self.
     """
 
@@ -15,9 +13,7 @@ class LoadStepAgent(object):
 
         self.attr = perParams[0]
         self.tStart = perParams[1]
-        self.newVal = perParams[2]
-
-        
+        self.pertVal = perParams[2]
 
         if len(perParams) > 3 :
             self.stepType = perParams[3]
@@ -36,14 +32,14 @@ class LoadStepAgent(object):
             self.attr,
             self.mObj.Bus.Extnum,
             self.tStart,
-            self.newVal,
+            self.pertVal,
             self.stepType,
             )
 
         return(tag1+tag2)
 
     def step(self):
-
+        """Function called every timestep - takes action only once"""
         if self.ProcessFlag:
             if self.mirror.c_t < self.tStart:
                 # acts as a pass
@@ -56,7 +52,7 @@ class LoadStepAgent(object):
                 
                 # Update correct attribute in PSLF
                 if self.attr == 'St':
-                    if self.newVal == 1:
+                    if self.pertVal == 1:
                         pObj.SetInService()
                         self.mirror.ss_Pert_Pdelta += pObj.P
                         self.mirror.ss_Pert_Qdelta += pObj.Q
@@ -68,16 +64,16 @@ class LoadStepAgent(object):
                 elif self.attr == 'P':
                     oldVal = pObj.P
                     if self.stepType == 'rel':
-                        pObj.P += self.newVal # relative step
+                        pObj.P += self.pertVal # relative step
                     else:
-                        pObj.P = self.newVal # absolute step
+                        pObj.P = self.pertVal # absolute step
 
                     self.mirror.ss_Pert_Pdelta += pObj.P - oldVal
 
                 elif self.attr == 'Q':
                     oldVal = pObj.Q
-                    pObj.Q = self.newVal
-                    mirror.ss_Pert_Qdelta += self.newVal - oldVal
+                    pObj.Q = self.pertVal
+                    mirror.ss_Pert_Qdelta += self.pertVal - oldVal
 
                 # Save Changes in PSLF
                 pObj.Save()

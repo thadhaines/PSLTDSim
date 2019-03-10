@@ -1,19 +1,16 @@
-"""Model for agent based LTD simulations"""
-
 """
     NOTE: Refactor gameplan:
-    	1. Remove most-all methods from model
-    	2. Get links working to refactored library
-    	3. split runsim into py3 and ipy parts 
+        1. Remove most-all methods from mirror
+        2. Get links working to refactored library
+        3. define AMQP operations
+        4. split runsim into py3 and ipy parts
 """
 
-from __main__ import *
-
 class Mirror(object):
-    """Model class for LTD Model"""
+    """Mirror class used as LTD system environment"""
+
     def __init__(self, locations, simParams, debug = 0):
-        """Carries out initialization 
-        This includes: PSLF, python mirror, and dynamics
+        """Carries out initialization of Mirror and meta data
         """
         global PSLF
         from datetime import datetime
@@ -58,7 +55,7 @@ class Mirror(object):
 
         self.ss_Pert_Pdelta = 0.0
         self.ss_Pert_Qdelta = 0.0
-        
+
         # initial system solve
         try:
             ltd.mirror.LTD_SolveCase(self)
@@ -73,7 +70,7 @@ class Mirror(object):
         self.Nload = PSLF.GetCasepar('Nload')
         self.Narea = PSLF.GetCasepar('Narea')
         self.Nzone = PSLF.GetCasepar('Nzone')
-        self.Nbrsec = PSLF.GetCasepar('Nbrsec') 
+        self.Nbrsec = PSLF.GetCasepar('Nbrsec')
         self.Sbase = float(PSLF.GetCasepar('Sbase'))
 
         ## Agent Collections
@@ -123,10 +120,6 @@ class Mirror(object):
 
         print("*** Python Mirror intialized.")
 
-    # Initiazliaze Methods
-
-    # Additional init Methods
-
     # Simulation Methods
     def runSim(self):
         if not self.debug:
@@ -150,7 +143,7 @@ class Mirror(object):
 
         # Step Initialize Dynamic Agents
         for x in range(len(self.Dynamics)):
-                self.Dynamics[x].stepInitDynamics()        
+                self.Dynamics[x].stepInitDynamics()
 
         # Start Simulation loop
         while self.c_t <= self.endTime:
@@ -158,7 +151,7 @@ class Mirror(object):
                 print("\n*** Data Point %d" % self.c_dp)
                 print("*** Simulation time: %.2f" % (self.c_t))
             else:
-                print "Simulation Time: %7.2f   " % self.c_t, # to print dots each step
+                print("Simulation Time: %7.2f   " % self.c_t), # to print dots each step
 
             # Step System Wide dynamics
             ltd.mirror.combinedSwing(self, self.ss_Pacc)

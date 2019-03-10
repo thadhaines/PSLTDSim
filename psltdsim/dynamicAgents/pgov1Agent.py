@@ -35,12 +35,12 @@ class pgov1Agent():
     def stepInitDynamics(self):
         """ Once H has been initialized, check if K has to be recalculated"""
 
-        print('Checking for updated model information...')
+        print('*** Checking for updated model information...')
 
         if self.Gen.MbaseSAV != self.Gen.MbaseDYD:
             self.Mbase = self.Gen.MbaseDYD
             self.K = -1*self.model.Sbase / self.droop
-            print('updated model.')
+            print('... updated model.')
             return
-        print('nothing updated.')
+        print('... nothing updated.')
 

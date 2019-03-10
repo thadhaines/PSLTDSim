@@ -1,5 +1,7 @@
-"""Developement file that acts as main"""
-"""VS may require default ironpython environment (no bit declaration)"""
+"""
+Developement file that acts as main
+VS may require default ironpython environment (no bit declaration)
+"""
 
 import os
 import subprocess
@@ -11,15 +13,16 @@ import __builtin__
 import psltdsim as ltd
 __builtin__.ltd = ltd
 
-# workaround for interactive mode runs (Use only if required)
-print(os.getcwd())
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
-#os.chdir(r"D:\Users\jhaines\Source\Repos\thadhaines\LTD_sim")
-#os.chdir(r"C:\Users\thad\Source\Repos\thadhaines\LTD_sim")
+ltd.terminal.dispCodeTitle()
+
 print(os.getcwd())
 
+# workaround for interactive mode runs (Use as required)
+#os.chdir(r"...")
+#print(os.getcwd())
+
 simNotes = """
-Retest of ipy code after refactor - simple step up and down with govs
+Retest of ipy code after refactor - simple step up and down with gov
 """
 
 # Simulation Parameters Dictionary
@@ -35,14 +38,15 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileDirectory' : r"\\verification\\pgov1\\", # relative path must exist before simulation
+    'fileDirectory' : "\\verification\\refactor\\", # relative path must exist before simulation
     'fileName' : 'pgovAgain01',
     'exportDict' : 1, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
     }
 
-# fast debug case switching
-# TODO: enable new dyd replacement
+# Fast debug case switching
+# TODO: enable new dyd replacement...
+# TODO: incorporate ltdPath into simulation
 test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
@@ -67,8 +71,8 @@ elif test_case == 4:
 
 # Required Paths Dictionary
 locations = {
-    # full path to middleware dll
-    'fullMiddlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
+    # path to folder containing middleware dll
+    'middlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
     # path to folder containing PSLF license
     'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
     'savPath' : savPath,
@@ -76,26 +80,31 @@ locations = {
     }
 del savPath, dydPath
 
+### Start Simulation functions calls
 ltd.init_PSLF(locations)
 
 # mirror arguments: locations, simParams, debug flag
 initStart = time.time()
 mir = ltd.mirror.Mirror(locations, simParams, 0)
+mir.notes = simNotes # update notes before export
 
+# TODO: enable entering of perturbance via some parsed text file - keep in IPY
 # Pertrubances configured for test case (eele)
 # step up and down (pgov test)
 ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',2,101]) # quick 1 MW step
 ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',30,100]) # quick 1 MW step
 print('Init time: %f' % (time.time() - initStart))
+
+ltd.data.saveMirror(mir, simParams)
+
 simStart = time.time()
 mir.runSim()
-print('Simulation time: %f' % (time.time() - simStart))
+simEnd = time.time()
 
-mir.notes = simNotes # update notes before export
+ltd.terminal.dispSimResults(mir) # for terminal output
 
-#ltd.terminal.dispSimResults(mir) # for terminal output
+print('Simulation time: %f' % (simEnd - simStart))
 
-#print("statement used as debug stop point.")
 """
 # Data export - no need to test in ipy
 if simParams['exportDict']:

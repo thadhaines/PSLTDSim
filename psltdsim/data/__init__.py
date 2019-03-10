@@ -1,6 +1,6 @@
 # This imports functions that will be available as psltdsim.data.*
-from .getTimestr import getTimestr
-from .getDatestr import getDatestr
+from .getTimeStr import getTimeStr
+from .getDateStr import getDateStr
 
 from .makeModelDictionary import makeModelDictionary
 from .saveModelDictionary import saveModelDictionary
