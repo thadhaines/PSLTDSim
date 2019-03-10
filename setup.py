@@ -12,6 +12,6 @@ setuptools.setup(
     url='https://github.com/thadhaines/PSLTDSim',
     author='Thad Haines',
     author_email='jhaines@mtech.edu',
-    license='GNU General Public License v3.0',
+    license='MIT',
     packages=setuptools.find_packages(),
     zip_safe=False)
