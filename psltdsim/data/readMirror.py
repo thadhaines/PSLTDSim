@@ -9,7 +9,7 @@ def readMirror(fileLocation):
 
     mir = pickle.load(f)
     f.close()
-    print("*** Model Loaded:")
+    print("*** Mirror Loaded:")
     print(mir)
 
     return mir

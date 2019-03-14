@@ -2,7 +2,9 @@ import pickle as pickle
 import os
 
 def saveMirror(mir, simParams):
-    """Creates pickle object of mirror named savName.mir"""
+    """Creates pickle object of mirror named savName.mir
+    Returns full path to saved file
+    """
 
     # Change current working directory to data destination.
     cwd = os.getcwd()
@@ -18,10 +20,12 @@ def saveMirror(mir, simParams):
     print("*** Pickling Mirror object...")
     pickle.dump(mir, f) #  for highest, produces binary (other protocols may be faster)
     f.close
-    print("*** Mirror object pickled to binary: \n*** '%s%s'" 
-          % (savDir, savName))
+
+    fileLoc = savDir + savName
+    print("*** Mirror object pickled to binary: \n*** '%s'" 
+          % (fileLoc))
 
     # Ensure unchanged working directory
     os.chdir(cwd)
 
-    return   
+    return fileLoc

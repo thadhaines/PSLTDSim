@@ -1,9 +1,6 @@
 def dispCodeTitle():
-    """Disply code title"""
-    for n in range(40):
-        print("*"),
-    print("\n         * * PSLTDSim === Power System Long-Term Dynamic Simulator * *")
-    for n in range(40):
-        print("*"),
-    print("\n")
+    """Disply code title in python 3"""
+    print("* "*40)
+    print("         * * PSLTDSim === Power System Long-Term Dynamic Simulator * *")
+    print("* "*40)
     #print("\n01234567890123456789012345678901234567890123456789012345678901234567890123456789")

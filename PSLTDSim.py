@@ -1,20 +1,16 @@
-""" IPY only simulation
-Developement file that acts as main
-VS may require default ironpython environment (no bit declaration)
-"""
-
+"""Python 3 main file"""
 import os
 import subprocess
 import signal
 import time
-import __builtin__
+import builtins
+import pika
 
 # import custom package and make truly global
 import psltdsim as ltd
-__builtin__.ltd = ltd
+builtins.ltd = ltd
 
 ltd.terminal.dispCodeTitle()
-
 print(os.getcwd())
 
 # workaround for interactive mode runs (Use as required)
@@ -22,7 +18,7 @@ print(os.getcwd())
 #print(os.getcwd())
 
 simNotes = """
-Retest of ipy code after refactor - simple step up and down with gov
+Test of py3 and ipy AMQP - simple step up and down with gov
 """
 
 # Simulation Parameters Dictionary
@@ -39,7 +35,7 @@ simParams = {
 
     # Data Export Parameters
     'fileDirectory' : "\\verification\\refactor\\", # relative path must exist before simulation
-    'fileName' : 'pgovAgain01',
+    'fileName' : 'rtest01',
     'exportDict' : 1, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
     }
@@ -53,6 +49,7 @@ if test_case == 0:
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
                #r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd", #pgov1 on gen 2
                ]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ltd"]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
@@ -77,64 +74,33 @@ locations = {
     'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
     'savPath' : savPath,
     'dydPath': dydPath,
+    'ltdPath' : ltdPath,
     }
 del savPath, dydPath
 
-### Start Simulation functions calls
-ltd.init_PSLF(locations)
+# Init PY3 AMQP
+host = '127.0.0.1'
+PY3 = ltd.amqp.AMQPAgent('PY3',host)
 
-# mirror arguments: locations, simParams, debug flag
-initStart = time.time()
-mir = ltd.mirror.Mirror(locations, simParams, 0)
-mir.notes = simNotes # update notes before export
+# Clear AMQP queues
+cParams = pika.ConnectionParameters(host=host)
+connection = pika.BlockingConnection(cParams)
+channel = connection.channel()
+channel.queue_purge('toPY3')
+channel.queue_purge('toIPY')
+connection.close()
 
-# TODO: enable entering of perturbance via some parsed text file - keep in IPY
-# Pertrubances configured for test case (eele)
-# step up and down (pgov test)
-ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',2,101]) # quick 1 MW step
-ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',30,100]) # quick 1 MW step
-print('Init time: %f' % (time.time() - initStart))
+# create and send init msg (send locations, simparams)
+initMsg = {'msgType': 'init',
+           'locations': locations,
+           'simParams': simParams,}
+PY3.send('toIPY', initMsg)
 
-ltd.data.saveMirror(mir, simParams)
+# Start IPY - assumes ironpython on path
+cmd = "ipy32 IPY_PSLTDSim.py"
+ipyProc = subprocess.Popen(cmd)
 
-simStart = time.time()
-mir.runSim()
-simEnd = time.time()
-
-ltd.terminal.dispSimResults(mir) # for terminal output
-
-print('Simulation time: %f' % (simEnd - simStart))
-
-"""
-# Data export - no need to test in ipy
-if simParams['exportDict']:
-    # Change current working directory to data destination.
-    cwd = os.getcwd()
-    if simParams['fileDirectory'] :
-        os.chdir(cwd + simParams['fileDirectory'])
-
-    dictName = simParams['fileName']
-    D = makeModelDictionary(mir)
-    savedName = saveModelDictionary(D,dictName)
-    os.chdir(cwd)
-
-    if  simParams['exportMat']:
-        # use cmd to run python 3 32 bit script...
-        cmd = "py -3-32 makeMat.py " + savedName +" " + dictName  + " "+ simParams['fileDirectory'] 
-
-        matProc = subprocess.Popen(cmd)
-        matReturnCode = matProc.wait()
-        matProc.send_signal(signal.SIGTERM)
-
-## update to make mat using python 3.6
-if simParams['fileDirectory']:
-        cwd = os.getcwd()
-        os.chdir(cwd + simParams['fileDirectory'])
-
-sysDict = makeModelDictionary(mir)
-mirD ={'varName01':sysDict}
-import scipy.io as sio
-sio.savemat('varName01', mirD)
-print("saved")
-"""
-# raw_input("Press <Enter> to Continue. . . . ") # Not always needed to hold open console
+# Wait for mirror message
+PY3.receive('toPY3',PY3.redirect)
+print('py3 main...')
+print(mir)

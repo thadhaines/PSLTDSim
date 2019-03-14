@@ -9,11 +9,13 @@ def parseDyd(model,dydLoc):
     these classes will be referenced by the model to populate dynamic properties
     """
 
-    if model.debug: print("*** Parsing file at %s" % dydLoc)
+    totFPmodels = 0
+    totFLTDmodels = 0
 
     # TODO: enable multi dyd overwrite
     for dyd in range(len(dydLoc)): #-> dydLoc is then replaced with dydLoc[dyd]
         file = open(dydLoc[dyd], 'r') # open file to read
+        if model.debug: print("*** Parsing file at %s" % dydLoc[dyd])
         line = next(file) # get first line of file
         foundPModels = 0
         foundLTDModels = 0
@@ -25,10 +27,6 @@ def parseDyd(model,dydLoc):
                     # line blank, skip
                     line = next(file, None)
                     continue
-
-                if line[1] == '!':
-                    # line is a custom LTD model, remove shebang and parse
-                    line = line[2:]
                     
                 else:
                     # line is a comment
@@ -60,6 +58,8 @@ def parseDyd(model,dydLoc):
             line = next(file,  None) # get next line, if there is one
 
         file.close() # close file
-
+        totFPmodels += foundPModels
+        totFLTDmodels += foundLTDModels
     if model.debug == 1:
-        print("*** Parsed %d models from dyd:  %s" % (foundPModels, dydLoc))
+        print("*** Parsed %d PSLF models and %d LTD models from:\n%s" 
+              % (totFPmodels,totFLTDmodels, dydLoc))

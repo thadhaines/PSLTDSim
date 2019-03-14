@@ -5,10 +5,10 @@ import datetime
 class AMQPAgent():
     """Can send and receive msgs, init with host string and msg format
         uses json dumps and loads to send/receive native python objects"""
-    def __init__(self, name, host, msg=None):
+    def __init__(self, name, host, mirror=None):
         self.name = name
         self.host = host
-        self.msg = msg
+        self.mirror = mirror
 
     def send(self,msgQueue,msg):
         """send msg to msgQueue"""
@@ -16,23 +16,28 @@ class AMQPAgent():
         connection = pika.BlockingConnection(cParams)
         channel = connection.channel()
 
+        
         channel.queue_declare(queue=msgQueue) # ensure queue created
-        print(datetime.datetime.now().strftime('%H:%M:%S.%f') +
-            ' ' + self.name + " Sending \t %r" % json.dumps(msg))
+
+        if self.mirror:
+            if self.mirror.debug:
+                print(datetime.datetime.now().strftime('%H:%M:%S.%f') +
+                 ' ' + self.name + " Sending \t %r" % json.dumps(msg))
+        
         channel.basic_publish(exchange='', 
                               routing_key=msgQueue, 
                               body=json.dumps(msg) )
         connection.close()
 
-    def callback(self, ch, method, properties, body):
+    def debugCallback(self, ch, method, properties, body):
         """should be altered to specific needs - proof of concept shown"""
         print(datetime.datetime.now().strftime('%H:%M:%S.%f') +
             ' ' + self.name + " Received \t%r" % body)
 
-        self.msg = json.loads(body)
+        msg = json.loads(body)
 
-        if self.msg['PassCtrl'] == True:
-            self.msg['PassCtrl'] = False
+        if msg['PassCtrl'] == True:
+            msg['PassCtrl'] = False
             ch.stop_consuming() # required in callback to prevent infinite loop
 
     def receive(self,msgQueue, callbackF):
@@ -46,4 +51,24 @@ class AMQPAgent():
         channel.start_consuming()
         # will only be reached once channel stops consuming (assumed in callback)
         connection.close()
+
+    def redirect(self, ch, method, properties, body):
+        """Method to send messages to appropriate outside functions"""
+        msg = json.loads(body)
+        print('In %s redirect...' % self.name)
+        print(msg)
+        msgType = msg['msgType']
+
+        if msgType == 'init':
+            ltd.amqp.IPY_init(msg)
+            ch.stop_consuming()
+            return
+
+        elif msgType == 'mirrorOk':
+            ltd.amqp.PY3importMir(msg)
+            ch.stop_consuming()
+            return
+
+        print('no matching msg type...')
+        ch.stop_consuming()
         

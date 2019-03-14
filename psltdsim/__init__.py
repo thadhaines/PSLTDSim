@@ -7,5 +7,6 @@ from . import perturbanceAgents
 from . import pslfModels
 from . import systemAgents
 from . import terminal
+from . import amqp
 
 from .init_PSLF import init_PSLF

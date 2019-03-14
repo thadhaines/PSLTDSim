@@ -106,7 +106,16 @@ class Mirror(object):
         
         # read dyd, create pslf models
         # TODO: handle dyd replacement of previous models...
-        ltd.data.parseDyd(self, locations['dydPath'])
+
+        if 'ltdPath' in locations:
+            dydPaths = locations['dydPath'] + locations['ltdPath']
+        else:
+            dydPaths = locations['dydPath']
+
+        ltd.data.parseDyd(self, dydPaths)
+
+        #TODO add parseLTD - handles perturbances etc...
+        ltd.data.parseLtd(self,locations['ltdPath'])
         
         # link H and mbase to mirror
         ltd.mirror.initInertiaH(self)
