@@ -18,14 +18,14 @@ def saveMirror(mir, simParams):
     savName = savName + '.mir'    
     f = open(savName, "wb")
     print("*** Pickling Mirror object...")
-    pickle.dump(mir, f) #  for highest, produces binary (other protocols may be faster)
+    pickle.dump(mir, f)
     f.close
 
     fileLoc = savDir + savName
-    print("*** Mirror object pickled to binary: \n*** '%s'" 
+    print("*** Mirror object saved to binary: \n*** '%s'" 
           % (fileLoc))
 
-    # Ensure unchanged working directory
+    # Ensure return to initial working directory
     os.chdir(cwd)
 
     return fileLoc

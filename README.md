@@ -1,6 +1,8 @@
 # PSLTDSim = Power System Long-Term Dynamic Simulator
 Purpose:  Use Python 3 and PSLF to simulate long-term power system dynamics.
 
+Note: Work in progress recfactor - everything may be broken.
+
 An example of such long-term dynamics:  A wind ramp causes a governor action response, that in turn affects the area control error (ACE), and is later corrected by automatic generator control (AGC [a.k.a. load frequency control or LFC]). 
 
 To install from current WIP state: "pip install -e ." from this directory
@@ -21,8 +23,7 @@ To install from current WIP state: "pip install -e ." from this directory
   * Step dynamic modles (pgov1)
   * Log values of interest
   * Generate data dictionary
-  * Export Model or data data dictionary as a binary file (via pickle)
-  * Import Model or data data dictionary into Python 3.x
+  * Import/Export Mirror or data data dictionary as a binary file (via pickle)
   * Export Model or data data dictionary from Python 3.x to MATLAB .mat file
   * Generate terminal output
 * MATLAB scripts created to verify simulation outputs of:

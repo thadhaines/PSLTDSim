@@ -15,8 +15,6 @@ class AMQPAgent():
         cParams = pika.ConnectionParameters(host=self.host)
         connection = pika.BlockingConnection(cParams)
         channel = connection.channel()
-
-        
         channel.queue_declare(queue=msgQueue) # ensure queue created
 
         if self.mirror:
@@ -69,6 +67,7 @@ class AMQPAgent():
             ch.stop_consuming()
             return
 
+        # for continued debug work
         print('no matching msg type...')
         ch.stop_consuming()
         

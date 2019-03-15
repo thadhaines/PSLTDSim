@@ -5,3 +5,5 @@ def IPY_init(msg):
 
     __builtin__.locations = msg['locations']
     __builtin__.simParams = msg['simParams']
+    __builtin__.simNotes = msg['simNotes']
+    __builtin__.debug = msg['debug']

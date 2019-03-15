@@ -17,6 +17,9 @@ print(os.getcwd())
 #os.chdir(r"...")
 #print(os.getcwd())
 
+# for extended terminal output
+debug = 0
+
 simNotes = """
 Test of py3 and ipy AMQP - simple step up and down with gov
 """
@@ -43,13 +46,13 @@ simParams = {
 # Fast debug case switching
 # TODO: enable new dyd replacement...
 # TODO: incorporate ltdPath into simulation
-test_case = 0
+test_case = 2
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
                #r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd", #pgov1 on gen 2
                ]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ltd"]
+    #ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ltd"]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
@@ -66,6 +69,9 @@ elif test_case == 4:
                r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd", #pgov1 on slacks
                ]
 
+if not 'ltdPath' in dir(): # handle undefined ltdPath
+    ltdPath = None
+
 # Required Paths Dictionary
 locations = {
     # path to folder containing middleware dll
@@ -76,24 +82,22 @@ locations = {
     'dydPath': dydPath,
     'ltdPath' : ltdPath,
     }
-del savPath, dydPath
+del savPath, dydPath, ltdPath, test_case
 
 # Init PY3 AMQP
 host = '127.0.0.1'
 PY3 = ltd.amqp.AMQPAgent('PY3',host)
 
 # Clear AMQP queues
-cParams = pika.ConnectionParameters(host=host)
-connection = pika.BlockingConnection(cParams)
-channel = connection.channel()
-channel.queue_purge('toPY3')
-channel.queue_purge('toIPY')
-connection.close()
+ltd.amqp.clearQ(host, ['toPY3', 'toIPY'])
 
-# create and send init msg (send locations, simparams)
+# create and send init msg
 initMsg = {'msgType': 'init',
            'locations': locations,
-           'simParams': simParams,}
+           'simParams': simParams,
+           'simNotes': simNotes,
+           'debug': debug,
+           }
 PY3.send('toIPY', initMsg)
 
 # Start IPY - assumes ironpython on path
@@ -104,3 +108,7 @@ ipyProc = subprocess.Popen(cmd)
 PY3.receive('toPY3',PY3.redirect)
 print('py3 main...')
 print(mir)
+
+## begin PY3 simulation loop 
+
+

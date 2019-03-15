@@ -272,3 +272,5 @@ __pycache__/
 *.gz
 /verification/pgov1/pgovAgain01.mat
 /verification/pgov1/pgovAgain01.pkl
+/verification/refactor/bigcase.mir
+/verification/refactor/pgovAgain01.dict

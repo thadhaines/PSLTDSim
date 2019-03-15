@@ -56,11 +56,11 @@ def makeModelDictionary(mir):
 
             # combine dictionaries to lone bus dictionary, if they exist
             if Nload>0:
-                busD = mergeDicts(busD, loadD)
+                busD = ltd.data.mergeDicts(busD, loadD)
             if Ngen>0:
-                busD = mergeDicts(busD, genD)
+                busD = ltd.data.mergeDicts(busD, genD)
             if Nslack>0:
-                busD = mergeDicts(busD, slackD)
+                busD = ltd.data.mergeDicts(busD, slackD)
 
             busD['Nload'] = Nload
             busD['Ngen'] = Ngen
@@ -77,7 +77,7 @@ def makeModelDictionary(mir):
             areaBusD[strBusName] = busD
 
         # combine collected bus ditionary into area dictionary
-        areaD = mergeDicts(areaD, areaBusD)
+        areaD = ltd.data.mergeDicts(areaD, areaBusD)
         areaD['genBusN'] = genBusN
         areaD['loadBusN'] = loadBusN
         areaD['slackBusN'] = slackBusN
@@ -91,7 +91,7 @@ def makeModelDictionary(mir):
         rootAreaD[strAreaName] = areaD
 
     # combine all areas to root D
-    rootD = mergeDicts(rootD, rootAreaD)
+    rootD = ltd.data.mergeDicts(rootD, rootAreaD)
     rootD['areaN'] = areaN
 
     return rootD          

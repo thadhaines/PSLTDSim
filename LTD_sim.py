@@ -18,8 +18,8 @@ ltd.terminal.dispCodeTitle()
 print(os.getcwd())
 
 # workaround for interactive mode runs (Use as required)
-#os.chdir(r"...")
-#print(os.getcwd())
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
+print(os.getcwd())
 
 simNotes = """
 Retest of ipy code after refactor - simple step up and down with gov
@@ -69,6 +69,9 @@ elif test_case == 4:
                r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd", #pgov1 on slacks
                ]
 
+if not 'ltdPath' in dir(): # handle undefined ltdPath
+    ltdPath = None
+
 # Required Paths Dictionary
 locations = {
     # path to folder containing middleware dll
@@ -77,6 +80,7 @@ locations = {
     'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
     'savPath' : savPath,
     'dydPath': dydPath,
+    'ltdPath': ltdPath,
     }
 del savPath, dydPath
 
@@ -86,7 +90,7 @@ ltd.init_PSLF(locations)
 # mirror arguments: locations, simParams, debug flag
 initStart = time.time()
 mir = ltd.mirror.Mirror(locations, simParams, 0)
-mir.notes = simNotes # update notes before export
+mir.simNotes = simNotes # update notes before export
 
 # TODO: enable entering of perturbance via some parsed text file - keep in IPY
 # Pertrubances configured for test case (eele)
@@ -98,16 +102,22 @@ print('Init time: %f' % (time.time() - initStart))
 ltd.data.saveMirror(mir, simParams)
 
 simStart = time.time()
-mir.runSim()
+ltd.mirror.runSim_OG(mir)
 simEnd = time.time()
 
 ltd.terminal.dispSimResults(mir) # for terminal output
 
 print('Simulation time: %f' % (simEnd - simStart))
 
-"""
+
 # Data export - no need to test in ipy
 if simParams['exportDict']:
+    dictPath = ltd.data.exportDict(mir)
+
+    d = ltd.data.loadModelDictionary(dictPath)
+    #print('debug for dictionary saving loading')
+    
+    """
     # Change current working directory to data destination.
     cwd = os.getcwd()
     if simParams['fileDirectory'] :
@@ -117,6 +127,7 @@ if simParams['exportDict']:
     D = makeModelDictionary(mir)
     savedName = saveModelDictionary(D,dictName)
     os.chdir(cwd)
+    
 
     if  simParams['exportMat']:
         # use cmd to run python 3 32 bit script...
@@ -125,7 +136,9 @@ if simParams['exportDict']:
         matProc = subprocess.Popen(cmd)
         matReturnCode = matProc.wait()
         matProc.send_signal(signal.SIGTERM)
+    """
 
+"""
 ## update to make mat using python 3.6
 if simParams['fileDirectory']:
         cwd = os.getcwd()

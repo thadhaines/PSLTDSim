@@ -9,7 +9,6 @@ def readMirror(fileLocation):
 
     mir = pickle.load(f)
     f.close()
-    print("*** Mirror Loaded:")
-    print(mir)
+    print("*** Mirror read from %s" % fileLocation.split('\\')[-1])
 
     return mir

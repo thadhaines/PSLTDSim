@@ -5,6 +5,7 @@ from .getDateStr import getDateStr
 from .makeModelDictionary import makeModelDictionary
 from .saveModelDictionary import saveModelDictionary
 from .loadModelDictionary import loadModelDictionary
+from .exportDict import exportDict
 
 from .readMirror import readMirror
 from .saveMirror import saveMirror

@@ -5,7 +5,7 @@ def saveModelDictionary(mirD, savName):
     import os
     import pickle as pickle
 
-    savName = savName + '.pkl'    
+    savName = savName + '.dict'    
     f = open(savName, "wb")
     print("Pickling Dictionary object...")
     # create pickle,

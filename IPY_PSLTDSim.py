@@ -17,18 +17,26 @@ IPY = ltd.amqp.AMQPAgent('IPY', host)
 # receive init message
 IPY.receive('toIPY',IPY.redirect)
 
-print('in IPY main')
+print('in IPY main') # DEBUG
 
 ### Start Simulation functions calls
 ltd.init_PSLF(locations)
 
-mir = ltd.mirror.Mirror(locations, simParams, 1)
+mir = ltd.mirror.Mirror(locations, simParams, simNotes, debug)
 
 mirLoc = ltd.data.saveMirror(mir, simParams)
-print(mir)
-## rando test
+time.sleep(0.1) # to ensure mirror closed.
+
+# Send mirror location to PY3
 msg = {'msgType' : 'mirrorOk',
        'mirLoc' : mirLoc,
-       'val': 'alls cool breh',}
+       }
 IPY.send('toPY3', msg)
 
+## begin IPY simulation loop (probably part of mirror funciton)
+
+# Hand off control to PY3 - consume LTD messages
+
+# test refactored runSim_OG -> works!
+#ltd.mirror.runSim_OG(mir)
+#ltd.terminal.dispSimResults(mir)

@@ -9,7 +9,7 @@
 class Mirror(object):
     """Mirror class used as LTD system environment"""
 
-    def __init__(self, locations, simParams, debug = 0):
+    def __init__(self, locations, simParams, simNotes=None, debug = 0):
         """Carries out initialization of Mirror and meta data
         """
         global PSLF
@@ -18,7 +18,7 @@ class Mirror(object):
         __module__= "Mirror"
         # Model Meta Data
         self.created = datetime.now()
-        self.notes = """Notes"""
+        self.simNotes = simNotes
 
         # Simulation Parameters from User
         self.simParams = simParams
@@ -105,9 +105,8 @@ class Mirror(object):
         self.PSLFexc = []
         
         # read dyd, create pslf models
-        # TODO: handle dyd replacement of previous models...
-
-        if 'ltdPath' in locations:
+        # TODO: handle dyd replacement of previous models...?
+        if locations['ltdPath']:
             dydPaths = locations['dydPath'] + locations['ltdPath']
         else:
             dydPaths = locations['dydPath']
@@ -115,7 +114,8 @@ class Mirror(object):
         ltd.data.parseDyd(self, dydPaths)
 
         #TODO add parseLTD - handles perturbances etc...
-        ltd.data.parseLtd(self,locations['ltdPath'])
+        if locations['ltdPath']:
+            ltd.data.parseLtd(self,locations['ltdPath'])
         
         # link H and mbase to mirror
         ltd.mirror.initInertiaH(self)
@@ -130,117 +130,6 @@ class Mirror(object):
         print("*** Python Mirror intialized.")
 
     # Simulation Methods
-    def runSim(self):
-        if not self.debug:
-            # block pslf output for normal (non-debug) runs
-            noPrintStr = "dispar[0].noprint = 1"
-            PSLF.RunEpcl(noPrintStr)
-
-        """Function to run LTD simulation"""
-        print("\n*** Starting Simulation")
-        # set flag for non-convergence
-        sysCrash = 0
-
-        # Initalization value of Pe for [c_dp-1] functionality
-        # NOTE: python does negative indexing, 
-        # These values are appeneded now and popped once simulation ends
-        ltd.mirror.initRunningVals(self)
-        self.r_ss_Pe.append(ltd.mirror.sumPe(self))
-        self.r_ss_Pacc.append(0.0)
-        self.r_f.append(1.0)
-        self.r_fdot.append(0.0)
-
-        # Step Initialize Dynamic Agents
-        for x in range(len(self.Dynamics)):
-                self.Dynamics[x].stepInitDynamics()
-
-        # Start Simulation loop
-        while self.c_t <= self.endTime:
-            if self.debug:
-                print("\n*** Data Point %d" % self.c_dp)
-                print("*** Simulation time: %.2f" % (self.c_t))
-            else:
-                print("Simulation Time: %7.2f   " % self.c_t), # to print dots each step
-
-            # Step System Wide dynamics
-            ltd.mirror.combinedSwing(self, self.ss_Pacc)
-            if self.c_f <= 0.0:
-                # check for silly frequency
-                N = self.c_dp - 1
-                sysCrash = 1
-                break;
-
-            # Step Individual Agent Dynamics
-            for x in range(len(self.Dynamics)):
-                self.Dynamics[x].stepDynamics()
-
-            # set pe = pm (dynamic action)
-            for x in range(len(self.Machines)):
-                self.Machines[x].Pe = self.Machines[x].Pm
-            
-            # Initialize Pertrubance delta
-            self.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
-            self.ss_Pert_Qdelta = 0.0 # intended for system loss calculations
-
-            # Step Perturbance Agents
-            for x in range(len(self.Perturbance)):
-                self.Perturbance[x].step()
-
-            # Sum system loads to Account for any load changes from Perturbances
-            self.ss_Pload, self.ss_Qload = ltd.mirror.sumLoad(self)
-
-            # Sum current system Pm 
-            self.ss_Pm = ltd.mirror.sumPm(self)
-            
-            # Calculate current system Pacc
-            self.ss_Pacc = (
-                self.ss_Pm 
-                - self.r_ss_Pe[self.c_dp-1] # Most recent PSLF sum
-                - self.ss_Pert_Pdelta
-                )
-            
-            # Find current system Pacc Delta
-            # NOTE: unused variable as of 2/2/19
-            self.r_Pacc_delta[self.c_dp] = self.ss_Pacc - self.r_ss_Pacc[self.c_dp-1]
-
-            # Distribute Pacc to system machines Pe and solve PSLF
-            try:
-                ltd.mirror.distPe(self, self.ss_Pacc )
-            # Check for convergence
-            except ValueError as e:
-                # Catches error thown for non-convergene
-                print("*** Error Caught, Simulation Stopping...")
-                print(e)
-                # Pop void data from agents that log
-                N = self.c_dp
-                sysCrash = 1
-                break;
-
-            # update system Pe after PSLF power flow solution
-            self.ss_Pe = ltd.mirror.sumPe(self)
-
-            # step log of Agents with ability
-            for x in range(len(self.Log)):
-                self.Log[x].logStep()
-
-            # step time and data point
-            self.r_t[self.c_dp] = self.c_t
-            self.c_dp += 1
-            self.c_t += self.timeStep
-
-        print("_______________________")
-        print("    Simulation Complete\n")
-
-        # remove initialization values
-        if sysCrash == 1:
-            for x in range(len(self.Log)):
-                    self.Log[x].popUnsetData(N)
-        else:
-            self.r_ss_Pe.pop(len(self.r_ss_Pe) -1)
-            self.r_ss_Pacc.pop(len(self.r_ss_Pacc) -1)
-            self.r_f.pop(len(self.r_f) -1)
-            self.r_fdot.pop(len(self.r_fdot)-1)
-
     def logStep(self):
         """Update Log information"""
         self.r_f[self.c_dp] = self.c_f
@@ -281,12 +170,13 @@ class Mirror(object):
         dt = self.created
         dtStrYMD = str(dt.year)+'/'+str(dt.month).zfill(2) +'/'+str(dt.day)
         dtStrHMS = str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second).zfill(2)
+
         meta = { 'integrationMethod' : self.simParams['integrationMethod'],
                 'fileName' : self.simParams['fileName'],
                 'freqEffects' : self.simParams['freqEffects'],
                 'locations' : self.locations,
                 'created' : dtStrYMD+' at '+dtStrHMS,
-                'notes' : self.notes,
+                'simNotes' : self.simNotes,
             }
 
         d = {'t': self.r_t,
