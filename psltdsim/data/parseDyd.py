@@ -15,7 +15,7 @@ def parseDyd(model,dydLoc):
     # TODO: enable multi dyd overwrite
     for dyd in range(len(dydLoc)): #-> dydLoc is then replaced with dydLoc[dyd]
         file = open(dydLoc[dyd], 'r') # open file to read
-        if model.debug: print("*** Parsing file at %s" % dydLoc[dyd])
+        if model.debug: print("*** Parsing dynamics file at %s" % dydLoc[dyd])
         line = next(file) # get first line of file
         foundPModels = 0
         foundLTDModels = 0

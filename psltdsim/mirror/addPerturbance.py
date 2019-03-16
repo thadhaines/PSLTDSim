@@ -11,14 +11,14 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
     """
 
     #Locate target in mirror
-    if tarType == 'Load':
+    if tarType.lower() == 'load':
         if len(idList) < 2:
             targetObj = ltd.find.findLoadOnBus(mirror, idList[0])
         else:
             targetObj = ltd.find.findLoadOnBus(mirror, idList[0], idList[1])
 
     #Create Perturbance Agent
-    if (perType == 'Step') and targetObj:
+    if (perType.lower() == 'step') and targetObj:
         # perParams = [targetAttr, tStart, newVal, type='r']
         newStepAgent = ltd.perturbanceAgents.LoadStepAgent(mirror, targetObj, perParams)
         mirror.Perturbance.append(newStepAgent)

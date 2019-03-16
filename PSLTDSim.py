@@ -18,7 +18,7 @@ print(os.getcwd())
 #print(os.getcwd())
 
 # for extended terminal output
-debug = 0
+debug = 1
 
 simNotes = """
 Test of py3 and ipy AMQP - simple step up and down with gov
@@ -46,13 +46,13 @@ simParams = {
 # Fast debug case switching
 # TODO: enable new dyd replacement...
 # TODO: incorporate ltdPath into simulation
-test_case = 2
+test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
                #r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd", #pgov1 on gen 2
                ]
-    #ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ltd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ltd"]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]

@@ -21,6 +21,8 @@ print(os.getcwd())
 os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 print(os.getcwd())
 
+debug = 0
+
 simNotes = """
 Retest of ipy code after refactor - simple step up and down with gov
 """
@@ -50,9 +52,9 @@ simParams = {
 test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
-               #r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd", #pgov1 on gen 2
-               ]
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ltd"]
+    
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
@@ -89,14 +91,14 @@ ltd.init_PSLF(locations)
 
 # mirror arguments: locations, simParams, debug flag
 initStart = time.time()
-mir = ltd.mirror.Mirror(locations, simParams, 0)
+mir = ltd.mirror.Mirror(locations, simParams, simNotes, debug)
 mir.simNotes = simNotes # update notes before export
 
 # TODO: enable entering of perturbance via some parsed text file - keep in IPY
 # Pertrubances configured for test case (eele)
 # step up and down (pgov test)
-ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',2,101]) # quick 1 MW step
-ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',30,100]) # quick 1 MW step
+#ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',2,101]) # quick 1 MW step
+#ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',30,100]) # quick 1 MW step
 print('Init time: %f' % (time.time() - initStart))
 
 ltd.data.saveMirror(mir, simParams)

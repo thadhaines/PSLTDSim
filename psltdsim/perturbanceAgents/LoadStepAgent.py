@@ -12,8 +12,8 @@ class LoadStepAgent(object):
         self.mObj = targetObj
 
         self.attr = perParams[0]
-        self.tStart = perParams[1]
-        self.pertVal = perParams[2]
+        self.tStart = float(perParams[1])
+        self.pertVal = float(perParams[2])
 
         if len(perParams) > 3 :
             self.stepType = perParams[3]
@@ -51,7 +51,7 @@ class LoadStepAgent(object):
                 pObj = self.mObj.getPref()
                 
                 # Update correct attribute in PSLF
-                if self.attr == 'St':
+                if self.attr.lower() == 'st':
                     if self.pertVal == 1:
                         pObj.SetInService()
                         self.mirror.ss_Pert_Pdelta += pObj.P
@@ -61,16 +61,16 @@ class LoadStepAgent(object):
                         self.mirror.ss_Pert_Pdelta -= pObj.P
                         self.mirror.ss_Pert_Qdelta -= pObj.Q
 
-                elif self.attr == 'P':
+                elif self.attr.lower() == 'p':
                     oldVal = pObj.P
-                    if self.stepType == 'rel':
+                    if self.stepType.lower() == 'rel':
                         pObj.P += self.pertVal # relative step
                     else:
                         pObj.P = self.pertVal # absolute step
 
                     self.mirror.ss_Pert_Pdelta += pObj.P - oldVal
 
-                elif self.attr == 'Q':
+                elif self.attr.lower() == 'q':
                     oldVal = pObj.Q
                     pObj.Q = self.pertVal
                     mirror.ss_Pert_Qdelta += self.pertVal - oldVal
