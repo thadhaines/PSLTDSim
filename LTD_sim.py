@@ -92,16 +92,9 @@ ltd.init_PSLF(locations)
 # mirror arguments: locations, simParams, debug flag
 initStart = time.time()
 mir = ltd.mirror.Mirror(locations, simParams, simNotes, debug)
-mir.simNotes = simNotes # update notes before export
-
-# TODO: enable entering of perturbance via some parsed text file - keep in IPY
-# Pertrubances configured for test case (eele)
-# step up and down (pgov test)
-#ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',2,101]) # quick 1 MW step
-#ltd.mirror.addPerturbance(mir,'Load',[3],'Step',['P',30,100]) # quick 1 MW step
 print('Init time: %f' % (time.time() - initStart))
 
-ltd.data.saveMirror(mir, simParams)
+ltd.data.saveMirror(mir, simParams) # test mirror export
 
 simStart = time.time()
 ltd.mirror.runSim_OG(mir)
@@ -112,11 +105,12 @@ ltd.terminal.dispSimResults(mir) # for terminal output
 print('Simulation time: %f' % (simEnd - simStart))
 
 
-# Data export - no need to test in ipy
+# Data export
 if simParams['exportDict']:
+
     dictPath = ltd.data.exportDict(mir)
 
-    d = ltd.data.loadModelDictionary(dictPath)
+    d = ltd.data.loadMirrorDictionary(dictPath)
     #print('debug for dictionary saving loading')
     
     """

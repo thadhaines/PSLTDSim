@@ -1,10 +1,10 @@
-def parseLtd(model,ltdLoc):
+def parseLtd(mirror,ltdLoc):
     """Function that parses ltd information to mirror"""
     
     totPertfound = 0
     for ltdFileNdx in range(len(ltdLoc)): # assumes ltd in list, will handle multiples
         file = open(ltdLoc[ltdFileNdx], 'r') # open file to read
-        if model.debug: print("*** Parsing LTD file at %s" % ltdLoc[ltdFileNdx])
+        if mirror.debug: print("*** Parsing LTD file at %s" % ltdLoc[ltdFileNdx])
         line = next(file) # get first line of file
         foundPert = 0
 
@@ -19,9 +19,9 @@ def parseLtd(model,ltdLoc):
 
             # send line to correct function based on line
             if parts[0] == "load":
-                if model.debug:
+                if mirror.debug:
                     print("*** Creating %s Perturbance..." % parts[0])
-                cleanLine = ltd.data.cleanLtdStr(line)
+                cleanLine = ltd.parse.cleanLtdStr(line)
 
                 # turn clean line into idList
                 if cleanLine[2]:
@@ -29,7 +29,7 @@ def parseLtd(model,ltdLoc):
                 else:
                     idList = [cleanLine[1]]
 
-                ltd.mirror.addPerturbance(model, 
+                ltd.mirror.addPerturbance(mirror, 
                                           cleanLine[0],
                                          idList,
                                          cleanLine[3],
@@ -43,6 +43,6 @@ def parseLtd(model,ltdLoc):
 
         file.close() # close file
         totPertfound += foundPert
-    if model.debug == 1:
+    if mirror.debug == 1:
         print("*** Parsed %d perturbances from:\n%s" 
               % (totPertfound, ltdLoc))

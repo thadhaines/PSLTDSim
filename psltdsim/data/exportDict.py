@@ -1,7 +1,7 @@
 import os
 
 def exportDict(mirror):
-    """Export system dictionary to disk
+    """Make and Export mirror dictionary to disk
     Returns path to saved dictionary
     """
 
@@ -11,8 +11,8 @@ def exportDict(mirror):
         os.chdir(cwd + mirror.simParams['fileDirectory'])
 
     dictName = mirror.simParams['fileName']
-    D = ltd.data.makeModelDictionary(mirror)
-    savedName = ltd.data.saveModelDictionary(D,dictName)
+    D = ltd.data.makeMirrorDictionary(mirror)
+    savedName = ltd.data.saveMirrorDictionary(D,dictName)
     savedPath = os.getcwd() + '\\' + savedName
     os.chdir(cwd)
 

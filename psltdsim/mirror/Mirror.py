@@ -111,11 +111,11 @@ class Mirror(object):
         else:
             dydPaths = locations['dydPath']
 
-        ltd.data.parseDyd(self, dydPaths)
+        ltd.parse.parseDyd(self, dydPaths)
 
         #TODO add parseLTD - handles perturbances etc...
         if locations['ltdPath']:
-            ltd.data.parseLtd(self, locations['ltdPath'])
+            ltd.parse.parseLtd(self, locations['ltdPath'])
         
         # link H and mbase to mirror
         ltd.mirror.initInertiaH(self)

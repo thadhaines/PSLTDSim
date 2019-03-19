@@ -1,4 +1,4 @@
-def saveModelDictionary(mirD, savName):
+def saveMirrorDictionary(mirD, savName):
     """Creates pickle object of Model dictionary named savName.pkl
     Return savName
     """

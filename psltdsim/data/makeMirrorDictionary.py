@@ -1,5 +1,5 @@
-def makeModelDictionary(mir):
-    """Makes dictionary of available Model data"""
+def makeMirrorDictionary(mir):
+    """Makes dictionary of available Mirror data"""
     # TODO: make less nested, may enable easier MATLAB import...
     # TODO: append character to variable names that are only number 
 

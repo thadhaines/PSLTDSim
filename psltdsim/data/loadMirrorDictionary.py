@@ -1,5 +1,5 @@
-def loadModelDictionary(fileLocation):
-    """Returns saved Model Dictionary from Pickled file at 'fileLocation'"""
+def loadMirrorDictionary(fileLocation):
+    """Returns saved Mirror Dictionary from Pickled file at 'fileLocation'"""
     import os
     import sys
     import pickle as pickle
@@ -11,6 +11,6 @@ def loadModelDictionary(fileLocation):
     f.flush()
     f.close()
     
-    print("*** Model Dictionary Loaded!")
+    print("*** Mirror Dictionary Loaded!")
 
     return mir
