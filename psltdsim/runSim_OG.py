@@ -13,15 +13,16 @@ def runSim_OG(mirror):
     # Initalization value of Pe for [c_dp-1] functionality
     # NOTE: python does negative indexing, 
     # These values are appeneded now and popped once simulation ends
-    ltd.mirror.initRunningVals(mirror)
+    for agent in mirror.Log:
+        agent.initRunningVals()
+
+    #ltd.mirror.initRunningVals(mirror)
     mirror.r_ss_Pe.append(ltd.mirror.sumPe(mirror))
     mirror.r_ss_Pacc.append(0.0)
     mirror.r_f.append(1.0)
     mirror.r_fdot.append(0.0)
 
-    # Step Initialize Dynamic Agents
-    for x in range(len(mirror.Dynamics)):
-            mirror.Dynamics[x].stepInitDynamics()
+    agentPSLFupdates = mirror.Machines + mirror.Load + mirror.Bus
 
     # Start Simulation loop
     while mirror.c_t <= mirror.endTime:
@@ -34,26 +35,30 @@ def runSim_OG(mirror):
         # Step System Wide dynamics
         ltd.mirror.combinedSwing(mirror, mirror.ss_Pacc)
         if mirror.c_f <= 0.0:
-            # check for silly frequency
+            # check for unreal frequency
             N = mirror.c_dp - 1
             sysCrash = 1
             break;
 
         # Step Individual Agent Dynamics
-        for x in range(len(mirror.Dynamics)):
-            mirror.Dynamics[x].stepDynamics()
+        for dynamicX in mirror.Dynamics:
+            dynamicX.stepDynamics()
 
         # set pe = pm (dynamic action)
-        for x in range(len(mirror.Machines)):
-            mirror.Machines[x].Pe = mirror.Machines[x].Pm
+        for machineX in mirror.Machines:
+            machineX.Pe = machineX.Pm
             
         # Initialize Pertrubance delta
         mirror.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
         mirror.ss_Pert_Qdelta = 0.0 # intended for system loss calculations
 
         # Step Perturbance Agents
-        for x in range(len(mirror.Perturbance)):
-            mirror.Perturbance[x].step()
+        for pertX in mirror.Perturbance:
+            pertX.step()
+
+        # Set new pVals...
+        for agent in agentPSLFupdates:
+            agent.setPvals()
 
         # Sum system loads to Account for any load changes from Perturbances
         mirror.ss_Pload, mirror.ss_Qload = ltd.mirror.sumLoad(mirror)
@@ -74,7 +79,7 @@ def runSim_OG(mirror):
 
         # Distribute Pacc to system machines Pe and solve PSLF
         try:
-            ltd.mirror.distPe(mirror, mirror.ss_Pacc )
+            ltd.mirror.distPacc(mirror, mirror.ss_Pacc )
         # Check for convergence
         except ValueError as e:
             # Catches error thown for non-convergene
@@ -85,12 +90,16 @@ def runSim_OG(mirror):
             sysCrash = 1
             break;
 
+        # Get new pVals...
+        for agent in agentPSLFupdates:
+            agent.getPvals()
+
         # update system Pe after PSLF power flow solution
         mirror.ss_Pe = ltd.mirror.sumPe(mirror)
 
         # step log of Agents with ability
-        for x in range(len(mirror.Log)):
-            mirror.Log[x].logStep()
+        for agentX in mirror.Log:
+            agentX.logStep()
 
         # step time and data point
         mirror.r_t[mirror.c_dp] = mirror.c_t

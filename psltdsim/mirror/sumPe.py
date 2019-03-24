@@ -1,13 +1,19 @@
 def sumPe(mirror):
-    """Returns sum of all electrical power from active machines
-    Uses most recent PSLF values (update included in function)
-    """
+    """Returns sum of all electrical power from active machines"""
     sysPe = 0.0
-    for ndx in range(len(mirror.Machines)):
-        #Sum all generator values if status = 1
-        if mirror.Machines[ndx].St == 1:
-            mirror.Machines[ndx].getPvals()
-            sysPe += mirror.Machines[ndx].Pe
+
+    # for each area
+    for area in mirror.Area:
+        # reset current sum
+        area.Pe = 0.0
+
+        # sum each active machine Pe to area agent
+        for mach in area.Machines:
+            if mach.St == 1:
+                area.Pe += mach.Pe
+
+        # sum area agent totals to system
+        sysPe += area.Pe
 
     return sysPe
 

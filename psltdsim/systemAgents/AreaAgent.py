@@ -1,11 +1,9 @@
 class AreaAgent(object):
-    """Area Agent for LTD Model Collections"""
-    #NOTE: Account for zones in the future?
+    """Area Agent for LTD mirror Collections"""
 
-    def __init__(self, model, areaNum):
-        #from __main__ import col
-        # Model Reference
-        self.model = model
+    def __init__(self, mirror, areaNum):
+        # mirror Reference
+        self.mirror = mirror
 
         # Identification
         self.Area = areaNum
@@ -20,15 +18,48 @@ class AreaAgent(object):
         self.Slack = []
         self.Machines = []
         self.Bus = []
-        # if this is how shunts/SVDs work...
         self.Shunt = []
         self.SVD = []
+
+        # Current Timestep values
+        self.Pe = 0.0
+        self.Pm = 0.0
+        self.P = 0.0
+        self.Q = 0.0
+
+        #TODO: Add mor ACE variables?
+        self.beta = 0.0
+
+    def initRunningVals(self):
+        """Initialize history values of mirror agent"""
+        self.r_Pe = [0.0]*self.mirror.dataPoints
+        self.r_Pm = [0.0]*self.mirror.dataPoints
+        self.r_P = [0.0]*self.mirror.dataPoints
+        self.r_Q = [0.0]*self.mirror.dataPoints
+
+    def logStep(self):
+        """Put current values into log"""
+        self.r_Pe[self.mirror.c_dp] = self.r_Pe
+        self.r_Pm[self.mirror.c_dp] = self.r_Pm
+        self.r_P[self.mirror.c_dp] = self.r_P
+        self.r_Q[self.mirror.c_dp] = self.r_Q
+
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_Pe = self.r_Pe[:N]
+        self.r_Pm = self.r_Pm[:N]
+        self.r_P = self.r_P[:N]
+        self.r_Q = self.r_Q[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
         d = {'AreaNum': self.Area,
              'Ngen': self.Ngen,
              'Nload': self.Nload,
+             'Pe' : self.r_Pe,
+             'Pm' : self.r_Pm,
+             'P' : self.r_P,
+             'Q' : self.Q,
              }
         return d
 
@@ -41,7 +72,7 @@ class AreaAgent(object):
         self.Machines = self.Slack + self.Gens
 
         if self.Ngen == (len(self.Machines)):
-            if self.model.debug: 
+            if self.mirror.debug: 
                 print("Gens correct in Area:\t%d" % self.Area)
             
         else:
@@ -50,7 +81,7 @@ class AreaAgent(object):
             return -1
 
         if self.Nload == len(self.Load):
-            if self.model.debug: 
+            if self.mirror.debug: 
                 print("Load correct in Area:\t%d" % self.Area)
         else:
             print("*** Load Error: %d/%d found. Area:\t%d" % 
@@ -58,3 +89,13 @@ class AreaAgent(object):
             return -2
 
         return 0
+
+    def calcBeta(self):
+        """Calculate Beta (area frequency response characteristic)"""
+        self.beta = 0.0
+        #for each machine
+        for mach in self.Machines:
+            #for each gov
+            for gov in mach.gov:
+                #sum 1/droop
+                self.beta += 1.0/gov.droop

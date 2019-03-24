@@ -21,7 +21,7 @@ print(os.getcwd())
 os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 print(os.getcwd())
 
-debug = 0
+debug = 1
 
 simNotes = """
 Retest of ipy code after refactor - simple step up and down with gov
@@ -97,7 +97,7 @@ print('Init time: %f' % (time.time() - initStart))
 ltd.data.saveMirror(mir, simParams) # test mirror export
 
 simStart = time.time()
-ltd.mirror.runSim_OG(mir)
+ltd.runSim_OG(mir)
 simEnd = time.time()
 
 ltd.terminal.dispSimResults(mir) # for terminal output

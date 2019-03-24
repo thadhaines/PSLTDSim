@@ -13,7 +13,10 @@ def clearQ(host, queues):
         queues = [queues]
 
     for q in queues:
-        channel.queue_purge(q)
+        try:
+            channel.queue_purge(q)
+        except:
+            print('*** AMQP queues do not exist - nothing to purge.')
         #print('purged %s' % q) # Debug
 
     connection.close()

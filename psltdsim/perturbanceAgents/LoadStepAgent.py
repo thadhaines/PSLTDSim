@@ -43,45 +43,45 @@ class LoadStepAgent(object):
         if self.ProcessFlag:
             if self.mirror.c_t < self.tStart:
                 # acts as a pass
-                return
+                return 0
 
             if self.mirror.c_t >= self.tStart:
                 # Perform Perturbance step
-                # Get most recent PSLF reference
-                pObj = self.mObj.getPref()
-                
+                # Get most recent PSLF reference - not needed in refactor
+                #pObj = self.mObj.getPref()
+
                 # Update correct attribute in PSLF
                 if self.attr.lower() == 'st':
                     if self.pertVal == 1:
-                        pObj.SetInService()
-                        self.mirror.ss_Pert_Pdelta += pObj.P
-                        self.mirror.ss_Pert_Qdelta += pObj.Q
+                        mObj.St = 1
+                        self.mirror.ss_Pert_Pdelta += mObj.P
+                        self.mirror.ss_Pert_Qdelta += mObj.Q
                     else:
-                        pObj.SetOutOfService()
-                        self.mirror.ss_Pert_Pdelta -= pObj.P
-                        self.mirror.ss_Pert_Qdelta -= pObj.Q
+                        mObj.St = 0
+                        self.mirror.ss_Pert_Pdelta -= mObj.P
+                        self.mirror.ss_Pert_Qdelta -= mObj.Q
 
                 elif self.attr.lower() == 'p':
-                    oldVal = pObj.P
+                    oldVal = self.mObj.P
                     if self.stepType.lower() == 'rel':
-                        pObj.P += self.pertVal # relative step
+                        self.mObj.P += self.pertVal # relative step
                     else:
-                        pObj.P = self.pertVal # absolute step
+                        self.mObj.P = self.pertVal # absolute step
 
-                    self.mirror.ss_Pert_Pdelta += pObj.P - oldVal
+                    self.mirror.ss_Pert_Pdelta += self.mObj.P - oldVal
 
                 elif self.attr.lower() == 'q':
-                    oldVal = pObj.Q
-                    pObj.Q = self.pertVal
+                    oldVal = self.mObj.Q
+                    self.mObj.Q = self.pertVal
                     mirror.ss_Pert_Qdelta += self.pertVal - oldVal
 
                 # Save Changes in PSLF
-                pObj.Save()
+                #pObj.Save()
                 # Update mirror
-                self.mObj.getPvals()
+                #self.mObj.getPvals()
 
                 self.ProcessFlag = 0
                 if self.mirror.debug:
                     # TODO: Make this output more informative
                     print(self)
-                return
+                return 1

@@ -1,8 +1,8 @@
 class GeneratorAgent(object):
-    """Generator Agent for LTD Model"""
-    def __init__(self, model, parentBus, newGen):
-        # Model/Parent Reference
-        self.model = model
+    """Generator Agent for LTD mirror"""
+    def __init__(self, mirror, parentBus, newGen):
+        # mirror/Parent Reference
+        self.mirror = mirror
         self.Bus = parentBus
 
         # Identification 
@@ -30,13 +30,7 @@ class GeneratorAgent(object):
         self.IRP_flag = 1       # Inertia response participant flag
         self.Pe = float(newGen.Pgen)   # Generated Power
         self.Pm = self.Pe       # Initialize as equal
-        self.Q = float(newGen.Qgen)    # Q generatred       
-        
-        # History 
-        self.r_Pm = [0.0]*model.dataPoints
-        self.r_Pe = [0.0]*model.dataPoints
-        self.r_Q = [0.0]*model.dataPoints
-        self.r_St = [0.0]*model.dataPoints
+        self.Q = float(newGen.Qgen)    # Q generatred
 
         # Children
         self.machine_model = []
@@ -45,7 +39,7 @@ class GeneratorAgent(object):
         self.exc = None
         
     def __repr__(self):
-        """Display more useful data for model"""
+        """Display more useful data for mirror"""
         # mimic default __repr__
         T = type(self)
         module = T.__name__
@@ -62,33 +56,53 @@ class GeneratorAgent(object):
 
     def getPvals(self):
         """Make current status reflect PSLF values"""
-        pRef = self.getPref()
-        self.Pe = float(pRef.Pgen)
-        self.Q = float(pRef.Qgen)
-        self.St = int(pRef.St)
+        pObj = self.getPref()
+        self.Pe = float(pObj.Pgen)
+        self.Q = float(pObj.Qgen)
+        self.St = int(pObj.St)
 
     def setPvals(self):
         """Send current mirror values to PSLF"""
-        pRef = self.getPref()
-        pRef.Pgen = self.Pe
-        pRef.St = self.St
-        pRef.Save()
-        # pythonnet workaround: Replace save with EPCL
-        #sb = str(self.Scanbus)
-        
-        #pStr = ("gens[%s].pgen = %f\n" %(sb,self.Pe))
-        #PSLF.RunEpcl(pStr)
-        #stStr = ("gens[%s].st = %d\n" %(sb,self.St))
-        #PSLF.RunEpcl( pStr + stStr)
+        pObj = self.getPref()
+        pObj.Pgen = self.Pe
+        pObj.St = self.St
+        pObj.Save()
 
+    def makeAMQPmsg(self):
+        """Make AMQP message to send cross process"""
+        msg = {'msgType' : 'AgentUpdate',
+               'AgentType': 'Generator',
+               'Busnum':self.Busnum,
+               'Id': self.Id,
+               'Pe': self.Pe,
+               'Pm': self.Pm,
+               'Q': self.Q,
+               'St':self.St,
+               }
+        return msg
+
+    def recAMQPmsg(self,msg):
+        """Set message values to agent values"""
+        self.Pe = msg['Pe']
+        self.Pm = msg['Pm']
+        self.Q = msg['Q']
+        self.St = msg['St']
+        if self.mirror.AMQPdebug: 
+            print('AMQP values set!')
+
+    def initRunningVals(self):
+        """Initialize history values of mirror agent"""
+        self.r_Pm = [0.0]*self.mirror.dataPoints
+        self.r_Pe = [0.0]*self.mirror.dataPoints
+        self.r_Q = [0.0]*self.mirror.dataPoints
+        self.r_St = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Step to record log history"""
-        self.getPvals()
-        self.r_Pe[self.model.c_dp] = self.Pe
-        self.r_Pm[self.model.c_dp] = self.Pm
-        self.r_Q[self.model.c_dp] = self.Q
-        self.r_St[self.model.c_dp] = self.St
+        self.r_Pe[self.mirror.c_dp] = self.Pe
+        self.r_Pm[self.mirror.c_dp] = self.Pm
+        self.r_Q[self.mirror.c_dp] = self.Q
+        self.r_St[self.mirror.c_dp] = self.St
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""

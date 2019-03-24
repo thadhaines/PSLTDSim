@@ -1,4 +1,4 @@
-# this imorts a folder with another __init___.py in it
+# these imort a folder with another __init___.py in it
 from . import data
 from . import dynamicAgents
 from . import find
@@ -11,3 +11,7 @@ from . import amqp
 from . import parse
 
 from .init_PSLF import init_PSLF
+
+from .runSim_OG import runSim_OG
+from .runSim_IPY import runSim_IPY
+from .runSimPY3 import runSimPY3

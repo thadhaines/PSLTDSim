@@ -3,12 +3,12 @@ def incorporate_bus(mirror, newBus, areaAgent):
     # b_ .. Bus objects
     # c_ .. Current Object
     # m_ .. model
-    m_ref = areaAgent.model # to simplify referencing
+    mir = mirror # to simplify referencing
     slackFlag = 0
     if newBus.Type == 0:
         slackFlag = 1
 
-    newBusAgent = ltd.systemAgents.BusAgent(m_ref, newBus)
+    newBusAgent = ltd.systemAgents.BusAgent(mir, newBus)
 
     # locate and create bus generator children
     if (newBusAgent.Ngen > 0):
@@ -16,13 +16,13 @@ def incorporate_bus(mirror, newBus, areaAgent):
         for c_gen in range(newBusAgent.Ngen):
 
             if slackFlag:
-                newGenAgent = ltd.systemAgents.SlackAgent(m_ref, newBusAgent, b_gen[c_gen])
+                newGenAgent = ltd.systemAgents.SlackAgent(mir, newBusAgent, b_gen[c_gen])
                 # add references to gen in model and bus,area agent
                 newBusAgent.Slack.append(newGenAgent)
                 mirror.Slack.append(newGenAgent)
                 areaAgent.Slack.append(newGenAgent)
             else:
-                newGenAgent = ltd.systemAgents.GeneratorAgent(m_ref, newBusAgent, b_gen[c_gen])
+                newGenAgent = ltd.systemAgents.GeneratorAgent(mir, newBusAgent, b_gen[c_gen])
                 # add references to gen in model and bus,area agent
                 newBusAgent.Gens.append(newGenAgent)
                 mirror.Gens.append(newGenAgent)
@@ -32,7 +32,7 @@ def incorporate_bus(mirror, newBus, areaAgent):
     if newBusAgent.Nload > 0:
         b_load = col.LoadDAO.FindByBus(newBusAgent.Scanbus)
         for c_load in range(newBusAgent.Nload):
-            newLoadAgent = ltd.systemAgents.LoadAgent(m_ref, newBusAgent, b_load[c_load])
+            newLoadAgent = ltd.systemAgents.LoadAgent(mir, newBusAgent, b_load[c_load])
             # add references to load in model and bus,area agent
             newBusAgent.Load.append(newLoadAgent)
             mirror.Load.append(newLoadAgent)

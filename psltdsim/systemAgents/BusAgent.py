@@ -1,9 +1,9 @@
 class BusAgent(object):
-    """Bus Agent for LTD Model"""
-    def __init__(self, model, newBus):
+    """Bus Agent for LTD mirror"""
+    def __init__(self, mirror, newBus):
 
-        # Model Reference
-        self.model = model
+        # mirror Reference
+        self.mirror = mirror
 
         # Identification 
         self.Area = newBus.Area
@@ -34,17 +34,13 @@ class BusAgent(object):
         #self.Vmin = newBus.Vmin
         self.Vsched = float(newBus.Vsched)
 
-        # History
-        self.r_Vm = [0.0]*self.model.dataPoints
-        self.r_Va = [0.0]*self.model.dataPoints
-
     def __str__(self):
         """Possible useful identification function"""
         tag = "Bus "+self.Busnam+" in Area "+self.Area
         return tag
 
     def __repr__(self):
-        """Display more useful data for model"""
+        """Display more useful data for mirror"""
         # mimic default __repr__
         T = type(self)
         module = T.__name__
@@ -70,16 +66,33 @@ class BusAgent(object):
         pObj = self.getPref()
         pObj.Vm = self.Vsched
         pObj.Save()
-        # pythonnet workaround Save() -> RunEplc
-        #sb = str(self.Scanbus)
-        #vmStr = ('volt[%s].vm = %f' % (sb, self.Vsched))
-        #PSLF.RunEpcl(vmStr)
+
+    def makeAMQPmsg(self):
+        """Make AMQP message to send cross process"""
+        msg = {'msgType' : 'AgentUpdate',
+               'AgentType': 'Bus',
+               'Extnum':self.Extnum,
+               'Vm': self.Vm,
+               'Va': self.Va,
+               }
+        return msg
+
+    def recAMQPmsg(self,msg):
+        """Set message values to agent values"""
+        self.Vm = msg['Vm']
+        self.Va = msg['Va']
+        if self.mirror.AMQPdebug: 
+            print('AMQP values set!')
+
+    def initRunningVals(self):
+        """Initialize history values of mirror agent"""
+        self.r_Vm = [0.0]*self.mirror.dataPoints
+        self.r_Va = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Put current values into log"""
-        self.getPvals()
-        self.r_Vm[self.model.c_dp] = self.Vm
-        self.r_Va[self.model.c_dp] = self.Va
+        self.r_Vm[self.mirror.c_dp] = self.Vm
+        self.r_Va[self.mirror.c_dp] = self.Va
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""

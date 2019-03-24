@@ -6,6 +6,10 @@ import time
 import builtins
 import pika
 
+# for truly global numpy
+import numpy as np
+builtins.np = np
+
 # import custom package and make truly global
 import psltdsim as ltd
 builtins.ltd = ltd
@@ -14,11 +18,12 @@ ltd.terminal.dispCodeTitle()
 print(os.getcwd())
 
 # workaround for interactive mode runs (Use as required)
-#os.chdir(r"...")
-#print(os.getcwd())
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
+print(os.getcwd())
 
 # for extended terminal output
-debug = 1
+debug = 0
+AMQPdebug = 0
 
 simNotes = """
 Test of py3 and ipy AMQP - simple step up and down with gov
@@ -44,8 +49,7 @@ simParams = {
     }
 
 # Fast debug case switching
-# TODO: enable new dyd replacement...
-# TODO: incorporate ltdPath into simulation
+# TODO: MAYBE enable new dyd replacement... (maybe too cute)
 test_case = 0
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
@@ -97,6 +101,7 @@ initMsg = {'msgType': 'init',
            'simParams': simParams,
            'simNotes': simNotes,
            'debug': debug,
+           'AMQPdebug' : AMQPdebug,
            }
 PY3.send('toIPY', initMsg)
 
@@ -108,7 +113,9 @@ ipyProc = subprocess.Popen(cmd)
 PY3.receive('toPY3',PY3.redirect)
 print('py3 main...')
 print(mir)
-
+PY3.mirror = mir
 ## begin PY3 simulation loop 
+ltd.runSimPY3(mir, PY3)
 
-
+ltd.terminal.dispSimResults(mir)
+print('end of debug test run')

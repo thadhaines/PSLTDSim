@@ -9,13 +9,13 @@
 class Mirror(object):
     """Mirror class used as LTD system environment"""
 
-    def __init__(self, locations, simParams, simNotes=None, debug = 0):
-        """Carries out initialization of Mirror and meta data
-        """
+    def __init__(self, locations, simParams, simNotes=None, debug = 0, AMQPdebug =0):
+        """Carries out initialization of Mirror and meta data"""
         global PSLF
         from datetime import datetime
 
         __module__= "Mirror"
+
         # Model Meta Data
         self.created = datetime.now()
         self.simNotes = simNotes
@@ -29,6 +29,7 @@ class Mirror(object):
         self.Hinput = simParams['Hsys']
         self.Dinput = simParams['Dsys']
         self.debug = debug
+        self.AMQPdebug = AMQPdebug
         self.dataPoints = int(self.endTime//self.timeStep + 1)
 
         # Simulation Variable Prefix Key
@@ -90,7 +91,7 @@ class Mirror(object):
         self.Machines = self.Slack + self.Gens
 
         # TODO: As logging capability added to agents, add to Log collection
-        self.Log = [self] + self.Load + self.Bus + self.Machines
+        self.Log = [self] + self.Load + self.Bus + self.Machines + self.Area
 
         # Check mirror accuracy in each Area, create machines list for each area
         for c_area in range(self.Narea):
@@ -105,7 +106,6 @@ class Mirror(object):
         self.PSLFexc = []
         
         # read dyd, create pslf models
-        # TODO: handle dyd replacement of previous models...?
         if locations['ltdPath']:
             dydPaths = locations['dydPath'] + locations['ltdPath']
         else:
@@ -113,7 +113,7 @@ class Mirror(object):
 
         ltd.parse.parseDyd(self, dydPaths)
 
-        #TODO add parseLTD - handles perturbances etc...
+        # parse LTD - handles perturbances etc...
         if locations['ltdPath']:
             ltd.parse.parseLtd(self, locations['ltdPath'])
         
@@ -127,9 +127,41 @@ class Mirror(object):
         else:
             self.Hsys = self.ss_H
 
+        # ensure most upto date dynamic data
+        for dynamic in self.Dynamics:
+            dynamic.stepInitDynamics()
+
+        # calculate beta for each area
+        for c_area in self.Area:
+            c_area.calcBeta()
+
         print("*** Python Mirror intialized.")
 
     # Simulation Methods
+    def initRunningVals(self):
+        """Initialize History Values of mirror agent"""
+        # initialize running (history) values 
+        self.r_t = [0.0]*self.dataPoints
+
+        self.r_f = [0.0]*self.dataPoints
+        self.r_deltaF = [0.0]*self.dataPoints
+        self.r_fdot = [0.0]*self.dataPoints
+
+        self.r_ss_Pe = [0.0]*self.dataPoints
+        self.r_ss_Pm = [0.0]*self.dataPoints
+        self.r_ss_Pacc = [0.0]*self.dataPoints
+        self.r_Pacc_delta = [0.0]*self.dataPoints
+
+        self.r_ss_Qgen = [0.0]*self.dataPoints
+        self.r_ss_Qload = [0.0]*self.dataPoints
+        self.r_ss_Pload = [0.0]*self.dataPoints
+
+        # for fun stats, not completely utilized - yet
+        self.PLosses = 0.0
+        self.QLosses = 0.0
+        self.r_PLosses = [0.0]*self.dataPoints
+        self.r_QLosses = [0.0]*self.dataPoints
+
     def logStep(self):
         """Update Log information"""
         self.r_f[self.c_dp] = self.c_f

@@ -18,7 +18,7 @@ class AMQPAgent():
         channel.queue_declare(queue=msgQueue) # ensure queue created
 
         if self.mirror:
-            if self.mirror.debug:
+            if self.mirror.AMQPdebug:
                 print(datetime.datetime.now().strftime('%H:%M:%S.%f') +
                  ' ' + self.name + " Sending \t %r" % json.dumps(msg))
         
@@ -29,8 +29,10 @@ class AMQPAgent():
 
     def debugCallback(self, ch, method, properties, body):
         """should be altered to specific needs - proof of concept shown"""
-        print(datetime.datetime.now().strftime('%H:%M:%S.%f') +
-            ' ' + self.name + " Received \t%r" % body)
+        if self.mirror:
+            if self.mirror.AMQPdebug:
+                print(datetime.datetime.now().strftime('%H:%M:%S.%f') +
+                ' ' + self.name + " Received \t%r" % body)
 
         msg = json.loads(body)
 
@@ -53,8 +55,10 @@ class AMQPAgent():
     def redirect(self, ch, method, properties, body):
         """Method to send messages to appropriate outside functions"""
         msg = json.loads(body)
-        print('In %s redirect...' % self.name)
-        print(msg)
+        if self.mirror:
+            if self.mirror.AMQPdebug:
+                print('In %s redirect...' % self.name)
+                print(msg)
         msgType = msg['msgType']
 
         if msgType == 'init':
@@ -67,7 +71,24 @@ class AMQPAgent():
             ch.stop_consuming()
             return
 
+        elif msgType == 'AgentUpdate':
+            ltd.amqp.agentUpdate(self.mirror, msg)
+
+        elif msgType == 'Handoff':
+            valueMatch = ltd.amqp.handoff(self.mirror, msg)
+            if valueMatch:
+                ch.stop_consuming()
+            else:
+                print('Value error...')
+            return
+
+        elif msgType == 'endSim':
+            ltd.amqp.endSim(self.mirror)
+            ch.stop_consuming()
+            return
+
         # for continued debug work
-        print('no matching msg type...')
-        ch.stop_consuming()
+        else:
+            print('no matching msg type... Stoping Consume Loop')
+            ch.stop_consuming()
         

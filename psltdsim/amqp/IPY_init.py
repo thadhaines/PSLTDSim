@@ -7,3 +7,4 @@ def IPY_init(msg):
     __builtin__.simParams = msg['simParams']
     __builtin__.simNotes = msg['simNotes']
     __builtin__.debug = msg['debug']
+    __builtin__.AMQPdebug = msg['AMQPdebug']
