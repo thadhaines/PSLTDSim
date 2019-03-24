@@ -9,6 +9,7 @@ from . import systemAgents
 from . import terminal
 from . import amqp
 from . import parse
+from . import plot
 
 from .init_PSLF import init_PSLF
 

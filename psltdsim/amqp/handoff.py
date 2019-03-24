@@ -1,5 +1,6 @@
 def handoff(mirror,msg):
     """Handle PY3<->IPY handoff messages"""
+    compTol = 1E-4 # comparison tolerance to compare floats
     hType = msg['HandoffType']
 
     if hType == 'PY3toIPY':
@@ -8,6 +9,7 @@ def handoff(mirror,msg):
         mirror.prevPload = mirror.ss_Pload
         mirror.ss_Pload = ltd.mirror.sumLoad(mirror)[0]
         if mirror.debug:
+            print('* PY3toIPY handoff')
             print('prev P load: %f' % mirror.prevPload)
             print('current P load: %f' % mirror.ss_Pload)
         
@@ -19,11 +21,12 @@ def handoff(mirror,msg):
         mirror.ss_Pacc = mirror.ss_Pm - mirror.ss_Pe - ss_Pert_Pdelta
         if mirror.debug:
             print("Pert delta : %f \tPacc %f " %(ss_Pert_Pdelta, mirror.ss_Pacc))
+            print("expected: %f \t %f" % (msg['Pert_Pdelta'], msg['Pacc']))
         # Verify mirror value match
-        if msg['Pert_Pdelta'] == ss_Pert_Pdelta:
+        if abs(msg['Pert_Pdelta'] - ss_Pert_Pdelta) < compTol:
             if mirror.debug:
                 print('Perturbance P delta Match')
-            if msg['Pacc'] == mirror.ss_Pacc:
+            if abs(msg['Pacc'] - mirror.ss_Pacc) <  compTol:
                 if mirror.debug:
                     print('Pacc Match')
                 return 1
@@ -32,7 +35,7 @@ def handoff(mirror,msg):
         # calc sum Pe
         mirror.ss_Pe = ltd.mirror.sumPe(mirror)
         # verify match
-        if msg['ss_Pe'] == mirror.ss_Pe:
+        if abs(msg['ss_Pe'] - mirror.ss_Pe) < compTol:
             if mirror.debug:
                 print('Pe match')
             return 1

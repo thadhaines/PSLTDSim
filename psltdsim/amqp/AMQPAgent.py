@@ -79,7 +79,7 @@ class AMQPAgent():
             if valueMatch:
                 ch.stop_consuming()
             else:
-                print('Value error...')
+                print('AMQP Handoff Value error...')
             return
 
         elif msgType == 'endSim':

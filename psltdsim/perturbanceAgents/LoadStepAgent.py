@@ -47,10 +47,8 @@ class LoadStepAgent(object):
 
             if self.mirror.c_t >= self.tStart:
                 # Perform Perturbance step
-                # Get most recent PSLF reference - not needed in refactor
-                #pObj = self.mObj.getPref()
 
-                # Update correct attribute in PSLF
+                # Update correct attribute 
                 if self.attr.lower() == 'st':
                     if self.pertVal == 1:
                         mObj.St = 1
@@ -74,11 +72,6 @@ class LoadStepAgent(object):
                     oldVal = self.mObj.Q
                     self.mObj.Q = self.pertVal
                     mirror.ss_Pert_Qdelta += self.pertVal - oldVal
-
-                # Save Changes in PSLF
-                #pObj.Save()
-                # Update mirror
-                #self.mObj.getPvals()
 
                 self.ProcessFlag = 0
                 if self.mirror.debug:

@@ -2,7 +2,7 @@ import pickle as pickle
 import os
 
 def saveMirror(mir, simParams):
-    """Creates pickle object of mirror named savName.mir
+    """Pickles Mirror to simParams['fileDirectory']\savName.mir
     Returns full path to saved file
     """
 

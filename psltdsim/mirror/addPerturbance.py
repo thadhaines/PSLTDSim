@@ -5,10 +5,11 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
     perType = 'Step'
     perParams = list of specific perturbance parameters, will vary
         for a step: perParams = [targetAttr, tStart, newVal]
-    NOTE: could be refactored to a seperate file
+
     TODO: Add other tarTypes ('Gen') and perTypes ('Ramp')
     Maybe rethink inputs as a dictionary?
     """
+    targetObj= None
 
     #Locate target in mirror
     if tarType.lower() == 'load':
@@ -24,6 +25,14 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
         mirror.Perturbance.append(newStepAgent)
         print("*** Perturbance Agent added!")
         print(newStepAgent)
+        return
+
+    if (perType.lower() == 'ramp') and targetObj:
+        # perParams = [targetAttr, tStart, RAtime, RAVal, holdTime, RBtime, RBVal]
+        newRampAgent = ltd.perturbanceAgents.LoadRampAgent(mirror, targetObj, perParams)
+        mirror.Perturbance.append(newRampAgent)
+        print("*** Perturbance Agent added!")
+        print(newRampAgent)
         return
 
     print("*** Perturbance Agent error - nothing added.")
