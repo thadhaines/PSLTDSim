@@ -14,11 +14,16 @@ mir = ltd.data.readMirror(mirLoc)
 xend = max(mir.r_t)
 
 print(mir)
-ltd.plot.sysPePmF(mir, False)
-ltd.plot.sysPQVF(mir, False)
-ltd.plot.sysVmVa(mir, False)
 ltd.plot.sysLoad(mir, False)
-ltd.plot.sysPQgen(mir)
+ltd.plot.sysPePmF(mir, False)
+ltd.plot.sysPePmFLoad(mir, False)
+ltd.plot.sysPLQF(mir, False)
+
+ltd.plot.sysPQgen(mir, False)
+ltd.plot.sysPQVF(mir, False)
+
+ltd.plot.sysVmVa(mir)
+
 
 """Plot system P and Q of active loading
 
