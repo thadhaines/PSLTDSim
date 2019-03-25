@@ -5,7 +5,7 @@ import numpy as np
 
 import psltdsim as ltd
 
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 
 dirname = os.path.dirname(__file__)
 mirLoc = os.path.join(dirname, 'verification','refactor','ramp02F.mir')
@@ -17,6 +17,7 @@ print(mir)
 ltd.plot.sysPePmF(mir, False)
 ltd.plot.sysPQVF(mir, False)
 ltd.plot.sysVmVa(mir, False)
+ltd.plot.sysLoad(mir, False)
 ltd.plot.sysPQgen(mir)
 
 """Plot system P and Q of active loading
