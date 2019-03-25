@@ -44,7 +44,7 @@ simParams = {
     # Data Export Parameters
     'fileDirectory' : "\\verification\\refactor\\", # relative path must exist before simulation
     'fileName' : 'ramp02',
-    'exportFinalMirror': 1, #
+    'exportFinalMirror': 0, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'exportMat': 0, # requies exportDict == 1 to work
     }
