@@ -128,6 +128,11 @@ if simParams['exportFinalMirror']:
     simParams['fileName'] += 'F'
     ltd.data.saveMirror(mir, simParams)
 
+if simParams['exportMat']:
+    ltd.data.exportMat(mir, simParams)
+
+ltd.plot.sysPePmFLoad(mir)
+
 print("init time:\t %f" % (sim_start-init_start) )
 print("sim time:\t %f" % (sim_end-sim_start) )
 print('end of debug test run')

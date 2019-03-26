@@ -11,5 +11,6 @@ from .readMirror import readMirror
 from .saveMirror import saveMirror
 
 from .makeMat import makeMat
+from .exportMat import exportMat
 
 from .mergeDicts import mergeDicts

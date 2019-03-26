@@ -10,6 +10,10 @@ import psltdsim as ltd
 dirname = os.path.dirname(__file__)
 mirLoc = os.path.join(dirname, 'verification','refactor','ramp02F.mir')
 mir = ltd.data.readMirror(mirLoc)
+simParams = {'fileName':'turd',
+             'fileDirectory' : None,
+             }
+ltd.data.exportMat(mir, simParams)
 
 xend = max(mir.r_t)
 
