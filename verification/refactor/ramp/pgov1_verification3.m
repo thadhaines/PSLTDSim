@@ -7,24 +7,22 @@
 %                       print_f requires altmany export fig
 %
 %   History:
-%   01/24/19    22:46   init
-%   01/25/19    07:30   update of outputs
-%   01/28/19    16:30   update to compare PSLF to LTD gov steps of 1 MW
+%   03/26/19    15:25   init - attempt to verify Ramp data and tgov 1
 
 %% init
 clear; format compact; clc; close all; 
 
 %% import LTD data
-load('pgov1TestB.mat')
-mir = pgov1TestB;
-clear pgov1TestB
-
-t_1 = mir.t;
-f_1 = mir.f;
-N = mir.N
+% load('pgov1TestB.mat')
+% mir = pgov1TestB;
+% clear pgov1TestB
+% 
+% t_1 = mir.t;
+% f_1 = mir.f;
+% N = mir.N
 
 %% import pslf data
-pslf_data = udread('ee554.ramp',[]);
+pslf_data = udread('ee554.ramp.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd')
@@ -65,12 +63,12 @@ plot(t,pslf_data.Data(:,pg_col(1)),'-','linewidth',3,'color',pltC.grey)
 plot(t,pslf_data.Data(:,pg_col(2)),'linewidth',1,'color',[0,0,0])
 
 % LTD data
-stairs(t_1,mir.A1.S011.S0.Pe,':o','linewidth',1.5,'color',pltC.magenta)
-stairs(t_1,mir.A1.G021.G0.Pe,':s','linewidth',1,'color',pltC.dgreen)
-
-stairs(t_1,mir.A1.S011.S0.Pm,':+','linewidth',1.5,'color',pltC.Lblue)
-stairs(t_1,mir.A1.G021.G0.Pm,':+','linewidth',1,'color','k')
-xlim([0, 60])
+% stairs(t_1,mir.A1.S011.S0.Pe,':o','linewidth',1.5,'color',pltC.magenta)
+% stairs(t_1,mir.A1.G021.G0.Pe,':s','linewidth',1,'color',pltC.dgreen)
+% 
+% stairs(t_1,mir.A1.S011.S0.Pm,':+','linewidth',1.5,'color',pltC.Lblue)
+% stairs(t_1,mir.A1.G021.G0.Pm,':+','linewidth',1,'color','k')
+xlim([0, 30])
 
 y_label = 'MW';
 grid on
@@ -95,9 +93,9 @@ subplot(2, 2, [3 4])
 title_str = 'System Frequency';
 hold on
 plot(t,fAve/60,'linewidth',2,'color',pltC.magenta)
-stairs(t_1,f_1,':+','linewidth',1.5,'color','k') 
+% stairs(t_1,f_1,':+','linewidth',1.5,'color','k') 
 
-xlim([0,60])
+xlim([0,30])
 y_label = 'Frequency [pu]';
 
 grid on
