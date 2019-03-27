@@ -1,25 +1,26 @@
-%%  pgov1_verification3.m
+%%  rampTgov1_validation.m
 %   Thad Haines         Research
 %   Program Purpose:    Import data from LTD .mat
-%                       Make plots 
+%                       Make plots to compare PSLF vs LTD data
 
 %                       Relies on udread.m and jplot.m
 %                       print_f requires altmany export fig
 %
 %   History:
 %   03/26/19    15:25   init - attempt to verify Ramp data and tgov 1
+%   03/26/19    20:00   success of plotting pgov1 ramp data
 
 %% init
 clear; format compact; clc; close all; 
 
 %% import LTD data
-% load('pgov1TestB.mat')
-% mir = pgov1TestB;
-% clear pgov1TestB
-% 
-% t_1 = mir.t;
-% f_1 = mir.f;
-% N = mir.N
+load('rampPgov102F.mat')
+mir = rampPgov102F;
+clear rampPgov102F
+
+t_1 = mir.t;
+f_1 = mir.f;
+N = mir.N
 
 %% import pslf data
 pslf_data = udread('ee554.ramp.chf',[]);
@@ -62,13 +63,13 @@ hold on
 plot(t,pslf_data.Data(:,pg_col(1)),'-','linewidth',3,'color',pltC.grey)
 plot(t,pslf_data.Data(:,pg_col(2)),'linewidth',1,'color',[0,0,0])
 
-% LTD data
-% stairs(t_1,mir.A1.S011.S0.Pe,':o','linewidth',1.5,'color',pltC.magenta)
-% stairs(t_1,mir.A1.G021.G0.Pe,':s','linewidth',1,'color',pltC.dgreen)
-% 
-% stairs(t_1,mir.A1.S011.S0.Pm,':+','linewidth',1.5,'color',pltC.Lblue)
-% stairs(t_1,mir.A1.G021.G0.Pm,':+','linewidth',1,'color','k')
-xlim([0, 30])
+%LTD data
+stairs(t_1,mir.A1.S11.S1.Pe,':o','linewidth',1.5,'color',pltC.magenta)
+stairs(t_1,mir.A1.G21.G1.Pe,':s','linewidth',1,'color',pltC.dgreen)
+
+stairs(t_1,mir.A1.S11.S1.Pm,':+','linewidth',1.5,'color',pltC.Lblue)
+stairs(t_1,mir.A1.G21.G1.Pm,':+','linewidth',1,'color','k')
+xlim([0, 40])
 
 y_label = 'MW';
 grid on
@@ -93,9 +94,9 @@ subplot(2, 2, [3 4])
 title_str = 'System Frequency';
 hold on
 plot(t,fAve/60,'linewidth',2,'color',pltC.magenta)
-% stairs(t_1,f_1,':+','linewidth',1.5,'color','k') 
+stairs(t_1,f_1,':+','linewidth',1.5,'color','k') 
 
-xlim([0,30])
+xlim([0,40])
 y_label = 'Frequency [pu]';
 
 grid on
@@ -112,54 +113,3 @@ legend({'PSLF mean','LTD'}, ...
 title(title_str, 'Fontsize',bfz)
 ylabel(y_label, 'Fontsize',bfz)
 xlabel('Time [sec]', 'Fontsize',bfz)
-%ylim([0.9992, 1.0004])
-%{
-% Older plots
-%% plot pslf Voltage
-title_str = 'System Powers';
-subplot 2 2 [1 2]
-hold on
-%LTD data
-stairs(t_1,mir.Pload,':o','linewidth',1.5,'color',pltC.grey)
-stairs(t_1,mir.Pe,'--','linewidth',1.5,'color','k')
-stairs(t_1,mir.Pacc,':s','linewidth',1,'color',pltC.dgreen)
-stairs(t_1,mir.Pm,':o','linewidth',1.5,'color',pltC.Lblue)
-
-y_label = 'MW';
-grid on
-set(gca,'FontSize',.85*bfz)
-legend({'P Load','Pe','P acc','Pm'}, ...
-    'Fontsize',bfz*.9,'location',l_loc) % Legend
-set(gcf,'Position',p_pos)
-title(title_str, 'Fontsize',bfz)
-ylabel(y_label, 'Fontsize',bfz)
-xlabel('Time [sec]', 'Fontsize',bfz)
-
-%% plot pslf q power generated
-subplot 224
-hold on
-stairs(t_1,mir.A1.S011.S0.Q,':o','linewidth',1.5,'color',pltC.magenta)
-stairs(t_1,mir.A1.G021.G0.Q,':s','linewidth',1,'color',pltC.dgreen)
-
-%plot(t_1,mir.A1.S011.Vm,':o','linewidth',1.5,'color',pltC.magenta)
-%plot(t_1,mir.A1.G021.Vm,':s','linewidth',1,'color',pltC.dgreen)
-
-title_str = 'Generator Reactive Power';
-y_label = 'MVAR';
-
-grid on
-set(gca,'FontSize',.85*bfz)
-legend({'Gen 1 Q','Gen 2 Q','Gen 1 V','Gen 2 V'}, ...
-    'Fontsize',bfz*.9,'location',l_loc) % Legend
-set(gcf,'Position',p_pos)
-title(title_str, 'Fontsize',bfz)
-ylabel(y_label, 'Fontsize',bfz)
-xlabel('Time [sec]', 'Fontsize',bfz)
-
-set(gcf,'Position',p_pos)
-%% pdf out
-if print_f == 1
-    set(gcf,'color','w'); % to remove border of figure
-    export_fig('pgov1IAB2','-pdf'); % to print fig
-end % end print f
-%}

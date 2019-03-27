@@ -19,7 +19,7 @@ print(os.getcwd())
 
 # workaround for interactive mode runs (Use as required)
 # os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
-print(os.getcwd())
+# print(os.getcwd())
 
 # for extended terminal output
 debug = 0
@@ -32,7 +32,7 @@ Test of py3 and ipy AMQP - simple step up and down with gov
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.5,
-    'endTime': 30.0,
+    'endTime': 40.0,
     'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
@@ -42,11 +42,11 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileDirectory' : "\\verification\\refactor\\", # relative path must exist before simulation
-    'fileName' : 'ramp02',
-    'exportFinalMirror': 0, #
+    'fileDirectory' : "\\verification\\refactor\\ramp\\", # relative path must exist before simulation
+    'fileName' : 'rampPgov102',
+    'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
-    'exportMat': 0, # requies exportDict == 1 to work
+    'exportMat': 1, # requies exportDict == 1 to work
     }
 
 # Fast debug case switching
@@ -131,8 +131,10 @@ if simParams['exportFinalMirror']:
 if simParams['exportMat']:
     ltd.data.exportMat(mir, simParams)
 
-ltd.plot.sysPePmFLoad(mir)
-
 print("init time:\t %f" % (sim_start-init_start) )
 print("sim time:\t %f" % (sim_end-sim_start) )
+
+ltd.plot.sysPePmFLoad(mir)
+
+
 print('end of debug test run')

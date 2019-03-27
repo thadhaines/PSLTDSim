@@ -25,5 +25,6 @@ def exportMat(mirror, simParams):
     sio.savemat(varName, mirD)
     print(varName +'.mat saved!')
 
-    os.chdir(cwd)
+    if simParams['fileDirectory']:
+        os.chdir(cwd)
     return

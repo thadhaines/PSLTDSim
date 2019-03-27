@@ -18,13 +18,13 @@ ltd.data.exportMat(mir, simParams)
 xend = max(mir.r_t)
 
 print(mir)
-ltd.plot.sysLoad(mir, False)
-ltd.plot.sysPePmF(mir, False)
-ltd.plot.sysPePmFLoad(mir, False)
-ltd.plot.sysPLQF(mir, False)
+#ltd.plot.sysLoad(mir, False)
+#ltd.plot.sysPePmF(mir, False)
+#ltd.plot.sysPePmFLoad(mir, False)
+#ltd.plot.sysPLQF(mir, False)
 
-ltd.plot.sysPQgen(mir, False)
-ltd.plot.sysPQVF(mir, False)
+#ltd.plot.sysPQgen(mir, False)
+#ltd.plot.sysPQVF(mir, False)
 
 ltd.plot.sysVmVa(mir)
 

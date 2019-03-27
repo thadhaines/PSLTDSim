@@ -39,10 +39,10 @@ class AreaAgent(object):
 
     def logStep(self):
         """Put current values into log"""
-        self.r_Pe[self.mirror.c_dp] = self.r_Pe
-        self.r_Pm[self.mirror.c_dp] = self.r_Pm
-        self.r_P[self.mirror.c_dp] = self.r_P
-        self.r_Q[self.mirror.c_dp] = self.r_Q
+        self.r_Pe[self.mirror.c_dp] = self.Pe
+        self.r_Pm[self.mirror.c_dp] = self.Pm
+        self.r_P[self.mirror.c_dp] = self.P
+        self.r_Q[self.mirror.c_dp] = self.Q
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
