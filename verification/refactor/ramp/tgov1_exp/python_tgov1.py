@@ -3,46 +3,60 @@ import scipy.signal as sig
 import matplotlib.pyplot as plt
 import scipy.io as sio
 
-# Inputs
-Pref = .5 # will be a PU of Pref from Generator
-delta_w = 0.0
+Mbase = 100
+Pmech = 50
 
 # Simulation Parameters
-t = np.linspace(0,30,101)
+t = np.arange(0,120,.5)
 R = 0.05
-Vmax = 1.0
+Vmax = 1.0*Mbase
 Vmin = 0.0
 T1 = 0.5
 T2 = 3.0
 T3 = 10.0
 Dt = 0.0
 
+# Inputs
+Pref = Pmech*R       # will be a PU of Pref from Generator
+delta_w = 0.0
+
 # System Creations
-sys1 = sig.TransferFunction(1,[T1, 1])
-sys2 = sig.TransferFunction([T2, 1],[T3, 1])
+sys1 = sig.StateSpace([-1.0/T1],[1.0/T1],[1.0],0.0)
+sys2 = sig.StateSpace([-1.0/T3],[1.0/T3],[1-T2/T3],[T2/T3])
 
 # Input to system
-u = (Pref-delta_w)/R
+PrefVec = np.array([Pref]*t.size)
+dwVec = np.array([delta_w]*t.size)
+
+# add pert
+#  to dwV
+dwVec[4:100] = 0.70
+
+uVector = (PrefVec-dwVec)/R
 
 # First Block
-_, y1, x1 = sig.lsim2(sys1, [u]*t.size, t)
+tout1, y1, x1 = sig.lsim2(sys1, U=uVector, T=t, X0=Pmech)
+ys = y1
 
 # limit Valve position
-for x in range(t.size):
-    if y1[x]>Vmax:
-        y1[x] = Vmax
-    elif y1[x]<Vmin:
-        y1[x] = Vmin
+for x in range(ys.size):
+    if ys[x]>Vmax:
+        ys[x] = Vmax
+    elif ys[x]<Vmin:
+        ys[x] = Vmin
 
 # Second block
-_, y2, x2 = sig.lsim2(sys2, y1, t)
+tout2, y2, x2 = sig.lsim2(sys2, ys, t, Pmech)
 
 # Addition of damping
-y2 = y2 + [delta_w*Dt]*y2.size
+Pmech = y2 - dwVec*Dt
 
-# Plot output
-plt.plot(t,y2, label="Pmech Out")
-plt.plot(t,[u*R]*t.size, label="Pref In")
+print('Close Plot...')
+# Plot Datas
+plt.plot(t,x1, label="Valve Position")
+plt.plot(t,uVector, label="U Input")
+plt.plot(t,Pmech, label="Pmech Out")
+
 plt.title('SciPy Simulated Tgov1')
 plt.ylabel(r'$P_{mech}$ [PU]')
 plt.xlabel('Time [sec]')
@@ -51,8 +65,8 @@ plt.legend()
 plt.show()
 
 # Output data dictionary as .mat
-pyTgov = {'t_py': t,
-          'y_py': y2,
-          }
+#pyTgov = {'t_py': t,
+#          'y_py': y2,
+#          }
 
-sio.savemat('tgovTest', pyTgov)
+#sio.savemat('tgovTest', pyTgov)
