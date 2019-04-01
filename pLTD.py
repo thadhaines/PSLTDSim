@@ -8,12 +8,12 @@ import psltdsim as ltd
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 
 dirname = os.path.dirname(__file__)
-mirLoc = os.path.join(dirname, 'verification','refactor','ramp02F.mir')
+mirLoc = os.path.join(dirname, 'verification','refactor','ramp','rampPgov102F.mir')
 mir = ltd.data.readMirror(mirLoc)
 simParams = {'fileName':'turd',
              'fileDirectory' : None,
              }
-ltd.data.exportMat(mir, simParams)
+#ltd.data.exportMat(mir, simParams)
 
 xend = max(mir.r_t)
 

@@ -7,6 +7,8 @@ from .distPacc import distPacc
 from .findGlobalSlack import findGlobalSlack
 from .initInertiaH import initInertiaH
 from .initRunningVals import initRunningVals
+from .initPY3Dynamics import initPY3Dynamics
+
 from .sumLoad import sumLoad
 from .sumPe import sumPe
 from .sumPm import sumPm

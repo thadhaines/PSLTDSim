@@ -2,6 +2,8 @@ def runSimPY3(mirror, amqpAgent):
     """Python 3 side of LTD simulation"""
     print("this is runSimPY3")
     PY3 = amqpAgent
+    # Initialize PY3 specific Dynamics
+    ltd.mirror.initPY3Dynamics(mirror)
 
     print("\n*** Starting Simulation (PY3)")
     # set flag for non-convergence
@@ -103,6 +105,11 @@ def runSimPY3(mirror, amqpAgent):
         mirror.r_ss_Pacc.pop(len(mirror.r_ss_Pacc) -1)
         mirror.r_f.pop(len(mirror.r_f) -1)
         mirror.r_fdot.pop(len(mirror.r_fdot)-1)
+
+        # Handle appeneded data in dynamic models
+        for dyn in mirror.Dynamics:
+            if dyn.appenedData:
+                dyn.popUnsetData(mirror.c_dp)
 
     PY3.send('toIPY',{'msgType' : 'endSim'})
     print("this is runSimPY3 end")

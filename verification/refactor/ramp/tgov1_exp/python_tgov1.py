@@ -5,9 +5,9 @@ import scipy.io as sio
 
 Mbase = 100
 Pmech = 50
-
+ts = 0.5
 # Simulation Parameters
-t = np.arange(0,120,.5)
+t =np.arange(0,120,ts)#[0,  ts] # 
 R = 0.05
 Vmax = 1.0*Mbase
 Vmin = 0.0
@@ -18,15 +18,15 @@ Dt = 0.0
 
 # Inputs
 Pref = Pmech*R       # will be a PU of Pref from Generator
-delta_w = 0.0
+delta_w = 0.00
 
 # System Creations
 sys1 = sig.StateSpace([-1.0/T1],[1.0/T1],[1.0],0.0)
 sys2 = sig.StateSpace([-1.0/T3],[1.0/T3],[1-T2/T3],[T2/T3])
 
 # Input to system
-PrefVec = np.array([Pref]*t.size)
-dwVec = np.array([delta_w]*t.size)
+PrefVec = np.array([Pref]*len(t))
+dwVec = np.array([delta_w]*len(t))
 
 # add pert
 #  to dwV

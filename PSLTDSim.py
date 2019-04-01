@@ -6,9 +6,13 @@ import time
 import builtins
 import pika
 
-# for truly global numpy
+
+
+# for truly global numpy scipy things
 import numpy as np
+import scipy.signal as sig
 builtins.np = np
+builtins.sig = sig
 
 # import custom package and make truly global
 import psltdsim as ltd
@@ -18,8 +22,8 @@ ltd.terminal.dispCodeTitle()
 print(os.getcwd())
 
 # workaround for interactive mode runs (Use as required)
-# os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
-# print(os.getcwd())
+os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
+print(os.getcwd())
 
 # for extended terminal output
 debug = 0

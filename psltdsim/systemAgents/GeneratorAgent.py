@@ -30,7 +30,7 @@ class GeneratorAgent(object):
         self.IRP_flag = 1       # Inertia response participant flag
         self.Pe = float(newGen.Pgen)   # Generated Power
         self.Pm = self.Pe       # Initialize as equal
-        self.Pref = self.Pe
+        self.Pset = self.Pe
         self.Q = float(newGen.Qgen)    # Q generatred
 
         # Children
@@ -94,7 +94,7 @@ class GeneratorAgent(object):
         """Initialize history values of mirror agent"""
         self.r_Pm = [0.0]*self.mirror.dataPoints
         self.r_Pe = [0.0]*self.mirror.dataPoints
-        self.r_Pref = [0.0]*self.mirror.dataPoints
+        self.r_Pset = [0.0]*self.mirror.dataPoints
         self.r_Q = [0.0]*self.mirror.dataPoints
         self.r_St = [0.0]*self.mirror.dataPoints
 
@@ -102,7 +102,7 @@ class GeneratorAgent(object):
         """Step to record log history"""
         self.r_Pe[self.mirror.c_dp] = self.Pe
         self.r_Pm[self.mirror.c_dp] = self.Pm
-        self.r_Pref[self.mirror.c_dp] = self.Pref
+        self.r_Pset[self.mirror.c_dp] = self.Pset
         self.r_Q[self.mirror.c_dp] = self.Q
         self.r_St[self.mirror.c_dp] = self.St
 
@@ -110,7 +110,7 @@ class GeneratorAgent(object):
         """Erase data after N from non-converged cases"""
         self.r_Pe = self.r_Pe[:N]
         self.r_Pm = self.r_Pm[:N]
-        self.r_Pref = self.r_Pref[:N]
+        self.r_Pset = self.r_Pset[:N]
         self.r_Q  =self.r_Q[:N]
         self.r_St = self.r_St[:N]
 
@@ -118,7 +118,7 @@ class GeneratorAgent(object):
         """Return collected data in dictionary form"""
         d = {'Pe': self.r_Pe,
              'Pm': self.r_Pm,
-             'Pref': self.r_Pref,
+             'Pset': self.r_Pset,
              'Q': self.r_Q,
              'St': self.r_St,
              'Mbase' : self.MbaseDYD,
