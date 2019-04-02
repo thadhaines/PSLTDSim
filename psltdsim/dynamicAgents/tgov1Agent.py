@@ -45,7 +45,7 @@ class tgov1Agent():
         """ Perform steam governor control"""
         
         # Create system inputs
-        Pref = self.Gen.Pm * self.R
+        Pref = self.Gen.Pe * self.R
         delta_w = self.mirror.c_deltaF
 
         PrefVec = np.array([Pref]*2)

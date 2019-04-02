@@ -6,8 +6,6 @@ import time
 import builtins
 import pika
 
-
-
 # for truly global numpy scipy things
 import numpy as np
 import scipy.signal as sig
@@ -35,8 +33,8 @@ Test of py3 and ipy AMQP - simple step up and down with gov
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.25,
-    'endTime': 10.0,
+    'timeStep': 0.5,
+    'endTime': 40.0,
     'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)

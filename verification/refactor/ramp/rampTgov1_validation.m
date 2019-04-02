@@ -23,7 +23,7 @@ f_1 = mir.f;
 N = mir.N
 
 %% import pslf data
-pslf_data = udread('ee554.ramp.1.chf',[]);
+pslf_data = udread('ee554.ramp2.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd')
@@ -64,11 +64,11 @@ plot(t,pslf_data.Data(:,pg_col(1)),'-','linewidth',3,'color',pltC.grey)
 plot(t,pslf_data.Data(:,pg_col(2)),'linewidth',1,'color',[0,0,0])
 
 %LTD data
-stairs(t_1,mir.A1.S11.S1.Pe,':o','linewidth',1.5,'color',pltC.magenta)
-stairs(t_1,mir.A1.G21.G1.Pe,':s','linewidth',1,'color',pltC.dgreen)
+plot(t_1,mir.A1.S11.S1.Pe,':o','linewidth',1.5,'color',pltC.magenta)
+plot(t_1,mir.A1.G21.G1.Pe,':s','linewidth',1,'color',pltC.dgreen)
 
-stairs(t_1,mir.A1.S11.S1.Pm,':+','linewidth',1.5,'color',pltC.Lblue)
-stairs(t_1,mir.A1.G21.G1.Pm,':+','linewidth',1,'color','k')
+plot(t_1,mir.A1.S11.S1.Pm,':+','linewidth',1.5,'color',pltC.Lblue)
+plot(t_1,mir.A1.G21.G1.Pm,':+','linewidth',1,'color','k')
 xlim([0, 40])
 
 y_label = 'MW';
@@ -94,7 +94,7 @@ subplot(2, 2, [3 4])
 title_str = 'System Frequency';
 hold on
 plot(t,fAve/60,'linewidth',2,'color',pltC.magenta)
-stairs(t_1,f_1,':+','linewidth',1.5,'color','k') 
+plot(t_1,f_1,':+','linewidth',1.5,'color','k') 
 
 xlim([0,40])
 y_label = 'Frequency [pu]';
