@@ -22,8 +22,8 @@ ltd.terminal.dispCodeTitle()
 print(os.getcwd())
 
 # workaround for interactive mode runs (Use as required)
-os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
-print(os.getcwd())
+#os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
+#print(os.getcwd())
 
 # for extended terminal output
 debug = 0
@@ -35,8 +35,8 @@ Test of py3 and ipy AMQP - simple step up and down with gov
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.5,
-    'endTime': 40.0,
+    'timeStep': 0.25,
+    'endTime': 10.0,
     'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)

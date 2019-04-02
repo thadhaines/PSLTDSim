@@ -26,11 +26,14 @@ class tgov1Agent():
         self.T3 = PSLFgov.T3
         self.Dt = PSLFgov.Dt
 
-        # Dynamic init
-        self.sys1 = sig.StateSpace([-1.0/self.T1],[1.0/self.T1],[1.0],0.0)
-        self.sys2 = sig.StateSpace([-1.0/self.T3],[1.0/self.T3],
-                                   [1-self.T2/self.T3],[self.T2/self.T3])
         self.t = [0 , self.mirror.timeStep]
+
+        # Dynamic init
+        self.sys1 = sig.StateSpace([-1.0/self.T1],[1.0/self.T1],
+                                   [1.0],0.0)
+        self.sys2 = sig.StateSpace([-1.0/self.T3],[1.0/self.T3],
+                                   [1.0-self.T2/self.T3],[self.T2/self.T3])
+        
         self.y1HighLimit = self.Vmax * self.mwCap
         self.y1LowLimit = self.Vmin * self.mwCap
 
@@ -40,8 +43,9 @@ class tgov1Agent():
 
     def stepDynamics(self):
         """ Perform steam governor control"""
+        
         # Create system inputs
-        Pref = self.Gen.Pset * self.R
+        Pref = self.Gen.Pm * self.R
         delta_w = self.mirror.c_deltaF
 
         PrefVec = np.array([Pref]*2)
@@ -51,7 +55,7 @@ class tgov1Agent():
         uVector = (PrefVec-dwVec)/self.R
 
         # First dynamic Block
-        _, y1, self.x1 = sig.lsim2(self.sys1, U=uVector, T=self.t, 
+        _, y1, self.x1 = sig.lsim(self.sys1, U=uVector, T=self.t, 
                                    X0=self.r_x1[self.mirror.c_dp-1]) # this intit value should be a histroy of x1
         ys = y1
 
@@ -63,14 +67,14 @@ class tgov1Agent():
                 ys[x] = self.y1LowLimit
 
         # Second block
-        _, y2, self.x2 = sig.lsim2(self.sys2, ys, T=self.t, 
+        _, y2, self.x2 = sig.lsim(self.sys2, ys, T=self.t, 
                                    X0=self.r_x2[self.mirror.c_dp-1]) # this initial value should be okay...
 
         # Addition of damping
         Pmech = y2 - dwVec*self.Dt
 
         # Set Generator Mechanical Power
-        self.Gen.Pm = Pmech[1]
+        self.Gen.Pm = float(Pmech[1])
 
     def stepInitDynamics(self):
         """ Once H has been initialized, check if K has to be recalculated"""
@@ -81,7 +85,6 @@ class tgov1Agent():
 
         if self.Gen.MbaseSAV != self.Gen.MbaseDYD:
             self.Mbase = self.Gen.MbaseDYD
-            self.K = -1*self.mirror.Sbase / self.droop
             if self.mirror.debug:
                 print('... updated model.')
             return
@@ -101,8 +104,8 @@ class tgov1Agent():
 
     def logStep(self):
         """Update Log information"""
-        self.r_x1[self.mirror.c_dp] = self.x1[1]
-        self.r_x2[self.mirror.c_dp] = self.x2[1]
+        self.r_x1[self.mirror.c_dp] = float(self.x1[1])
+        self.r_x2[self.mirror.c_dp] = float(self.x2[1])
 
     def popUnsetData(self, N):
         """Remove any appened init values from running values"""

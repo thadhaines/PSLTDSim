@@ -23,7 +23,7 @@ f_1 = mir.f;
 N = mir.N
 
 %% import pslf data
-pslf_data = udread('ee554.ramp.chf',[]);
+pslf_data = udread('ee554.ramp.1.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd')
