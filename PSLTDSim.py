@@ -34,7 +34,7 @@ Test of py3 and ipy AMQP - simple step up and down with gov
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.5,
-    'endTime': 40.0,
+    'endTime': 60.0,
     'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
@@ -44,8 +44,8 @@ simParams = {
     'integrationMethod' : 'Euler',
 
     # Data Export Parameters
-    'fileDirectory' : "\\verification\\refactor\\ramp\\", # relative path must exist before simulation
-    'fileName' : 'rampPgov102',
+    'fileDirectory' : "\\verification\\refactor\\tgov_steps\\", # relative path must exist before simulation
+    'fileName' : 'stepsTgov101',
     'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
@@ -53,13 +53,17 @@ simParams = {
 
 # Fast debug case switching
 # TODO: MAYBE enable new dyd replacement... (too cute?)
-test_case = 0
+test_case = 'a'
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd",
                #r"C:\LTD\pslf_systems\eele554\ee554.ltd.dyd", #pgov1 on gen 2
                ]
     ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ramp2.ltd"]
+elif test_case == 'a': #steps
+    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]

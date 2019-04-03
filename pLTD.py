@@ -8,19 +8,15 @@ import psltdsim as ltd
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 
 dirname = os.path.dirname(__file__)
-mirLoc = os.path.join(dirname, 'verification','refactor','ramp','rampPgov102F.mir')
+mirLoc = os.path.join(dirname, 'verification','refactor','tgov_steps','stepsTgov101F.mir')
 mir = ltd.data.readMirror(mirLoc)
-simParams = {'fileName':'turd',
-             'fileDirectory' : None,
-             }
-#ltd.data.exportMat(mir, simParams)
 
 xend = max(mir.r_t)
 
 print(mir)
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysPePmF(mir, False)
-#ltd.plot.sysPePmFLoad(mir, False)
+ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.sysPQgen(mir, False)
