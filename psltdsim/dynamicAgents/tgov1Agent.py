@@ -70,13 +70,13 @@ class tgov1Agent():
 
         # Second block
         _, y2, self.x2 = sig.lsim(self.sys2, ys, T=self.t, 
-                                   X0=self.r_x2[self.mirror.c_dp-1]) # this initial value should be okay...
+                                   X0=self.Gen.r_Pm[self.mirror.c_dp-1]) # this initial value should be okay...
 
         # combination block # essentially ignore other blocks...
         _, y3, self.x3 = sig.lsim(self.sys3, U=uVector, T=self.t, 
-                                   X0=self.r_x1[self.mirror.c_dp-1])
+                                   X0=[self.r_x1[self.mirror.c_dp-1],self.Gen.r_Pe[self.mirror.c_dp-1]])
         # Addition of damping
-        Pmech = y3 - dwVec*self.Dt # effectively removing the second block...
+        Pmech = y2 - dwVec*self.Dt # effectively removing the second block...
 
         # Set Generator Mechanical Power
         self.Gen.Pm = float(Pmech[1])
@@ -108,6 +108,7 @@ class tgov1Agent():
         self.r_x1.append(self.Gen.Pm)
         self.r_x2.append(self.Gen.Pm)
         self.r_x3.append(np.array([self.Gen.Pm,self.Gen.Pm,]))
+        self.Gen.r_Pm.append(self.Gen.Pm)
 
     def logStep(self):
         """Update Log information"""
@@ -120,4 +121,4 @@ class tgov1Agent():
         self.r_x1 = self.r_x1[:N]
         self.r_x2 = self.r_x2[:N]
         self.r_x2 = self.r_x3[:N]
-
+        self.Gen.r_Pm = self.Gen.r_Pm[:N]

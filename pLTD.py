@@ -16,33 +16,32 @@ xend = max(mir.r_t)
 print(mir)
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysPePmF(mir, False)
-ltd.plot.sysPePmFLoad(mir, False)
+#ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.sysPQgen(mir, False)
 #ltd.plot.sysPQVF(mir, False)
 
-ltd.plot.sysVmVa(mir)
+#ltd.plot.sysVmVa(mir)
 
 
-"""Plot system P and Q of active loading
+"""Plot system Pacc and Freq"""
 
 fig, ax = plt.subplots(nrows=2, ncols=1,)
-ax[0].set_title('System P Load')
-ax[1].set_title('System Q Load')
-for load in mir.Load:
-    ax[0].plot(mir.r_t, np.array(load.r_P)*np.array(load.r_St), 
-                marker = 10,
-                linestyle = ':',
-                label = 'Bus '+ load.Bus.Busnam +' Id ' + load.Id)
-    ax[1].plot(mir.r_t, np.array(load.r_Q)*np.array(load.r_St), 
-                marker = 'o',
-                linestyle = ':',
-                label = 'Bus '+ load.Bus.Busnam +' Id ' + load.Id)
+ax[0].set_title('Pacc')
+ax[1].set_title('System f')
+ax[0].plot(mir.r_t, mir.r_ss_Pacc, 
+            marker = 10,
+            linestyle = ':',
+            label = 'Pacc')
+ax[1].plot(mir.r_t, mir.r_f, 
+            marker = 'o',
+            linestyle = ':',
+            label = 'f')
 ax[0].set_xlabel('Time [sec]')
 ax[0].set_ylabel('MW')
 ax[1].set_xlabel('Time [sec]')
-ax[1].set_ylabel('MVAR')
+ax[1].set_ylabel('PU')
 
 # Global Plot settings
 for x in np.ndarray.flatten(ax):
@@ -53,4 +52,3 @@ for x in np.ndarray.flatten(ax):
 fig.tight_layout()
 
 plt.show()
-"""

@@ -25,6 +25,9 @@ def combinedSwing(mirror, Pacc):
     # Adams Bashforth
     if mirror.simParams['integrationMethod'] == 'AB':
         mirror.c_f = mirror.c_f + 1.5*mirror.timeStep*fdot  -0.5*mirror.timeStep*mirror.r_fdot[mirror.c_dp-1]
+    elif mirror.simParams['integrationMethod'] == 'rk45':
+        # use scipy int...
+        mirror.c_f = mirror.c_f + (mirror.timeStep*fdot)
     else:
         # Euler Integration - chosen by default
         # matches PSLF better than the adams bashforth method in ee554 load case

@@ -9,6 +9,7 @@ import pika
 # for truly global numpy scipy things
 import numpy as np
 import scipy.signal as sig
+
 builtins.np = np
 builtins.sig = sig
 
