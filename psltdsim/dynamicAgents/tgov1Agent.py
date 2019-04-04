@@ -76,7 +76,7 @@ class tgov1Agent():
         _, y3, self.x3 = sig.lsim(self.sys3, U=uVector, T=self.t, 
                                    X0=[self.r_x1[self.mirror.c_dp-1],self.Gen.r_Pm[self.mirror.c_dp-1]])
         # Addition of damping
-        Pmech = y3 - dwVec*self.Dt # effectively removing the second block...
+        Pmech = y2 - dwVec*self.Dt # effectively removing the second block...
 
         # Set Generator Mechanical Power
         self.Gen.Pm = float(Pmech[1])

@@ -27,7 +27,12 @@ def combinedSwing(mirror, Pacc):
         mirror.c_f = mirror.c_f + 1.5*mirror.timeStep*fdot  -0.5*mirror.timeStep*mirror.r_fdot[mirror.c_dp-1]
     elif mirror.simParams['integrationMethod'] == 'rk45':
         # use scipy int...
-        mirror.c_f = mirror.c_f + (mirror.timeStep*fdot)
+        c = [HsysPU, PaccPU, Dsys, mirror.c_f]
+        f = lambda t, y,c: 1/(2*c[0])*(c[1]/y - c[2]*(y-c[3]))
+        w = solve_ivp(lambda t,y: f(t, y, c),
+                      [0, mirror.timeStep], [mirror.c_f])
+        mirror.c_f = float(w.y[-1][-1]) # set current freq to last value
+
     else:
         # Euler Integration - chosen by default
         # matches PSLF better than the adams bashforth method in ee554 load case

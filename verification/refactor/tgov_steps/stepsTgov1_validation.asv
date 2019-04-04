@@ -42,7 +42,7 @@ end
 fAve = fAve/N;
 
 %% plot definitions
-xlimit = [0,150]
+xlimit = [0,60]
 p_pos = [400 200 1421 734];
 bfz = 15;
 l_loc = 'best';

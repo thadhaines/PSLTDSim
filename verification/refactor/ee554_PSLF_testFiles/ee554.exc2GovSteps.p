@@ -5,10 +5,10 @@
 @ret = soln()
 
 /* READ THE DYNAMIC DATA. */
-@ret = rdyd("C:\LTD\pslf_systems\eele554\ee554.exc.dyd","",1)
+@ret = rdyd("C:\LTD\pslf_systems\eele554\ee554.exc2Gov.dyd","",1)
 
 /* INIT THE DYNAMIC DATA AND SET THE CHANNEL FILE. */
-@ret = init("C:\LTD\pslf_systems\eele554\PSLFres\ee554.steps.chf", "EC:\LTD\pslf_systems\eele554\PSLFres\ee554.steps.rep", 0, 1, "", "", 0)
+@ret = init("C:\LTD\pslf_systems\eele554\PSLFres\ee554.exc2GovSteps.chf", "C:\LTD\pslf_systems\eele554\PSLFres\ee554.exc2GovSteps.rep", 0, 1, "", "", 0)
 dypar[0].nplot   = 1     
 dypar[0].nscreen = 3    
 
