@@ -48,7 +48,7 @@ class tgov1Agent():
         
         # Create system inputs
         Pref = self.Gen.Pe * self.R
-        delta_w = (self.mirror.c_f -1.0)
+        delta_w = (self.mirror.c_f - 1.0)
 
         PrefVec = np.array([Pref]*2)
         dwVec = np.array([delta_w]*2)
@@ -74,9 +74,9 @@ class tgov1Agent():
 
         # combination block # essentially ignore other blocks...
         _, y3, self.x3 = sig.lsim(self.sys3, U=uVector, T=self.t, 
-                                   X0=[self.r_x1[self.mirror.c_dp-1],self.Gen.r_Pe[self.mirror.c_dp-1]])
+                                   X0=[self.r_x1[self.mirror.c_dp-1],self.Gen.r_Pm[self.mirror.c_dp-1]])
         # Addition of damping
-        Pmech = y2 - dwVec*self.Dt # effectively removing the second block...
+        Pmech = y3 - dwVec*self.Dt # effectively removing the second block...
 
         # Set Generator Mechanical Power
         self.Gen.Pm = float(Pmech[1])

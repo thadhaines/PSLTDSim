@@ -8,13 +8,13 @@ def combinedSwing(mirror, Pacc):
     if mirror.simParams['freqEffects'] == 1:
         f = mirror.c_f
     else:
-        f = 1
+        f = 1.0
 
     PaccPU = Pacc/mirror.Sbase
     HsysPU = mirror.Hsys/mirror.Sbase
 
     #ignore system damping for now
-    # NOTE: Unsure how to calculate deltaF is it requires fdot -> Statespace
+    # NOTE: Unsure how to calculate deltaF is it requires fdot -> Statespace?
     Dsys = 0
     deltaF = 0
 
