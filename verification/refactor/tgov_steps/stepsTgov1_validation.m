@@ -11,7 +11,7 @@
 %   03/26/19    20:00   success of plotting pgov1 ramp data
 
 %% init
-clear; format compact; clc; close all; 
+clear; format compact; clc; %close all; 
 
 %% import LTD data
 load('stepsTgov101F.mat')

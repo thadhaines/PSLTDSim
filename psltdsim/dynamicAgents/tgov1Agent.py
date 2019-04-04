@@ -34,6 +34,8 @@ class tgov1Agent():
         self.sys2 = sig.StateSpace([-1.0/self.T3],[1.0/self.T3],
                                    [1.0-self.T2/self.T3],[self.T2/self.T3])
         
+        self.sys3 = self.sys1*self.sys2
+
         self.y1HighLimit = self.Vmax * self.mwCap
         self.y1LowLimit = self.Vmin * self.mwCap
 
@@ -46,7 +48,7 @@ class tgov1Agent():
         
         # Create system inputs
         Pref = self.Gen.Pe * self.R
-        delta_w = self.mirror.c_deltaF
+        delta_w = (self.mirror.c_f -1.0)
 
         PrefVec = np.array([Pref]*2)
         dwVec = np.array([delta_w]*2)
@@ -70,8 +72,11 @@ class tgov1Agent():
         _, y2, self.x2 = sig.lsim(self.sys2, ys, T=self.t, 
                                    X0=self.r_x2[self.mirror.c_dp-1]) # this initial value should be okay...
 
+        # combination block # essentially ignore other blocks...
+        _, y3, self.x3 = sig.lsim(self.sys3, U=uVector, T=self.t, 
+                                   X0=self.r_x1[self.mirror.c_dp-1])
         # Addition of damping
-        Pmech = y2 - dwVec*self.Dt
+        Pmech = y3 - dwVec*self.Dt # effectively removing the second block...
 
         # Set Generator Mechanical Power
         self.Gen.Pm = float(Pmech[1])
@@ -97,18 +102,22 @@ class tgov1Agent():
         # History Values
         self.r_x1 = [0.0]*self.mirror.dataPoints
         self.r_x2 = [0.0]*self.mirror.dataPoints
+        self.r_x3 = [0.0]*self.mirror.dataPoints
 
         # Append intit values to running state data
         self.r_x1.append(self.Gen.Pm)
         self.r_x2.append(self.Gen.Pm)
+        self.r_x3.append(np.array([self.Gen.Pm,self.Gen.Pm,]))
 
     def logStep(self):
         """Update Log information"""
         self.r_x1[self.mirror.c_dp] = float(self.x1[1])
         self.r_x2[self.mirror.c_dp] = float(self.x2[1])
+        self.r_x3[self.mirror.c_dp] = self.x3[1]
 
     def popUnsetData(self, N):
         """Remove any appened init values from running values"""
         self.r_x1 = self.r_x1[:N]
         self.r_x2 = self.r_x2[:N]
+        self.r_x2 = self.r_x3[:N]
 
