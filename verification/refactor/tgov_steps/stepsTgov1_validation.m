@@ -14,9 +14,9 @@
 clear; format compact; clc; %close all; 
 
 %% import LTD data
-load('tGovStep01F.mat')
-mir = tGovStep01F;
-clear tGovStep01F
+load('tGovStep02F.mat')
+mir = tGovStep02F;
+clear tGovStep02F
 
 t_1 = mir.t;
 f_1 = mir.f;

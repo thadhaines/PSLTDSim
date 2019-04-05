@@ -27,17 +27,17 @@ print(os.getcwd())
 #print(os.getcwd())
 
 # for extended terminal output
-debug = 0
-AMQPdebug = 0
+debug = 1
+AMQPdebug = 1
 
 simNotes = """
-Test of py3 and ipy AMQP - simple step up and down with gov
+Changing tgov delta omega from 1-c_f to delta omega...
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.5,
-    'endTime': 150.0,
+    'endTime': 60.0,
     'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
@@ -48,7 +48,7 @@ simParams = {
 
     # Data Export Parameters
     'fileDirectory' : "\\verification\\refactor\\tgov_steps\\", # relative path must exist before simulation
-    'fileName' : 'tGovStep01',
+    'fileName' : 'tGovStep02',
     'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work

@@ -48,7 +48,7 @@ class tgov1Agent():
         
         # Create system inputs
         Pref = self.Gen.Pe * self.R
-        delta_w = (self.mirror.c_f - 1.0)
+        delta_w = self.mirror.c_deltaF
 
         PrefVec = np.array([Pref]*2)
         dwVec = np.array([delta_w]*2)
