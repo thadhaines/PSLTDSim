@@ -14,16 +14,16 @@
 clear; format compact; clc; close all; 
 
 %% import LTD data
-load('rampPgov102F.mat')
-mir = rampPgov102F;
-clear rampPgov102F
+load('tGovRamp01F.mat')
+mir = tGovRamp01F;
+clear tGovRamp01F
 
 t_1 = mir.t;
 f_1 = mir.f;
 N = mir.N
 
 %% import pslf data
-pslf_data = udread('ee554.ramp2.chf',[]);
+pslf_data = udread('ee554.ramp0.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd')

@@ -11,19 +11,19 @@
 %   03/26/19    20:00   success of plotting pgov1 ramp data
 
 %% init
-clear; format compact; clc; %close all; 
+clear; format compact; clc; close all; 
 
 %% import LTD data
-load('tGovStep02F.mat')
-mir = tGovStep02F;
-clear tGovStep02F
+load('tGovStep03F.mat')
+mir = tGovStep03F;
+clear tGovStep03F
 
 t_1 = mir.t;
 f_1 = mir.f;
 N = mir.N
-
+xlimit = [0,60]
 %% import pslf data
-pslf_data = udread('ee554.exc1GovStep.chf',[]);
+pslf_data = udread('ee554.exc1GovSteps.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd')
@@ -42,7 +42,7 @@ end
 fAve = fAve/N;
 
 %% plot definitions
-xlimit = [0,150]
+
 p_pos = [400 200 1421 734];
 bfz = 15;
 l_loc = 'best';

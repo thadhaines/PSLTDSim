@@ -34,7 +34,7 @@ class tgov1Agent():
         self.sys2 = sig.StateSpace([-1.0/self.T3],[1.0/self.T3],
                                    [1.0-self.T2/self.T3],[self.T2/self.T3])
         
-        self.sys3 = self.sys1*self.sys2
+        self.sys3 = self.sys1*self.sys2 # test of series system
 
         self.y1HighLimit = self.Vmax * self.mwCap
         self.y1LowLimit = self.Vmin * self.mwCap

@@ -12,6 +12,32 @@ class SlackAgent(GeneratorAgent):
         self.Pe_calc = 0.0
         self.Pe_error = 0.0
 
+    def makeAMQPmsg(self):
+        """Make AMQP message to send cross process"""
+        msg = {'msgType' : 'AgentUpdate',
+               'AgentType': 'Generator',
+               'Busnum':self.Busnum,
+               'Id': self.Id,
+               'Pe': self.Pe,
+               'Pm': self.Pm,
+               'Q': self.Q,
+               'St':self.St,
+               'Pe_calc':self.Pe_calc,
+               'Pe_error': self.Pe_error
+               }
+        return msg
+
+    def recAMQPmsg(self,msg):
+        """Set message values to agent values"""
+        self.Pe = msg['Pe']
+        self.Pm = msg['Pm']
+        self.Q = msg['Q']
+        self.St = msg['St']
+        self.Pe_calc = msg['Pe_calc']
+        self.Pe_error = msg['Pe_error']
+        if self.mirror.AMQPdebug: 
+            print('AMQP values set!')
+
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
         self.r_Pm = [0.0]*self.mirror.dataPoints

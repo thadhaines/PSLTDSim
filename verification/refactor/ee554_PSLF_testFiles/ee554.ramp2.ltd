@@ -1,0 +1,15 @@
+# LTD simulation models / perturbances
+# Similar format to dyd files.
+# Commented and empty lines are ignored during parsing.
+# Double quoted variable names in model parameters also ignored
+
+# pgov1  busnum busnam basekv id : #9 mwcap droop k1
+#pgov1   21 "21" 22.00 "1 " : #9 mwcap=100.0 "droop" 0.05 "k1" 1.0
+#pgov1   11 "11" 22.00 "1 " : #9 mwcap=100.0 0.05 1.0
+
+
+# Perturbances
+# target bus id(optional) : pertType attribute time val abs(optional)
+#load 3 : step p 2 101
+load 3 : "pertType" step  "pertTarget" p "startTime" 21 "newVal" -1 rel
+load 3 : "pertType" ramp "pertTarget" p "startTime" 2 "RAtime" 5 "RAval" -2 "holdtime" 3 "RBtime" 3 "RBval" 3

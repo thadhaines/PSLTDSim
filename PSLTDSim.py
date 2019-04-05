@@ -27,11 +27,11 @@ print(os.getcwd())
 #print(os.getcwd())
 
 # for extended terminal output
-debug = 1
-AMQPdebug = 1
+debug = 0
+AMQPdebug = 0
 
 simNotes = """
-Changing tgov delta omega from 1-c_f to delta omega...
+Ramp of Tgov system...
 """
 
 # Simulation Parameters Dictionary
@@ -48,7 +48,7 @@ simParams = {
 
     # Data Export Parameters
     'fileDirectory' : "\\verification\\refactor\\tgov_steps\\", # relative path must exist before simulation
-    'fileName' : 'tGovStep02',
+    'fileName' : 'tGovStep04',
     'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
@@ -56,7 +56,7 @@ simParams = {
 
 # Fast debug case switching
 # TODO: MAYBE enable new dyd replacement... (too cute?)
-test_case = 'tGovStep'
+test_case = 'tGovSteps'
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
@@ -73,12 +73,18 @@ elif test_case == 'noGovSteps':
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
     ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
-
-elif test_case == 'tGovStep':
+elif test_case == 'tGovSteps':
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc1Gov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.step.ltd"]
-
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
+elif test_case == 'tGov2Steps':
+    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc2Gov.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
+elif test_case == 'tGovRamp':
+    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc1Gov.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ramp.ltd"]
 
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
