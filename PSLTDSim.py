@@ -31,7 +31,9 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Ramp of Tgov system...
+Step of Tgov system...
+using only delta w as input
+Similar to pgov model, but with $s
 """
 
 # Simulation Parameters Dictionary

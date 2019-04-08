@@ -17,16 +17,16 @@ datetime
 p7
 (I2019
 I4
-I5
-I10
-I37
-I8
-I494000
+I7
+I20
+I17
+I42
+I907000
 Ntp8
 Rp9
 sS'simNotes'
 p10
-S'\nRamp of Tgov system...\n'
+S'\nStep of Tgov system...\nusing only delta w as input\nSimilar to pgov model, but with $s\n'
 p11
 sS'simParams'
 p12

@@ -11,12 +11,12 @@
 %   03/26/19    20:00   success of plotting pgov1 ramp data
 
 %% init
-clear; format compact; clc; close all; 
+clear; format compact; clc; %close all; 
 
 %% import LTD data
-load('tGovStep03F.mat')
-mir = tGovStep03F;
-clear tGovStep03F
+load('tGovStep04F.mat')
+mir = tGovStep04F;
+clear tGovStep04F
 
 t_1 = mir.t;
 f_1 = mir.f;
