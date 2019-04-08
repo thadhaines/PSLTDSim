@@ -17,16 +17,16 @@ datetime
 p7
 (I2019
 I4
-I7
-I20
-I17
-I42
-I907000
+I8
+I12
+I29
+I47
+I784000
 Ntp8
 Rp9
 sS'simNotes'
 p10
-S'\nStep of Tgov system...\nusing only delta w as input\nSimilar to pgov model, but with $s\n'
+S"\nStep of Tgov system...\nusing 'accepted' model\n"
 p11
 sS'simParams'
 p12
@@ -112,7 +112,7 @@ p47
 F0.0
 sS'debug'
 p48
-I0
+I1
 sS'AMQPdebug'
 p49
 I0
@@ -931,7 +931,7 @@ p291
 F2.0
 sS'pertVal'
 p292
-F1.0
+F-1.0
 sS'stepType'
 p293
 S'rel'
@@ -954,7 +954,7 @@ p298
 sg291
 F30.0
 sg292
-F-1.0
+F1.0
 sg293
 S'rel'
 p299

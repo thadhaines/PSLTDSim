@@ -27,13 +27,12 @@ print(os.getcwd())
 #print(os.getcwd())
 
 # for extended terminal output
-debug = 0
+debug = 1
 AMQPdebug = 0
 
 simNotes = """
 Step of Tgov system...
-using only delta w as input
-Similar to pgov model, but with $s
+using 'accepted' model
 """
 
 # Simulation Parameters Dictionary
