@@ -19,7 +19,7 @@ print(mir)
 ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, False)
 
-#ltd.plot.sysPQgen(mir, False)
+ltd.plot.sysPQgen(mir, False)
 #ltd.plot.sysPQVF(mir, False)
 
 #ltd.plot.sysVmVa(mir, False)

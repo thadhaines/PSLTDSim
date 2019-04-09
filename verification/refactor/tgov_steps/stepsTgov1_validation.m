@@ -14,16 +14,16 @@
 clear; format compact; clc; %close all; 
 
 %% import LTD data
-load('tGovStep04F.mat')
-mir = tGovStep04F;
-clear tGovStep04F
+load('tGov2Step03F.mat')
+mir = tGov2Step03F;
+clear tGov2Step03F
 
 t_1 = mir.t;
 f_1 = mir.f;
 N = mir.N
 xlimit = [0,60]
 %% import pslf data
-pslf_data = udread('ee554.exc1GovSteps.chf',[]);
+pslf_data = udread('ee554.exc2GovSteps.chf',[]);
 cellfun(@disp,pslf_data.Name)
 
 spd_col = jfind(pslf_data, 'spd')
