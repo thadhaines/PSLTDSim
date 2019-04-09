@@ -18,15 +18,15 @@ p7
 (I2019
 I4
 I8
-I12
-I29
-I47
-I784000
+I19
+I45
+I36
+I453000
 Ntp8
 Rp9
 sS'simNotes'
 p10
-S"\nStep of Tgov system...\nusing 'accepted' model\n"
+S'\nStep of Tgov system validated response using alt agent\n'
 p11
 sS'simParams'
 p12
@@ -65,7 +65,7 @@ p25
 F60.0
 sS'timeStep'
 p26
-F0.5
+F1.0
 sS'integrationMethod'
 p27
 S'rk45'
@@ -97,7 +97,7 @@ S'C:\\LTD\\pslf_systems\\eele554\\ee554.exc1Gov.dyd'
 p42
 assS'timeStep'
 p43
-F0.5
+F1.0
 sS'endTime'
 p44
 F60.0
@@ -112,13 +112,13 @@ p47
 F0.0
 sS'debug'
 p48
-I1
+I0
 sS'AMQPdebug'
 p49
 I0
 sS'dataPoints'
 p50
-I121
+I61
 sS'c_dp'
 p51
 I0
@@ -931,7 +931,7 @@ p291
 F2.0
 sS'pertVal'
 p292
-F-1.0
+F1.0
 sS'stepType'
 p293
 S'rel'
@@ -954,7 +954,7 @@ p298
 sg291
 F30.0
 sg292
-F1.0
+F-1.0
 sg293
 S'rel'
 p299

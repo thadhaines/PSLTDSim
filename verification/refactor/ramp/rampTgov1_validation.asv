@@ -64,8 +64,8 @@ plot(t,pslf_data.Data(:,pg_col(1)),'-','linewidth',3,'color',pltC.grey)
 plot(t,pslf_data.Data(:,pg_col(2)),'linewidth',1,'color',[0,0,0])
 
 %LTD data
-plot(t_1,mir.A1.S11.S1.Pe,'o','linewidth',1.5,'color',pltC.magenta)
-plot(t_1,mir.A1.G21.G1.Pe,'s','linewidth',1,'color',pltC.dgreen)
+plot(t_1,mir.A1.S11.S1.Pe,':o','linewidth',1.5,'color',pltC.magenta)
+plot(t_1,mir.A1.G21.G1.Pe,':s','linewidth',1,'color',pltC.dgreen)
 
 plot(t_1,mir.A1.S11.S1.Pm,':+','linewidth',1.5,'color',pltC.Lblue)
 plot(t_1,mir.A1.G21.G1.Pm,':+','linewidth',1,'color','k')
@@ -80,7 +80,7 @@ ax.YMinorTick = 'on';
 ax.GridAlpha = 1;
 
 set(gca,'FontSize',.85*bfz)
-legend({'PSLF Gen 1 Pe','PSLF Gen 2 Pe','LTD Gen 1 Pe','LTD Gen 2 Pe','LTD Gen 1 Pm','LTD Gen 2 Pm'}, ...
+legend({'PSLF Gen 1 Pe','PSLF Gen 2 Pe','LTD Gen 1 Pe','LTDGen 2 Pe','LTDGen 1 Pm','Gen 2 Pm'}, ...
     'Fontsize',bfz*.9,'location',l_loc) % Legend
 set(gcf,'Position',p_pos)
 title(title_str, 'Fontsize',bfz)

@@ -17,16 +17,16 @@ datetime
 p7
 (I2019
 I4
-I5
-I10
-I32
-I15
-I260000
+I8
+I20
+I24
+I50
+I249000
 Ntp8
 Rp9
 sS'simNotes'
 p10
-S'\nRamp of Tgov system...\n'
+S'\nRamp of Tgov system validated response using alt agent\n'
 p11
 sS'simParams'
 p12
@@ -62,13 +62,13 @@ p24
 F0.0
 sS'endTime'
 p25
-F60.0
+F30.0
 sS'timeStep'
 p26
 F0.5
 sS'integrationMethod'
 p27
-S'rk45'
+S'euler'
 p28
 ssS'locations'
 p29
@@ -100,7 +100,7 @@ p43
 F0.5
 sS'endTime'
 p44
-F60.0
+F30.0
 sS'slackTol'
 p45
 F0.25
@@ -118,7 +118,7 @@ p49
 I0
 sS'dataPoints'
 p50
-I121
+I61
 sS'c_dp'
 p51
 I0
