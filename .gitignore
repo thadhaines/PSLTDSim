@@ -274,3 +274,7 @@ __pycache__/
 /verification/pgov1/pgovAgain01.pkl
 /verification/refactor/bigcase.mir
 /verification/refactor/pgovAgain01.dict
+/tests/dydParse/14ls11e_21P1a_dg.dyd
+/tests/dydParse/16HS31_dg.dyd
+/tests/dydParse/18HSP2a1.dyd
+/tests/dydParse/18HSP2a1_dg.dyd
