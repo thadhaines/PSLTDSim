@@ -9,23 +9,31 @@ class AMQPAgent():
         self.name = name
         self.host = host
         self.mirror = mirror
+        self.connection = None
+        self.channel = None
 
     def send(self,msgQueue,msg):
         """send msg to msgQueue"""
-        cParams = pika.ConnectionParameters(host=self.host)
-        connection = pika.BlockingConnection(cParams)
-        channel = connection.channel()
-        channel.queue_declare(queue=msgQueue) # ensure queue created
+        if self.connection is None:
+            cParams = pika.ConnectionParameters(host=self.host)
+            connection = pika.BlockingConnection(cParams)
+            self.connection = connection
+            self.channel = connection.channel()
+            self.channel.queue_declare(queue=msgQueue) # ensure queue created
 
         if self.mirror:
             if self.mirror.AMQPdebug:
                 print(datetime.datetime.now().strftime('%H:%M:%S.%f') +
                  ' ' + self.name + " Sending \t %r" % json.dumps(msg))
         
-        channel.basic_publish(exchange='', 
+        self.channel.basic_publish(exchange='', 
                               routing_key=msgQueue, 
                               body=json.dumps(msg) )
-        connection.close()
+
+        if msg['msgType'] == 'endSim':
+            self.connection.close()
+            self.connection = None
+            self.channel = None
 
     def debugCallback(self, ch, method, properties, body):
         """should be altered to specific needs - proof of concept shown"""

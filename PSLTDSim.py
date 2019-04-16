@@ -31,12 +31,13 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Step of Tgov system validated response using alt agent - two govs, 2 sec ts
+Step of Tgov system validated response using alt agent - 1 sec ts
+checking speed up of amqp agent change.
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 2.0,
+    'timeStep': 1.0,
     'endTime': 60.0,
     'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
@@ -48,7 +49,7 @@ simParams = {
 
     # Data Export Parameters
     'fileDirectory' : "\\verification\\refactor\\tgov_steps\\", # relative path must exist before simulation
-    'fileName' : 'tGov2Step03',
+    'fileName' : 'tGov2Step04',
     'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
@@ -56,7 +57,7 @@ simParams = {
 
 # Fast debug case switching
 # TODO: MAYBE enable new dyd replacement... (too cute?)
-test_case = 'tGov2Steps'
+test_case = 'tGovSteps'
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]

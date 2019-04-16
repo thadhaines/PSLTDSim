@@ -1,6 +1,6 @@
 def dispSimResults(mirror):
     """Function to display running values to terminal"""
-    for x in range(mirror.c_dp-1):
+    for x in range(len(mirror.r_t)):
         if x%20 == 0:
             print("""Time\tPload\tPacc\tsys f\tdelta f\t\tSlackPe""")
         print("""%.2f\t%.2f\t%.2f\t%.5f\t%.6f\t%.2f""" % (
