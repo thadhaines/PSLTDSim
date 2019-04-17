@@ -14,14 +14,14 @@
 clear; format compact; clc; close all; 
 
 %% import LTD data
-load('tGovRamp01F.mat')
-mir = tGovRamp01F;
-clear tGovRamp01F
+load('tGovRamp02F.mat')
+mir = tGovRamp02F;
+clear tGovRamp02F
 
 t_1 = mir.t;
 f_1 = mir.f;
 N = mir.N
-xlimit = [0 30]
+xlimit = [0 45]
 %% import pslf data
 pslf_data = udread('ee554.ramp0.chf',[]);
 cellfun(@disp,pslf_data.Name)
