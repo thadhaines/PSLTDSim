@@ -31,13 +31,12 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Step of Tgov system validated response using alt agent - 2 sec ts
-checking speed up of amqp agent change.
+MiniWecc Step of oregon loads
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 2.0,
+    'timeStep': 0.5,
     'endTime': 60.0,
     'slackTol': .25,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
@@ -48,8 +47,8 @@ simParams = {
     'integrationMethod' : 'rk45',
 
     # Data Export Parameters
-    'fileDirectory' : "\\verification\\refactor\\ramp\\", # relative path must exist before simulation
-    'fileName' : 'tGovRamp02',
+    'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
+    'fileName' : 'miniWECC_loadStep01',
     'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
@@ -57,7 +56,8 @@ simParams = {
 
 # Fast debug case switching
 # TODO: MAYBE enable new dyd replacement... (too cute?)
-test_case = 'tGovRamp'
+test_case = 2
+
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
@@ -93,6 +93,7 @@ elif test_case == 1:
 elif test_case == 2:
     savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
     dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_loadStep.ltd"]
 elif test_case == 3:
     # Will no longer run due to parser errors
     savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
@@ -145,6 +146,7 @@ PY3.receive('toPY3',PY3.redirect)
 print('py3 main...')
 print(mir)
 PY3.mirror = mir
+
 ## begin PY3 simulation loop 
 sim_start = time.time()
 ltd.runSimPY3(mir, PY3)

@@ -8,7 +8,7 @@ import psltdsim as ltd
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 
 dirname = os.path.dirname(__file__)
-mirLoc = os.path.join(dirname, 'verification','refactor','ramp','tGovRamp01F.mir')
+mirLoc = os.path.join(dirname, 'verification','miniWeccTest01','miniWECC_loadStep01F.mir')
 mir = ltd.data.readMirror(mirLoc)
 
 xend = max(mir.r_t)

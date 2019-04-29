@@ -19,7 +19,7 @@ makeLegend = 1;
 debug = 0;
 
 %% import LTD data = Only field that requires user editing 
-dataName = 'plotTest01.mat'% 'miniWeccTest02.mat' % 
+dataName = 'miniWECC_loadStep01F.mat'% 'miniWeccTest02.mat' % 
 
 % Assumes 1 generator or load per bus... 
 % Dictionary does have info available to allow for better looping

@@ -19,23 +19,30 @@ def parseDyd(mirror,dydLoc):
         line = next(file) # get first line of file
         foundPModels = 0
         foundLTDModels = 0
+        cline = None # used in continued line operation
 
         while line:
             if line[0] == '#' or line[0] =='\n':
-
-                if line[0] == '\n':
-                    # line blank, skip
-                    line = next(file, None)
-                    continue
-                    
-                else:
-                    # line is a comment
-                    line = next(file, None)
-                    continue
+                # ignore comments and blanks
+                line = next(file, None)
+                continue
+            
+            if cline:
+                # handle slash removal and string concatonation
+                line = cline[:-1]+line
+                cline = None
 
             #print(line) # Debug
             parts = line.split()
-        
+
+            if parts[-1] == '/':
+                # save continued line, get next line
+                cline = line
+                line = next(file, None)
+                continue
+
+            cline = None # line complete
+
             if parts[0] == "genrou":
                 if mirror.debug:
                     print("*** Creating genrou on bus %s..." % parts[1])
