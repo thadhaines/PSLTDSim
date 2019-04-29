@@ -31,7 +31,7 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-MiniWecc Step of oregon loads
+MircoWecc Step of loads
 """
 
 # Simulation Parameters Dictionary
@@ -47,8 +47,8 @@ simParams = {
     'integrationMethod' : 'rk45',
 
     # Data Export Parameters
-    'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
-    'fileName' : 'miniWECC_loadStep01',
+    'fileDirectory' : "\\verification\\microWecc\\", # relative path must exist before simulation
+    'fileName' : 'microWECC_loadStep01',
     'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
@@ -56,7 +56,7 @@ simParams = {
 
 # Fast debug case switching
 # TODO: MAYBE enable new dyd replacement... (too cute?)
-test_case = 2
+test_case = 1
 
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
@@ -90,6 +90,8 @@ elif test_case == 'tGovRamp':
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microWECC_loadStep.ltd"]
+
 elif test_case == 2:
     savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
     dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
