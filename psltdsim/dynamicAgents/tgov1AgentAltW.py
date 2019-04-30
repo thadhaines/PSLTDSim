@@ -51,7 +51,9 @@ class tgov1Agent():
         dwVec = np.array([delta_w, delta_w])
 
         # Perform sum and first gain block
-        uVector = dwVec*self.mirror.Sbase/self.R#*self.mirror.Sbase
+        #uVector = dwVec*self.mirror.Sbase/self.R#*self.mirror.Sbase
+        uVector = dwVec*self.Gen.MbaseDYD/self.R
+        ## Maybe this Sbase should be an Mbase....
 
         # First dynamic Block
         _, y1, self.x1 = sig.lsim(self.sys1, U=uVector, T=self.t, 
