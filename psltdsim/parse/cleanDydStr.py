@@ -15,6 +15,18 @@ def cleanDydStr(str):
     clean.append(float(b[2].strip()))   # base kV
     clean.append(b[3].strip())          # id?
 
+    # Find and stray dashes from line completions
+    toPop =[]
+    for ndx in range(len(d)):
+        if d[ndx] == '/':
+            # print('/ at ndx %d' % ndx) # DEBUG
+            toPop.append(ndx)
+    # Pop stray dashes
+    popped = 0
+    for ndx in toPop:
+        d.pop(ndx-popped)
+        popped+=1
+
     for n in range(len(d)):
         #set IMPORT = 0.0
         if (d[n] == 'IMPORT'):
