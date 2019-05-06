@@ -37,7 +37,7 @@ MiniWECC Step of loads
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 60.0,
+    'endTime': 90.0,
     'slackTol': .5,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
@@ -167,6 +167,6 @@ if simParams['exportMat']:
 print("init time:\t %f" % (sim_start-init_start) )
 print("sim time:\t %f" % (sim_end-sim_start) )
 
-ltd.plot.sysPePmFLoad(mir)
+#ltd.plot.sysPePmFLoad(mir)
 
 print('end of debug test run')
