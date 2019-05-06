@@ -16,17 +16,17 @@ cdatetime
 datetime
 p7
 (I2019
-I4
-I28
-I3
-I45
-I43
-I157000
+I5
+I1
+I2
+I46
+I6
+I46000
 Ntp8
 Rp9
 sS'simNotes'
 p10
-S'\nMiniWecc Step of oregon loads\n'
+S'\nMiniWECC Step of loads\n'
 p11
 sS'simParams'
 p12
@@ -44,7 +44,7 @@ p18
 I0
 sS'slackTol'
 p19
-F0.25
+F0.5
 sS'Dsys'
 p20
 F0.0
@@ -65,7 +65,7 @@ p25
 F60.0
 sS'timeStep'
 p26
-F0.5
+F1.0
 sS'integrationMethod'
 p27
 S'rk45'
@@ -97,13 +97,13 @@ S'C:\\LTD\\pslf_systems\\MiniPSLF_PST\\miniWECC_LTD.dyd'
 p42
 assS'timeStep'
 p43
-F0.5
+F1.0
 sS'endTime'
 p44
 F60.0
 sS'slackTol'
 p45
-F0.25
+F0.5
 sS'Hinput'
 p46
 F0.0
@@ -118,7 +118,7 @@ p49
 I0
 sS'dataPoints'
 p50
-I121
+I61
 sS'c_dp'
 p51
 I0
@@ -8034,7 +8034,7 @@ p1319
 I1
 sS'Tol'
 p1320
-F0.25
+F0.5
 sS'Pe_calc'
 p1321
 F0.0

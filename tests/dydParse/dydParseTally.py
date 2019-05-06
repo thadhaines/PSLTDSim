@@ -7,6 +7,8 @@ dydLoc = '14ls11e_21P1a_dg.dyd' # light summer 2014
 #dydLoc = '16HS31_dg.dyd' # heavy summer 2016
 #dydLoc = '18HSP2a1.dyd' # heavy spring 2018
 #dydLoc = '18HSP2a1_dg.dyd' # heavy spring 2018
+dydLoc = r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_V9_RJ_govsfixed_fadded.dyd"
+#dydLoc = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"
 
 """ Start of dictionary tally definitions """
 primeMoverDict = {
@@ -144,6 +146,13 @@ while line:
     elif parts[0] in windTurbineDict:
         windTurbineDict[parts[0]]+=1
         windTurbineDict['TOTAL']+=1
+
+    # debug of agent creation
+    if parts[0] == "genrou":
+
+        cleanLine = ltd.parse.cleanDydStr(line)
+        print('cleaned: %s' % cleanLine)
+                #newPmod = ltd.pslfModels.genrou(mirror, cleanLine)
 
     line = next(file, None)
 
