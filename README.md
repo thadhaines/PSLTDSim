@@ -5,7 +5,8 @@ An example of such long-term dynamics:  A wind ramp causes a governor action res
 
 Note: Work in progress - everything may be broken.
 
-To install package from current WIP state: "pip install -e ." from this directory
+To install package from current WIP state: "pip install -e ." from this directory with administrative privleges.
+If python 3 32 bit is not default python: "py -3-32 -m pip install -e ."
 
 ## Current Progress:
 * Code refactored to:
