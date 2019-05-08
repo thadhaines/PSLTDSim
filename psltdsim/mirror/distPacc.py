@@ -31,7 +31,13 @@ def distPacc(mirror, deltaPacc):
             if fp_Flag:
                 #distribute to slack on First pass and set Pe_calc
                 slackPacc = Pacc*(c_area.Slack[0].H/Hsys)
-                c_area.Slack[0].Pe = c_area.Slack[0].Pe - slackPacc 
+
+                # check if within slack limits
+                newPe = c_area.Slack[0].Pe - slackPacc 
+                if newPe <= c_area.Slack[0].Pmax:
+                    c_area.Slack[0].Pe = newPe
+                else:
+                    c_area.Slack[0].Pe = c_area.Slack[0].Pmax
 
                 # Estimated Pe post PF soln
                 c_area.Slack[0].Pe_calc = c_area.Slack[0].Pe 
