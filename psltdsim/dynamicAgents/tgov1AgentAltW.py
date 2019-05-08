@@ -9,6 +9,9 @@ class tgov1Agent():
         self.PSFLgov = PSLFgov
         self.Gen = PSLFgov.Gen
 
+        self.Pref0= self.Gen.Pe
+        
+
         self.appenedData = True
 
         self.Busnum = PSLFgov.Busnum
@@ -35,8 +38,12 @@ class tgov1Agent():
         self.sys2 = sig.StateSpace([-1.0/self.T3],[1.0/self.T3],
                                    [1.0-self.T2/self.T3],[self.T2/self.T3])
 
-        self.y1HighLimit = self.Vmax * self.mwCap
-        self.y1LowLimit = self.Vmin * self.mwCap
+        # Experimental valve limiting
+        self.y1HighLimit = (self.mwCap-self.Pref0) / self.mwCap*100
+        self.y1LowLimit = (-self.Pref0) / self.mwCap*100
+
+        self.y2HighLimit = self.Vmax * self.mwCap
+        self.y2LowLimit = self.Vmin * self.mwCap
 
         if mirror.debug:
             print("*** Added tgov1 to gen on bus %d '%s'" 
@@ -51,29 +58,37 @@ class tgov1Agent():
         dwVec = np.array([delta_w, delta_w])
 
         # Perform sum and first gain block
-        #uVector = dwVec*self.mirror.Sbase/self.R#*self.mirror.Sbase
         uVector = dwVec*self.Gen.MbaseDYD/self.R
-        ## Maybe this Sbase should be an Mbase....
 
-        # First dynamic Block
+        # First dynamic Block (using zero order hold)
         _, y1, self.x1 = sig.lsim(self.sys1, U=uVector, T=self.t, 
-                                   X0=self.r_x1[self.mirror.c_dp-1])
+                                   X0=self.r_x1[self.mirror.c_dp-1], interp=True)
+
+        # Limit valve position output y1 and associated state x1
+        # Seems to not work/ produce better results
+        #if y1[1] > self.y1HighLimit:
+        #    y1[1] = self.y1HighLimit
+        #    self.x1[1]  = self.y1HighLimit
+        #elif y1[1] < self.y1LowLimit:
+        #    y1[1] = self.y1LowLimit 
+        #    self.x1[1]  = self.y1LowLimit
 
         # Second block
         _, y2, self.x2 = sig.lsim(self.sys2, y1, T=self.t,
-                                   X0=self.r_x2[self.mirror.c_dp-1])
+                                   X0=self.r_x2[self.mirror.c_dp-1], interp=True)
 
         # Set Generator Mechanical Power To limited range
         posNewPm = float(y2[1]) + self.Gen.Pm
 
-        if posNewPm > self.y1HighLimit:
-            posNewPm = self.y1HighLimit
-        elif posNewPm < self.y1LowLimit:
-            posNewPm = self.y1LowLimit 
+        if posNewPm > self.y2HighLimit:
+            posNewPm = self.y2HighLimit
+        elif posNewPm < self.y2LowLimit:
+            posNewPm = self.y2LowLimit 
 
         # Addition of damping
         #posNewPm = posNewPm 
         self.Gen.Pm = posNewPm - delta_w*self.Dt
+
     def stepInitDynamics(self):
         """ Once H has been initialized, check if K has to be recalculated"""
         pass

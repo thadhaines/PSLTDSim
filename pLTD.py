@@ -15,18 +15,20 @@ mir = ltd.data.readMirror(mirLoc)
 xend = max(mir.r_t)
 
 print(mir)
-ltd.plot.sysLoad(mir, False)
-ltd.plot.sysPePmF(mir, False)
+#ltd.plot.sysLoad(mir, False)
+#ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.sysPQgen(mir, False)
 #ltd.plot.sysPQVF(mir, True)
 
-ltd.plot.sysVmVa(mir, True)
+#ltd.plot.sysVmVa(mir, True)
 
+for gen in mir.Machines:
+    print("%s    \t %f \t%f" %(gen.Busnam, gen.Hpu, gen.MbaseDYD))
 
-""" Plot all dynamic responses from generators... 
+""" Plot all dynamic responses from generators
 for c_dyn in mir.Dynamics:
     fig, ax = plt.subplots(nrows=2, ncols=1,)
     ax[0].set_title('Governed Generator on Bus %d %s Power Output' 

@@ -17,11 +17,11 @@ datetime
 p7
 (I2019
 I5
-I6
-I15
-I30
-I51
-I680000
+I8
+I10
+I46
+I39
+I711000
 Ntp8
 Rp9
 sS'simNotes'
@@ -44,7 +44,7 @@ p18
 I0
 sS'slackTol'
 p19
-F0.5
+F1.0
 sS'Dsys'
 p20
 F0.0
@@ -62,7 +62,7 @@ p24
 F0.0
 sS'endTime'
 p25
-F90.0
+F120.0
 sS'timeStep'
 p26
 F1.0
@@ -100,10 +100,10 @@ p43
 F1.0
 sS'endTime'
 p44
-F90.0
+F120.0
 sS'slackTol'
 p45
-F0.5
+F1.0
 sS'Hinput'
 p46
 F0.0
@@ -118,7 +118,7 @@ p49
 I0
 sS'dataPoints'
 p50
-I91
+I121
 sS'c_dp'
 p51
 I0
@@ -8034,7 +8034,7 @@ p1319
 I1
 sS'Tol'
 p1320
-F0.5
+F1.0
 sS'Pe_calc'
 p1321
 F0.0

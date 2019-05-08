@@ -278,3 +278,5 @@ __pycache__/
 /tests/dydParse/16HS31_dg.dyd
 /tests/dydParse/18HSP2a1.dyd
 /tests/dydParse/18HSP2a1_dg.dyd
+/verification/miniWeccTest01/psdsValidation/miniWECC_loadStep_1.chf
+/verification/miniWeccTest01/psdsValidation/miniWECC_loadStep_0.chf

@@ -37,8 +37,8 @@ MiniWECC Step of loads
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 90.0,
-    'slackTol': .5,
+    'endTime': 120.0,
+    'slackTol': 1.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
