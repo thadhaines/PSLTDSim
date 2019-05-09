@@ -62,8 +62,8 @@ subplot(2, 2, [1 2])
 hold on
 % PSLF data
 plot(t,pslf_data.Data(:,pg_col(1)),'-','linewidth',3,'color',pltC.grey)
-plot(t,pslf_data.Data(:,pg_col(2)),'linewidth',1,'color',[0,0,0])
 plot(t,pslf_data.Data(:,pm_col(1)),':','linewidth',3,'color',pltC.grey)
+plot(t,pslf_data.Data(:,pg_col(2)),'linewidth',1,'color',[0,0,0])
 
 %LTD data
 plot(t_1,mir.A1.S11.S1.Pe,'o','linewidth',1.5,'color',pltC.magenta)
@@ -82,7 +82,7 @@ ax.YMinorTick = 'on';
 ax.GridAlpha = 1;
 
 set(gca,'FontSize',.85*bfz)
-legend({'PSLF Gen 1 Pe','PSLF Gen 2 Pe','PSLF Gen 1 Pm','LTD Gen 1 Pe','LTD Gen 2 Pe','LTD Gen 1 Pm','LTD Gen 2 Pm'}, ...
+legend({'PSDS Gen 1 Pe','PSDS Gen 1 Pm','PSDS Gen 2 Pe','LTD Gen 1 Pe','LTD Gen 2 Pe','LTD Gen 1 Pm','LTD Gen 2 Pm'}, ...
     'Fontsize',bfz*.9,'location',l_loc) % Legend
 set(gcf,'Position',p_pos)
 title(title_str, 'Fontsize',bfz)
@@ -109,11 +109,11 @@ ax.YMinorTick = 'on';
 ax.GridAlpha = 1;
 
 set(gca,'FontSize',.85*bfz)
-legend({'PSLF mean','LTD'}, ...
+legend({'PSDS mean','LTD'}, ...
     'Fontsize',bfz*.9,'location',l_loc) % Legend
 
 title(title_str, 'Fontsize',bfz)
 ylabel(y_label, 'Fontsize',bfz)
 xlabel('Time [sec]', 'Fontsize',bfz)
 
-set(gcf, 'position',[2882 42 958 954])
+%set(gcf, 'position',[2882 42 958 954])

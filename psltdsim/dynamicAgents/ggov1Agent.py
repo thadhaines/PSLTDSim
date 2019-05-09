@@ -31,7 +31,7 @@ class ggov1Agent():
         self.T2 = PSLFgov.Tc
         self.T3 = PSLFgov.Tb
         self.Dt = PSLFgov.Dm # seems a damping term, unsure about scaling...
-
+        self.Kturb = PSLFgov.Kturb
         self.t = [0 , self.mirror.timeStep]
         self.leng = 2 # size of t
 
