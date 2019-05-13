@@ -12,8 +12,8 @@
 clear; format compact; clc; close all;
 
 %% Knowns
-LTDfileName = 'miniWECC_loadStep01F.mat'
-PSDSfileName = 'miniWECC_loadStep.chf'
+LTDfileName = 'miniWECC_loadStep02F.mat'
+PSDSfileName = 'miniWECC_loadStep_0.chf'
 
 %% import LTD data
 dataName = LTDfileName(1:size(LTDfileName,2)-4); % remove .mat
@@ -21,7 +21,7 @@ load(LTDfileName);
 mir = eval(dataName); % set data as common name
 
 %% import PSDS data
-psds_data = udread('miniWECC_loadStep.chf',[]);
+psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 spd_col = jfind(psds_data, 'spd');
 v_col = jfind(psds_data, 'v');
@@ -115,7 +115,7 @@ xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
 
 %% Experimental pm plotting
-figure
+figure('position',ppos)
 subplot(2,1,1)
 set(gca,'ColorOrder',colormap(cool))
 set(gca,'ColorOrderIndex',30)
@@ -126,6 +126,9 @@ for mach=1:max(size(pm_col))
 end
 xlim(x_lim)
 title('Normalized PSDS Generator Pm')
+set(gca,'fontsize',bfz)
+ylim([.9,1.35])
+grid on
 %
 
 subplot(2,1,2)
@@ -155,5 +158,8 @@ for area = 1:max(size(mir.areaN)) % for each area
 end
 xlim(x_lim)
 title('Normalized LTD Generator Pm')
+set(gca,'fontsize',bfz)
+ylim([.9,1.35])
+grid on
 %set(gcf,'color','w'); % to remove border of figure
 %export_fig('XXXXXX','-pdf'); % to print fig
