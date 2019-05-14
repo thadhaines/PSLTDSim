@@ -31,13 +31,15 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
+
 MiniWECC Step of loads - using euler integration
+
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1.0,
-    'endTime': 120.0,
+    'timeStep': 0.5,
+    'endTime': 30.0,
     'slackTol': 1.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
@@ -47,8 +49,10 @@ simParams = {
     'integrationMethod' : 'euler',
 
     # Data Export Parameters
+
     'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
     'fileName' : 'miniWECC_loadStep02',
+
     'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work
@@ -56,7 +60,7 @@ simParams = {
 
 # Fast debug case switching
 # TODO: MAYBE enable new dyd replacement... (too cute?)
-test_case = 2
+test_case = 5
 
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
@@ -86,7 +90,6 @@ elif test_case == 'tGovRamp':
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc1Gov.dyd"]
     ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ramp.ltd"]
-
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
@@ -105,6 +108,11 @@ elif test_case == 4:
     dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",
                r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd", #pgov1 on slacks
                ]
+
+elif test_case == 5: # testing of ggov casting
+    savPath = r"C:\LTD\pslf_systems\eele554\ggov1\ee554.sav"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.ggov1.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.BigUpStep.ltd"]
 
 if not 'ltdPath' in dir(): # handle undefined ltdPath
     ltdPath = None
@@ -167,6 +175,7 @@ if simParams['exportMat']:
 print("init time:\t %f" % (sim_start-init_start) )
 print("sim time:\t %f" % (sim_end-sim_start) )
 
+#ltd.plot.allPmDynamics(mir)
 #ltd.plot.sysPePmFLoad(mir)
 
-print('end of debug test run')
+print('end of test run')

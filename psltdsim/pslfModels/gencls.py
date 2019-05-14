@@ -1,5 +1,5 @@
-class tgov1(object):
-    """Governor class for the pslf tgov1 model parameters
+class gencls(object):
+    """Governor class for the pslf ggov1 model parameters
     Class parameters populated by parsed line elements from a CLEAN dyd line
     NOTE: There may be a better way to do this. Hardcoded indexes feel like a bad idea
     """
@@ -7,7 +7,7 @@ class tgov1(object):
         #for later reference/debug if desired
         self.mirror = mirror
         self.dydLine = parts
-        self.params = 13    # NOTE: length specific to model type
+        self.params = 12 # num params + 6 from id. Varies per model
 
         #for underdefined models, add zeros
         if len(parts)<self.params:
@@ -34,16 +34,16 @@ class tgov1(object):
             parts.insert(6, 'BASE MVA')
             self.mwCap = 0.0 # TODO: Get most recent during dynamic init
         
-        self.R  = parts[7]
-        self.T1 = parts[8]
-        self.Vmax = parts[9]
-        self.Vmin = parts[10]
-        self.T2 = parts[11] # in sec
-        self.T3 = parts[12]
-        self.Dt = parts[13]
+        # Model specific parameters.
+        self.H 		= parts[7]
+        self.D		= parts[8]
+        self.Ra 		= parts[9]
+        self.lppd 		= parts[10]
+        self.rcomp 			= parts[11]
+        self.xcomp 			= parts[12]
 
         if mirror.debug:
-            print("\t...'tgov' Model Created %d %s" % (self.Busnum,self.Busnam))
+            print("\t...'gencls' Model data collected for %d %s" % (self.Busnum,self.Busnam))
 
     def __repr__(self):
         """Display more useful data for model"""

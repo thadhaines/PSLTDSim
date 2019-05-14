@@ -1,5 +1,5 @@
-class tgov1(object):
-    """Governor class for the pslf tgov1 model parameters
+class gencc(object):
+    """Governor class for the pslf ggov1 model parameters
     Class parameters populated by parsed line elements from a CLEAN dyd line
     NOTE: There may be a better way to do this. Hardcoded indexes feel like a bad idea
     """
@@ -7,7 +7,7 @@ class tgov1(object):
         #for later reference/debug if desired
         self.mirror = mirror
         self.dydLine = parts
-        self.params = 13    # NOTE: length specific to model type
+        self.params = 27 # num params + 6 from id. Varies per model
 
         #for underdefined models, add zeros
         if len(parts)<self.params:
@@ -34,16 +34,31 @@ class tgov1(object):
             parts.insert(6, 'BASE MVA')
             self.mwCap = 0.0 # TODO: Get most recent during dynamic init
         
-        self.R  = parts[7]
-        self.T1 = parts[8]
-        self.Vmax = parts[9]
-        self.Vmin = parts[10]
-        self.T2 = parts[11] # in sec
-        self.T3 = parts[12]
-        self.Dt = parts[13]
+        # Model specific parameters.
+        self.Tpdo 		= parts[7]
+        self.Tppdo		= parts[8]
+        self.Tpqo 		= parts[9]
+        self.Tppqo 		= parts[10]
+        self.H 			= parts[11]
+        self.D 			= parts[12]
+        self.Ld 		= parts[13]
+        self.Lq 		= parts[14]
+        self.Lpd 		= parts[15]
+        self.Lpq 		= parts[16]
+        self.Lppd 		= parts[17]
+        self.Lppq 		= parts[18]
+        self.Ll 		= parts[19]
+        self.S1 		= parts[20]
+        self.S12 		= parts[21]
+        self.Ra 		= parts[22]
+        self.Rcomp 		= parts[23]
+        self.Xcomp 		= parts[24]
+        self.accel 		= parts[25]
+        self.Pf 		= parts[26]
+        self.Qf 		= parts[27]
 
         if mirror.debug:
-            print("\t...'tgov' Model Created %d %s" % (self.Busnum,self.Busnam))
+            print("\t...'gencc' Model data collected for %d %s" % (self.Busnum,self.Busnam))
 
     def __repr__(self):
         """Display more useful data for model"""
