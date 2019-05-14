@@ -31,7 +31,9 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Testing of ggov1 casting
+
+MiniWECC Step of loads - using euler integration
+
 """
 
 # Simulation Parameters Dictionary
@@ -44,11 +46,13 @@ simParams = {
 
     # Mathematical Options
     'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
-    'integrationMethod' : 'rk45',
+    'integrationMethod' : 'euler',
 
     # Data Export Parameters
-    'fileDirectory' : "\\verification\\ggov1\\", # relative path must exist before simulation
-    'fileName' : 'ggov1_casting',
+
+    'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
+    'fileName' : 'miniWECC_loadStep02',
+
     'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'exportMat': 1, # requies exportDict == 1 to work

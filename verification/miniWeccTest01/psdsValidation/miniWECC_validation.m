@@ -12,8 +12,8 @@
 clear; format compact; clc; close all;
 
 %% Knowns
-LTDfileName = 'miniWECC_loadStep01F.mat'
-PSDSfileName = 'miniWECC_loadStep.chf'
+LTDfileName = 'miniWECC_loadStep02F.mat'
+PSDSfileName = 'miniWECC_loadStep_0.chf'
 
 %% import LTD data
 dataName = LTDfileName(1:size(LTDfileName,2)-4); % remove .mat
@@ -21,7 +21,9 @@ load(LTDfileName);
 mir = eval(dataName); % set data as common name
 
 %% import PSDS data
-psds_data = udread('miniWECC_loadStep_0.chf',[]);
+
+psds_data = udread(PSDSfileName,[]);
+
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 spd_col = jfind(psds_data, 'spd');
 v_col = jfind(psds_data, 'v');
@@ -128,6 +130,9 @@ xlim(x_lim)
 ylim([.9, 1.35])
 grid on
 title('Normalized PSDS Generator Pm')
+set(gca,'fontsize',bfz)
+ylim([.9,1.35])
+grid on
 %
 
 subplot(2,1,2)
@@ -160,7 +165,6 @@ ylim([.9, 1.35])
 grid on
 title('Normalized LTD Generator Pm')
 
-
 %% Plotting of WA-Gen and SDG-Gen Pm
 waGenPmCol = jfind(psds_data, '17:WA-GEN  :20:1 :tgov1   :pm');
 sdGemPmCol = jfind(psds_data, '53:SDG-GEN :20:1 :tgov1   :pm');
@@ -191,7 +195,9 @@ xlim([mir.t(1),mir.t(end)])
 xlabel('Time [sec]')
 ylabel('MW')
 grid on
-set(gca,'fontsize',bfz)
+
+ylim([.9,1.35])
+grid on
 
 %set(gcf,'color','w'); % to remove border of figure
 %export_fig('XXXXXX','-pdf'); % to print fig
