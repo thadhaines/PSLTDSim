@@ -1,16 +1,17 @@
-""" Dynamic Agent Class created from PSLF machine data"""
+""" Dynamic Agent Class created from PSLF machine data
+Used see if  castting ggov1 to tgov1 possible, based off of tgov1 model
+"""
 
-class tgov1Agent():
+class ggov1Agent():
     """Agent to perform governor action"""
 
     def __init__(self, mirror, PSLFgov):
         """Objects created from intPY3Dynamics"""
         self.mirror = mirror
-        self.PSFLgov = PSLFgov
+        self.PSLFgov = PSLFgov
         self.Gen = PSLFgov.Gen
 
         self.Pref0= self.Gen.Pe
-        
 
         self.appenedData = True
 
@@ -21,14 +22,16 @@ class tgov1Agent():
         
         self.mwCap = self.Gen.MbaseDYD # default PSLF behaviour, possibly rethink
 
-        self.R  = PSLFgov.R
-        self.T1 = PSLFgov.T1
-        self.Vmax = PSLFgov.Vmax
-        self.Vmin = PSLFgov.Vmin
-        self.T2 = PSLFgov.T2
-        self.T3 = PSLFgov.T3
-        self.Dt = PSLFgov.Dt
+        # guesses on T1,T2,T3 - will validate via experimentation
 
+        self.R  = PSLFgov.r # definitely the same
+        self.T1 =  PSLFgov.Ta
+        self.Vmax = PSLFgov.vmax # still related to valve position
+        self.Vmin = PSLFgov.vmin
+        self.T2 = PSLFgov.Tc
+        self.T3 = PSLFgov.Tb
+        self.Dt = PSLFgov.Dm # seems a damping term, unsure about scaling...
+        self.Kturb = PSLFgov.Kturb
         self.t = [0 , self.mirror.timeStep]
         self.leng = 2 # size of t
 
@@ -46,7 +49,7 @@ class tgov1Agent():
         self.y2LowLimit = self.Vmin * self.mwCap
 
         if mirror.debug:
-            print("*** Added tgov1 to gen on bus %d '%s'" 
+            print("*** Added ggov1 to gen on bus %d '%s'" 
                   % (self.Busnum,self.Busnam))
 
     def stepDynamics(self):
@@ -79,7 +82,7 @@ class tgov1Agent():
 
         # Set Generator Mechanical Power To limited range
         posNewPm = float(y2[1]) + self.Gen.Pm
-
+                    
         if posNewPm > self.y2HighLimit:
             posNewPm = self.y2HighLimit
         elif posNewPm < self.y2LowLimit:
@@ -91,28 +94,25 @@ class tgov1Agent():
 
     def stepInitDynamics(self):
         """ Once H has been initialized, check if K has to be recalculated"""
-        updated = False
         if self.mirror.debug:
             print('*** Checking for updated model information...')
 
         # ensure MWcap is read from gov dyd
         if self.Gen.Pmax != self.mwCap:
             self.Gen.Pmax = self.mwCap
-            updated = True
             if self.mirror.debug:
                 print('... updated mwCap')
-
 
         # Doesn't seem like this check is necessary due to previous settings
         if self.Gen.MbaseSAV != self.Gen.MbaseDYD:
             self.Mbase = self.Gen.MbaseDYD
-            updated = True
             if self.mirror.debug:
                 print('... updated model.')
             return
 
-        if self.mirror.debug and not updated:
+        if self.mirror.debug:
             print('... nothing updated.')
+
 
     def initRunningVals(self):
         """Initialize History Values of dynamic agent"""

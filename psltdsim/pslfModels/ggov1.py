@@ -1,5 +1,5 @@
-class tgov1(object):
-    """Governor class for the pslf tgov1 model parameters
+class ggov1(object):
+    """Governor class for the pslf ggov1 model parameters
     Class parameters populated by parsed line elements from a CLEAN dyd line
     NOTE: There may be a better way to do this. Hardcoded indexes feel like a bad idea
     """
@@ -7,7 +7,7 @@ class tgov1(object):
         #for later reference/debug if desired
         self.mirror = mirror
         self.dydLine = parts
-        self.params = 13    # NOTE: length specific to model type
+        self.params = 41 # num params + 6 from id. Varies per model
 
         #for underdefined models, add zeros
         if len(parts)<self.params:
@@ -34,16 +34,45 @@ class tgov1(object):
             parts.insert(6, 'BASE MVA')
             self.mwCap = 0.0 # TODO: Get most recent during dynamic init
         
-        self.R  = parts[7]
-        self.T1 = parts[8]
-        self.Vmax = parts[9]
-        self.Vmin = parts[10]
-        self.T2 = parts[11] # in sec
-        self.T3 = parts[12]
-        self.Dt = parts[13]
+        # Model specific parameters.
+        self.r = parts[7]
+        self.rselect = parts[8]
+        self.Tpelec = parts[9]
+        self.maxerr = parts[10]
+        self.minerr = parts[11]
+        self.Kpgov = parts[12]
+        self.Kigov = parts[13]
+        self.Kdgov = parts[14]
+        self.Tdgov = parts[15]
+        self.vmax = parts[16]
+        self.vmin = parts[17]
+        self.Tact = parts[18]
+        self.Kturb = parts[19]
+        self.wfnl = parts[20]
+        self.Tb = parts[21]
+        self.Tc = parts[22]
+        self.Flag = parts[23]
+        self.Teng = parts[24]
+        self.Tfload = parts[25]
+        self.Kpload = parts[26]
+        self.Kiload = parts[27]
+        self.Ldref = parts[28]
+        self.Dm = parts[29]
+        self.ropen = parts[30]
+        self.rclose = parts[31]
+        self.Kimw = parts[32]
+        self.Pmwset = parts[33]
+        self.aset = parts[34]
+        self.Ka = parts[35]
+        self.Ta = parts[36]
+        self.db = parts[37]
+        self.Tsa = parts[38]
+        self.Tsb = parts[39]
+        self.rup = parts[40]
+        self.rdown = parts[41]
 
         if mirror.debug:
-            print("\t...'tgov' Model Created %d %s" % (self.Busnum,self.Busnam))
+            print("\t...'ggov1' Model data collected for %d %s" % (self.Busnum,self.Busnam))
 
     def __repr__(self):
         """Display more useful data for model"""

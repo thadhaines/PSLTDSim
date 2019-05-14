@@ -21,7 +21,9 @@ load(LTDfileName);
 mir = eval(dataName); % set data as common name
 
 %% import PSDS data
+
 psds_data = udread(PSDSfileName,[]);
+
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 spd_col = jfind(psds_data, 'spd');
 v_col = jfind(psds_data, 'v');
@@ -114,7 +116,7 @@ ylabel('Relative Difference [%]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
 
-%% Experimental pm plotting
+%% Experimental normalized system pm plotting
 figure('position',ppos)
 subplot(2,1,1)
 set(gca,'ColorOrder',colormap(cool))
@@ -125,6 +127,8 @@ for mach=1:max(size(pm_col))
     plot(t, psds_data.Data(:,pm_col(mach))/psds_data.Data(1,pm_col(mach)) ,'HandleVisibility','off')
 end
 xlim(x_lim)
+ylim([.9, 1.35])
+grid on
 title('Normalized PSDS Generator Pm')
 set(gca,'fontsize',bfz)
 ylim([.9,1.35])
@@ -157,9 +161,43 @@ for area = 1:max(size(mir.areaN)) % for each area
     %legend(legNames)
 end
 xlim(x_lim)
+ylim([.9, 1.35])
+grid on
 title('Normalized LTD Generator Pm')
+
+%% Plotting of WA-Gen and SDG-Gen Pm
+waGenPmCol = jfind(psds_data, '17:WA-GEN  :20:1 :tgov1   :pm');
+sdGemPmCol = jfind(psds_data, '53:SDG-GEN :20:1 :tgov1   :pm');
+
+waGenLTD = mir.A1.S17.S1.Pm;
+sdGenLTD = mir.A1.G53.G1.Pm;
+
+figure('position',ppos)
+subplot(2,1,1)
+hold on
+plot(t, psds_data.Data(:,waGenPmCol),'color',[0 1 0],'linewidth',1.5)
+plot(mir.t, waGenLTD, 'm-.','linewidth',2)
+legend('PSDS','LTD','location','best')
+title('WA-GEN Pm')
+xlim([mir.t(1),mir.t(end)])
+xlabel('Time [sec]')
+ylabel('MW')
+grid on
 set(gca,'fontsize',bfz)
+
+subplot(2,1,2)
+hold on
+plot(t, psds_data.Data(:,sdGemPmCol),'color',[0 1 0],'linewidth',1.5)
+plot(mir.t, sdGenLTD, 'm-.','linewidth',2)
+legend('PSDS','LTD','location','best')
+title('SDG-GEN Pm')
+xlim([mir.t(1),mir.t(end)])
+xlabel('Time [sec]')
+ylabel('MW')
+grid on
+
 ylim([.9,1.35])
 grid on
+
 %set(gcf,'color','w'); % to remove border of figure
 %export_fig('XXXXXX','-pdf'); % to print fig

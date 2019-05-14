@@ -59,6 +59,14 @@ def parseDyd(mirror,dydLoc):
                 mirror.PSLFgov.append(newPmod)
                 foundPModels += 1
 
+            if parts[0] == "ggov1":
+                if mirror.debug:
+                    print("*** Creating ggov1 on bus %s..." % parts[1])
+                cleanLine = ltd.parse.cleanDydStr(line)
+                newPmod = ltd.pslfModels.ggov1(mirror, cleanLine)
+                mirror.PSLFgov.append(newPmod)
+                foundPModels += 1
+
             # LTD Models (proof of concept)
             if parts[0] == "pgov1":
                 cleanLine = ltd.parse.cleanDydStr(line)
