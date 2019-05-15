@@ -27,31 +27,31 @@ print('Current Working Directory: %s' % os.getcwd())
 #print(os.getcwd())
 
 # for extended terminal output
-debug = 0
+debug = 1
 AMQPdebug = 0
 
 simNotes = """
 
-MiniWECC Step of loads - using euler integration
+MiniWECC Step of loads - using rk45 integration, ts = 0.25
 
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.5,
-    'endTime': 30.0,
+    'timeStep': 1.0,
+    'endTime': 3.0,
     'slackTol': 1.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
     # Mathematical Options
     'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
-    'integrationMethod' : 'euler',
+    'integrationMethod' : 'rk45',
 
     # Data Export Parameters
 
     'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
-    'fileName' : 'miniWECC_loadStep02',
+    'fileName' : 'miniWECC_loadStep05',
 
     'exportFinalMirror': 1, #
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -60,7 +60,7 @@ simParams = {
 
 # Fast debug case switching
 # TODO: MAYBE enable new dyd replacement... (too cute?)
-test_case = 5
+test_case = 2
 
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"

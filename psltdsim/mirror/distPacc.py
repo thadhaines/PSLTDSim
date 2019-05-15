@@ -17,7 +17,7 @@ def distPacc(mirror, deltaPacc):
     Pacc = deltaPacc
     iteration = 1
 
-    # create reference to global slack gen
+    # create reference to global slack gen # assumes only 1 slack gen
     for gen in mirror.Slack:
         if gen.globalSlack:
             globalSlack = gen

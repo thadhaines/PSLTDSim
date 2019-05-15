@@ -7,19 +7,21 @@
 
 %   History:
 %   05/06/19    14:44   init
+%   05/14/19    14:03   added automatic LTD timestep accounting
 
 %% init
 clear; format compact; clc; close all;
+format long;
 
 %% Knowns
 LTDfileName = 'miniWECC_loadStep02F.mat'
-PSDSfileName = 'miniWECC_loadStep_0.chf'
+PSDSfileName = 'miniWECC_loadStep.chf'
 
 %% import LTD data
 dataName = LTDfileName(1:size(LTDfileName,2)-4); % remove .mat
 load(LTDfileName);
 mir = eval(dataName); % set data as common name
-
+LTD_ts = mir.t(2);
 %% import PSDS data
 
 psds_data = udread(PSDSfileName,[]);
@@ -50,15 +52,17 @@ end
 zoft = n; % location of 0 in PSLF data
 % first time step from zero used for indexing
 ts = t(zoft+1); 
-fs = round(1/ts);
+fs = round(LTD_ts/ts);
 
 % Collect PSLF data corresponding to LTD data
-for ct=0:mir.t(end)
+ct = 0;
+while ct<=mir.t(end)/LTD_ts
     % find index of time at full second
     n = zoft + fs*ct;
     % pull values
     pulledtime(ct+1) = t(n);
     pulledf(ct+1) = fAve(n); % system 'mean'
+    ct = ct+1;
 end
 
 %% Plot parameters
@@ -104,15 +108,15 @@ xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
 
 %% Plot of relative difference
-relDif = (mir.f - pulledf)./pulledf*100; % as a percent
+relDif = (mir.f - pulledf)./pulledf*60; % as a hz
 
 figure('position',ppos)
 hold on
 plot(mir.t, abs(relDif),'ko-.')
 xlim(x_lim)
 grid on
-title('Absolute Relative Percent Difference (PSDS-LTD)')
-ylabel('Relative Difference [%]')
+title('Absolute Relative Difference (PSDS-LTD)')
+ylabel('Relative Difference [Hz]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
 
@@ -186,8 +190,8 @@ grid on
 set(gca,'fontsize',bfz)
 
 subplot(2,1,2)
-hold on
 plot(t, psds_data.Data(:,sdGemPmCol),'color',[0 1 0],'linewidth',1.5)
+hold on
 plot(mir.t, sdGenLTD, 'm-.','linewidth',2)
 legend('PSDS','LTD','location','best')
 title('SDG-GEN Pm')
@@ -195,9 +199,7 @@ xlim([mir.t(1),mir.t(end)])
 xlabel('Time [sec]')
 ylabel('MW')
 grid on
-
-ylim([.9,1.35])
-grid on
+set(gca,'fontsize',bfz)
 
 %set(gcf,'color','w'); % to remove border of figure
 %export_fig('XXXXXX','-pdf'); % to print fig
