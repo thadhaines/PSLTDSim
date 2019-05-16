@@ -54,7 +54,7 @@ def create_mirror_agents(mirror):
                                       a_busses[c_bus].Busnam)
                                      )
             mirror.Area.append(newAreaAgent)
-        
+        """
         if n_branch > 0:
             for c_branch in range(n_branch):
                 #create branch agent
@@ -63,9 +63,9 @@ def create_mirror_agents(mirror):
                 mirror.Branch.append(newBranch)
                 #add branch to area
                 newAreaAgent.Branch.append(newBranch)
-        
+        """
         c_area += 1
-
+        
     # Assert: All busses in all areas are found and in mirror
     #for branch in mirror.Branch:
     #    branch.createLTDlinks()
