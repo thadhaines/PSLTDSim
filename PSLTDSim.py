@@ -39,7 +39,7 @@ MiniWECC Step of loads - using rk45 integration, ts = 0.25
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 3.0,
+    'endTime': 20,
     'slackTol': 1.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
@@ -49,13 +49,12 @@ simParams = {
     'integrationMethod' : 'rk45',
 
     # Data Export Parameters
-
     'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
-    'fileName' : 'miniWECC_loadStep05',
+    'fileName' : 'miniWECC_loadStep06',
 
-    'exportFinalMirror': 1, #
+    'exportFinalMirror': 1, # Export mirror with all data
+    'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
-    'exportMat': 1, # requies exportDict == 1 to work
     }
 
 # Fast debug case switching
@@ -108,7 +107,6 @@ elif test_case == 4:
     dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",
                r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd", #pgov1 on slacks
                ]
-
 elif test_case == 5: # testing of ggov casting
     savPath = r"C:\LTD\pslf_systems\eele554\ggov1\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.ggov1.dyd"]
@@ -129,8 +127,8 @@ locations = {
     }
 del savPath, dydPath, ltdPath, test_case
 
-init_start = time.time()
 # Init PY3 AMQP
+init_start = time.time()
 host = '127.0.0.1'
 PY3 = ltd.amqp.AMQPAgent('PY3',host)
 

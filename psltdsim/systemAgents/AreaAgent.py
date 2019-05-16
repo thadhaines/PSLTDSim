@@ -11,6 +11,9 @@ class AreaAgent(object):
         # Case Parameters
         self.Ngen = len(col.GeneratorDAO.FindByArea(self.Area))
         self.Nload = len(col.LoadDAO.FindByArea(self.Area))
+        self.Nbranch = len(col.BranchDAO.FindByArea(self.Area))
+        self.Nshunt = len(col.ShuntDAO.FindByArea(self.Area))
+        #self.Nxfmr = len(col.BranchDAO.FindByArea(self.Area))
 
         # Children
         self.Gens = []
@@ -19,6 +22,7 @@ class AreaAgent(object):
         self.Machines = []
         self.Bus = []
         self.Shunt = []
+        self.Branch = []
         self.SVD = []
 
         # Current Timestep values

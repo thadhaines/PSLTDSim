@@ -9,7 +9,7 @@ import psltdsim as ltd
 
 dirname = os.path.dirname(__file__)
 mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
-mirLoc = os.path.join(dirname, 'verification','miniWeccTest01','miniWECC_loadStep01F.mir')
+mirLoc = os.path.join(dirname, 'verification','miniWeccTest01','miniWECC_loadStep05.mir')
 mir = ltd.data.readMirror(mirLoc)
 
 xend = max(mir.r_t)

@@ -63,12 +63,15 @@ class AMQPAgent():
     def redirect(self, ch, method, properties, body):
         """Method to send messages to appropriate outside functions"""
         msg = json.loads(body)
+
+        # debug output
         if self.mirror:
             if self.mirror.AMQPdebug:
                 print('In %s redirect...' % self.name)
                 print(msg)
-        msgType = msg['msgType']
 
+        msgType = msg['msgType']
+        # Actual redirecting
         if msgType == 'init':
             ltd.amqp.IPY_init(msg)
             ch.stop_consuming()

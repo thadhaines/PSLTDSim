@@ -1,11 +1,3 @@
-"""
-    NOTE: Refactor gameplan:
-        1. Remove most-all methods from mirror
-        2. Get links working to refactored library
-        3. define AMQP operations
-        4. split runsim into py3 and ipy parts
-"""
-
 class Mirror(object):
     """Mirror class used as LTD system environment"""
 
@@ -37,6 +29,7 @@ class Mirror(object):
         # ss_ .. system sum
         # r_ ... running (time series)
 
+        # Varaible initalization
         self.c_dp = 0 # current data point
         self.c_t = 0.0
 
@@ -57,24 +50,7 @@ class Mirror(object):
         self.ss_Pert_Pdelta = 0.0
         self.ss_Pert_Qdelta = 0.0
 
-        # initial system solve
-        try:
-            ltd.mirror.LTD_SolveCase(self)
-        except ValueError as e:
-                print("*** Error Caught")
-                print(e)
-
-        # Initialize mirror system (environment)
-        ## Collect Case Parameters from PSLF
-        self.Ngen = PSLF.GetCasepar('Ngen')
-        self.Nbus = PSLF.GetCasepar('Nbus')
-        self.Nload = PSLF.GetCasepar('Nload')
-        self.Narea = PSLF.GetCasepar('Narea')
-        self.Nzone = PSLF.GetCasepar('Nzone')
-        self.Nbrsec = PSLF.GetCasepar('Nbrsec')
-        self.Sbase = float(PSLF.GetCasepar('Sbase'))
-
-        ## Agent Collections
+        # Agent Collections
         self.Area = []
         self.Bus = []
         self.Gens = []
@@ -82,8 +58,27 @@ class Mirror(object):
         self.Slack = []
         self.Perturbance = []
         self.Dynamics = []
+        self.Shunt = []
+        self.Branch = []
 
-        # initialize mirror = 
+        # initial system solve
+        try:
+            ltd.mirror.LTD_SolveCase(self)
+        except ValueError as e:
+                print("*** Error Caught")
+                print(e)
+
+        # Initialize mirror with PSLF values
+        self.Ngen = PSLF.GetCasepar('Ngen')
+        self.Nbus = PSLF.GetCasepar('Nbus')
+        self.Nload = PSLF.GetCasepar('Nload')
+        self.Narea = PSLF.GetCasepar('Narea')
+        self.Nzone = PSLF.GetCasepar('Nzone')
+        self.Nbrsec = PSLF.GetCasepar('Nbrsec')
+        self.Nshunt = PSLF.GetCasepar('Nshunt')
+        self.Sbase = float(PSLF.GetCasepar('Sbase'))
+
+        # initialize agents
         ltd.mirror.create_mirror_agents(self)
         ltd.mirror.findGlobalSlack(self)
 

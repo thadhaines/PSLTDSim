@@ -49,7 +49,7 @@ simParams = {
 # Fast debug case switching
 # TODO: enable new dyd replacement...
 # TODO: incorporate ltdPath into simulation
-test_case = 0
+test_case = 2
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.excNoGov.dyd"]

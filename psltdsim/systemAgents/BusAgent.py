@@ -15,19 +15,19 @@ class BusAgent(object):
         # Case Parameters
         self.Nload = len(col.LoadDAO.FindByBus(self.Scanbus))
         self.Ngen = len(col.GeneratorDAO.FindByBus(self.Scanbus))
+        self.Nshunt = len(col.ShuntDAO.FindAnyShuntsByBus(self.Scanbus))
 
-        # Children
+        # Children (objects attached to bus)
         self.Gens = []
         self.Slack = []
         self.Load = []
-
-        # if this is how shunts/SVDs work...
         self.Shunt = []
         self.SVD = []
 
         # Current Status
         self.Vm = newBus.Vm     # Voltage Magnitude
         self.Va = newBus.Va     # Voltage Angle (radians)
+        self.Basekv = float(newBus.Basekv)
 
         # Voltage settings
         #self.Vmax = newBus.Vmax # These values don't seem to be always set
@@ -101,6 +101,7 @@ class BusAgent(object):
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
+        # Used to compare data in MATLAB
         d = {'Vm': self.r_Vm,
              'Va': self.r_Va,
              'BusName': self.Busnam,

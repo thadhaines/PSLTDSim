@@ -19,12 +19,14 @@ IPY.receive('toIPY',IPY.redirect)
 
 print('in IPY main') # DEBUG
 
-# Initialize PSLF and mirror
+# Initialize PSLF
 ltd.init_PSLF(locations)
 
+# Create system mirror
 mir = ltd.mirror.Mirror(locations, simParams, simNotes, debug, AMQPdebug)
 IPY.mirror = mir
 
+# Export mirror to specified location
 mirLoc = ltd.data.saveMirror(mir, simParams)
 
 # Send mirror location to PY3

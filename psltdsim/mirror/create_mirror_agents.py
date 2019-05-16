@@ -1,7 +1,6 @@
 def create_mirror_agents(mirror):
     """Create python mirror of PSLF system by 'crawling' area busses
     Handles Buses, Generators, and Loads
-    WAS init_mirror
     Uses col
     TODO: Add agents for every object: shunts, SVD, xfmr, branch sections, ...
     """
@@ -20,23 +19,28 @@ def create_mirror_agents(mirror):
         print("*** Crawling system for agents...")
         print("Extnum\tgen\tload\tBusnam")
 
+    # while found buses are less than the total buses
     while f_bus < mirror.Nbus:
-        #while not all busses are found
+        # find and count buses in current area
         a_busses = col.AreaDAO.FindBusesInArea(c_area)
-        #n_bus = len(a_busses)
         n_bus = a_busses.Count
+
+        # find branches in area
+        a_branches = col.BranchDAO.FindByArea(c_area)
+        n_branch = a_branches.Count
+
+        # If Current area has buses, add to mirror
         if n_bus > 0:
-            #If Current area has buses
             newAreaAgent = ltd.systemAgents.AreaAgent(mirror, c_area)
             f_bus += n_bus
 
+            #for each found bus in area
             for c_bus in range(n_bus):
-                #for each found bus
+                
                 ltd.mirror.incorporate_bus(mirror, a_busses[c_bus], newAreaAgent)
                 c_ScanBus = a_busses[c_bus].GetScanBusIndex()
-                #n_gen = len(col.GeneratorDAO.FindByBus(c_ScanBus))
+
                 n_gen = col.GeneratorDAO.FindByBus(c_ScanBus).Count
-                #n_load = len(col.LoadDAO.FindByBus(c_ScanBus))
                 n_load = col.LoadDAO.FindByBus(c_ScanBus).Count
 
                 f_gen += n_gen
@@ -50,8 +54,22 @@ def create_mirror_agents(mirror):
                                       a_busses[c_bus].Busnam)
                                      )
             mirror.Area.append(newAreaAgent)
+        
+        if n_branch > 0:
+            for c_branch in range(n_branch):
+                #create branch agent
+                newBranch = ltd.systemAgents.BranchAgent(mirror, newAreaAgent, a_branches[c_branch])
+                #add branch to mirror
+                mirror.Branch.append(newBranch)
+                #add branch to area
+                newAreaAgent.Branch.append(newBranch)
+        
         c_area += 1
-    
+
+    # Assert: All busses in all areas are found and in mirror
+    #for branch in mirror.Branch:
+    #    branch.createLTDlinks()
+
     if mirror.debug:
         print("Found %d Areas" % len(mirror.Area))
         print("Found %d buses" % f_bus)
