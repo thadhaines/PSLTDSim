@@ -39,7 +39,7 @@ MiniWECC Step of loads - using rk45 integration, ts = 0.25
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 20,
+    'endTime': 2,
     'slackTol': 1.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)

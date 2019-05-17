@@ -16,9 +16,11 @@ def initInertiaH(mirror):
             # dyd values overwrite any sav values (Via PSLF user manual)
             mirrorGen.H = mirror.PSLFmach[pdmod].H *mirror.PSLFmach[pdmod].Mbase
             mirror.ss_H += mirrorGen.H 
-            # add refernece to PSLF machine model in python mirror
+            # add refernece to PSLF machine model in python mirror generator
             mirrorGen.machine_model.append(mirror.PSLFmach[pdmod])
-            if mirror.debug: print("PSLF model linked to %s" % mirrorGen)
             linkedModels +=1
 
-    if mirror.debug: print("*** Linked %d/%d PSLF models to system." % (linkedModels,len(mirror.PSLFmach)))
+            if mirror.debug: print("PSLF model linked to %s" % mirrorGen)
+
+    if mirror.debug: print("*** Linked %d/%d PSLF models to system." 
+                           % (linkedModels,len(mirror.PSLFmach)))

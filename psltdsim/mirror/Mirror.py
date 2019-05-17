@@ -98,7 +98,6 @@ class Mirror(object):
         # init_dynamics
         self.PSLFmach = []
         self.PSLFgov = []
-        self.PSLFexc = []
         
         # read dyd, create pslf models
         if locations['ltdPath']:
@@ -108,7 +107,7 @@ class Mirror(object):
 
         ltd.parse.parseDyd(self, dydPaths)
 
-        # parse LTD - handles perturbances etc...
+        # parse LTD to handly ltd models and perturbances
         if locations['ltdPath']:
             ltd.parse.parseLtd(self, locations['ltdPath'])
         

@@ -17,11 +17,11 @@ datetime
 p7
 (I2019
 I5
-I16
 I17
-I28
+I12
+I2
 I39
-I494000
+I690000
 Ntp8
 Rp9
 sS'simNotes'
@@ -62,7 +62,7 @@ p24
 F0.0
 sS'endTime'
 p25
-I20
+I2
 sS'timeStep'
 p26
 F1.0
@@ -100,7 +100,7 @@ p43
 F1.0
 sS'endTime'
 p44
-I20
+I2
 sS'slackTol'
 p45
 F1.0
@@ -118,7 +118,7 @@ p49
 I0
 sS'dataPoints'
 p50
-I21
+I3
 sS'c_dp'
 p51
 I0
@@ -14900,10 +14900,7 @@ sg2253
 F10.0
 sg2254
 F0.0
-sbasS'PSLFexc'
+sbasS'Hsys'
 p2435
-(lp2436
-sS'Hsys'
-p2437
 F976820.0
 sb.

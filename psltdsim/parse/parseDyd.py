@@ -67,7 +67,7 @@ def parseDyd(mirror,dydLoc):
                 mirror.PSLFgov.append(newPmod)
                 foundPModels += 1
 
-            # LTD Models (proof of concept)
+            # LTD Models (proof of concept) - Will probably be removed
             if parts[0] == "pgov1":
                 cleanLine = ltd.parse.cleanDydStr(line)
                 newLTDmod = ltd.dynamicAgents.pgov1Agent(mirror, cleanLine)

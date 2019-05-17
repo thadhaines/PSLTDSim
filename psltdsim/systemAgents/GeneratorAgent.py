@@ -90,6 +90,11 @@ class GeneratorAgent(object):
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
 
+    def recDynamicMsg(self,msg):
+        """Update machine dynamics from new dyd model information"""
+        # will require resetting machine H and system H tot....
+        pass
+
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
         self.r_Pm = [0.0]*self.mirror.dataPoints

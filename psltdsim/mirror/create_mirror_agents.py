@@ -67,8 +67,8 @@ def create_mirror_agents(mirror):
         c_area += 1
         
     # Assert: All busses in all areas are found and in mirror
-    #for branch in mirror.Branch:
-    #    branch.createLTDlinks()
+    #for branch in range(len(mirror.Branch)):
+    #   mirror.Branch[branch].createLTDlinks()
 
     if mirror.debug:
         print("Found %d Areas" % len(mirror.Area))

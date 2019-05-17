@@ -90,30 +90,40 @@ class tgov1Agent():
         self.Gen.Pm = posNewPm - delta_w*self.Dt
 
     def stepInitDynamics(self):
-        """ Once H has been initialized, check if K has to be recalculated"""
+        """ Once dynamic has been added in PY3, check if mirror must change"""
         updated = False
         if self.mirror.debug:
-            print('*** Checking for updated model information...')
+            print('*** Checking for updated model information for %d %s...' 
+                  % (self.Gen.Busnum, self.Gen.Busnam))
 
         # ensure MWcap is read from gov dyd
         if self.Gen.Pmax != self.mwCap:
+            if self.mirror.debug:
+                print('... updated mwCap from %.2f to %.2f' %
+                      (self.Gen.Pmax, self.mwCap) )
             self.Gen.Pmax = self.mwCap
             updated = True
-            if self.mirror.debug:
-                print('... updated mwCap')
 
-
-        # Doesn't seem like this check is necessary due to previous settings
+        # Ensure machine base is same as dyd
         if self.Gen.MbaseSAV != self.Gen.MbaseDYD:
-            self.Mbase = self.Gen.MbaseDYD
-            updated = True
             if self.mirror.debug:
-                print('... updated model.')
-            return
+                print('... updated Mbase from %.2f to %.2f' % 
+                      (self.Gen.MbaseSAV, self.Gen.MbaseDYD))
+            self.Gen.MbaseSAV = self.Gen.MbaseDYD
+            updated = True
 
         if self.mirror.debug and not updated:
             print('... nothing updated.')
+            return
 
+        # Send AMQP update to IPY
+        msg = {'msgType' : 'DynamicUpdate',
+               'AgentType': 'Generator',
+               'Busnum':self.Busnum,
+               'Id': self.Id,
+               'Mbase' : self.Gen.MbaseSAV,
+               'Pmax' : self.Gen.Pmax
+               }
     def initRunningVals(self):
         """Initialize History Values of dynamic agent"""
         # History Values
