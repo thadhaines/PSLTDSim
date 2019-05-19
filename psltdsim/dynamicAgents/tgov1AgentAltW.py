@@ -19,7 +19,7 @@ class tgov1Agent():
         self.baseKv = PSLFgov.Base_kV
         self.Id = PSLFgov.Id
         
-        self.mwCap = self.Gen.MbaseDYD # default PSLF behaviour, possibly rethink
+        self.mwCap = self.Gen.Mbase # default PSLF behaviour
 
         self.R  = PSLFgov.R
         self.T1 = PSLFgov.T1
@@ -58,7 +58,7 @@ class tgov1Agent():
         dwVec = np.array([delta_w, delta_w])
 
         # Perform sum and first gain block
-        uVector = dwVec*self.Gen.MbaseDYD/self.R
+        uVector = dwVec*self.Gen.Mbase/self.R
 
         # First dynamic Block (using zero order hold)
         _, y1, self.x1 = sig.lsim(self.sys1, U=uVector, T=self.t, 
@@ -104,14 +104,6 @@ class tgov1Agent():
             self.Gen.Pmax = self.mwCap
             updated = True
 
-        # Ensure machine base is same as dyd
-        if self.Gen.MbaseSAV != self.Gen.MbaseDYD:
-            if self.mirror.debug:
-                print('... updated Mbase from %.2f to %.2f' % 
-                      (self.Gen.MbaseSAV, self.Gen.MbaseDYD))
-            self.Gen.MbaseSAV = self.Gen.MbaseDYD
-            updated = True
-
         if self.mirror.debug and not updated:
             print('... nothing updated.')
             return
@@ -121,7 +113,7 @@ class tgov1Agent():
                'AgentType': 'Generator',
                'Busnum':self.Busnum,
                'Id': self.Id,
-               'Mbase' : self.Gen.MbaseSAV,
+               'Mbase' : self.Gen.Mbase,
                'Pmax' : self.Gen.Pmax
                }
     def initRunningVals(self):

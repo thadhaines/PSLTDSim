@@ -1,9 +1,9 @@
-def LTD_SolveCase(mirror):
+def LTD_SolveCase(mirror=None):
     """Solves power flow using custom solve parameters
     Returns PSLF errorCode if available
     Only option not default is area interchange adjustment (turned off)
     """
-    
+
     errorCode = PSLF.SolveCase(
         25, # maxIterations, Solpar.Itnrmx
         0, 	# iterationsBeforeVarLimits, Solpar.Itnrvl
@@ -16,8 +16,8 @@ def LTD_SolveCase(mirror):
         1,	# solnType, 1 == full, 2 == DC, 3 == decoupled 
         0,  # reorder (in dypar default = 0)
         )
-    
-    if mirror.debug: print('Power Flow Solution returns: %d' % errorCode)
+    if mirror:
+        if mirror.debug: print('Power Flow Solution returns: %d' % errorCode)
 
     if errorCode == -1:
         '''Solution did not converge'''

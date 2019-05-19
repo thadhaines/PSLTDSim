@@ -99,7 +99,7 @@ class AreaAgent(object):
         self.beta = 0.0
         #for each machine
         for mach in self.Machines:
-            #for each gov
-            for gov in mach.gov:
+            #if machine has a gov
+            if mach.gov_model:
                 #sum 1/droop
                 self.beta += 1.0/gov.droop

@@ -9,15 +9,15 @@ import psltdsim as ltd
 
 dirname = os.path.dirname(__file__)
 mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
-mirLoc = os.path.join(dirname, 'verification','miniWeccTest01','miniWECC_loadStep06.mir')
+mirLoc = os.path.join(dirname, 'verification','miniWeccTest01','miniWECC_loadStep06F.mir')
 mir = ltd.data.readMirror(mirLoc)
 
-#xend = max(mir.r_t)
+xend = max(mir.r_t)
 
 print(mir)
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysPePmF(mir, False)
-#ltd.plot.sysPePmFLoad(mir, False)
+ltd.plot.sysPePmFLoad(mir, True)
 #ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.sysPQgen(mir, False)
@@ -26,7 +26,7 @@ print(mir)
 #ltd.plot.sysVmVa(mir, True)
 
 for gen in mir.Machines:
-    print("%s    \t %f \t%f" %(gen.Busnam, gen.Hpu, gen.MbaseDYD))
+    print("%s    \t %f \t%f" %(gen.Busnam, gen.Hpu, gen.Mbase))
 
 """ Plot all dynamic responses from generators
 for c_dyn in mir.Dynamics:

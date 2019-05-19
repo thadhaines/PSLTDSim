@@ -1,5 +1,5 @@
 def create_mirror_agents(mirror):
-    """Create python mirror of PSLF system by 'crawling' area busses
+    """Create python mirror of PSLF system by 'crawling' 
     Handles Buses, Generators, and Loads
     Uses col
     TODO: Add agents for every object: shunts, SVD, xfmr, branch sections, ...
@@ -38,13 +38,15 @@ def create_mirror_agents(mirror):
             for c_bus in range(n_bus):
                 
                 ltd.mirror.incorporate_bus(mirror, a_busses[c_bus], newAreaAgent)
-                c_ScanBus = a_busses[c_bus].GetScanBusIndex()
 
+                # Count objects found on bus
+                c_ScanBus = a_busses[c_bus].GetScanBusIndex()
                 n_gen = col.GeneratorDAO.FindByBus(c_ScanBus).Count
                 n_load = col.LoadDAO.FindByBus(c_ScanBus).Count
 
                 f_gen += n_gen
                 f_load += n_load
+                # TODO : count shunts
 
                 if mirror.debug: 
                     print("%d\t%d\t%d\t%s" % 
@@ -53,8 +55,9 @@ def create_mirror_agents(mirror):
                                       n_load,
                                       a_busses[c_bus].Busnam)
                                      )
+
             mirror.Area.append(newAreaAgent)
-        """
+        """ currently breaks mirror import into PY3 -> ipy only var types? nesting/recursion of object issues?
         if n_branch > 0:
             for c_branch in range(n_branch):
                 #create branch agent

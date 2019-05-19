@@ -15,8 +15,7 @@ class GeneratorAgent(object):
         self.Scanbus = newGen.GetScanBusIndex()
 
         # Characteristic Data
-        self.MbaseSAV = float(newGen.Mbase)
-        self.MbaseDYD = 0.0
+        self.Mbase = float(newGen.Mbase)
         self.H = 0.0
         self.Hpu = 0.0
         self.Pmax = float(newGen.Pmax)
@@ -33,10 +32,9 @@ class GeneratorAgent(object):
         self.Pset = self.Pe
         self.Q = float(newGen.Qgen)    # Q generatred
 
-        # Children
-        self.machine_model = []
-        self.gov = []
-        self.exc = None
+        # PSLF dynamic models
+        self.machine_model = False
+        self.gov_model = False
         
     def __repr__(self):
         """Display more useful data for mirror"""
@@ -126,7 +124,7 @@ class GeneratorAgent(object):
              'Pset': self.r_Pset,
              'Q': self.r_Q,
              'St': self.r_St,
-             'Mbase' : self.MbaseDYD,
+             'Mbase' : self.Mbase,
              'Hpu' : self.Hpu,
              'Slack' : 0,
              }

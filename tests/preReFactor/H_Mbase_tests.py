@@ -79,6 +79,7 @@ print("System H [MW*sec] = %.3f " % mirror.Hsys)
 
 
 # Find any dyd and .sav mbase varience
+""" Test no longer useful as only 1 mbase included in system
 print("***Test of Mbase model agreement***")
 mismatch = 0
 for x in range(len(mirror.Machines)):
@@ -92,5 +93,5 @@ for x in range(len(mirror.Machines)):
 
 if mismatch == 0:
     print("Mbase in sav and dyd are in agreement.")
-
+"""
 raw_input("Press <Enter> to Continue. . . . ")

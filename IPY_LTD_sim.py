@@ -21,7 +21,7 @@ print(os.getcwd())
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 #print(os.getcwd())
 
-debug = 0
+debug = 1
 
 simNotes = """
 Retest of ipy code after refactor - simple step up and down with gov
@@ -30,8 +30,8 @@ Retest of ipy code after refactor - simple step up and down with gov
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.5,
-    'endTime': 15.0,
-    'slackTol': .25,
+    'endTime': 5.0,
+    'slackTol': .5,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
@@ -48,7 +48,6 @@ simParams = {
 
 # Fast debug case switching
 # TODO: enable new dyd replacement...
-# TODO: incorporate ltdPath into simulation
 test_case = 2
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"

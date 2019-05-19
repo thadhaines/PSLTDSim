@@ -32,14 +32,14 @@ AMQPdebug = 0
 
 simNotes = """
 
-MiniWECC Step of loads - using rk45 integration, ts = 0.25
+MiniWECC Step of loads - test to verify code alterations don't break existing
 
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 2,
+    'endTime': 45,
     'slackTol': 1.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)

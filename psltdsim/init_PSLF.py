@@ -21,7 +21,11 @@ def init_PSLF(locations):
     load_test = __builtin__.PSLF.LoadCase(locations['savPath'])
 
     if load_test == 0:
+        # load dynamics into pslf
+        dyd_test = __builtin__.PSLF.LoadDynamics(locations['dydPath'][0])
         print("*** " + locations['savPath'] + " Successfully loaded.")
+        print("*** Result of loading %s: %d" % (locations['dydPath'][0], dyd_test))
+        ltd.mirror.LTD_SolveCase()
     else:
         print("Failure to load .sav")
         print("Error code: %d" % load_test)

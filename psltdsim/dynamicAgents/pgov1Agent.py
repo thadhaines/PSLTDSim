@@ -19,9 +19,8 @@ class pgov1Agent():
         self.Gen = ltd.find.findGenOnBus(mirror, self.Busnum, self.Id)
         #TODO: handle not finding the gen better.
         if self.Gen:
-            self.Mbase = self.Gen.MbaseSAV 
-            #Unsure about propber VAbase to use- mbase or sbase?
-            self.K = -1*self.mirror.Sbase / self.droop
+            self.Mbase = self.Gen.Mbase 
+            self.K = -1*self.Mbase / self.droop
 
         if mirror.debug:
             print("*** Added pgov1 to gen on bus %d '%s'" % (self.Busnum,self.Busnam))
@@ -37,16 +36,10 @@ class pgov1Agent():
 
     def stepInitDynamics(self):
         """ Once H has been initialized, check if K has to be recalculated"""
-
+        pass
         if self.mirror.debug:
             print('*** Checking for updated model information...')
 
-        if self.Gen.MbaseSAV != self.Gen.MbaseDYD:
-            self.Mbase = self.Gen.MbaseDYD
-            self.K = -1*self.mirror.Sbase / self.droop
-            if self.mirror.debug:
-                print('... updated model.')
-            return
 
         if self.mirror.debug:
             print('... nothing updated.')

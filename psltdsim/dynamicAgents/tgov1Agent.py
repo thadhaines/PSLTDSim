@@ -18,7 +18,7 @@ class tgov1Agent():
         self.baseKv = PSLFgov.Base_kV
         self.Id = PSLFgov.Id
         
-        self.mwCap = self.Gen.MbaseDYD # default PSLF behaviour
+        self.mwCap = self.Gen.Mbase # default PSLF behaviour
 
         self.R  = PSLFgov.R
         self.T1 = PSLFgov.T1
@@ -83,12 +83,6 @@ class tgov1Agent():
         # Doesn't seem like this check is necessary due to previous settings
         if self.mirror.debug:
             print('*** Checking for updated model information...')
-
-        if self.Gen.MbaseSAV != self.Gen.MbaseDYD:
-            self.Mbase = self.Gen.MbaseDYD
-            if self.mirror.debug:
-                print('... updated model.')
-            return
 
         if self.mirror.debug:
             print('... nothing updated.')

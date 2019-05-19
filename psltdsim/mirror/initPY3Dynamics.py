@@ -13,8 +13,8 @@ def initPY3Dynamics(mirror):
             modFound = 1
 
         if modFound:
-            # attach dymanic models
-            gov.Gen.gov.append(newLTDmod)
+            # attach dymanic model to mirror agents and system collections
+            gov.Gen.gov_model = newLTDmod
             mirror.Dynamics.append(newLTDmod)
             mirror.Log.append(newLTDmod)
 

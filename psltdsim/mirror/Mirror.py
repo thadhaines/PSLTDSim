@@ -110,6 +110,9 @@ class Mirror(object):
         # parse LTD to handly ltd models and perturbances
         if locations['ltdPath']:
             ltd.parse.parseLtd(self, locations['ltdPath'])
+
+        # ensure dyd changes reflected in mirror (i.e. mbase, inertia)
+
         
         # link H and mbase to mirror
         ltd.mirror.initInertiaH(self)
@@ -120,10 +123,6 @@ class Mirror(object):
             self.Hsys = self.Hinput
         else:
             self.Hsys = self.ss_H
-
-        # ensure most upto date dynamic data
-        for dynamic in self.Dynamics:
-            dynamic.stepInitDynamics()
 
         # calculate beta for each area
         for c_area in self.Area:

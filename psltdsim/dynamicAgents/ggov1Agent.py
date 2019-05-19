@@ -20,7 +20,7 @@ class ggov1Agent():
         self.baseKv = PSLFgov.Base_kV
         self.Id = PSLFgov.Id
         
-        self.mwCap = self.Gen.MbaseDYD # default PSLF behaviour, possibly rethink
+        self.mwCap = self.Gen.Mbase # default PSLF behaviour, possibly rethink
 
         # guesses on T1,T2,T3 - will validate via experimentation
 
@@ -61,7 +61,7 @@ class ggov1Agent():
         dwVec = np.array([delta_w, delta_w])
 
         # Perform sum and first gain block
-        uVector = dwVec*self.Gen.MbaseDYD/self.R
+        uVector = dwVec*self.Gen.Mbase/self.R
 
         # First dynamic Block (using zero order hold)
         _, y1, self.x1 = sig.lsim(self.sys1, U=uVector, T=self.t, 
@@ -102,13 +102,6 @@ class ggov1Agent():
             self.Gen.Pmax = self.mwCap
             if self.mirror.debug:
                 print('... updated mwCap')
-
-        # Doesn't seem like this check is necessary due to previous settings
-        if self.Gen.MbaseSAV != self.Gen.MbaseDYD:
-            self.Mbase = self.Gen.MbaseDYD
-            if self.mirror.debug:
-                print('... updated model.')
-            return
 
         if self.mirror.debug:
             print('... nothing updated.')

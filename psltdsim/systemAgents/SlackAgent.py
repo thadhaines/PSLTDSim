@@ -76,7 +76,7 @@ class SlackAgent(GeneratorAgent):
              'Pset': self.r_Pset,
              'Q': self.r_Q,
              'St': self.r_St,
-             'Mbase' : self.MbaseDYD,
+             'Mbase' : self.Mbase,
              'Hpu' : self.Hpu,
              'Pe_calc' : self.r_Pe_calc,
              'Pe_error' : self.r_Pe_error,
