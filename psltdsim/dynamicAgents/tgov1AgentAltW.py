@@ -91,6 +91,9 @@ class tgov1Agent():
 
     def stepInitDynamics(self):
         """ Once dynamic has been added in PY3, check if mirror must change"""
+        self.Gen.Pm = self.Gen.Pe
+        self.Gen.Pset = self.Gen.Pe
+        
         updated = False
         if self.mirror.debug:
             print('*** Checking for updated model information for %d %s...' 
@@ -107,6 +110,8 @@ class tgov1Agent():
         if self.mirror.debug and not updated:
             print('... nothing updated.')
             return
+
+        
 
         # Send AMQP update to IPY
         msg = {'msgType' : 'DynamicUpdate',

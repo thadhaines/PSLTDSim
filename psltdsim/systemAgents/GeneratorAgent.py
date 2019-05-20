@@ -15,22 +15,28 @@ class GeneratorAgent(object):
         self.Scanbus = newGen.GetScanBusIndex()
 
         # Characteristic Data
-        self.Mbase = float(newGen.Mbase)
+        self.Mbase = ltd.data.single2float(newGen.Mbase)
         self.H = 0.0
         self.Hpu = 0.0
-        self.Pmax = float(newGen.Pmax)
-        self.Qmax = float(newGen.Qmax)
+        self.Pmax = ltd.data.single2float(newGen.Pmax)
+        self.Qmax = ltd.data.single2float(newGen.Qmax)
 
         # Q: Should Vsched = self.Bus.Vsched? seems better utilized in PSLF
-        self.Vsched = float(newGen.Vcsched) # This value seems unused in PSLF
+        self.Vsched = ltd.data.single2float(newGen.Vcsched) # This value seems unused in PSLF
 
         # Current Status
         self.St = int(newGen.St)
         self.IRP_flag = 1       # Inertia response participant flag
-        self.Pe = float(newGen.Pgen)   # Generated Power
+        self.Pe = ltd.data.single2float(newGen.Pgen)   # Generated Power
         self.Pm = self.Pe       # Initialize as equal
         self.Pset = self.Pe
-        self.Q = float(newGen.Qgen)    # Q generatred
+        self.Q = ltd.data.single2float(newGen.Qgen)    # Q generatred
+
+        # debug testing ltd.data.single2float
+        #print('(PSLF) newGen.Pgen = ', newGen.Pgen)
+        #print(type(newGen.Pgen))
+        #print('(LTD)  self.Pe = ', self.Pe)
+        #print(type(self.Pe))
 
         # PSLF dynamic models
         self.machine_model = False
@@ -55,8 +61,8 @@ class GeneratorAgent(object):
     def getPvals(self):
         """Make current status reflect PSLF values"""
         pObj = self.getPref()
-        self.Pe = float(pObj.Pgen)
-        self.Q = float(pObj.Qgen)
+        self.Pe = ltd.data.single2float(pObj.Pgen)
+        self.Q = ltd.data.single2float(pObj.Qgen)
         self.St = int(pObj.St)
 
     def setPvals(self):

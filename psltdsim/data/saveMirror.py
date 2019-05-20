@@ -16,10 +16,15 @@ def saveMirror(mir, simParams):
 
     savName = simParams['fileName']
     savName = savName + '.mir'    
-    f = open(savName, "wb")
-    print("*** Pickling Mirror object...")
-    pickle.dump(mir, f)
-    f.close
+    #f = open(savName, "wb")
+    #print("*** Pickling Mirror object...")
+
+    import contextlib
+    import shelve
+    with contextlib.closing(shelve.open(savName, 'c')) as shelf:
+        shelf['mir'] = mir
+    #pickle.dump(mir, f)
+    #f.close
 
     fileLoc = savDir + savName
     print("*** Mirror object saved to binary: \n*** '%s'" 

@@ -12,8 +12,8 @@ class LoadAgent(object):
         self.Zone = newLoad.Zone
 
         # Current Status
-        self.P = float(newLoad.P)
-        self.Q = float(newLoad.Q)
+        self.P = ltd.data.single2float(newLoad.P)
+        self.Q = ltd.data.single2float(newLoad.Q)
         self.St = int(newLoad.St)
         # dynamics?
 
@@ -36,8 +36,8 @@ class LoadAgent(object):
     def getPvals(self):
         """Make current status reflect PSLF values"""
         pObj = self.getPref()
-        self.P = float(pObj.P)
-        self.Q = float(pObj.Q)
+        self.P = ltd.data.single2float(pObj.P)
+        self.Q = ltd.data.single2float(pObj.Q)
         self.St = int(pObj.St)
 
     def setPvals(self):

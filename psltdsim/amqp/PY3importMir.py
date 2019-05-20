@@ -10,7 +10,8 @@ def PY3importMir(msg):
         try:
             mir = ltd.data.readMirror(msg['mirLoc'])
             unfinished = False
-        except:
+        except BaseException as e:
+            print(e)
             time.sleep(0.001)
             rTime += 0.001
             print('Slept %.3f sec waiting for mirror....' % rTime) # to see what the deal is...

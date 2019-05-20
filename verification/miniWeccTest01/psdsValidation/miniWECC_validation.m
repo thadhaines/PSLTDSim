@@ -14,7 +14,7 @@ clear; format compact; clc; close all;
 format long;
 
 %% Knowns
-LTDfileName = 'miniWECC_loadStep02F.mat'
+LTDfileName = 'miniWECC_loadStep05F.mat'
 PSDSfileName = 'miniWECC_loadStep.chf'
 
 %% import LTD data

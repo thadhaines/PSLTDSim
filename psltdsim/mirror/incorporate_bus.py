@@ -37,18 +37,16 @@ def incorporate_bus(mirror, newBus, areaAgent):
             newBusAgent.Load.append(newLoadAgent)
             mirror.Load.append(newLoadAgent)
             areaAgent.Load.append(newLoadAgent)
-
-    """ temp debug
+    
     # locate and create shunts on bus
     if newBusAgent.Nshunt > 0:
         b_shunts = col.ShuntDAO.FindAnyShuntsByBus(newBusAgent.Scanbus)
-        for c_shunt in range(newBusAgent.Nshunt):
-            newShuntAgent = ltd.systemAgents.ShuntAgent(mir, newBusAgent, b_shunts[c_shunt])
+        for c_shunt in b_shunts:
+            newShuntAgent = ltd.systemAgents.ShuntAgent(mir, newBusAgent, c_shunt)
             # add references to shunt in bus, mirror and area 
             newBusAgent.Shunt.append(newShuntAgent)
-            mirror.Shunt.append(newShuntAgent)
+            #mirror.Shunt.append(newShuntAgent)
             areaAgent.Shunt.append(newShuntAgent)
-    """
 
     mirror.Bus.append(newBusAgent)
     areaAgent.Bus.append(newBusAgent)

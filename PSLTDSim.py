@@ -27,19 +27,19 @@ print('Current Working Directory: %s' % os.getcwd())
 #print(os.getcwd())
 
 # for extended terminal output
-debug = 1
+debug = 0
 AMQPdebug = 0
 
 simNotes = """
 
 MiniWECC Step of loads - test to verify code alterations don't break existing
-
+using shelf instead of pickle
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 45,
+    'endTime': 90,
     'slackTol': 1.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
@@ -50,7 +50,7 @@ simParams = {
 
     # Data Export Parameters
     'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
-    'fileName' : 'miniWECC_loadStep06',
+    'fileName' : 'miniWECC_loadStep05',
 
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
@@ -70,9 +70,9 @@ elif test_case == 'bigUp':
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
     ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.BigUpStep.ltd"]
 elif test_case == 'bigDown':
-    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.BigDownStep.ltd"]
+    savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.excNoGov.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.BigDownStep.ltd"]
 elif test_case == 'noGovSteps':
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
@@ -86,9 +86,9 @@ elif test_case == 'tGov2Steps':
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc2Gov.dyd"]
     ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
 elif test_case == 'tGovRamp':
-    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc1Gov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.ramp.ltd"]
+    savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.exc1Gov.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.ramp.ltd"]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
@@ -149,6 +149,7 @@ PY3.send('toIPY', initMsg)
 cmd = "ipy32 IPY_PSLTDSim.py"
 ipyProc = subprocess.Popen(cmd)
 
+
 # Wait for mirror message
 PY3.receive('toPY3',PY3.redirect)
 print('py3 main...')
@@ -174,6 +175,6 @@ print("init time:\t %f" % (sim_start-init_start) )
 print("sim time:\t %f" % (sim_end-sim_start) )
 
 #ltd.plot.allPmDynamics(mir)
-#ltd.plot.sysPePmFLoad(mir)
+ltd.plot.sysPemLQF(mir)
 
 print('end of test run')

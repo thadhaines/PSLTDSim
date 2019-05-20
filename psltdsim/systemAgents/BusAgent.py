@@ -27,12 +27,12 @@ class BusAgent(object):
         # Current Status
         self.Vm = newBus.Vm     # Voltage Magnitude
         self.Va = newBus.Va     # Voltage Angle (radians)
-        self.Basekv = float(newBus.Basekv)
+        self.Basekv = ltd.data.single2float(newBus.Basekv)
 
         # Voltage settings
         #self.Vmax = newBus.Vmax # These values don't seem to be always set
         #self.Vmin = newBus.Vmin
-        self.Vsched = float(newBus.Vsched)
+        self.Vsched = ltd.data.single2float(newBus.Vsched)
 
     def __str__(self):
         """Possible useful identification function"""

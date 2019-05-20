@@ -29,31 +29,37 @@ Retest of ipy code after refactor - simple step up and down with gov
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.5,
-    'endTime': 5.0,
-    'slackTol': .5,
+    'timeStep': 0.25,
+    'endTime': 1.5,
+    'slackTol': 1.0,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
     # Mathematical Options
     'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
-    'integrationMethod' : 'Euler',
+    'integrationMethod' : 'euler',
 
     # Data Export Parameters
-    'fileDirectory' : "\\verification\\refactor\\", # relative path must exist before simulation
-    'fileName' : 'pgovAgain0a',
+    'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
+    'fileName' : 'miniWECC_loadStep06IPY',
+
+    'exportFinalMirror': 1, # Export mirror with all data
+    'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
-    'exportMat': 0, # requies exportDict == 1 to work
     }
 
 # Fast debug case switching
 # TODO: enable new dyd replacement...
-test_case = 2
+test_case = 'tGovRamp'
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.excNoGov.dyd"]
     ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.ramp.ltd"]
-    
+   
+elif test_case == 'tGovRamp':
+    savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.exc1Gov.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.ramp.ltd"]
 elif test_case == 1:
     savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
     dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
@@ -105,6 +111,10 @@ print('Simulation time: %f' % (simEnd - simStart))
 
 
 # Data export
+if simParams['exportFinalMirror']:
+    simParams['fileName'] += 'F'
+    ltd.data.saveMirror(mir, simParams)
+
 if simParams['exportDict']:
 
     dictPath = ltd.data.exportDict(mir)

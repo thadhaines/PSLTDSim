@@ -14,3 +14,5 @@ from .makeMat import makeMat
 from .exportMat import exportMat
 
 from .mergeDicts import mergeDicts
+
+from .single2float import single2float

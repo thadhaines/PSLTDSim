@@ -57,21 +57,25 @@ def create_mirror_agents(mirror):
                                      )
 
             mirror.Area.append(newAreaAgent)
-        """ currently breaks mirror import into PY3 -> ipy only var types? nesting/recursion of object issues?
+        
+        
+        # currently breaks mirror import into PY3 -> ipy only var types? nesting/recursion of object issues?
         if n_branch > 0:
+            print('branches: %d' % n_branch)
             for c_branch in range(n_branch):
+                
                 #create branch agent
                 newBranch = ltd.systemAgents.BranchAgent(mirror, newAreaAgent, a_branches[c_branch])
                 #add branch to mirror
                 mirror.Branch.append(newBranch)
                 #add branch to area
                 newAreaAgent.Branch.append(newBranch)
-        """
+        
         c_area += 1
         
     # Assert: All busses in all areas are found and in mirror
-    #for branch in range(len(mirror.Branch)):
-    #   mirror.Branch[branch].createLTDlinks()
+    for branch in range(len(mirror.Branch)):
+       mirror.Branch[branch].createLTDlinks()
 
     if mirror.debug:
         print("Found %d Areas" % len(mirror.Area))
