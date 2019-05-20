@@ -99,5 +99,49 @@ ylabel('Frequency [PU]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
 
+%% split out PSDS data corresponding to LTD points
+% find index of t == 0 in PSLF data
+n = 1;
+while t(n) ~= 0
+    n = n+1;
+end
+zoft = n; % location of 0 in PSLF data
+% first time step from zero used for indexing
+
+mirA = [mir1,mir2,mir3,mir4];
+for mirror=1:size(mirA,2)
+    LTD_ts = mirA(mirror).t(2)
+    ts = t(zoft+1);
+    fs = round(LTD_ts/ts);
+    
+    % Collect PSLF data corresponding to LTD data
+    ct = 0;
+    while ct<=mirA(mirror).t(end)/LTD_ts
+        % find index of time at full second
+        n = zoft + fs*ct;
+        % pull values
+        pulledtime(ct+1) = t(n);
+        pulledf(ct+1) = fAve(n); % system 'mean'
+        ct = ct+1;
+    end
+    
+    mirA(mirror).PSDSf = pulledf;
+    mirA(mirror).PSDSt = pulledtime;
+    clear pulledtime pulledf
+end
+
+figure('position',ppos)
+hold on
+plot(mirA(1).t, abs(mirA(1).f -mirA(1).PSDSf)*60, 'b','linewidth',.5)
+plot(mirA(2).t, abs(mirA(2).f -mirA(2).PSDSf)*60,'color',[.7 .7 .7],'linewidth',1)
+plot(mirA(3).t, abs(mirA(3).f -mirA(3).PSDSf)*60, 'm','linewidth',.5)
+plot(mirA(4).t, abs(mirA(4).f -mirA(4).PSDSf)*60, 'k','linewidth',.5)
+legend({'LTD 2 sec','LTD 1 sec','LTD 0.5 sec','LTD 0.25 sec'},'location','northeast')
+xlim(x_lim)
+grid on
+title('Comparison of Relative Frequency Deviation from PSDS')
+ylabel('Frequency [Hz]')
+xlabel('Time [sec]')
+set(gca,'fontsize',bfz)
 %set(gcf,'color','w'); % to remove border of figure
 %export_fig('XXXXXX','-pdf'); % to print fig
