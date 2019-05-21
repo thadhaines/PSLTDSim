@@ -112,7 +112,6 @@ class Mirror(object):
             ltd.parse.parseLtd(self, locations['ltdPath'])
 
         # ensure dyd changes reflected in mirror (i.e. mbase, inertia)
-
         
         # link H and mbase to mirror
         ltd.mirror.initInertiaH(self)

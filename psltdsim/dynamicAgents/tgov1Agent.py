@@ -10,6 +10,7 @@ class tgov1Agent():
         self.mirror = mirror
         self.PSFLgov = PSLFgov
         self.Gen = PSLFgov.Gen
+        self.Pref = self.Gen.Pe
 
         self.appenedData = True
 
@@ -18,7 +19,8 @@ class tgov1Agent():
         self.baseKv = PSLFgov.Base_kV
         self.Id = PSLFgov.Id
         
-        self.mwCap = self.Gen.Mbase # default PSLF behaviour
+        self.mwCap = PSLFgov.mwCap # default behavior - over written during dynamic init
+        self.Mbase = self.Gen.Mbase
 
         self.R  = PSLFgov.R
         self.T1 = PSLFgov.T1
@@ -28,16 +30,13 @@ class tgov1Agent():
         self.T3 = PSLFgov.T3
         self.Dt = PSLFgov.Dt
 
-        self.t = [0 , self.mirror.timeStep]
+        self.t = [0 , self.mirror.timeStep] # will have to be moved if ts = variable
 
         # Dynamic init
         self.sys1 = sig.StateSpace([-1.0/self.T1],[1.0/self.T1],
                                    [1.0],0.0)
         self.sys2 = sig.StateSpace([-1.0/self.T3],[1.0/self.T3],
                                    [1.0-self.T2/self.T3],[self.T2/self.T3])
-
-        self.y1HighLimit = self.Vmax * self.mwCap
-        self.y1LowLimit = self.Vmin * self.mwCap
 
         if mirror.debug:
             print("*** Added tgov1 to gen on bus %d '%s'" 
@@ -46,18 +45,17 @@ class tgov1Agent():
     def stepDynamics(self):
         """ Perform steam governor control"""
         # Create system inputs
-        Pref = self.Gen.Pe * self.R
-        delta_w = self.mirror.c_deltaF
+        delta_w = 1.0-self.mirror.c_f
 
-        PrefVec = np.array([Pref,Pref])
-        dwVec = np.array([delta_w,delta_w])
+        PrefVec = np.array([self.Pref,self.Pref])
+        dwVec = np.array([delta_w,delta_w])/self.R*self.Mbase
 
         # Perform sum and first gain block
-        uVector = (PrefVec-dwVec)/self.R
+        uVector = (PrefVec+dwVec)
 
         # First dynamic Block
         _, y1, self.x1 = sig.lsim(self.sys1, U=uVector, T=self.t, 
-                                   X0=self.r_x1[self.mirror.c_dp-1]) # this init value should be a histroy of x1
+                                   X0=self.r_x1[self.mirror.c_dp-1], interp=True)
         ys = y1
 
         # limit Valve position (i.e. Pm out)
@@ -68,24 +66,40 @@ class tgov1Agent():
                 ys[x] = self.y1LowLimit
 
         # Second block
-        _, y2, self.x2 = sig.lsim(self.sys2, ys, T=self.t, 
-                                   X0=self.Gen.r_Pm[self.mirror.c_dp-1]) # this initial value should be okay...
+        _, y2, self.x2 = sig.lsim(self.sys2, y1, T=self.t,
+                                   X0=self.r_x2[self.mirror.c_dp-1], interp=True)
 
         # Accout for damping
-        Pmech = y2 - dwVec*self.Dt 
+        Pmech = y2[1] - delta_w*self.Dt # damping should maybe be multiplied by Mbase
 
         # Set Generator Mechanical Power
-        self.Gen.Pm = float(Pmech[1])
+        self.Gen.Pm = float(Pmech) # float because y2 is numpy ....
 
     def stepInitDynamics(self):
-        """ Once H has been initialized, check if K has to be recalculated"""
-        pass
-        # Doesn't seem like this check is necessary due to previous settings
+        """ set Pm = Pe, calculate MW limits of valve position"""
+        self.Gen.Pm = self.Gen.Pe
+        self.Gen.Pset = self.Gen.Pe
+        
+        updated = False
         if self.mirror.debug:
-            print('*** Checking for updated model information...')
+            print('*** Checking for updated model information for %d %s...' 
+                  % (self.Gen.Busnum, self.Gen.Busnam))
 
-        if self.mirror.debug:
+        # ensure MWcap is read from gov dyd
+        if self.Gen.Pmax != self.mwCap:
+            if self.mirror.debug:
+                print('... updated mwCap from %.2f to %.2f' %
+                      (self.Gen.Pmax, self.mwCap) )
+            self.Gen.Pmax = self.mwCap
+            updated = True
+
+        # Ensure correct limiting values
+        self.y1HighLimit = self.Vmax * self.mwCap
+        self.y1LowLimit = self.Vmin * self.mwCap
+
+        if self.mirror.debug and not updated:
             print('... nothing updated.')
+            return
 
     def initRunningVals(self):
         """Initialize History Values of dynamic agent"""
@@ -96,7 +110,6 @@ class tgov1Agent():
         # Append intit values to running state data
         self.r_x1.append(self.Gen.Pm)
         self.r_x2.append(self.Gen.Pm)
-        self.Gen.r_Pm.append(self.Gen.Pm)
 
     def logStep(self):
         """Update Log information"""
@@ -107,4 +120,3 @@ class tgov1Agent():
         """Remove any appened init values from running values"""
         self.r_x1 = self.r_x1[:N]
         self.r_x2 = self.r_x2[:N]
-        self.Gen.r_Pm = self.Gen.r_Pm[:N]

@@ -22,7 +22,7 @@ class tgov1(object):
         self.Id = parts[4] # Is this ID or ZONE?
         self.Rlevel = parts[5]
 
-        self.Gen = ltd.find.findGenOnBus(self.mirror, self.Busnum, self.Id)
+        self.Gen = ltd.find.findGenOnBus(self.mirror, self.Busnum, self.Id) # move away?
 
         #if isinstance(parts[6], basestring):
         if isinstance(parts[6], str):

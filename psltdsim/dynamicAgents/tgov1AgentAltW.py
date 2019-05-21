@@ -1,5 +1,5 @@
 """ Dynamic Agent Class created from PSLF machine data"""
-
+## NOT USED - mishmash of ideas - doesn't include pref etc
 class tgov1Agent():
     """Agent to perform governor action"""
 
@@ -8,9 +8,7 @@ class tgov1Agent():
         self.mirror = mirror
         self.PSFLgov = PSLFgov
         self.Gen = PSLFgov.Gen
-
         self.Pref0= self.Gen.Pe
-        
 
         self.appenedData = True
 
@@ -111,9 +109,7 @@ class tgov1Agent():
             print('... nothing updated.')
             return
 
-        
-
-        # Send AMQP update to IPY
+        # Send AMQP update to IPY -> NOT IMPLEMENTED
         msg = {'msgType' : 'DynamicUpdate',
                'AgentType': 'Generator',
                'Busnum':self.Busnum,
@@ -121,6 +117,7 @@ class tgov1Agent():
                'Mbase' : self.Gen.Mbase,
                'Pmax' : self.Gen.Pmax
                }
+
     def initRunningVals(self):
         """Initialize History Values of dynamic agent"""
         # History Values

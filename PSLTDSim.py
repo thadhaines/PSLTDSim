@@ -32,15 +32,14 @@ AMQPdebug = 0
 
 simNotes = """
 
-MiniWECC Step of loads - test to verify code alterations don't break existing
-using shelf instead of pickle
+MiniWECC Step of loads - test to verify new tgov1 model
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1.0,
+    'timeStep': 0.25,
     'endTime': 90,
-    'slackTol': 1.0,
+    'slackTol': 0.5,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
@@ -50,7 +49,7 @@ simParams = {
 
     # Data Export Parameters
     'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
-    'fileName' : 'miniWECC_loadStep05',
+    'fileName' : 'miniWECC_loadStep04',
 
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
@@ -78,9 +77,9 @@ elif test_case == 'noGovSteps':
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
     ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
 elif test_case == 'tGovSteps':
-    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc1Gov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
+    savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
+    dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.exc1Gov.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.steps.ltd"]
 elif test_case == 'tGov2Steps':
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc2Gov.dyd"]
@@ -175,6 +174,6 @@ print("init time:\t %f" % (sim_start-init_start) )
 print("sim time:\t %f" % (sim_end-sim_start) )
 
 #ltd.plot.allPmDynamics(mir)
-ltd.plot.sysPemLQF(mir)
+#ltd.plot.sysPemLQF(mir)
 
 print('end of test run')

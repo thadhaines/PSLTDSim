@@ -284,3 +284,5 @@ __pycache__/
 *.asv
 /epctemp.dyd
 /notread.dyd
+*.bak
+*.dir
