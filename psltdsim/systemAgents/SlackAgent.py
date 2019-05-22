@@ -9,7 +9,7 @@ class SlackAgent(GeneratorAgent):
 
         self.mirror = mirror
         self.Tol = mirror.slackTol
-        self.Pe_calc = 0.0
+        self.Pe_calc = self.Pe # for initial ss
         self.Pe_error = 0.0
 
     def makeAMQPmsg(self):

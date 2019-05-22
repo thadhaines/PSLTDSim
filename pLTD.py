@@ -8,18 +8,18 @@ import psltdsim as ltd
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 
 dirname = os.path.dirname(__file__)
-mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
-mirLoc = os.path.join(dirname, 'verification','miniWeccTest01','miniWECC_loadStep05F.mir')
+#mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
+mirLoc = os.path.join(dirname, 'verification','miniWeccTest01','miniWECC_loadStep01F.mir')
 mir = ltd.data.readMirror(mirLoc)
 
-#xend = max(mir.r_t)
+xend = max(mir.r_t)
 
 print(mir)
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, True)
-ltd.plot.sysPemLQF(mir, True)
+
 
 #ltd.plot.sysPQgen(mir, False)
 #ltd.plot.sysPQVF(mir, True)
@@ -29,7 +29,7 @@ ltd.plot.sysPemLQF(mir, True)
 for gen in mir.Machines:
     print("%s    \t %f \t%f" %(gen.Busnam, gen.Hpu, gen.Mbase))
 
-""" Plot all dynamic responses from generators
+"""Plot all dynamic responses from generators"""
 for c_dyn in mir.Dynamics:
     fig, ax = plt.subplots(nrows=2, ncols=1,)
     ax[0].set_title('Governed Generator on Bus %d %s Power Output' 
@@ -70,8 +70,8 @@ for c_dyn in mir.Dynamics:
     plt.show(block = False)
 
 ltd.plot.sysPLQF(mir)
-"""
 
+#ltd.plot.sysPemLQF(mir, True)
 """Plot governed generator log data
 c_dyn = 1 # used as placeholder for function input
 

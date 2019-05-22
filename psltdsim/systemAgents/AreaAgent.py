@@ -101,5 +101,7 @@ class AreaAgent(object):
         for mach in self.Machines:
             #if machine has a gov
             if mach.gov_model:
+                # convert droops to system base
+                Rnew = mach.gov_model.R*self.mirror.Sbase/mach.gov_model.Mbase
                 #sum 1/droop
-                self.beta += 1.0/gov.droop
+                self.beta += 1.0/Rnew

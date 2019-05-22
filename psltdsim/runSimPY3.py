@@ -5,6 +5,10 @@ def runSimPY3(mirror, amqpAgent):
     # Initialize PY3 specific Dynamics
     ltd.mirror.initPY3Dynamics(mirror)
 
+    # calculate area f response characteristic (beta)
+    for area in mirror.Area:
+        area.calcBeta()
+
     print("\n*** Starting Simulation (PY3)")
     # set flag for non-convergence
     sysCrash = 0

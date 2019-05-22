@@ -17,16 +17,16 @@ datetime
 p8
 (I2019
 I5
-I21
-I16
-I31
-I53
-I296000
+I22
+I10
+I40
+I14
+I678000
 Ntp9
 Rp7
 sVsimNotes
 p10
-V\u000a\u000aMiniWECC Step of loads - test to verify new tgov1 model\u000a
+V\u000a\u000aMiniWECC step tests after corrected tgov and fixed distPacc\u000a
 p11
 sVsimParams
 p12
@@ -8274,7 +8274,7 @@ p1282
 F0.5
 sVPe_calc
 p1283
-F0.0
+F460.38299999999998
 sVPe_error
 p1284
 F0.0

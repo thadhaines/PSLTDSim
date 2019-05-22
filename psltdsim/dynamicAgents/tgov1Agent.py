@@ -70,7 +70,7 @@ class tgov1Agent():
                                    X0=self.r_x2[self.mirror.c_dp-1], interp=True)
 
         # Accout for damping
-        Pmech = y2[1] - delta_w*self.Dt # damping should maybe be multiplied by Mbase
+        Pmech = y2[1] - delta_w*self.Dt*self.Mbase
 
         # Set Generator Mechanical Power
         self.Gen.Pm = float(Pmech) # float because y2 is numpy ....

@@ -1,4 +1,4 @@
-%%  miniWECC_validation.m
+%%  miniWECC_validation_weightedF.m
 %   Thad Haines         Research
 %   Program Purpose:    Validate LTD miniWECC results with PSDS
 
@@ -6,9 +6,7 @@
 %                       print_f requires altmany export fig
 
 %   History:
-%   05/06/19    14:44   init
-%   05/14/19    14:03   added automatic LTD timestep accounting
-%   05/15/19    11:19   New plots to compare timestep
+%   05/22/19    14:57   init - attempt at weighted f
 
 %% init
 clear; format compact; clc; close all;
@@ -53,6 +51,44 @@ for freq=2:max(size(f_col))
     fAve = fAve + psds_data.Data(:,f_col(freq));
 end
 fAve = fAve/N/60; % as PU
+
+%% Calculate weighted freq
+mir = mir1;
+Hsys = mir.Hsys
+weightedF = zeros(size(psds_data.Data(:,1),1),1);
+debug = 1;
+for area = 1:max(size(mir1.areaN)) % for each area
+    if debug
+        fprintf('area %d\n',mir.areaN(area) )
+    end
+    curArea = ['A',int2str(area)];
+    
+    for slack = 1:max(size(mir.(curArea).slackBusN))
+        curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
+        psdsName = mir.(curArea).(curSlack).BusName;
+        weight = mir.(curArea).(curSlack).S1.Hpu*mir.(curArea).(curSlack).S1.Mbase;
+        a = jfind(psds_data, psdsName);
+        genSpdloc = intersect(a,spd_col);
+        genSpd = psds_data.Data(:,genSpdloc(1)).*(weight/Hsys);
+        weightedF = weightedF + genSpd;
+    end
+    for gen = 1:max(size(mir.(curArea).genBusN))
+        curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
+        % place for for each gen in Ngen...
+        psdsName = mir.(curArea).(curGen).BusName;
+        weight = mir.(curArea).(curGen).G1.Hpu*mir.(curArea).(curGen).G1.Mbase;
+        a = jfind(psds_data, psdsName);
+        genSpdloc = intersect(a,spd_col);
+        genSpd = psds_data.Data(:,genSpdloc(1)).*(weight/Hsys);
+        weightedF = weightedF + genSpd;
+    end
+    
+end
+% figure
+% plot(t, weightedF)
+% hold on
+% plot(t, fAve)
+% legend('Weighted Average','Average')
 %% Calculate theoretical ss
 beta = 15555;
 sbase = 100;
@@ -62,7 +98,7 @@ deltaFpu = deltaP/sbase*(1/beta);
 ssPu = 1 + deltaFpu
 ssF = ssPu*60;
 % calculate error for each
-PSDSerr = (fAve(end)-ssPu)*60
+PSDSerr = (weightedF(end)-ssPu)*60
 mir20err = (mir1.f(end)-ssPu)*60
 mir10err = abs(mir2.f(end)-ssPu)*60
 mir05err = abs(mir3.f(end)-ssPu)*60
@@ -71,6 +107,7 @@ mir02err = abs(mir4.f(end)-ssPu)*60
 %% Plot parameters
 ppos = [18 521 1252 457];
 x_lim = [mir1.t(1), mir1.t(end)];
+y_lim = [.9975,1];
 bfz = 13;
 %% Plot all frequency responses and LTD on top
 figure('position',ppos)
@@ -81,13 +118,14 @@ plot(t, psds_data.Data(:,f_col(1))/60,'linewidth',1.5)
 for freq=2:max(size(f_col)-1)
     plot(t, psds_data.Data(:,f_col(freq))/60 ,'HandleVisibility','off')
 end
-plot(mir4.t, mir4.f, 'k:','linewidth',1)
-plot(mir4.t, mir4.f, 'w','linewidth',3,'HandleVisibility','off')
+plot(mir3.t, mir3.f, 'k:','linewidth',1)
+plot(mir3.t, mir3.f, 'w','linewidth',3,'HandleVisibility','off')
 plot(t, psds_data.Data(:,f_col(size(f_col,2)))/60,'linewidth',1.5)
-plot(mir4.t, mir4.f, 'm-.','linewidth',2)
-legend({'PSDS','PSDS','PSDS','LTD'},'location','southeast')
+plot(mir3.t, mir3.f, 'm-.','linewidth',2)
+legend({'PSDS','PSDS','PSDS','LTD 0.5 sec'},'location','southeast')
 
 xlim(x_lim)
+ylim(y_lim)
 grid on
 title('Comparison of Frequency')
 ylabel('Frequency [PU]')
@@ -103,12 +141,13 @@ plot(mir1.t, mir1.f , 'b-.','linewidth',2)
 plot(mir2.t, mir2.f , '--','color',[.7 .7 .7],'linewidth',2)
 plot(mir3.t, mir3.f , 'm-.','linewidth',2)
 plot(mir4.t, mir4.f , 'k--','linewidth',2)
-plot(t, fAve,'color', [0 1 0],'linewidth',1.5)
+plot(t, weightedF,'color', [0 1 0],'linewidth',1.5)
 line([mir4.t(1) mir4.t(end)],[ssPu,ssPu],'linestyle',':','color',[.3 0 .7],'linewidth',2)
 
 
-legend({'LTD 2 sec','LTD 1 sec','LTD 0.5 sec','LTD 0.25 sec','PSDS','Theoretical SS'},'location','southeast')
+legend({'LTD 2 sec','LTD 1 sec','LTD 0.5 sec','LTD 0.25 sec','Weighted PSDS','Theoretical SS'},'location','southeast')
 xlim(x_lim)
+ylim(y_lim)
 grid on
 title('Comparison of Average System Frequency')
 ylabel('Frequency [PU]')
@@ -137,7 +176,7 @@ for mirror=1:size(mirA,2)
         n = zoft + fs*ct;
         % pull values
         pulledtime(ct+1) = t(n);
-        pulledf(ct+1) = fAve(n); % system 'mean'
+        pulledf(ct+1) = weightedF(n); % system 'mean'
         ct = ct+1;
     end
     
@@ -155,7 +194,7 @@ plot(mirA(4).t, abs(mirA(4).f -mirA(4).PSDSf)*60, 'k','linewidth',.5)
 legend({'LTD 2 sec','LTD 1 sec','LTD 0.5 sec','LTD 0.25 sec'},'location','northeast')
 xlim(x_lim)
 grid on
-title('Comparison of Relative Frequency Deviation from PSDS')
+title('Comparison of Absolute Frequency Deviation from PSDS')
 ylabel('Frequency [Hz]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)

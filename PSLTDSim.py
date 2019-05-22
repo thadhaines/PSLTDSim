@@ -32,12 +32,12 @@ AMQPdebug = 0
 
 simNotes = """
 
-MiniWECC Step of loads - test to verify new tgov1 model
+MiniWECC step tests after corrected tgov and fixed distPacc
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.25,
+    'timeStep': 2,
     'endTime': 90,
     'slackTol': 0.5,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
@@ -49,7 +49,7 @@ simParams = {
 
     # Data Export Parameters
     'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
-    'fileName' : 'miniWECC_loadStep04',
+    'fileName' : 'miniWECC_loadStep01',
 
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
