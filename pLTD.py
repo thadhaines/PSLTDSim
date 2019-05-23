@@ -45,6 +45,12 @@ for c_dyn in mir.Dynamics:
                 marker = '+',
                 linestyle = '--',
                 label = 'Pm')
+    """ Plots max power line on dynamic plots
+    ax[0].plot([mir.r_t[0], mir.r_t[-1]], [c_dyn.Gen.Pmax,c_dyn.Gen.Pmax], 
+                #marker = '+',
+                #linestyle = '--',
+                label = 'Max Power')
+    """
 
     ax[1].plot(mir.r_t, c_dyn.r_x1, 
                 marker = '1',

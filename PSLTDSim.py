@@ -32,7 +32,7 @@ AMQPdebug = 0
 
 simNotes = """
 
-MiniWECC step tests after corrected tgov and fixed distPacc
+MiniWECC run to confirm code not broken
 """
 
 # Simulation Parameters Dictionary
@@ -49,7 +49,7 @@ simParams = {
 
     # Data Export Parameters
     'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
-    'fileName' : 'miniWECC_loadStep01',
+    'fileName' : 'miniWECC_loadStep0a',
 
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
@@ -58,7 +58,7 @@ simParams = {
 
 # Fast debug case switching
 # TODO: MAYBE enable new dyd replacement... (too cute?)
-test_case = 2
+test_case = 'miniCrash'
 
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
@@ -97,6 +97,11 @@ elif test_case == 2:
     savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
     dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
     ltdPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_loadStep.ltd"]
+elif test_case == 'miniCrash':
+    savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
+    dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
+    ltdPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_miniCrash.ltd"]
+
 elif test_case == 3:
     # Will no longer run due to parser errors
     savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
@@ -174,6 +179,6 @@ print("init time:\t %f" % (sim_start-init_start) )
 print("sim time:\t %f" % (sim_end-sim_start) )
 
 #ltd.plot.allPmDynamics(mir)
-#ltd.plot.sysPemLQF(mir)
+#ltd.plot.sysPePmFLoad(mir)
 
-print('end of test run')
+print("_______________________") # the bottom line

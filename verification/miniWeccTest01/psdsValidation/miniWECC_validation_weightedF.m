@@ -68,18 +68,24 @@ for area = 1:max(size(mir1.areaN)) % for each area
         psdsName = mir.(curArea).(curSlack).BusName;
         weight = mir.(curArea).(curSlack).S1.Hpu*mir.(curArea).(curSlack).S1.Mbase;
         a = jfind(psds_data, psdsName);
-        genSpdloc = intersect(a,spd_col);
-        genSpd = psds_data.Data(:,genSpdloc(1)).*(weight/Hsys);
+        genFloc = intersect(a,f_col);
+        if size(genFloc,2) >1
+            disp(psdsName) % prints name with multi intersections 
+        end
+        genSpd = psds_data.Data(:,genFloc(1)).*(weight/Hsys/60);
         weightedF = weightedF + genSpd;
     end
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
-        psdsName = mir.(curArea).(curGen).BusName;
+        psdsName = [int2str(mir.(curArea).genBusN(gen)),':',mir.(curArea).(curGen).BusName];
         weight = mir.(curArea).(curGen).G1.Hpu*mir.(curArea).(curGen).G1.Mbase;
         a = jfind(psds_data, psdsName);
-        genSpdloc = intersect(a,spd_col);
-        genSpd = psds_data.Data(:,genSpdloc(1)).*(weight/Hsys);
+        genFloc = intersect(a,f_col);
+        if size(genFloc,2) >1
+            disp(psdsName) % prints name with multi intersections 
+        end
+        genSpd = psds_data.Data(:,genFloc(1)).*(weight/Hsys/60);
         weightedF = weightedF + genSpd;
     end
     
@@ -105,7 +111,7 @@ mir05err = abs(mir3.f(end)-ssPu)*60
 mir02err = abs(mir4.f(end)-ssPu)*60
 
 %% Plot parameters
-ppos = [18 521 1252 457];
+ppos = [18 521 1252 373];
 x_lim = [mir1.t(1), mir1.t(end)];
 y_lim = [.9975,1];
 bfz = 13;
@@ -125,7 +131,7 @@ plot(mir3.t, mir3.f, 'm-.','linewidth',2)
 legend({'PSDS','PSDS','PSDS','LTD 0.5 sec'},'location','southeast')
 
 xlim(x_lim)
-ylim(y_lim)
+%ylim(y_lim)
 grid on
 title('Comparison of Frequency')
 ylabel('Frequency [PU]')
@@ -147,7 +153,7 @@ line([mir4.t(1) mir4.t(end)],[ssPu,ssPu],'linestyle',':','color',[.3 0 .7],'line
 
 legend({'LTD 2 sec','LTD 1 sec','LTD 0.5 sec','LTD 0.25 sec','Weighted PSDS','Theoretical SS'},'location','southeast')
 xlim(x_lim)
-ylim(y_lim)
+%ylim(y_lim)
 grid on
 title('Comparison of Average System Frequency')
 ylabel('Frequency [PU]')

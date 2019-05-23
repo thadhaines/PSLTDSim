@@ -1,6 +1,6 @@
 def runSim_IPY(mirror, amqpAgent):
     """Ironpython side of LTD simulation"""
-    print("this is runSim_IPY")
+    print("*** runSim_IPY start")
     # Initialization variables
     IPY = amqpAgent
     mirror.simRun = True
@@ -29,10 +29,8 @@ def runSim_IPY(mirror, amqpAgent):
             # Catches error thown for non-convergene
             print("*** Error Caught, Simulation Stopping...")
             print(e)
-            # Pop void data from agents that log
-            N = mirror.c_dp
             sysCrash = 1
-            # TODO send sys crash AMQP to PY3
+            mirror.simRun = False
             break;
 
         # send new values to PY3
@@ -51,4 +49,9 @@ def runSim_IPY(mirror, amqpAgent):
         # receive at end to enable endSim AMQP message
         IPY.receive('toIPY',IPY.redirect)
 
-    print("this is runSim_IPY end")
+    if sysCrash:
+        Hmsg = {'msgType' : 'SysCrash',
+               }
+        IPY.send('toPY3',Hmsg)
+    else:
+        print("*** runSim_IPY end")

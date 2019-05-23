@@ -98,6 +98,11 @@ class AMQPAgent():
             ch.stop_consuming()
             return
 
+        elif msgType == 'SysCrash':
+            ltd.amqp.sysCrash(self.mirror)
+            ch.stop_consuming()
+            return
+
         # for continued debug work
         else:
             print('no matching msg type... Stoping Consume Loop')

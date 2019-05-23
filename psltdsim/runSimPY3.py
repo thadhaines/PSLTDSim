@@ -1,17 +1,18 @@
 def runSimPY3(mirror, amqpAgent):
     """Python 3 side of LTD simulation"""
-    print("this is runSimPY3")
+    print("*** runSimPY3 start")
     PY3 = amqpAgent
     # Initialize PY3 specific Dynamics
     ltd.mirror.initPY3Dynamics(mirror)
 
-    # calculate area f response characteristic (beta)
-    for area in mirror.Area:
-        area.calcBeta()
+    ## Already Happened
+    ## calculate area f response characteristic (beta)
+    #for area in mirror.Area:
+    #    area.calcBeta()
 
     print("\n*** Starting Simulation (PY3)")
     # set flag for non-convergence
-    sysCrash = 0
+    mirror.sysCrash = False
     mirror.simRun = True
 
     # Init sim running vals
@@ -38,8 +39,8 @@ def runSimPY3(mirror, amqpAgent):
         ltd.mirror.combinedSwing(mirror, mirror.ss_Pacc)
         if mirror.c_f <= 0.0:
             # check for unreal frequency
-            N = mirror.c_dp - 1
-            sysCrash = 1
+            mirror.N = mirror.c_dp - 1
+            mirror.sysCrash = True
             break;
 
         # Step Individual Agent Dynamics
@@ -88,6 +89,10 @@ def runSimPY3(mirror, amqpAgent):
         PY3.send('toIPY', Hmsg)
         PY3.receive('toPY3',PY3.redirect)
 
+        if mirror.sysCrash:
+            # break out of while loop
+            break
+
         # step log of Agents with ability
         for agentX in mirror.Log:
             agentX.logStep()
@@ -101,9 +106,9 @@ def runSimPY3(mirror, amqpAgent):
     print("    Simulation Complete\n")
 
     # remove initialization values
-    if sysCrash == 1:
+    if mirror.sysCrash:
         for agentX in mirror.Log:
-            agentX.popUnsetData(N)
+            agentX.popUnsetData(mirror.N)
     else:
         mirror.r_ss_Pe.pop(len(mirror.r_ss_Pe) -1)
         mirror.r_ss_Pacc.pop(len(mirror.r_ss_Pacc) -1)
@@ -115,5 +120,7 @@ def runSimPY3(mirror, amqpAgent):
             if dyn.appenedData:
                 dyn.popUnsetData(mirror.c_dp)
 
-    PY3.send('toIPY',{'msgType' : 'endSim'})
-    print("this is runSimPY3 end")
+    if not mirror.sysCrash:
+        PY3.send('toIPY',{'msgType' : 'endSim'})
+    else:
+        print("*** runSimPY3 end")
