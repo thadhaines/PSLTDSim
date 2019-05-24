@@ -1,4 +1,4 @@
-""" IPY only simulation - previously LTD_sim.py
+""" IPY only simulation - Used as debug of mirror creation
 Developement file that acts as main
 VS may require default ironpython environment (no bit declaration)
 """
@@ -49,7 +49,6 @@ simParams = {
     }
 
 # Fast debug case switching
-# TODO: enable new dyd replacement...
 test_case = 2 #'tGovRamp'
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"

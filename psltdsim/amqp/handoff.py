@@ -32,6 +32,13 @@ def handoff(mirror,msg):
                 return 1
 
     elif hType == 'IPYtoPY3':
+        # update PFtime and soln num
+        mirror.PFTime = msg['PFTime']
+        mirror.PFSolns = msg['PFSolns']
+        # update message infos
+        mirror.IPYmsgs = msg['SentMsg']
+        mirror.IPYSendTime = msg['IPYSendTime']
+        #print('msg got %.2f\t%.2f' %(msg['SentMsg'], msg['IPYSendTime']))
         # calc sum Pe
         mirror.ss_Pe = ltd.mirror.sumPe(mirror)
         # verify match
@@ -39,5 +46,5 @@ def handoff(mirror,msg):
             if mirror.debug:
                 print('Pe match')
             return 1
-
+        
     return 0

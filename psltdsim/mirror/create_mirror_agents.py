@@ -61,7 +61,6 @@ def create_mirror_agents(mirror):
         
         # currently breaks mirror import into PY3 -> ipy only var types? nesting/recursion of object issues?
         if n_branch > 0:
-            print('branches: %d' % n_branch)
             for c_branch in range(n_branch):
                 
                 #create branch agent

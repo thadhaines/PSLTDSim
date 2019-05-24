@@ -6,7 +6,9 @@ def runSim_IPY(mirror, amqpAgent):
     mirror.simRun = True
     mirror.ss_Pe = ltd.mirror.sumPe(mirror)
     mirror.ss_Pload = ltd.mirror.sumLoad(mirror)[0]
-
+    IPYSendTime = 0.0
+    sentMsgs = 0
+    sysCrash = False
     if not mirror.debug:
         # block pslf output for normal (non-debug) runs
         noPrintStr = "dispar[0].noprint = 1"
@@ -14,7 +16,7 @@ def runSim_IPY(mirror, amqpAgent):
 
     # handle AMQP messages and update mir/PSLF accordingly
     IPY.receive('toIPY',IPY.redirect)
-    agentPSLFupdates = mirror.Machines + mirror.Load + mirror.Bus
+    agentPSLFupdates = mirror.Machines + mirror.Bus +mirror.Load
 
     ## enter some while loop for simulation run
     while mirror.simRun:
@@ -29,14 +31,20 @@ def runSim_IPY(mirror, amqpAgent):
             # Catches error thown for non-convergene
             print("*** Error Caught, Simulation Stopping...")
             print(e)
-            sysCrash = 1
+            sysCrash = True
             mirror.simRun = False
             break;
 
         # send new values to PY3
+
         for agent in agentPSLFupdates:
             agent.getPvals()
+            send_start = time.time()
             IPY.send('toPY3', agent.makeAMQPmsg())
+            send_end = time.time()
+            IPYSendTime += send_end-send_start
+            sentMsgs +=1
+
         # send hand off of Sum Pe
         mirror.ss_Pe = ltd.mirror.sumPe(mirror)
         pload = ltd.mirror.sumLoad(mirror)[0]
@@ -44,8 +52,14 @@ def runSim_IPY(mirror, amqpAgent):
                'HandoffType': 'IPYtoPY3',
                'ss_Pe': mirror.ss_Pe,
                'pload' : pload,
+               'PFTime' :mirror.PFTime,
+               'PFSolns' : mirror.PFSolns,
+               'SentMsg' : sentMsgs,
+               'IPYSendTime' : IPYSendTime
                }
+        #print('msg sending %.2f\t%.2f' %(sentMsgs, IPYSendTime))
         IPY.send('toPY3',Hmsg)
+
         # receive at end to enable endSim AMQP message
         IPY.receive('toIPY',IPY.redirect)
 

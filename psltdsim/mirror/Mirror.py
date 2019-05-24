@@ -5,12 +5,21 @@ class Mirror(object):
         """Carries out initialization of Mirror and meta data"""
         global PSLF
         from datetime import datetime
-
+        init_start = time.time()
         __module__= "Mirror"
 
         # Model Meta Data
         self.created = datetime.now()
         self.simNotes = simNotes
+
+        # Solution information
+        self.SimTime = 0.0
+        self.PFTime = 0.0
+        self.PFSolns = 0
+        self.PY3msgs = 0
+        self.IPYmsgs = 0
+        self.IPYSendTime = 0.0
+        self.PY3SendTime = 0.0
 
         # Simulation Parameters from User
         self.simParams = simParams
@@ -129,6 +138,8 @@ class Mirror(object):
         for c_area in self.Area:
             c_area.calcBeta()
 
+        init_end = time.time()
+        self.InitTime = init_end-init_start
         print("*** Python Mirror intialized.")
 
     # Simulation Methods

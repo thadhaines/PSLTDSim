@@ -1,6 +1,7 @@
 def runSimPY3(mirror, amqpAgent):
     """Python 3 side of LTD simulation"""
     print("*** runSimPY3 start")
+    sim_start = time.time()
     PY3 = amqpAgent
     # Initialize PY3 specific Dynamics
     ltd.mirror.initPY3Dynamics(mirror)
@@ -46,13 +47,16 @@ def runSimPY3(mirror, amqpAgent):
         # Step Individual Agent Dynamics
         for dynamicX in mirror.Dynamics:
             dynamicX.stepDynamics()
-            #TODO ensure any dynamic changes are sent to IPY
 
         # set pe = pm (dynamic action)
         for machineX in mirror.Machines:
             machineX.Pe = machineX.Pm
-            # Send AMQP message to IPY (3/23/19 currently handles dynamic changes)
+            # Send AMQP message to IPY (3/23/19 covers dynamic changes)
+            send_start = time.time()
             PY3.send('toIPY',machineX.makeAMQPmsg())
+            send_end = time.time()
+            mirror.PY3SendTime += send_end-send_start
+            mirror.PY3msgs+=1
             
         # Initialize Pertrubance delta
         mirror.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
@@ -62,7 +66,11 @@ def runSimPY3(mirror, amqpAgent):
         for pertX in mirror.Perturbance:
             if pertX.step():
                 #if perturbance takes action, upday IPY
+                send_start = time.time()
                 PY3.send('toIPY', pertX.mObj.makeAMQPmsg())
+                send_end = time.time()
+                mirror.PY3SendTime += send_end-send_start
+                mirror.PY3msgs+=1
 
         # Sum system loads to Account for any load changes from Perturbances
         mirror.ss_Pload, mirror.ss_Qload = ltd.mirror.sumLoad(mirror)
@@ -104,7 +112,8 @@ def runSimPY3(mirror, amqpAgent):
 
     print("_______________________")
     print("    Simulation Complete\n")
-
+    sim_end = time.time()
+    mirror.SimTime = sim_end-sim_start
     # remove initialization values
     if mirror.sysCrash:
         for agentX in mirror.Log:

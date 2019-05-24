@@ -2,9 +2,10 @@
 import os
 import subprocess
 import signal
-import time
-import builtins
 import pika
+import builtins
+import time
+builtins.time = time
 
 # for truly global numpy scipy things
 import numpy as np
@@ -27,19 +28,19 @@ print('Current Working Directory: %s' % os.getcwd())
 #print(os.getcwd())
 
 # for extended terminal output
-debug = 1
+debug = 0
 AMQPdebug = 0
 
 simNotes = """
 
-MiniWECC run to investigate functionality of not sending unchanged messages
+MiniWECC run to investigate functionality of dev code
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 2,
     'endTime': 90,
-    'slackTol': 0.5,
+    'slackTol': 1,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
 
@@ -153,7 +154,6 @@ PY3.send('toIPY', initMsg)
 cmd = "ipy32 IPY_PSLTDSim.py"
 ipyProc = subprocess.Popen(cmd)
 
-
 # Wait for mirror message
 PY3.receive('toPY3',PY3.redirect)
 print('py3 main...')
@@ -161,9 +161,7 @@ print(mir)
 PY3.mirror = mir
 
 ## begin PY3 simulation loop 
-sim_start = time.time()
 ltd.runSimPY3(mir, PY3)
-sim_end = time.time()
 
 # Post simulation operations
 ltd.terminal.dispSimResults(mir)
@@ -175,10 +173,8 @@ if simParams['exportFinalMirror']:
 if simParams['exportMat']:
     ltd.data.exportMat(mir, simParams)
 
-print("init time:\t %f" % (sim_start-init_start) )
-print("sim time:\t %f" % (sim_end-sim_start) )
-
+ltd.terminal.dispSimTandC(mir)
 #ltd.plot.allPmDynamics(mir)
-ltd.plot.sysPePmFLoad(mir)
+#ltd.plot.sysPePmFLoad(mir)
 
 print("_______________________") # the bottom line

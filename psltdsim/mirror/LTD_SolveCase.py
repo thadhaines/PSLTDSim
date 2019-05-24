@@ -3,7 +3,7 @@ def LTD_SolveCase(mirror=None):
     Returns PSLF errorCode if available
     Only option not default is area interchange adjustment (turned off)
     """
-
+    soln_start = time.time()
     errorCode = PSLF.SolveCase(
         25, # maxIterations, Solpar.Itnrmx
         0, 	# iterationsBeforeVarLimits, Solpar.Itnrvl
@@ -16,7 +16,10 @@ def LTD_SolveCase(mirror=None):
         1,	# solnType, 1 == full, 2 == DC, 3 == decoupled 
         0,  # reorder (in dypar default = 0)
         )
+    soln_end = time.time()
     if mirror:
+        mirror.PFTime += (soln_end - soln_start)
+        mirror.PFSolns += 1
         if mirror.debug: print('Power Flow Solution returns: %d' % errorCode)
 
     if errorCode == -1:

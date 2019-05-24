@@ -2,8 +2,9 @@
 import os
 import subprocess
 import signal
-import time
 import __builtin__
+import time
+__builtin__.time = time
 
 # import custom package and make truly global
 import psltdsim as ltd
