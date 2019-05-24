@@ -111,8 +111,10 @@ class Mirror(object):
         if locations['ltdPath']:
             ltd.parse.parseLtd(self, locations['ltdPath'])
 
-        # ensure dyd changes reflected in mirror (i.e. mbase, inertia)
-        
+        # ensure dyd changes reflected in mirror (i.e. mbase, mwcap)
+        for gov in self.PSLFgov:
+            gov.Gen.Pmax = gov.mwCap
+
         # link H and mbase to mirror
         ltd.mirror.initInertiaH(self)
 

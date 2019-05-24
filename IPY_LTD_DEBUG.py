@@ -50,7 +50,7 @@ simParams = {
 
 # Fast debug case switching
 # TODO: enable new dyd replacement...
-test_case = 'tGovRamp'
+test_case = 2 #'tGovRamp'
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.excNoGov.dyd"]

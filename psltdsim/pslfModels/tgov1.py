@@ -31,8 +31,8 @@ class tgov1(object):
             self.mwCap = float(mwInfo[1]) # in MW
         else:
             # No mwcap info found - should use generator MVA base
-            parts.insert(6, 'BASE MVA')
-            self.mwCap = 0.0 # TODO: Get most recent during dynamic init
+            parts.insert(6, 'MBASE MVA')
+            self.mwCap = self.Gen.Mbase # default PSDS behavior
         
         self.R  = parts[7]
         self.T1 = parts[8]
