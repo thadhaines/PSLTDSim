@@ -21,8 +21,11 @@ def runSim_IPY(mirror, amqpAgent):
     ## enter some while loop for simulation run
     while mirror.simRun:
         # received Handoff and Pacc Verified - else error in handoff
+        tic = time.time()
         for agent in agentPSLFupdates:
             agent.setPvals()
+        mirror.IPYPvalsTime += time.time() - tic
+            
         # distPe loop thing (which is really distributes Pacc)
         try:
             ltd.mirror.distPacc(mirror, mirror.ss_Pacc )
@@ -38,10 +41,14 @@ def runSim_IPY(mirror, amqpAgent):
         # send new values to PY3
 
         for agent in agentPSLFupdates:
+            tic = time.time()
             agent.getPvals()
+            mirror.IPYPvalsTime += time.time() -tic
+
             send_start = time.time()
             IPY.send('toPY3', agent.makeAMQPmsg())
             send_end = time.time()
+
             IPYSendTime += send_end-send_start
             sentMsgs +=1
 
@@ -55,7 +62,9 @@ def runSim_IPY(mirror, amqpAgent):
                'PFTime' :mirror.PFTime,
                'PFSolns' : mirror.PFSolns,
                'SentMsg' : sentMsgs,
-               'IPYSendTime' : IPYSendTime
+               'IPYSendTime' : IPYSendTime,
+               'IPYdistPaccTime' : mirror.IPYdistPaccTime,
+               'IPYPvalsTime' : mirror.IPYPvalsTime,
                }
         #print('msg sending %.2f\t%.2f' %(sentMsgs, IPYSendTime))
         IPY.send('toPY3',Hmsg)

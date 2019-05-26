@@ -1,5 +1,5 @@
 """Script will attempt to take pickled object and output data in a mat file
-NOTE: will probably change when using py3 as data 'historian' """
+NOTE: Obsolete? 05/26/19 """
 #NOTE: Uses >>32-bit<< Python 3.6+ script
 
 import sys
@@ -20,7 +20,7 @@ def makeMat(dictLoc, varName, fileDirectory):
         cwd = os.getcwd()
         os.chdir(cwd + fileDirectory)
 
-    print('Creating %s.mat from %s...' % (varName, dictLoc))
+    print('*** Creating %s.mat...' % (varName))
     d = loadModelDictionary(dictLoc)
 
     # For reference
@@ -31,7 +31,7 @@ def makeMat(dictLoc, varName, fileDirectory):
     sio.savemat(varName, mirD)
     print(varName +'.mat saved!')
 
-    # remove pickled dictionary
+    # remove pickled dictionary #NOTE: obsolete? 05/26/19
     delDict = None
     if delDict:
         os.remove(dictLoc)

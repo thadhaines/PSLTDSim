@@ -24,6 +24,7 @@ def distPacc(mirror, deltaPacc):
             break
 
     while tol_Flag:
+        tic1 = time.time()
         if mirror.debug:
             print("*** LTD: Distributing %.2f MW of Pacc, Iteration %d" % (Pacc, iteration))
         #for each mirror area:
@@ -62,12 +63,19 @@ def distPacc(mirror, deltaPacc):
                 # ensure Vsched in PSLF is correct
                 c_gen.Bus.setPvals()
 
+        toc1 = time.time()
         # Pe is distributed to all generators in all areas, solve Power flow
         ltd.mirror.LTD_SolveCase(mirror)
-
+        
+        tic2 = time.time()
         #Update mirror machines with PSLF values from power flow solution
         for gen in mirror.Machines:
             gen.getPvals()
+        toc2 = time.time()
+
+        #update mirror timers
+        mirror.IPYdistPaccTime += toc1-tic1
+        mirror.IPYPvalsTime += toc2-tic2
 
         # Calculate global slack error (could be an average in the future?)
         error = globalSlack.Pe_calc - globalSlack.Pe 

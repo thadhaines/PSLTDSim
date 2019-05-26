@@ -19,11 +19,12 @@ def exportMat(mirror, simParams):
         cwd = os.getcwd()
         os.chdir(cwd + simParams['fileDirectory'])
 
-    print('Creating %s.mat from %s...' % (varName, simParams['fileDirectory']))
+    print('*** Exporting MATLAB .mat to:')# % (varName, simParams['fileDirectory']))
 
     mirD ={varName:d}
     sio.savemat(varName, mirD)
-    print(varName +'.mat saved!')
+    print('*** '+cwd + simParams['fileDirectory'] + varName)
+    #print(varName +'.mat saved!')
 
     if simParams['fileDirectory']:
         os.chdir(cwd)

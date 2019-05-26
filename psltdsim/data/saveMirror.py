@@ -11,8 +11,19 @@ def saveMirror(mir, simParams):
     savDir = cwd
 
     if simParams['fileDirectory'] :
-        savDir = cwd + simParams['fileDirectory']
+        # check if path doesn't exist - make if not
+        path = cwd + simParams['fileDirectory']
+        if not os.path.isdir(path):
+            try:  
+                os.mkdir(path)
+            except OSError:  
+                print ("Creation of the directory %s failed" % path)
+            else:  
+                print ("Successfully created the directory %s " % path)
+
+        savDir = path
         os.chdir(savDir)
+
 
     savName = simParams['fileName']
     savName = savName + '.mir'    

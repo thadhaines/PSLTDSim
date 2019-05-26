@@ -45,8 +45,10 @@ def runSimPY3(mirror, amqpAgent):
             break;
 
         # Step Individual Agent Dynamics
+        dynamic_start = time.time()
         for dynamicX in mirror.Dynamics:
             dynamicX.stepDynamics()
+        mirror.DynamicTime += time.time()- dynamic_start
 
         # set pe = pm (dynamic action)
         for machineX in mirror.Machines:
@@ -95,7 +97,10 @@ def runSimPY3(mirror, amqpAgent):
                'Pert_Pdelta': mirror.ss_Pert_Pdelta,
                }
         PY3.send('toIPY', Hmsg)
+
+        tic = time.time()
         PY3.receive('toPY3',PY3.redirect)
+        mirror.PY3RecTime += time.time() - tic
 
         if mirror.sysCrash:
             # break out of while loop
@@ -133,3 +138,14 @@ def runSimPY3(mirror, amqpAgent):
         PY3.send('toIPY',{'msgType' : 'endSim'})
     else:
         print("*** runSimPY3 end")
+
+    # Data Export
+    if mirror.simParams['exportFinalMirror']:
+        mirror.simParams['fileName'] += 'F'
+        ltd.data.saveMirror(mirror, mirror.simParams)
+
+    if mirror.simParams['exportMat']:
+        ltd.data.exportMat(mirror, mirror.simParams)
+
+    print("_______________________") # the bottom line
+    print("   Data Export Complete")

@@ -14,12 +14,16 @@ class Mirror(object):
 
         # Solution information
         self.SimTime = 0.0
+        self.DynamicTime = 0.0
         self.PFTime = 0.0
         self.PFSolns = 0
         self.PY3msgs = 0
         self.IPYmsgs = 0
         self.IPYSendTime = 0.0
+        self.IPYdistPaccTime = 0.0
+        self.IPYPvalsTime = 0.0
         self.PY3SendTime = 0.0
+        self.PY3RecTime = 0.0
 
         # Simulation Parameters from User
         self.simParams = simParams
@@ -31,7 +35,7 @@ class Mirror(object):
         self.Dinput = simParams['Dsys']
         self.debug = debug
         self.AMQPdebug = AMQPdebug
-        self.dataPoints = int(self.endTime//self.timeStep + 1)
+        self.dataPoints = int(self.endTime//self.timeStep + 1) # add extra points here...
 
         # Simulation Variable Prefix Key
         # c_ ... current

@@ -9,7 +9,7 @@ import psltdsim as ltd
 
 dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
-mirLoc = os.path.join(dirname, 'verification','miniWeccTest01','miniWECC_loadStep01F.mir')
+mirLoc = os.path.join(dirname, 'delme','miniWeccTest01','miniWECC_loadStep0bF.mir')
 mir = ltd.data.readMirror(mirLoc)
 
 xend = max(mir.r_t)
@@ -26,10 +26,11 @@ print(mir)
 
 #ltd.plot.sysVmVa(mir, True)
 
+"""
 for gen in mir.Machines:
     print("%s    \t %f \t%f" %(gen.Busnam, gen.Hpu, gen.Mbase))
 
-"""Plot all dynamic responses from generators"""
+#Plot all dynamic responses from generators#
 for c_dyn in mir.Dynamics:
     fig, ax = plt.subplots(nrows=2, ncols=1,)
     ax[0].set_title('Governed Generator on Bus %d %s Power Output' 
@@ -45,12 +46,12 @@ for c_dyn in mir.Dynamics:
                 marker = '+',
                 linestyle = '--',
                 label = 'Pm')
-    """ Plots max power line on dynamic plots
+    # Plots max power line on dynamic plots
     ax[0].plot([mir.r_t[0], mir.r_t[-1]], [c_dyn.Gen.Pmax,c_dyn.Gen.Pmax], 
                 #marker = '+',
                 #linestyle = '--',
                 label = 'Max Power')
-    """
+    #
 
     ax[1].plot(mir.r_t, c_dyn.r_x1, 
                 marker = '1',
@@ -78,7 +79,8 @@ for c_dyn in mir.Dynamics:
 ltd.plot.sysPLQF(mir)
 
 #ltd.plot.sysPemLQF(mir, True)
-"""Plot governed generator log data
+
+Plot governed generator log data
 c_dyn = 1 # used as placeholder for function input
 
 fig, ax = plt.subplots(nrows=2, ncols=1,)

@@ -5,22 +5,19 @@ import signal
 import pika
 import builtins
 import time
-builtins.time = time
-
-# for truly global numpy scipy things
 import numpy as np
 import scipy.signal as sig
 from scipy.integrate import solve_ivp
 
+import psltdsim as ltd
+
+# for truly global imported packages
 builtins.np = np
 builtins.sig = sig
 builtins.solve_ivp = solve_ivp
-
-# import custom package and make truly global
-import psltdsim as ltd
+builtins.time = time
 builtins.ltd = ltd
 
-ltd.terminal.dispCodeTitle()
 print('Current Working Directory: %s' % os.getcwd())
 
 # workaround for interactive mode runs (Use as required)
@@ -38,7 +35,7 @@ MiniWECC run to investigate functionality of dev code
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 2,
+    'timeStep': .5,
     'endTime': 90,
     'slackTol': 1,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
@@ -49,7 +46,7 @@ simParams = {
     'integrationMethod' : 'rk45',
 
     # Data Export Parameters
-    'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
+    'fileDirectory' : "\\delme\\miniWeccTest01\\", # relative path from cwd
     'fileName' : 'miniWECC_loadStep0b',
 
     'exportFinalMirror': 1, # Export mirror with all data
@@ -58,7 +55,7 @@ simParams = {
     }
 
 # Fast debug case switching
-# TODO: MAYBE enable new dyd replacement... (too cute?)
+# TODO: MAYBE enable new dyd replacement... maybe already handled?
 test_case = 2
 
 if test_case == 0:
@@ -117,20 +114,24 @@ elif test_case == 5: # testing of ggov casting
     dydPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.ggov1.dyd"]
     ltdPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.BigUpStep.ltd"]
 
-if not 'ltdPath' in dir(): # handle undefined ltdPath
+# Handle undefined ltdPath
+if not 'ltdPath' in dir(): 
     ltdPath = None
 
 # Required Paths Dictionary
 locations = {
-    # path to folder containing middleware dll
+    # path to folder containing middleware dll (default behavior)
     'middlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
-    # path to folder containing PSLF license
+    # path to folder containing PSLF license (default behavior)
     'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
     'savPath' : savPath,
     'dydPath': dydPath,
     'ltdPath' : ltdPath,
     }
 del savPath, dydPath, ltdPath, test_case
+
+# Code Start
+ltd.terminal.dispCodeTitle()
 
 # Init PY3 AMQP
 init_start = time.time()
@@ -156,25 +157,15 @@ ipyProc = subprocess.Popen(cmd)
 
 # Wait for mirror message
 PY3.receive('toPY3',PY3.redirect)
-print('py3 main...')
 print(mir)
 PY3.mirror = mir
 
 ## begin PY3 simulation loop 
 ltd.runSimPY3(mir, PY3)
 
-# Post simulation operations
+# Additional post simulation operations
 ltd.terminal.dispSimResults(mir)
-
-if simParams['exportFinalMirror']:
-    simParams['fileName'] += 'F'
-    ltd.data.saveMirror(mir, simParams)
-
-if simParams['exportMat']:
-    ltd.data.exportMat(mir, simParams)
-
 ltd.terminal.dispSimTandC(mir)
 #ltd.plot.allPmDynamics(mir)
 #ltd.plot.sysPePmFLoad(mir)
 
-print("_______________________") # the bottom line
