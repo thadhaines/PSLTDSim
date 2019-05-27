@@ -19,6 +19,7 @@ class Mirror(object):
         self.PFSolns = 0
         self.PY3msgs = 0
         self.IPYmsgs = 0
+        self.IPYmsgMake = 0.0
         self.IPYSendTime = 0.0
         self.IPYdistPaccTime = 0.0
         self.IPYPvalsTime = 0.0

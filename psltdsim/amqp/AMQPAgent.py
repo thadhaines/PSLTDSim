@@ -30,6 +30,9 @@ class AMQPAgent():
                               routing_key=msgQueue, 
                               body=json.dumps(msg) )
 
+        if type(msg) == list:
+            return
+
         if msg['msgType'] == 'endSim':
             self.connection.close()
             self.connection = None
@@ -69,6 +72,12 @@ class AMQPAgent():
             if self.mirror.AMQPdebug:
                 print('In %s redirect...' % self.name)
                 print(msg)
+
+        # Group handling -> only agent updates sent as groups.
+        if type(msg) == list:
+            for member in msg:
+                ltd.amqp.agentUpdate(self.mirror, member)
+            return
 
         msgType = msg['msgType']
         # Actual redirecting

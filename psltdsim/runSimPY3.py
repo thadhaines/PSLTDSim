@@ -49,7 +49,7 @@ def runSimPY3(mirror, amqpAgent):
         for dynamicX in mirror.Dynamics:
             dynamicX.stepDynamics()
         mirror.DynamicTime += time.time()- dynamic_start
-
+        
         # set pe = pm (dynamic action)
         for machineX in mirror.Machines:
             machineX.Pe = machineX.Pm
@@ -59,7 +59,21 @@ def runSimPY3(mirror, amqpAgent):
             send_end = time.time()
             mirror.PY3SendTime += send_end-send_start
             mirror.PY3msgs+=1
-            
+
+        #Using Grouping - seems to cause slow down...
+        """
+        # set pe = pm (dynamic action)
+        for machineX in mirror.Machines:
+            machineX.Pe = machineX.Pm
+
+        machMsg = ltd.amqp.makeGroupMsg(mirror.Machines)
+        send_start = time.time()
+        PY3.send('toIPY',machMsg)
+        send_end = time.time()
+        mirror.PY3SendTime += send_end-send_start
+        mirror.PY3msgs+=1
+        """
+
         # Initialize Pertrubance delta
         mirror.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
         mirror.ss_Pert_Qdelta = 0.0 # intended for system loss calculations
