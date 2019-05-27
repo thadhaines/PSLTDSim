@@ -12,7 +12,7 @@ class Mirror(object):
         self.created = datetime.now()
         self.simNotes = simNotes
 
-        # Solution information
+        # Solution timing information
         self.SimTime = 0.0
         self.DynamicTime = 0.0
         self.PFTime = 0.0
@@ -25,6 +25,8 @@ class Mirror(object):
         self.IPYPvalsTime = 0.0
         self.PY3SendTime = 0.0
         self.PY3RecTime = 0.0
+        self.FindTime = 0.0
+        self.IPYFindTime = 0.0
 
         # Simulation Parameters from User
         self.simParams = simParams

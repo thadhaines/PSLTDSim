@@ -35,7 +35,7 @@ MiniWECC run to investigate functionality of dev code
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 2,
+    'timeStep': .5,
     'endTime': 90,
     'slackTol': 1,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code

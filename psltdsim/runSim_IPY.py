@@ -73,6 +73,7 @@ def runSim_IPY(mirror, amqpAgent):
                'IPYSendTime' : mirror.IPYSendTime,
                'IPYdistPaccTime' : mirror.IPYdistPaccTime,
                'IPYPvalsTime' : mirror.IPYPvalsTime,
+               'IPYFindTime' : mirror.FindTime,
                }
         #print('msg sending %.2f\t%.2f' %(sentMsgs, IPYSendTime))
         IPY.send('toPY3',Hmsg)

@@ -41,6 +41,7 @@ def handoff(mirror,msg):
         mirror.IPYdistPaccTime = msg['IPYdistPaccTime']
         mirror.IPYPvalsTime = msg['IPYPvalsTime']
         mirror.IPYmsgMake = msg['IPYmsgMake']
+        mirror.IPYFindTime = msg['IPYFindTime']
 
         #print('msg got %.2f\t%.2f' %(msg['SentMsg'], msg['IPYSendTime']))
         # calc sum Pe
