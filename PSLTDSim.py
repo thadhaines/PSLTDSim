@@ -33,6 +33,7 @@ simNotes = """
 MiniWECC run to investigate functionality of dev code
 """
 
+"""
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.5,
@@ -117,55 +118,78 @@ elif test_case == 5: # testing of ggov casting
 # Handle undefined ltdPath
 if not 'ltdPath' in dir(): 
     ltdPath = None
+"""
 
-# Required Paths Dictionary
-locations = {
-    # path to folder containing middleware dll (default behavior)
-    'middlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
-    # path to folder containing PSLF license (default behavior)
-    'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
-    'savPath' : savPath,
-    'dydPath': dydPath,
-    'ltdPath' : ltdPath,
-    }
-del savPath, dydPath, ltdPath, test_case
+batchList =[
+    #r".\testCases\miniWECCstepTS02.py",
+    #r".\testCases\miniWECCstepTS05.py",
+    r".\testCases\miniWECCstepTS10.py",
+    r".\testCases\miniWECCcrash.py",
+    r".\testCases\miniWECCstepTS20.py",
+            ]
+case = 0
+failedTestCase = []
+batchStart = time.time()
+for testCase in batchList:
+    exec(open(testCase).read());
+    case+=1
+    ltd.terminal.dispCodeTitle()
+    print('*** Case %d/%d' % (case, len(batchList)))
+    # Required Paths Dictionary
+    locations = {
+        # path to folder containing middleware dll (default behavior)
+        'middlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
+        # path to folder containing PSLF license (default behavior)
+        'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
+        'savPath' : savPath,
+        'dydPath': dydPath,
+        'ltdPath' : ltdPath,
+        }
 
-# Code Start
-ltd.terminal.dispCodeTitle()
+    # Init PY3 AMQP
+    init_start = time.time()
+    host = '127.0.0.1'
+    PY3 = ltd.amqp.AMQPAgent('PY3',host)
 
-# Init PY3 AMQP
-init_start = time.time()
-host = '127.0.0.1'
-PY3 = ltd.amqp.AMQPAgent('PY3',host)
+    # Clear AMQP queues
+    ltd.amqp.clearQ(host, ['toPY3', 'toIPY'])
 
-# Clear AMQP queues
-ltd.amqp.clearQ(host, ['toPY3', 'toIPY'])
+    # create and send init msg
+    initMsg = {'msgType': 'init',
+               'locations': locations,
+               'simParams': simParams,
+               'simNotes': simNotes,
+               'debug': debug,
+               'AMQPdebug' : AMQPdebug,
+               }
+    PY3.send('toIPY', initMsg)
 
-# create and send init msg
-initMsg = {'msgType': 'init',
-           'locations': locations,
-           'simParams': simParams,
-           'simNotes': simNotes,
-           'debug': debug,
-           'AMQPdebug' : AMQPdebug,
-           }
-PY3.send('toIPY', initMsg)
+    # Start IPY - assumes ironpython on path
+    cmd = "ipy32 IPY_PSLTDSim.py"
+    ipyProc = subprocess.Popen(cmd)
 
-# Start IPY - assumes ironpython on path
-cmd = "ipy32 IPY_PSLTDSim.py"
-ipyProc = subprocess.Popen(cmd)
+    # Wait for mirror message
+    PY3.receive('toPY3',PY3.redirect)
+    print(mir)
+    PY3.mirror = mir
 
-# Wait for mirror message
-PY3.receive('toPY3',PY3.redirect)
-print(mir)
-PY3.mirror = mir
+    # begin PY3 simulation loop 
+    ltd.runSimPY3(mir, PY3)
 
-## begin PY3 simulation loop 
-ltd.runSimPY3(mir, PY3)
+    if mir.sysCrash:
+        failedTestCase.append(testCase)
 
-# Additional post simulation operations
-ltd.terminal.dispSimResults(mir)
-ltd.terminal.dispSimTandC(mir)
-#ltd.plot.allPmDynamics(mir)
-#ltd.plot.sysPePmFLoad(mir)
+    # Additional optional post simulation outputs
+    #ltd.terminal.dispSimResults(mir)
+    ltd.terminal.dispSimTandC(mir)
+    #ltd.plot.allPmDynamics(mir)
+    #ltd.plot.sysPePmFLoad(mir)
 
+# End of Batch Output
+batchTime = time.time() - batchStart
+print('*** Ran %d/%d Test Cases in %.2f seconds.' % (case, len(batchList),batchTime))
+
+if len(failedTestCase) > 0:
+    print('*** Failed Test Cases:')
+    for case in failedTestCase:
+        print(case)
