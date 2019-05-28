@@ -5,6 +5,7 @@ def dispSimTandC(mir):
 
     print('{:<28}'.format("Simulation Timings"))
     print('{:>28}'.format("Total Simulation Time:") , '{:12f}'.format(mir.SimTime))
+    print('{:>28}'.format("PY3 IPV CPU Time:") , '{:12f}'.format(mir.IVPTime))
     print('{:>28}'.format("PY3 Dynamics CPU Time:") , '{:12f}'.format(mir.DynamicTime))
     print('{:>28}'.format("PY3 Message Send Time:") ,'{:12f}'.format(mir.PY3SendTime))
     print('{:>28}'.format("PY3 Agent Find Time:") ,'{:12f}'.format(mir.FindTime))
@@ -14,7 +15,7 @@ def dispSimTandC(mir):
     print('{:>28}'.format("IPY PSLF Get/Set Time:") , '{:12f}'.format(mir.IPYPvalsTime))
     print('{:>28}'.format("IPY Message Make Time:") , '{:12f}'.format(mir.IPYmsgMake))
     print('{:>28}'.format("IPY Message Send Time:") , '{:12f}'.format(mir.IPYSendTime))
-    print('{:>28}'.format("Uncounted PY3 Time:") , '{:12f}'.format(mir.SimTime-mir.DynamicTime-mir.PY3SendTime-mir.PY3RecTime)) #mir.FindTime
+    print('{:>28}'.format("Uncounted PY3 Time:") , '{:12f}'.format(mir.SimTime-mir.DynamicTime-mir.PY3SendTime-mir.PY3RecTime-mir.IVPTime)) #mir.FindTime
     print('{:>28}'.format("Uncounted IPY Time:") , '{:12f}'.format(mir.PY3RecTime-mir.PFTime-mir.IPYSendTime-mir.IPYdistPaccTime-mir.IPYPvalsTime-mir.IPYmsgMake)) #mir.IPYFindTime
     print('{:>28}'.format("PSLF Power-Flow Time:") , '{:12f}'.format(mir.PFTime))
 

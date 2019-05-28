@@ -12,30 +12,26 @@ def combinedSwing(mirror, Pacc):
 
     PaccPU = Pacc/mirror.Sbase
     HsysPU = mirror.Hsys/mirror.Sbase
-
-    #ignore system damping for now
-    # NOTE: Unsure how to calculate deltaF is it requires fdot -> Statespace?
-    Dsys = 0
-    deltaF = 0
+    deltaF = 1-mirror.c_f
 
     # Swing equation
-    fdot = 1/(2*HsysPU)*(PaccPU/f - Dsys*deltaF)
+    fdot = 1/(2*HsysPU)*(PaccPU/f - mirror.Dsys*deltaF)
     mirror.c_fdot = fdot
 
     # Adams Bashforth
     if mirror.simParams['integrationMethod'] == 'AB':
         mirror.c_f = mirror.c_f + 1.5*mirror.timeStep*fdot  -0.5*mirror.timeStep*mirror.r_fdot[mirror.c_dp-1]
     elif mirror.simParams['integrationMethod'] == 'rk45':
-        # use scipy int...
-        c = [HsysPU, PaccPU, Dsys, mirror.c_f]
-        f = lambda t, y,c: 1/(2*c[0])*(c[1]/y - c[2]*(y-c[3]))
+        # use scipy int.
+        tic = time.time()
+        c = [HsysPU, PaccPU, mirror.Dsys, mirror.c_f]
+        f = lambda t, y,c: 1/(2*c[0])*(c[1]/y - c[2]*(1-c[3]))
         w = solve_ivp(lambda t,y: f(t, y, c),
                       [0, mirror.timeStep], [mirror.c_f])
         mirror.c_f = float(w.y[-1][-1]) # set current freq to last value
-
+        mirror.IVPTime += time.time()-tic
     else:
         # Euler Integration - chosen by default
-        # matches PSLF better than the adams bashforth method in ee554 load case
         mirror.c_f = mirror.c_f + (mirror.timeStep*fdot)
 
     # for logging

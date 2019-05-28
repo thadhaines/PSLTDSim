@@ -15,6 +15,7 @@ class Mirror(object):
 
         # Solution timing information
         self.SimTime = 0.0
+        self.IVPTime = 0.0
         self.DynamicTime = 0.0
         self.DynamicSolns = 0
         self.PFTime = 0.0
@@ -37,7 +38,7 @@ class Mirror(object):
         self.endTime = simParams['endTime']
         self.slackTol = simParams['slackTol']
         self.Hinput = simParams['Hsys']
-        self.Dinput = simParams['Dsys']
+        self.Dsys = simParams['Dsys']
         self.debug = debug
         self.AMQPdebug = AMQPdebug
         self.dataPoints = int(self.endTime//self.timeStep + 1) # add extra points here...
