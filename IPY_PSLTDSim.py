@@ -18,7 +18,8 @@ IPY = ltd.amqp.AMQPAgent('IPY', host)
 # receive init message
 IPY.receive('toIPY',IPY.redirect)
 
-print('in IPY main') # DEBUG
+if debug:
+    print('in IPY main')
 
 # Initialize PSLF
 ltd.init_PSLF(locations)

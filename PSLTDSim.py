@@ -35,7 +35,7 @@ MiniWECC run to investigate functionality of dev code
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': .5,
+    'timeStep': 2,
     'endTime': 90,
     'slackTol': 1,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
@@ -167,5 +167,5 @@ ltd.runSimPY3(mir, PY3)
 ltd.terminal.dispSimResults(mir)
 ltd.terminal.dispSimTandC(mir)
 #ltd.plot.allPmDynamics(mir)
-ltd.plot.sysPePmFLoad(mir)
+#ltd.plot.sysPePmFLoad(mir)
 

@@ -70,15 +70,14 @@ class AreaAgent(object):
     def checkArea(self):
         """Checks if found number of Generators and loads is Correct
         Creates Machine list
-        Returns 0 if all valid, -1 for invalid Generators, -2 for invalid loads
+        Returns 0 if all valid
         """
-        # Q: check for SVD & shunts?
+        # Q: check for SVD ?
         self.Machines = self.Slack + self.Gens
 
         if self.Ngen == (len(self.Machines)):
             if self.mirror.debug: 
                 print("Gens correct in Area:\t%d" % self.Area)
-            
         else:
             print("*** Gen Error: %d/%d found. Area:\t%d" % 
                   (len(self.Machines), self.Ngen, self.Area))
@@ -91,6 +90,22 @@ class AreaAgent(object):
             print("*** Load Error: %d/%d found. Area:\t%d" % 
                   (len(self.Load), self.Nload, self.Area))
             return -2
+
+        if self.Nshunt == len(self.Shunt):
+            if self.mirror.debug: 
+                print("Shunts correct in Area:\t%d" % self.Area)
+        else:
+            print("*** Shunt Error: %d/%d found. Area:\t%d" % 
+                  (len(self.Shunt), self.Nshunt, self.Area))
+            return -3
+
+        if self.Nbranch== len(self.Branch):
+            if self.mirror.debug: 
+                print("Branches correct in Area:\t%d" % self.Area)
+        else:
+            print("*** Branch Error: %d/%d found. Area:\t%d" % 
+                  (len(self.Branch), self.Nbranch, self.Area))
+            return -4
 
         return 0
 

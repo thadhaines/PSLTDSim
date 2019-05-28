@@ -124,8 +124,9 @@ class Mirror(object):
         ltd.parse.parseDyd(self, dydPaths)
 
         # parse LTD to handly ltd models and perturbances
-        if locations['ltdPath']:
-            ltd.parse.parseLtd(self, locations['ltdPath'])
+        # Moved to begining of runSimPY3 -> IPY mirror doesn't need ltd info
+        #if locations['ltdPath']:
+        #    ltd.parse.parseLtd(self, locations['ltdPath'])
 
         # ensure dyd changes reflected in mirror (i.e. mbase, mwcap)
         for gov in self.PSLFgov:
@@ -141,9 +142,9 @@ class Mirror(object):
         else:
             self.Hsys = self.ss_H
 
-        # calculate beta for each area
-        for c_area in self.Area:
-            c_area.calcBeta()
+        # calculate beta for each area NOTE: Nothing happends because dynamics not yet init..
+        #for c_area in self.Area:
+        #    c_area.calcBeta()
 
         init_end = time.time()
         self.InitTime = init_end-init_start
@@ -249,8 +250,8 @@ class Mirror(object):
         tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "Created from:\t%s\n" %(self.locations['savPath'])
+        tag2 = "Created from:  %s\n" %(self.locations['savPath'])
         created = str(self.created)
-        tag3 = "Created on:\t\t%s" %(created)
+        tag3 = "Created on:    %s" %(created)
 
         return(tag1+tag2+tag3)

@@ -1,17 +1,21 @@
 def runSimPY3(mirror, amqpAgent):
     """Python 3 side of LTD simulation"""
     print("*** runSimPY3 start")
-    sim_start = time.time()
     PY3 = amqpAgent
+
+    # parse LTD to handle ltd models and perturbances
+    if mirror.locations['ltdPath']:
+        ltd.parse.parseLtd(mirror, mirror.locations['ltdPath'])
+
     # Initialize PY3 specific Dynamics
     ltd.mirror.initPY3Dynamics(mirror)
 
-    ## Already Happened
-    ## calculate area f response characteristic (beta)
-    #for area in mirror.Area:
-    #    area.calcBeta()
+    # calculate area f response characteristic (beta)
+    for area in mirror.Area:
+        area.calcBeta()
 
     print("\n*** Starting Simulation (PY3)")
+    sim_start = time.time()
     # set flag for non-convergence
     mirror.sysCrash = False
     mirror.simRun = True

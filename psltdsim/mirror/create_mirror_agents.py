@@ -14,10 +14,11 @@ def create_mirror_agents(mirror):
     f_bus = 0
     f_gen = 0
     f_load = 0
+    f_shunt = 0
 
     if mirror.debug: 
         print("*** Crawling system for agents...")
-        print("Extnum\tgen\tload\tBusnam")
+        print("Extnum\tgen\tload\tshunt\tBusnam")
 
     # while found buses are less than the total buses
     while f_bus < mirror.Nbus:
@@ -43,26 +44,27 @@ def create_mirror_agents(mirror):
                 c_ScanBus = a_busses[c_bus].GetScanBusIndex()
                 n_gen = col.GeneratorDAO.FindByBus(c_ScanBus).Count
                 n_load = col.LoadDAO.FindByBus(c_ScanBus).Count
+                n_shunt = col.ShuntDAO.FindAnyShuntsByBus(c_ScanBus).Count
 
                 f_gen += n_gen
                 f_load += n_load
+                f_shunt += n_shunt
                 # TODO : count shunts
 
                 if mirror.debug: 
-                    print("%d\t%d\t%d\t%s" % 
+                    print("%d\t%d\t%d\t%d\t%s" % 
                                      (a_busses[c_bus].Extnum, 
                                       n_gen, 
                                       n_load,
+                                      n_shunt,
                                       a_busses[c_bus].Busnam)
                                      )
 
             mirror.Area.append(newAreaAgent)
         
         
-        # currently breaks mirror import into PY3 -> ipy only var types? nesting/recursion of object issues?
         if n_branch > 0:
             for c_branch in range(n_branch):
-                
                 #create branch agent
                 newBranch = ltd.systemAgents.BranchAgent(mirror, newAreaAgent, a_branches[c_branch])
                 #add branch to mirror
@@ -72,7 +74,7 @@ def create_mirror_agents(mirror):
         
         c_area += 1
         
-    # Assert: All busses in all areas are found and in mirror
+    # Assert: All busses in all areas are found and in mirror (else linking fails)
     for branch in range(len(mirror.Branch)):
        mirror.Branch[branch].createLTDlinks()
 
@@ -81,3 +83,4 @@ def create_mirror_agents(mirror):
         print("Found %d buses" % f_bus)
         print("Found %d gens (%d Slack)" % (f_gen, len(mirror.Slack)))
         print("Found %d loads" % f_load)
+        print("Found %d shunts" % f_shunt)

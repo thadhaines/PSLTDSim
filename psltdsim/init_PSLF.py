@@ -15,16 +15,26 @@ def init_PSLF(locations):
     __builtin__.mid = mid
     __builtin__.col = col
 
+    print('*** init_PSLF')
+
     # create pslf instance / object 
     __builtin__.PSLF = mid.Pslf(locations['pslfPath'])
     # load .sav file
     load_test = __builtin__.PSLF.LoadCase(locations['savPath'])
 
     if load_test == 0:
-        # load dynamics into pslf
-        dyd_test = __builtin__.PSLF.LoadDynamics(locations['dydPath'][0])
         print("*** " + locations['savPath'] + " Successfully loaded.")
-        print("*** Result of loading %s: %d" % (locations['dydPath'][0], dyd_test))
+
+        # load all dynamics into pslf
+        for dyd in locations['dydPath']:
+            dyd_test = __builtin__.PSLF.LoadDynamics(dyd)
+
+            if dyd_test == 0:
+                print("*** " + dyd + " Successfully loaded.")
+            else:
+                print("Failure to load .dyd")
+                print("Error code: %d" % dyd_test)
+                raise SystemExit(0)
     else:
         print("Failure to load .sav")
         print("Error code: %d" % load_test)
