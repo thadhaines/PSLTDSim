@@ -11,10 +11,12 @@ class Mirror(object):
         # Model Meta Data
         self.created = datetime.now()
         self.simNotes = simNotes
+        self.searchDict = None
 
         # Solution timing information
         self.SimTime = 0.0
         self.DynamicTime = 0.0
+        self.DynamicSolns = 0
         self.PFTime = 0.0
         self.PFSolns = 0
         self.PY3msgs = 0
@@ -145,6 +147,9 @@ class Mirror(object):
         # calculate beta for each area NOTE: Nothing happends because dynamics not yet init..
         #for c_area in self.Area:
         #    c_area.calcBeta()
+
+        #Create search dictionaries
+        self.searchDict = ltd.find.makeBusSearchDict(self)
 
         init_end = time.time()
         self.InitTime = init_end-init_start

@@ -1,11 +1,20 @@
 def findBus(mirror, Busnum):
     """Return mirror bus object if possible"""
     tic = time.time()
-    for bus in mirror.Bus:
-        if bus.Extnum == Busnum:
+
+    # required to use find functions during mirror creation before searchDict made
+    if not mirror.searchDict:
+        for bus in mirror.Bus:
+            if bus.Extnum == Busnum:
+                mirror.FindTime += time.time() - tic
+                return bus
+    else:
+        bnum = str(int(Busnum))
+        if bnum in mirror.searchDict:
             mirror.FindTime += time.time() - tic
-            return bus
+            return mirror.searchDict[bnum]['Bus']
 
     print("Bus %d not found." % Busnum)
     mirror.FindTime += time.time() - tic
+    
     return None

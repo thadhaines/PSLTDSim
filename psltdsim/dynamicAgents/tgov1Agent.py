@@ -68,6 +68,7 @@ class tgov1Agent():
         # Second block
         _, y2, self.x2 = sig.lsim(self.sys2, y1, T=self.t,
                                    X0=self.r_x2[self.mirror.c_dp-1], interp=True)
+        self.mirror.DynamicSolns += 2
 
         # Accout for damping
         Pmech = y2[1] - delta_w*self.Dt*self.Mbase
