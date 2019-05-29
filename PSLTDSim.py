@@ -47,6 +47,7 @@ batchList =[
     r".\testCases\miniWECCstepTS10.py",
     r".\testCases\miniWECCstepTS10.py",
     r".\testCases\miniWECCstepTS20.py",
+    r".\testCases\miniWECCcrash.py",
     r".\testCases\ee554noGovStepUp.py",
     r".\testCases\ee554noGovStepDown.py",
     r".\testCases\ee554noGovSteps.py",
@@ -59,7 +60,7 @@ batchList =[
 # Batch Run Variable Initialization
 case = 0
 failed = 0
-failedTestCase =[]
+failedTestCase = []
 crashedTestCase = []
 batchStart = time.time()
 
@@ -146,7 +147,7 @@ for testCase in batchList:
 
 # End of Batch Output
 batchTime = time.time() - batchStart
-print('\n*** Successfully Ran %d/%d Test Cases in %.2f seconds.' % (case-failed, 
+print('\n*** Successfully ran %d/%d Test Cases in %.2f seconds.' % (case-failed, 
                                                      len(batchList),
                                                      batchTime))
 

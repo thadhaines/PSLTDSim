@@ -11,7 +11,8 @@ simParams = {
     'timeStep': 2,
     'endTime': 90,
     'slackTol': 1,
-    'msgGroup' : 10,
+    'PY3msgGroup' : 3,
+    'IPYmsgGroup' : 60,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; 
     # Mathematical Options

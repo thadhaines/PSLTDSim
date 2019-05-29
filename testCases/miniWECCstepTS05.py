@@ -3,7 +3,7 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Format of batch inputs
+MiniWECC step of +1200 MW at t=2. ts = 0.5
 """
 
 # Simulation Parameters Dictionary
@@ -11,7 +11,8 @@ simParams = {
     'timeStep': 0.5,
     'endTime': 90,
     'slackTol': 1,
-    'msgGroup' : 10,
+    'PY3msgGroup' : 3,
+    'IPYmsgGroup' : 60,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; 
     # Mathematical Options

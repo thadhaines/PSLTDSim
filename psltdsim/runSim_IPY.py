@@ -38,11 +38,13 @@ def runSim_IPY(mirror, amqpAgent):
             mirror.simRun = False
             break;
 
+        """
         # send new values to PY3
         get_start = time.time()
         for agent in agentPSLFupdates:
             agent.getPvals()
             
+        # Using makeGroupMsg function to group agent msgs.
         make_start = time.time()
         machMsg = ltd.amqp.makeGroupMsg(mirror.Machines)
         busMsg = ltd.amqp.makeGroupMsg(mirror.Bus)
@@ -54,10 +56,43 @@ def runSim_IPY(mirror, amqpAgent):
         IPY.send('toPY3', loadMsg)
 
         send_end = time.time()
+
         mirror.IPYPvalsTime += make_start -get_start
         mirror.IPYmsgMake += send_start - make_start
         mirror.IPYSendTime += send_end-send_start
+
         sentMsgs +=3
+        """
+        # Using the msgGroup simParam and modulo to send messages
+        msgcounter = 0
+        msg = []
+        for agent in agentPSLFupdates:
+            # get new values from PSLF
+            get_start = time.time()
+            agent.getPvals()
+            mirror.IPYPvalsTime += time.time() -get_start
+            # append created AMQP msg to group message
+            make_start = time.time()
+            msg.append(agent.makeAMQPmsg())
+            mirror.IPYmsgMake += time.time() - make_start
+
+            msgcounter+=1
+
+            if (msgcounter % mirror.IPYmsgGroup) == 0:
+                # send message if group limit achieved
+                send_start = time.time()
+                IPY.send('toPY3', msg)
+                mirror.IPYSendTime += time.time()-send_start
+                sentMsgs +=1
+                msg = []
+
+        if len(msg) > 0:
+            # send any group remainder messages
+            send_start = time.time()
+            IPY.send('toPY3', msg)
+            mirror.IPYSendTime += time.time()-send_start
+            sentMsgs +=1
+        
 
         # send hand off of Sum Pe
         mirror.ss_Pe = ltd.mirror.sumPe(mirror)

@@ -54,18 +54,47 @@ def runSimPY3(mirror, amqpAgent):
             dynamicX.stepDynamics()
         mirror.DynamicTime += time.time()- dynamic_start
         
+
+        # Send AMQP message to IPY (3/23/19 covers dynamic changes)
+        """
+        # one shot method
         # set pe = pm (dynamic action)
         for machineX in mirror.Machines:
             machineX.Pe = machineX.Pm
-            # Send AMQP message to IPY (3/23/19 covers dynamic changes)
+
+            # non grouping method
             send_start = time.time()
             PY3.send('toIPY',machineX.makeAMQPmsg())
-            send_end = time.time()
-            mirror.PY3SendTime += send_end-send_start
+            mirror.PY3SendTime += time.time() -send_start
             mirror.PY3msgs+=1
-
-        #Using Grouping - seems to cause slow down...
         """
+        # grouping method
+        msgcounter = 0
+        msg = []
+        # set pe = pm (dynamic action)
+        for machineX in mirror.Machines:
+            machineX.Pe = machineX.Pm            
+            msg.append(machineX.makeAMQPmsg())
+            msgcounter+=1
+
+            if (msgcounter % mirror.PY3msgGroup) == 0:
+                # send message if group limit achieved
+                send_start = time.time()
+                PY3.send('toIPY', msg)
+                mirror.PY3SendTime += time.time()-send_start
+                mirror.PY3msgs +=1
+                msg = []
+
+        if len(msg) > 0:
+            # send any group remainder messages
+            send_start = time.time()
+            PY3.send('toIPY', msg)
+            mirror.PY3SendTime += time.time()-send_start
+            mirror.PY3msgs +=1
+        
+        
+        """
+        #Using Grouping - seems to cause slow down...
         # set pe = pm (dynamic action)
         for machineX in mirror.Machines:
             machineX.Pe = machineX.Pm

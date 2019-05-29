@@ -1,7 +1,7 @@
 def dispSimTandC(mir):
     """Display simulation timing and messages stats"""
     #NOTE: Handoff messages not included in message tally /send time
-    print('*** psltdsim.terminal.dispSimTandC(mirror)')
+    print('\n*** psltdsim.terminal.dispSimTandC(mirror)')
 
     print('{:<28}'.format("Simulation Timings"))
     print('{:>28}'.format("Total Simulation Time:") , '{:12f}'.format(mir.SimTime))

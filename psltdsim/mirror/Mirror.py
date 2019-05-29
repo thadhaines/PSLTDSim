@@ -34,13 +34,15 @@ class Mirror(object):
         # Simulation Parameters from User
         self.simParams = simParams
         self.locations = locations
+        self.debug = debug
+        self.AMQPdebug = AMQPdebug
         self.timeStep = simParams['timeStep']
         self.endTime = simParams['endTime']
         self.slackTol = simParams['slackTol']
         self.Hinput = simParams['Hsys']
         self.Dsys = simParams['Dsys']
-        self.debug = debug
-        self.AMQPdebug = AMQPdebug
+        self.IPYmsgGroup = simParams['IPYmsgGroup']
+        self.PY3msgGroup = simParams['PY3msgGroup']
         self.dataPoints = int(self.endTime//self.timeStep + 1) # add extra points here...
 
         # Simulation Variable Prefix Key
