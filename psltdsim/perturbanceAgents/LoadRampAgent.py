@@ -21,7 +21,10 @@ class LoadRampAgent(object):
         self.RBVal= float(perParams[6])
 
         self.RAslope = self.RAVal/self.RAtime*mirror.timeStep
-        if self.RBVal > 0:
+
+        if self.RBVal == 0:
+            self.RBslope = 0
+        else:
             self.RBslope = self.RBVal/self.RBtime*mirror.timeStep
 
         self.endTime = self.startTime+self.RAtime+self.holdTime+self.RBtime

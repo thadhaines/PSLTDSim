@@ -1,6 +1,6 @@
 def handoff(mirror,msg):
     """Handle PY3<->IPY handoff messages"""
-    compTol = 1E-4 # comparison tolerance to compare floats
+    compTol = 1E-3 # comparison tolerance to compare floats
     hType = msg['HandoffType']
 
     if hType == 'PY3toIPY':
