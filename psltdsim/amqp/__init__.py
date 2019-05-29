@@ -7,4 +7,3 @@ from .agentUpdate import agentUpdate
 from .endSim import endSim
 from .handoff import handoff
 from .sysCrash import sysCrash
-from .makeGroupMsg import makeGroupMsg

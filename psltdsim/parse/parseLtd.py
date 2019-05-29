@@ -29,7 +29,7 @@ def parseLtd(mirror,ltdLoc):
                 else:
                     idList = [cleanLine[1]]
 
-                ltd.mirror.addPerturbance(mirror, 
+                ltd.perturbance.addPerturbance(mirror, 
                                           cleanLine[0],
                                          idList,
                                          cleanLine[3],

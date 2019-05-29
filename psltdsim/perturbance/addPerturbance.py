@@ -21,7 +21,7 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
     #Create Perturbance Agent
     if (perType.lower() == 'step') and targetObj:
         # perParams = [targetAttr, tStart, newVal, type='r']
-        newStepAgent = ltd.perturbanceAgents.LoadStepAgent(mirror, targetObj, perParams)
+        newStepAgent = ltd.perturbance.StepAgent(mirror, targetObj, perParams)
         mirror.Perturbance.append(newStepAgent)
         print("*** Perturbance Agent added!")
         print(newStepAgent)
@@ -29,7 +29,7 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
 
     if (perType.lower() == 'ramp') and targetObj:
         # perParams = [targetAttr, tStart, RAtime, RAVal, holdTime, RBtime, RBVal]
-        newRampAgent = ltd.perturbanceAgents.LoadRampAgent(mirror, targetObj, perParams)
+        newRampAgent = ltd.perturbance.RampAgent(mirror, targetObj, perParams)
         mirror.Perturbance.append(newRampAgent)
         print("*** Perturbance Agent added!")
         print(newRampAgent)

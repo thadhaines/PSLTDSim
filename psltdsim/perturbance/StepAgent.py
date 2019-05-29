@@ -1,4 +1,4 @@
-class LoadStepAgent(object):
+class StepAgent(object):
     """Performs steps of P, Q, or St on Loads - calculates Perturbance deltas
     targetObj is a python mirror agent object reference
     perParams is a list: [targetAttr, tStart, pertVal]

@@ -1,7 +1,7 @@
 # This imports functions that will be available as psltdsim.mirror.*
 from .Mirror import Mirror
 
-from .addPerturbance import addPerturbance
+
 from .combinedSwing import combinedSwing
 from .distPacc import distPacc
 from .findGlobalSlack import findGlobalSlack

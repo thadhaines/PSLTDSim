@@ -32,7 +32,7 @@ elif test_case == 3:
 elif test_case == 4:
     savPath = r"C:\LTD\pslf_systems\GE_ex\g4_a1.sav"
     dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",
-               r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd", #pgov1 on slacks
+               r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd",
                ]
 elif test_case == 5: # testing of ggov casting
     savPath = r"C:\LTD\pslf_systems\eele554\ggov1\ee554.sav"
@@ -45,8 +45,7 @@ batchList =[
     #r".\testCases\miniWECCstepTS02.py",
     #r".\testCases\miniWECCstepTS05.py",
     #r".\testCases\miniWECCstepTS10.py",
-    #r".\testCases\miniWECCstepTS10.py",
-    r".\testCases\miniWECCstepTS20.py",
+    #r".\testCases\miniWECCstepTS20.py",
     #r".\testCases\miniWECCcrash.py",
     #r".\testCases\ee554noGovStepUp.py",
     #r".\testCases\ee554noGovStepDown.py",
@@ -58,10 +57,14 @@ batchList =[
     #r".\testCases\miniWECCstepGroupA.py",
     #r".\testCases\miniWECCstepGroupB.py",
     #r".\testCases\miniWECCstepGroupC.py",
-
+    r".\testCases\ge4LoadStep.py",
             ]
 
 # Batch Run Variable Initialization
+dispResults = True
+dispTiming = True
+makePlot = True
+
 case = 0
 failed = 0
 failedTestCase = []
@@ -144,10 +147,13 @@ for testCase in batchList:
         crashedTestCase.append(testCase)
 
     # Additional optional post simulation outputs
-    #ltd.terminal.dispSimResults(mir)
-    ltd.terminal.dispSimTandC(mir)
-    #ltd.plot.allPmDynamics(mir)
-    #ltd.plot.sysPePmFLoad(mir)
+    if dispResults:
+        ltd.terminal.dispSimResults(mir)
+    if dispTiming:
+        ltd.terminal.dispSimTandC(mir)    
+    if makePlot:
+        ltd.plot.sysPePmFLoad(mir)
+        #ltd.plot.allPmDynamics(mir)
 
 # End of Batch Output
 batchTime = time.time() - batchStart

@@ -21,7 +21,9 @@ def sysPePmFLoad(mirror, blkFlag=True):
                  label = 'Pe Gen '+ mach.Busnam)
     ax[0].set_xlabel('Time [sec]')
     ax[0].set_ylabel('MW')
-    ax[0].legend()
+    if len(mir.Machines) < 5:
+        # only make legend for smallish systems
+        ax[0].legend()
 
     ax[1].set_title('System Mean Frequency and P Load')
     freq = ax[1].plot(mir.r_t, mir.r_f,

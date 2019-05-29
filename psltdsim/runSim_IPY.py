@@ -38,31 +38,6 @@ def runSim_IPY(mirror, amqpAgent):
             mirror.simRun = False
             break;
 
-        """
-        # send new values to PY3
-        get_start = time.time()
-        for agent in agentPSLFupdates:
-            agent.getPvals()
-            
-        # Using makeGroupMsg function to group agent msgs.
-        make_start = time.time()
-        machMsg = ltd.amqp.makeGroupMsg(mirror.Machines)
-        busMsg = ltd.amqp.makeGroupMsg(mirror.Bus)
-        loadMsg = ltd.amqp.makeGroupMsg(mirror.Load)
-
-        send_start = time.time()
-        IPY.send('toPY3', machMsg)
-        IPY.send('toPY3', busMsg)
-        IPY.send('toPY3', loadMsg)
-
-        send_end = time.time()
-
-        mirror.IPYPvalsTime += make_start -get_start
-        mirror.IPYmsgMake += send_start - make_start
-        mirror.IPYSendTime += send_end-send_start
-
-        sentMsgs +=3
-        """
         # Using the msgGroup simParam and modulo to send messages
         msgcounter = 0
         msg = []

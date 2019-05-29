@@ -5,7 +5,7 @@ def dispSimTandC(mir):
 
     print('{:<28}'.format("Simulation Timings"))
     print('{:>28}'.format("Total Simulation Time:") , '{:12f}'.format(mir.SimTime))
-    print('{:>28}'.format("PY3 IPV CPU Time:") , '{:12f}'.format(mir.IVPTime))
+    print('{:>28}'.format("PY3 IVP CPU Time:") , '{:12f}'.format(mir.IVPTime))
     print('{:>28}'.format("PY3 Dynamics CPU Time:") , '{:12f}'.format(mir.DynamicTime))
     print('{:>28}'.format("PY3 Message Send Time:") ,'{:12f}'.format(mir.PY3SendTime))
     print('{:>28}'.format("PY3 Agent Find Time:") ,'{:12f}'.format(mir.FindTime))

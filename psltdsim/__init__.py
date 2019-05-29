@@ -3,7 +3,7 @@ from . import data
 from . import dynamicAgents
 from . import find
 from . import mirror
-from . import perturbanceAgents
+from . import perturbance
 from . import pslfModels
 from . import systemAgents
 from . import terminal

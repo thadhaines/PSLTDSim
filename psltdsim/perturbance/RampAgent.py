@@ -1,4 +1,4 @@
-class LoadRampAgent(object):
+class RampAgent(object):
     """Performs ramps of P (maybe Q) on Loads - calculates Perturbance deltas
     targetObj is a python mirror agent object reference
     perParams is a list: 
@@ -49,14 +49,15 @@ class LoadRampAgent(object):
         return(tag1+tag2)
 
     def step(self):
-        """Function called every timestep - takes action only once"""
+        """Function called every timestep"""
         if self.ProcessFlag:
             if self.mirror.c_t < self.startTime:
-                # acts as a pass
+                # acts as a `wait until action'
                 return 0
 
             if self.mirror.c_t > self.startTime:
                 if self.mirror.c_t > self.endTime:
+                    # turn off action
                     self.ProcessFlag = 0
                     return 0
 
@@ -72,12 +73,12 @@ class LoadRampAgent(object):
                 if self.attr.lower() == 'p':
                     oldVal = self.mObj.P
                     self.mObj.P += increment
-                    self.mirror.ss_Pert_Pdelta += increment #self.mObj.P - oldVal
+                    self.mirror.ss_Pert_Pdelta += increment
 
                 elif self.attr.lower() == 'q':
                     oldVal = self.mObj.Q
                     self.mObj.Q += increment
-                    mirror.ss_Pert_Qdelta += increment #self.pertVal - oldVal
+                    mirror.ss_Pert_Qdelta += increment
 
                 if self.mirror.debug:
                     # TODO: Make this output more informative
