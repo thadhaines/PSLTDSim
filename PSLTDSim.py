@@ -42,19 +42,23 @@ elif test_case == 5: # testing of ggov casting
 
 # List of simulation parameter .py files:
 batchList =[
-    r".\testCases\miniWECCstepTS02.py",
-    r".\testCases\miniWECCstepTS05.py",
-    r".\testCases\miniWECCstepTS10.py",
-    r".\testCases\miniWECCstepTS10.py",
+    #r".\testCases\miniWECCstepTS02.py",
+    #r".\testCases\miniWECCstepTS05.py",
+    #r".\testCases\miniWECCstepTS10.py",
+    #r".\testCases\miniWECCstepTS10.py",
     r".\testCases\miniWECCstepTS20.py",
-    r".\testCases\miniWECCcrash.py",
-    r".\testCases\ee554noGovStepUp.py",
-    r".\testCases\ee554noGovStepDown.py",
-    r".\testCases\ee554noGovSteps.py",
-    r".\testCases\ee5541GovSteps.py",
-    r".\testCases\ee5542GovSteps.py",
-    r".\testCases\ee5541GovRamp.py",
-    r".\testCases\microWECCstep.py",
+    #r".\testCases\miniWECCcrash.py",
+    #r".\testCases\ee554noGovStepUp.py",
+    #r".\testCases\ee554noGovStepDown.py",
+    #r".\testCases\ee554noGovSteps.py",
+    #r".\testCases\ee5541GovSteps.py",
+    #r".\testCases\ee5542GovSteps.py",
+    #r".\testCases\ee5541GovRamp.py",
+    #r".\testCases\microWECCstep.py",
+    #r".\testCases\miniWECCstepGroupA.py",
+    #r".\testCases\miniWECCstepGroupB.py",
+    #r".\testCases\miniWECCstepGroupC.py",
+
             ]
 
 # Batch Run Variable Initialization
@@ -85,9 +89,9 @@ for testCase in batchList:
             print('File does not exist: ' + fileLoc)
             failedTestCase.append( testCase + '\nFile does not exist: ' + fileLoc)
             fail = True
-            failed += 1
 
     if fail:
+        failed += 1
         continue
     
     # Required Paths Dictionary

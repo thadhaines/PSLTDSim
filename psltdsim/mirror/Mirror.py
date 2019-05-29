@@ -17,11 +17,7 @@ class Mirror(object):
         self.SimTime = 0.0
         self.IVPTime = 0.0
         self.DynamicTime = 0.0
-        self.DynamicSolns = 0
         self.PFTime = 0.0
-        self.PFSolns = 0
-        self.PY3msgs = 0
-        self.IPYmsgs = 0
         self.IPYmsgMake = 0.0
         self.IPYSendTime = 0.0
         self.IPYdistPaccTime = 0.0
@@ -30,6 +26,11 @@ class Mirror(object):
         self.PY3RecTime = 0.0
         self.FindTime = 0.0
         self.IPYFindTime = 0.0
+        # Solution Counters
+        self.DynamicSolns = 0
+        self.PFSolns = 0
+        self.PY3msgs = 0
+        self.IPYmsgs = 0
 
         # Simulation Parameters from User
         self.simParams = simParams

@@ -26,6 +26,6 @@ simParams = {
     'exportDict' : 0, # when using python 3 no need to export dicts.
     }
 
-savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc1Gov.dyd"]
-ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
+savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
+dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.exc1Gov.dyd"]
+ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.steps.ltd"]
