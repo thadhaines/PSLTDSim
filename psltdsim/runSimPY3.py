@@ -90,8 +90,7 @@ def runSimPY3(mirror, amqpAgent):
                 #if perturbance takes action, upday IPY
                 send_start = time.time()
                 PY3.send('toIPY', pertX.mObj.makeAMQPmsg())
-                send_end = time.time()
-                mirror.PY3SendTime += send_end-send_start
+                mirror.PY3SendTime += time.time() -send_start
                 mirror.PY3msgs+=1
 
         # Sum system loads to Account for any load changes from Perturbances

@@ -52,8 +52,14 @@ batchList =[
     #r".\testCases\ee554noGovSteps.py",
     #r".\testCases\ee5541GovSteps.py",
     #r".\testCases\ee5542GovSteps.py",
-    #r".\testCases\ee5541GovRamp.py",
-    r".\testCases\ee554PsetStep.py", # also ramps
+    #r".\testCases\ee5541GovRampARel.py",
+    #r".\testCases\ee5541GovRampAPer.py",
+    #r".\testCases\ee5541GovRampAAbs.py",
+    #r".\testCases\ee5541GovRampsPer.py",
+    #r".\testCases\ee5541GovRampsAbs.py",
+    r".\testCases\ee5541GovRampsGens.py",
+    #r".\testCases\ee554PsetStep.py", # also ramps
+    #r".\testCases\ee554PmStep.py",
     #r".\testCases\microWECCstep.py",
     #r".\testCases\miniWECCstepGroupA.py",
     #r".\testCases\miniWECCstepGroupB.py",

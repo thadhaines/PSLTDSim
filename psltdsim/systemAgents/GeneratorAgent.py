@@ -80,6 +80,7 @@ class GeneratorAgent(object):
                'Id': self.Id,
                'Pe': self.Pe,
                'Pm': self.Pm,
+               'Pset' : self.Pset,
                'Q': self.Q,
                'St':self.St,
                }
@@ -89,6 +90,7 @@ class GeneratorAgent(object):
         """Set message values to agent values"""
         self.Pe = msg['Pe']
         self.Pm = msg['Pm']
+        self.Pset = msg['Pset']
         self.Q = msg['Q']
         self.St = msg['St']
         if self.mirror.AMQPdebug: 

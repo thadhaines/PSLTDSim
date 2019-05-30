@@ -20,6 +20,7 @@ class SlackAgent(GeneratorAgent):
                'Id': self.Id,
                'Pe': self.Pe,
                'Pm': self.Pm,
+               'Pset' : self.Pset,
                'Q': self.Q,
                'St':self.St,
                'Pe_calc':self.Pe_calc,
@@ -31,6 +32,7 @@ class SlackAgent(GeneratorAgent):
         """Set message values to agent values"""
         self.Pe = msg['Pe']
         self.Pm = msg['Pm']
+        self.Pset = msg['Pset']
         self.Q = msg['Q']
         self.St = msg['St']
         self.Pe_calc = msg['Pe_calc']

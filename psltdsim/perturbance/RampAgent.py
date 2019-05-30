@@ -6,26 +6,45 @@ class RampAgent(object):
     Updated to NOT save any PSLF objects attached to self.
     """
 
-    def __init__(self, mirror, targetObj, perParams):
+    def __init__(self, mirror, targetObj, tarType, perParams):
         self.ProcessFlag = 1
 
         self.mirror = mirror
         self.mObj = targetObj
+        if len(perParams) < 5:
+            perParams.append('rel')
+        if len(perParams) < 6:
+            short = 9-len(perParams)
+            for x in range(short):
+                perParams.append(0.0)
+            perParams[8] = 'none'
+        if len(perParams) < 9:
+            perParams.append('rel')
 
-        self.attr = perParams[0]
+        self.attr = perParams[0].lower()
         self.startTime = float(perParams[1])
         self.RAtime = float(perParams[2])
         self.RAVal = float(perParams[3])
-        self.holdTime= float(perParams[4])
-        self.RBtime= float(perParams[5])
-        self.RBVal= float(perParams[6])
+        self.RAtype = perParams[4].lower()
+        self.holdTime= float(perParams[5])
+        self.RBtime= float(perParams[6])
+        self.RBVal= float(perParams[7])
+        self.RBtype = perParams[8].lower()
 
-        self.RAslope = self.RAVal/self.RAtime*mirror.timeStep
+        if self.holdTime == 0:
+            self.holdTime = self.mirror.endTime
 
-        if self.RBVal == 0:
-            self.RBslope = 0
+        # calculate relative ramp slope increment based of rel ramp type
+        if self.RAtype == 'rel':
+            self.RAslope = self.RAVal/self.RAtime*mirror.timeStep
         else:
+            self.RAslope = None # must calculate absolute and % change base off current sim values
+
+        # calculate ramp B slope if required
+        if self.RBtype == 'rel':
             self.RBslope = self.RBVal/self.RBtime*mirror.timeStep
+        else:
+            self.RBslope = None # must calculate absolute and % change base off current sim values
 
         self.endTime = self.startTime+self.RAtime+self.holdTime+self.RBtime
 
@@ -37,12 +56,14 @@ class RampAgent(object):
         tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "Ramping %s on Bus %d at time %.2f by %.2f then by %.2f at %.2f" %(
+        tag2 = "Ramping %s on Bus %d at time %.2f by %.2f %s then by %.2f %s at time %.2f" %(
             self.attr,
             self.mObj.Bus.Extnum,
             self.startTime,
             self.RAVal,
+            self.RAtype,
             self.RBVal,
+            self.RBtype,
             self.startTime+self.RAtime+self.holdTime,
             )
 
@@ -55,36 +76,67 @@ class RampAgent(object):
                 # acts as a `wait until action'
                 return 0
 
-            if self.mirror.c_t > self.startTime:
+            if self.mirror.c_t >= self.startTime:
                 if self.mirror.c_t > self.endTime:
                     # turn off action
                     self.ProcessFlag = 0
                     return 0
-
+                
                 # Select correct ramp incremenct
-                if self.mirror.c_t <= (self.startTime + self.RAtime):
-                    increment = self.RAslope
+                if self.mirror.c_t < (self.startTime + self.RAtime):
+                    # process ramp A
+
+                    # calculate increments for percent and absolute if not calculated yet
+                    if not self.RAslope:
+                        curVal = ltd.perturbance.getCurrentVal(self.mObj, self.attr)
+                        # calculate perent change
+                        if self.RAtype == 'per':
+                            newVal = curVal*(1+self.RAVal/100.00)
+                            self.RAslope = (newVal-curVal)/self.RAtime*self.mirror.timeStep
+                        # calculate absolute change slope
+                        if self.RAtype == 'abs':
+                            self.RAslope = (self.RAVal - curVal)/self.RAtime*self.mirror.timeStep
+
+                    self.increment = self.RAslope
                 elif self.mirror.c_t > (self.startTime + self.RAtime + self.holdTime):
-                    increment = self.RBslope
+                    # process ramp B
+                    if not self.RBslope and self.RBVal == 0:
+                        #handle no ramp B case
+                        self.RBslope = 0
+                    if not self.RBslope:
+                        curVal = ltd.perturbance.getCurrentVal(self.mObj, self.attr)
+                        # calculate perent change
+                        if self.RBtype == 'per':
+                            newVal = curVal*(1+self.RBVal/100.00)
+                            self.RBslope = (newVal-curVal)/self.RBtime*self.mirror.timeStep
+                        # calculate absolute change slope
+                        if self.RBtype == 'abs':
+                            self.RBslope = (self.RBVal - curVal)/self.RBtime*self.mirror.timeStep
+
+                    self.increment = self.RBslope
                 else:
-                    increment = 0
+                    self.increment = 0
 
                 # Update correct attribute 
-                if self.attr.lower() == 'p':
+                if self.attr == 'p':
                     oldVal = self.mObj.P
-                    self.mObj.P += increment
-                    self.mirror.ss_Pert_Pdelta += increment
+                    self.mObj.P += self.increment
+                    self.mirror.ss_Pert_Pdelta += self.increment
 
-                elif self.attr.lower() == 'q':
+                elif self.attr == 'q':
                     oldVal = self.mObj.Q
-                    self.mObj.Q += increment
-                    mirror.ss_Pert_Qdelta += increment
+                    self.mObj.Q += self.increment
+                    mirror.ss_Pert_Qdelta += self.increment
 
-                elif self.attr.lower() == 'pset':
+                elif self.attr == 'pset':
                     oldVal = self.mObj.Pset
-                    self.mObj.Pset += increment
+                    self.mObj.Pset += self.increment
+
+                elif self.attr == 'pm':
+                    oldVal = self.mObj.Pm
+                    self.mObj.Pm += self.increment
 
                 if self.mirror.debug:
-                    # TODO: Make this output more informative
+                    # TODO: Make this output more informative?
                     print(self)
                 return 1

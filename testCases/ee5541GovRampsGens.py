@@ -9,7 +9,7 @@ Ramp test in 3 bus 2 machine system with one gov on slack.
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 33,
+    'endTime': 60,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -20,7 +20,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\ee554Ramp\\", # relative path from cwd
-    'fileName' : 'ee5541GovRamp',
+    'fileName' : 'ee5541GovRampsGens',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -28,4 +28,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
 dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.exc1Gov.dyd"]
-ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.ramp.ltd"]
+ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.rampsGens.ltd"]
