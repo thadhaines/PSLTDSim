@@ -50,6 +50,7 @@ class StepAgent(object):
 
                 # Update correct attribute 
                 if self.attr.lower() == 'st':
+                    #TODO: handle different actions for each agent type...
                     if self.pertVal == 1:
                         mObj.St = 1
                         self.mirror.ss_Pert_Pdelta += mObj.P
@@ -72,6 +73,13 @@ class StepAgent(object):
                     oldVal = self.mObj.Q
                     self.mObj.Q = self.pertVal
                     mirror.ss_Pert_Qdelta += self.pertVal - oldVal
+
+                elif self.attr.lower() == 'pset':
+                    oldVal = self.mObj.Pset
+                    if self.stepType.lower() == 'rel':
+                        self.mObj.Pset += self.pertVal # relative step
+                    else:
+                        self.mObj.Pset = self.pertVal # absolute step
 
                 self.ProcessFlag = 0
                 if self.mirror.debug:

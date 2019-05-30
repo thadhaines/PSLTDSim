@@ -80,6 +80,10 @@ class RampAgent(object):
                     self.mObj.Q += increment
                     mirror.ss_Pert_Qdelta += increment
 
+                elif self.attr.lower() == 'pset':
+                    oldVal = self.mObj.Pset
+                    self.mObj.Pset += increment
+
                 if self.mirror.debug:
                     # TODO: Make this output more informative
                     print(self)

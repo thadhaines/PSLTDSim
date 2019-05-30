@@ -38,13 +38,13 @@ def sysPePmFLoad(mirror, blkFlag=True):
     ax = np.append(ax, ax[1].twinx())
 
     loadCol = 'tab:blue'
-    pload = ax[2].plot(mir.r_t, np.array(mir.r_ss_Pload)/mir.Sbase, 
+    pload = ax[2].plot(mir.r_t, mir.r_ss_Pload, 
                 marker = 11,
                 color = loadCol,
                 #fillstyle='none',
                 linestyle = ':',
                 label = 'System P Load')
-    ax[2].set_ylabel('MW [PU]', color = loadCol)
+    ax[2].set_ylabel('MW', color = loadCol)
     ax[2].tick_params(axis='y', labelcolor = loadCol)
 
     lines = freq+pload

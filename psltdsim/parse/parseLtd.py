@@ -18,7 +18,7 @@ def parseLtd(mirror,ltdLoc):
             parts = line.split()
 
             # send line to correct function based on line
-            if parts[0] == "load":
+            if parts[0].lower() == "load" or "gen":
                 if mirror.debug:
                     print("*** Creating %s Perturbance..." % parts[0])
                 cleanLine = ltd.parse.cleanLtdStr(line)

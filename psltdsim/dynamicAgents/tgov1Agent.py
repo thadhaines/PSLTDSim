@@ -10,7 +10,7 @@ class tgov1Agent():
         self.mirror = mirror
         self.PSFLgov = PSLFgov
         self.Gen = PSLFgov.Gen
-        self.Pref = self.Gen.Pe
+        self.Pref = self.Gen.Pset
 
         self.appenedData = True
 
@@ -43,10 +43,11 @@ class tgov1Agent():
                   % (self.Busnum,self.Busnam))
 
     def stepDynamics(self):
-        """ Perform steam governor control"""
+        """ Perform governor control"""
+        self.Pref = self.Gen.Pset # get newest set value.
+
         # Create system inputs
         delta_w = 1.0-self.mirror.c_f
-
         PrefVec = np.array([self.Pref,self.Pref])
         dwVec = np.array([delta_w,delta_w])/self.R*self.Mbase
 

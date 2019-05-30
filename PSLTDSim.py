@@ -53,15 +53,16 @@ batchList =[
     #r".\testCases\ee5541GovSteps.py",
     #r".\testCases\ee5542GovSteps.py",
     #r".\testCases\ee5541GovRamp.py",
+    r".\testCases\ee554PsetStep.py", # also ramps
     #r".\testCases\microWECCstep.py",
     #r".\testCases\miniWECCstepGroupA.py",
     #r".\testCases\miniWECCstepGroupB.py",
     #r".\testCases\miniWECCstepGroupC.py",
-    r".\testCases\ge4LoadStep.py",
+    #r".\testCases\ge4LoadStep.py",
             ]
 
 # Batch Run Variable Initialization
-dispResults = True
+dispResults = False
 dispTiming = True
 makePlot = True
 
@@ -70,6 +71,7 @@ failed = 0
 failedTestCase = []
 crashedTestCase = []
 batchStart = time.time()
+waitTime = 0.0
 
 for testCase in batchList:
     fail = False
@@ -152,11 +154,14 @@ for testCase in batchList:
     if dispTiming:
         ltd.terminal.dispSimTandC(mir)    
     if makePlot:
+        wait_start = time.time()
+        print('\n*** Waiting for plot to close...')
         ltd.plot.sysPePmFLoad(mir)
+        waitTime += time.time() - wait_start
         #ltd.plot.allPmDynamics(mir)
 
 # End of Batch Output
-batchTime = time.time() - batchStart
+batchTime = time.time() - batchStart - waitTime
 print('\n*** Successfully ran %d/%d Test Cases in %.2f seconds.' % (case-failed, 
                                                      len(batchList),
                                                      batchTime))
