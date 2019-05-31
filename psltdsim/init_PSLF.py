@@ -1,4 +1,4 @@
-def init_PSLF(locations):
+def init_PSLF(locations, loadDyd = True):
     """Import PSLF libraries and Creation of global PSLF object
     IPY specific imports done inside function so MIRROR can be 
     used in PY3 and IPY
@@ -25,16 +25,17 @@ def init_PSLF(locations):
     if load_test == 0:
         print("*** " + locations['savPath'] + " Successfully loaded.")
 
-        # load all dynamics into pslf
-        for dyd in locations['dydPath']:
-            dyd_test = __builtin__.PSLF.LoadDynamics(dyd)
+        # load dynamics into pslf
+        if loadDyd:
+            for dyd in locations['dydPath']:
+                dyd_test = __builtin__.PSLF.LoadDynamics(dyd)
 
-            if dyd_test == 0:
-                print("*** " + dyd + " Successfully loaded.")
-            else:
-                print("Failure to load .dyd")
-                print("Error code: %d" % dyd_test)
-                raise SystemExit(0)
+                if dyd_test == 0:
+                    print("*** " + dyd + " Successfully loaded.")
+                else:
+                    print("Failure to load .dyd")
+                    print("Error code: %d" % dyd_test)
+                    raise SystemExit(0)
     else:
         print("Failure to load .sav")
         print("Error code: %d" % load_test)

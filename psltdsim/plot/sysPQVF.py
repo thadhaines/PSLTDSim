@@ -29,12 +29,12 @@ def sysPQVF(mirror, blkFlag=True):
     ax[0][1].set_ylabel('MVAR')
 
     ax[1][0].set_title('Generator Bus Voltage Magnitude')
-    for gen in mir.Machines:
-        ax[1][0].plot(mir.r_t, mach.Bus.r_Vm, 
+    for bus in mir.Bus:
+        ax[1][0].plot(mir.r_t, bus.r_Vm, 
                     marker = 10,
                     fillstyle='none',
                     linestyle = ':',
-                    label = 'Gen Bus '+ mach.Busnam)
+                    label = 'Bus '+ mach.Busnam)
     ax[1][0].set_xlabel('Time [sec]')
     ax[1][0].set_ylabel('Voltage [PU]')
 

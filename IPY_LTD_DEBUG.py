@@ -49,7 +49,7 @@ simParams = {
     }
 
 # Fast debug case switching
-test_case = 2 #'tGovRamp'
+test_case = 3 #'tGovRamp'
 if test_case == 0:
     savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.excNoGov.dyd"]
@@ -67,8 +67,8 @@ elif test_case == 2:
     dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
 elif test_case == 3:
     # Will no longer run due to parser errors
-    savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
-    dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
+    savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a.sav"
+    dydPath = [r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1.dyd"]
 elif test_case == 4:
     savPath = r"C:\LTD\pslf_systems\GE_ex\g4_a1.sav"
     dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",
@@ -93,6 +93,7 @@ del savPath, dydPath
 ### Start Simulation functions calls
 ltd.init_PSLF(locations)
 
+"""
 # mirror arguments: locations, simParams, debug flag
 initStart = time.time()
 mir = ltd.mirror.Mirror(locations, simParams, simNotes, debug)
@@ -120,8 +121,9 @@ if simParams['exportDict']:
 
     d = ltd.data.loadMirrorDictionary(dictPath)
     #print('debug for dictionary saving loading')
-    
-    """
+
+"""
+
     # Change current working directory to data destination.
     cwd = os.getcwd()
     if simParams['fileDirectory'] :
@@ -140,9 +142,10 @@ if simParams['exportDict']:
         matProc = subprocess.Popen(cmd)
         matReturnCode = matProc.wait()
         matProc.send_signal(signal.SIGTERM)
-    """
-
 """
+"""
+
+
 ## update to make mat using python 3.6
 if simParams['fileDirectory']:
         cwd = os.getcwd()
