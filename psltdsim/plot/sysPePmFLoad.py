@@ -7,23 +7,45 @@ def sysPePmFLoad(mirror, blkFlag=True):
     xend = max(mir.r_t)
 
     fig, ax = plt.subplots(nrows=2, ncols=1,)
+    
 
-    ax[0].set_title('Generator Power Distriubtion')
-    for mach in mir.Machines:
-        ax[0].plot(mir.r_t, mach.r_Pm, 
-                 marker = 10,
-                 fillstyle='none',
-                 linestyle = ':',
-                 label = 'Pm Gen '+ mach.Busnam)
-        ax[0].plot(mir.r_t, mach.r_Pe, 
-                 marker = 11,
-                 linestyle = ':',
-                 label = 'Pe Gen '+ mach.Busnam)
-    ax[0].set_xlabel('Time [sec]')
-    ax[0].set_ylabel('MW')
     if len(mir.Machines) < 5:
+        normalizeFlag = False
+    else:
+        legendFlag = False
+        normalizeFlag = True
+
+    if len(mir.Machines) <10:
+        legendFlag = True
+ 
+    if normalizeFlag:
+        ax[0].set_title('Normalized Generator Electrical Power Change')
+        for mach in mir.Machines:
+            ax[0].plot(mir.r_t, (np.array(mach.r_Pe)/mach.r_Pe[0]-1)*100.00, 
+                     marker = 11,
+                     linestyle = ':',
+                     label = 'Pe Gen '+ mach.Busnam)
+        ax[0].set_ylabel('% MW Change')
+                     
+    else:
+        ax[0].set_title('Generator Power Distriubtion')
+        for mach in mir.Machines:
+            ax[0].plot(mir.r_t, mach.r_Pm, 
+                     marker = 10,
+                     fillstyle='none',
+                     linestyle = ':',
+                     label = 'Pm Gen '+ mach.Busnam)
+            ax[0].plot(mir.r_t, mach.r_Pe, 
+                     marker = 11,
+                     linestyle = ':',
+                     label = 'Pe Gen '+ mach.Busnam)
+        ax[0].set_ylabel('MW')
+
+    ax[0].set_xlabel('Time [sec]')
+
+    if legendFlag:
         # only make legend for smallish systems
-        ax[0].legend()
+        ax[0].legend(loc=1)
 
     ax[1].set_title('System Mean Frequency and P Load')
     freq = ax[1].plot(mir.r_t, mir.r_f,
@@ -59,3 +81,6 @@ def sysPePmFLoad(mirror, blkFlag=True):
     fig.tight_layout()
 
     plt.show(block = blkFlag)
+
+    if not blkFlag:
+        plt.pause(0.00001) # required for true non-blocking print...

@@ -57,10 +57,10 @@ batchList =[
     #r".\testCases\ee5541GovRampAAbs.py",
     #r".\testCases\ee5541GovRampsPer.py",
     #r".\testCases\ee5541GovRampsAbs.py",
-    r".\testCases\ee5541GovRampsGens.py",
-    #r".\testCases\ee554PsetStep.py", # also ramps
+    #r".\testCases\ee5541GovRampsGens.py",
+    #r".\testCases\ee554PsetStep.py", # kinda sucks
     #r".\testCases\ee554PmStep.py",
-    #r".\testCases\microWECCstep.py",
+    r".\testCases\microWECCstep.py",
     #r".\testCases\miniWECCstepGroupA.py",
     #r".\testCases\miniWECCstepGroupB.py",
     #r".\testCases\miniWECCstepGroupC.py",
@@ -90,9 +90,9 @@ for testCase in batchList:
     #debug = 1
     #AMQPdebug = 1
 
-    print('*** Case %d/%d' % (case, len(batchList)))
-
-    print('*** Checking simulation files...')
+    print('*** Case {}/{}'.format(case, len(batchList)))
+    print('*** %s' % testCase)
+    print('\n*** Checking simulation files...')
     userFiles = [savPath] + dydPath + ltdPath
     for fileLoc in (userFiles):
         if not os.path.isfile(fileLoc):
@@ -100,7 +100,6 @@ for testCase in batchList:
             print('File does not exist: ' + fileLoc)
             failedTestCase.append( testCase + '\nFile does not exist: ' + fileLoc)
             fail = True
-
     if fail:
         failed += 1
         continue
@@ -160,11 +159,14 @@ for testCase in batchList:
     if dispTiming:
         ltd.terminal.dispSimTandC(mir)    
     if makePlot:
-        wait_start = time.time()
-        print('\n*** Waiting for plot to close...')
-        ltd.plot.sysPePmFLoad(mir)
-        waitTime += time.time() - wait_start
-        #ltd.plot.allPmDynamics(mir)
+        # only hold for last plot
+        if case == len(batchList):
+            wait_start = time.time()
+            print('\n*** Waiting for plot to close...')
+            ltd.plot.sysPePmFLoad(mir, True)
+            waitTime += time.time() - wait_start
+        else:
+            ltd.plot.sysPePmFLoad(mir ,False)
 
 # End of Batch Output
 batchTime = time.time() - batchStart - waitTime

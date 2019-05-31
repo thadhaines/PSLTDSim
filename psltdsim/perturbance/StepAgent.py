@@ -2,7 +2,7 @@ class StepAgent(object):
     """Performs steps of parameters in targetObj (mirror agent object reference)
     perParams is a list: [targetAttr, tStart, pertVal, pertType]
     If perType is empy - assumed to be absolute change
-    Loads can step: P, Q, or St - Perturbance deltas are caluclated
+    Loads can step: P, Q, or St (Perturbance deltas are caluclated)
     """
 
     def __init__(self, mirror, targetObj, tarType, perParams):

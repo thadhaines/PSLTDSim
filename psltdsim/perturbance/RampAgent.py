@@ -1,9 +1,11 @@
 class RampAgent(object):
-    """Performs ramps of P (maybe Q) on Loads - calculates Perturbance deltas
+    """Performs absolute, percent change, and relative ramps of:
+    P or Q on Loads (calculates Perturbance deltas for system mirror)
+    Pset on Governed machines 
+    Pm for non governed machines
     targetObj is a python mirror agent object reference
     perParams is a list: 
     [targetAttr, tStart, RAtime, RAVal, holdTime, RBtime, RBVal]
-    Updated to NOT save any PSLF objects attached to self.
     """
 
     def __init__(self, mirror, targetObj, tarType, perParams):
@@ -56,16 +58,25 @@ class RampAgent(object):
         tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "Ramping %s on Bus %d at time %.2f by %.2f %s then by %.2f %s at time %.2f" %(
-            self.attr,
-            self.mObj.Bus.Extnum,
-            self.startTime,
-            self.RAVal,
-            self.RAtype,
-            self.RBVal,
-            self.RBtype,
-            self.startTime+self.RAtime+self.holdTime,
-            )
+        if self.RBVal == 0 or None:
+            tag2 = "Ramping %s on Bus %d at time %.2f by %.2f %s" %(
+                self.attr,
+                self.mObj.Bus.Extnum,
+                self.startTime,
+                self.RAVal,
+                self.RAtype,
+                )
+        else:
+            tag2 = "Ramping %s on Bus %d at time %.2f by %.2f %s then by %.2f %s at time %.2f" %(
+                self.attr,
+                self.mObj.Bus.Extnum,
+                self.startTime,
+                self.RAVal,
+                self.RAtype,
+                self.RBVal,
+                self.RBtype,
+                self.startTime+self.RAtime+self.holdTime,
+                )
 
         return(tag1+tag2)
 
@@ -137,6 +148,6 @@ class RampAgent(object):
                     self.mObj.Pm += self.increment
 
                 if self.mirror.debug:
-                    # TODO: Make this output more informative?
+                    # TODO: Make this output more informative or remove?
                     print(self)
                 return 1
