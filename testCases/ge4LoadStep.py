@@ -4,6 +4,7 @@ AMQPdebug = 0
 
 simNotes = """
 Step load in mulit area GE 4 machine system. Tgov1 on all machines.
+Damping added - system probably too transient for LTD simulation
 """
 
 # Simulation Parameters Dictionary

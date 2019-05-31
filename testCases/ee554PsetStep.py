@@ -3,11 +3,8 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Change the non-slack governed generator Pset point to -2 MW relative (48) at t=2
-* Only goest to 49 -> governor action keeps gens on droop curve for both gens
-* Ramp of other gen added to return f->1.
-
-Adding a load ref might allow this to work the way you'd think...
+Ramp two psets to new and equal values with a 2 second offset between start times.
+Shows minor f changes 
 """
 
 # Simulation Parameters Dictionary
