@@ -69,12 +69,15 @@ batchList =[
     #r".\testCases\kundurLoadRamp1.py",
     #r".\testCases\kundurLoadRamp2.py",
     #r".\testCases\kundurLoadRamp3.py",
-    #r".\testCases\kundurLoadStep2a.py",
-    r".\testCases\kundurLoadStep2as.py",
-    #r".\testCases\kundurLoadStep0.py",
-    #r".\testCases\kundurLoadStep1.py",
-    r".\testCases\kundurLoadStep2.py",
-    #r".\testCases\kundurLoadStep3.py",
+    r".\testCases\kundurLoadStep0.py",
+    r".\testCases\kundurLoadStep2.py",# 2 area, 2 slack
+    r".\testCases\kundurLoadStep1.py",
+    r".\testCases\kundurLoadStep3.py",
+    #r".\testCases\kundurLoadStep2a.py", # 1 area, 1 slack
+    #r".\testCases\kundurLoadStep0as.py", # 1 area, 1 slack
+    #r".\testCases\kundurLoadStep1as.py", # 1 area, 1 slack
+    #r".\testCases\kundurLoadStep2as.py", # 1 area, 1 slack
+    #r".\testCases\kundurLoadStep3as.py", # 1 area, 1 slack
             ]
 
 # Batch Run Parameters

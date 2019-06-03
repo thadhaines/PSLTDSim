@@ -24,6 +24,7 @@ class AreaAgent(object):
         self.Shunt = []
         self.Branch = []
         self.SVD = []
+        self.AreaSlack = None
 
         # Current Timestep values
         self.Pe = 0.0

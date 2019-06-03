@@ -17,11 +17,13 @@ def distPacc(mirror, deltaPacc):
     Pacc = deltaPacc
     iteration = 1
 
+    """ # handled by findGlobalSlack
     # create reference to global slack gen # assumes only 1 slack gen
     for gen in mirror.Slack:
         if gen.globalSlack:
             globalSlack = gen
             break
+    """
 
     while tol_Flag:
         tic1 = time.time()
@@ -33,13 +35,6 @@ def distPacc(mirror, deltaPacc):
                 #distribute to slack on First pass and set Pe_calc
                 slackPacc = Pacc*(c_area.Slack[0].H/Hsys)
                 c_area.Slack[0].Pe = c_area.Slack[0].Pe - slackPacc 
-
-                ## check if within slack limits # breaks logging.. etc
-                #newPe = c_area.Slack[0].Pe - slackPacc 
-                #if newPe <= c_area.Slack[0].Pmax:
-                #    c_area.Slack[0].Pe = newPe
-                #else:
-                #    c_area.Slack[0].Pe = c_area.Slack[0].Pmax
 
                 # Estimated Pe post PF soln
                 c_area.Slack[0].Pe_calc = c_area.Slack[0].Pe 
@@ -63,6 +58,13 @@ def distPacc(mirror, deltaPacc):
                 # ensure Vsched in PSLF is correct
                 c_gen.Bus.setPvals()
 
+            for c_slack in c_area.Slack:
+                if not c_slack.globalSlack:
+                    c_slack.Pe = c_slack.Pe - Pacc * (c_slack.H/HsysDist) 
+                    c_slack.setPvals()
+                    # ensure Vsched in PSLF is correct
+                    c_slack.Bus.setPvals()
+
         toc1 = time.time()
         # Pe is distributed to all generators in all areas, solve Power flow
         ltd.mirror.LTD_SolveCase(mirror)
@@ -83,15 +85,16 @@ def distPacc(mirror, deltaPacc):
         #mirror.IPYPvalsTime += toc2-tic2
 
         # Calculate global slack error (could be an average in the future?)
-        globalSlack.getPvals()
-        error = globalSlack.Pe_calc - globalSlack.Pe 
+        mirror.globalSlack.getPvals()
+        error = mirror.globalSlack.Pe_calc - mirror.globalSlack.Pe 
         
         if mirror.debug:
-            print('expected: %.2f\tactual: %.2f\terror: %.2f' % (globalSlack.Pe_calc, globalSlack.Pe, error) )
+            print('expected: %.2f\tactual: %.2f\terror: %.2f' 
+                  % (mirror.globalSlack.Pe_calc, mirror.globalSlack.Pe, error))
 
         # exit while loop if tolerance met
         if abs(error) <= tol:
-            globalSlack.Pe_error = error
+            mirror.globalSlack.Pe_error = error
             tol_Flag = 0
             continue
 
@@ -100,7 +103,6 @@ def distPacc(mirror, deltaPacc):
         iteration +=1
 
     tic2 = time.time()
-
     #Update mirror machines with PSLF values from power flow solution
     for gen in mirror.Machines:
         gen.getPvals()

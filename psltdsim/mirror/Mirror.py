@@ -82,6 +82,7 @@ class Mirror(object):
         self.Dynamics = []
         self.Shunt = []
         self.Branch = []
+        self.globalSlack = None
 
         # initial system solve
         try:
@@ -154,6 +155,8 @@ class Mirror(object):
 
         #Create search dictionaries
         self.searchDict = ltd.find.makeBusSearchDict(self)
+        # Link area slacks to mirror
+        ltd.mirror.find_Area_Slack(self)
 
         init_end = time.time()
         self.InitTime = init_end-init_start

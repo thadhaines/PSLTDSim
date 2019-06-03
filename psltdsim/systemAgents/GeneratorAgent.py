@@ -13,6 +13,8 @@ class GeneratorAgent(object):
         self.Busnam = newGen.GetBusName()
         self.Busnum = newGen.GetBusNumber()
         self.Scanbus = newGen.GetScanBusIndex()
+        self.globalSlack = False
+        self.areaSlack = False
 
         # Characteristic Data
         self.Mbase = ltd.data.single2float(newGen.Mbase)

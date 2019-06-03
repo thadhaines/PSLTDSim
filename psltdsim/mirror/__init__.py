@@ -3,7 +3,7 @@ from .Mirror import Mirror
 
 
 from .combinedSwing import combinedSwing
-from .distPacc import distPacc
+from .distPacc2 import distPacc # testing alternate function
 from .findGlobalSlack import findGlobalSlack
 from .initInertiaH import initInertiaH
 from .initRunningVals import initRunningVals
@@ -17,3 +17,4 @@ from .sumPm import sumPm
 from .create_mirror_agents import create_mirror_agents
 from .incorporate_bus import incorporate_bus
 from .LTD_SolveCase import LTD_SolveCase
+from .find_Area_Slack import find_Area_Slack
