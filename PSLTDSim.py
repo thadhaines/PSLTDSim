@@ -65,14 +65,24 @@ batchList =[
     #r".\testCases\miniWECCstepGroupB.py",
     #r".\testCases\miniWECCstepGroupC.py",
     #r".\testCases\ge4LoadStep.py", # probably not going to use
-    r".\testCases\kundurLoadRamp.py",
+    #r".\testCases\kundurLoadRamp0.py",
+    #r".\testCases\kundurLoadRamp1.py",
+    #r".\testCases\kundurLoadRamp2.py",
+    #r".\testCases\kundurLoadRamp3.py",
+    #r".\testCases\kundurLoadStep2a.py",
+    r".\testCases\kundurLoadStep2as.py",
+    #r".\testCases\kundurLoadStep0.py",
+    #r".\testCases\kundurLoadStep1.py",
+    r".\testCases\kundurLoadStep2.py",
+    #r".\testCases\kundurLoadStep3.py",
             ]
 
-# Batch Run Variable Initialization
+# Batch Run Parameters
 dispResults = False
 dispTiming = True
 makePlot = True
 
+# Batch run counters
 case = 0
 failed = 0
 failedTestCase = []

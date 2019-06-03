@@ -67,17 +67,23 @@ def distPacc(mirror, deltaPacc):
         # Pe is distributed to all generators in all areas, solve Power flow
         ltd.mirror.LTD_SolveCase(mirror)
         
+        """
+        # moved outside loop to fully get PSLF values only after slack error ok.
+        # this may or may not make sense.
         tic2 = time.time()
         #Update mirror machines with PSLF values from power flow solution
         for gen in mirror.Machines:
             gen.getPvals()
         toc2 = time.time()
+        mirror.IPYPvalsTime += toc2-tic2
+        """
 
         #update mirror timers
         mirror.IPYdistPaccTime += toc1-tic1
-        mirror.IPYPvalsTime += toc2-tic2
+        #mirror.IPYPvalsTime += toc2-tic2
 
         # Calculate global slack error (could be an average in the future?)
+        globalSlack.getPvals()
         error = globalSlack.Pe_calc - globalSlack.Pe 
         
         if mirror.debug:
@@ -92,3 +98,11 @@ def distPacc(mirror, deltaPacc):
         # tolerance not met, redistribute error
         Pacc = error
         iteration +=1
+
+    tic2 = time.time()
+
+    #Update mirror machines with PSLF values from power flow solution
+    for gen in mirror.Machines:
+        gen.getPvals()
+    toc2 = time.time()
+    mirror.IPYPvalsTime += toc2-tic2

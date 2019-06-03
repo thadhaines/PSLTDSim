@@ -9,22 +9,22 @@ import psltdsim as ltd
 
 dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
-mirLoc = os.path.join(dirname, 'delme','kundurRamp','kundurRampF.mir')
+mirLoc = os.path.join(dirname, 'delme','kundurRamp','kundurRamp2F.mir')
 mir = ltd.data.readMirror(mirLoc)
 
 xend = max(mir.r_t)
 
 print(mir)
-#ltd.plot.sysLoad(mir, False)
+ltd.plot.sysLoad(mir, False)
+ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
-#ltd.plot.sysPLQF(mir, True)
+ltd.plot.sysPLQF(mir, False)
 
 
 #ltd.plot.sysPQgen(mir, False)
-ltd.plot.sysPQVF(mir, True)
+ltd.plot.sysPQVF(mir, 1)
 
-ltd.plot.sysVmVa(mir, True)
 
 """
 for gen in mir.Machines:

@@ -3,14 +3,14 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Ramp of load up 5% over 30 seconds.
+Step of load up 30% at t= 2.
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 240,
-    'slackTol': 1,
+    'endTime': 90,
+    'slackTol': 3,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
     'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
@@ -19,8 +19,8 @@ simParams = {
     'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
     'integrationMethod' : 'rk45',
     # Data Export Parameters
-    'fileDirectory' : "\\delme\\kundurRamp\\", # relative path from cwd
-    'fileName' : 'kundurRamp',
+    'fileDirectory' : "\\delme\\kundurStep\\", # relative path from cwd
+    'fileName' : 'kundurStep1',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -28,4 +28,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.sav"
 dydPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.dyd"]
-ltdPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur.ramps.ltd"]
+ltdPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur.step0.ltd"]
