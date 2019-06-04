@@ -1,20 +1,20 @@
-%%  miniWECC_validation_weightedF.m
+%%  kundurStep1as_validation.m
 %   Thad Haines         Research
-%   Program Purpose:    Validate LTD miniWECC results with PSDS
+%   Program Purpose:    Validate LTD results with PSDS
 
 %                       Relies on udread.m and jplot.m
 %                       print_f requires altmany export fig
 
 %   History:
-%   05/22/19    14:57   init - attempt at weighted f
+%   06/04/19    14:15   init - plots formatted
 
 %% init
-clear; format compact; clc; %close all;
+clear; format compact; clc; close all;
 format long;
 
 %% Knowns
 PSDSfileName = 'kundur.step0.chf'
-LTDCaseName = 'kundurStepAS'
+LTDCaseName = 'kundurStep'
 
 % PSDSfileName = 'kundur.ramp01a.chf'
 % LTDCaseName = 'kundurRamp'

@@ -17,25 +17,29 @@ print(os.getcwd())
 # workaround for interactive mode runs (Use as required)
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 #print(os.getcwd())
-"""
-savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a.sav"
-dydPath = [r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1.dyd"]
 
-savPath = r"C:\LTD\pslf_systems\fullWecc\16HS\16HS3a.sav"
-dydPath = [r"C:\LTD\pslf_systems\fullWecc\16HS\16HS31_dg.dyd"]
-"""
+# global and area slack found:
 
 
+# single area
+savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
+dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.exc1Gov.dyd"] 
+savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
+dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
+savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
+dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
 
-#savPath = r"C:\LTD\pslf_systems\fullWecc\14LS_DE\14LS_100GW_ALS_SHAWN.sav"
-#dydPath = [r"C:\LTD\pslf_systems\fullWecc\14LS_DE\14ls11e_21P1a_dg.dyd"]
-
-savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
-dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
-
+# 2 Area
+savPath = r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.sav"
+dydPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.dyd"]
+# full WECC
+#savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a.sav"
+#dydPath = [r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1.dyd"]
+#savPath = r"C:\LTD\pslf_systems\fullWecc\16HS\16HS3a.sav"
+#dydPath = [r"C:\LTD\pslf_systems\fullWecc\16HS\16HS31_dg.dyd"]
+savPath = r"C:\LTD\pslf_systems\fullWecc\14LS_DE\14LS_100GW_ALS_SHAWN.sav"
+dydPath = [r"C:\LTD\pslf_systems\fullWecc\14LS_DE\14ls11e_21P1a_dg.dyd"]
 ltdPath = None
-
-
 debug = 1
 simNotes = """
 none
@@ -131,6 +135,7 @@ maxBus = 0
 maxBusArea = 0
 
 for area in range(col.AreaDAO.FindNextAvailableAreaNumber()):
+    
     nBus = len(col.AreaDAO.FindBusesInArea(area))
     if nBus > 0:
         areaObj = col.AreaDAO.FindByAreaNumber(area)
@@ -140,7 +145,26 @@ for area in range(col.AreaDAO.FindNextAvailableAreaNumber()):
         maxBus = nBus
         maxBusArea = col.AreaDAO.FindByAreaNumber(area)
 
+zBus = col.BusDAO.FindByType(0)
 print("Area with most buses is Area {}".format(maxBusArea))
 import pprint
+print('Area Slacks:')
 pp = pprint.PrettyPrinter(indent=4)
 pp.pprint(areaSwingBus)
+
+## 3rd attempt at finding global slack
+print('Global Slack:')
+zBus = col.BusDAO.FindByType(0)
+if len(zBus) == 1:
+    gSlackB = zBus[0]
+else:
+    for bus in zBus:
+        if bus.Islnum == 1:
+            gSlackB = bus
+
+print(gSlackB)
+countAtBus = col.GeneratorDAO.CountAtBus(gSlackB)
+if countAtBus == 1:
+    print('only one....')
+    gen = col.GeneratorDAO.FindByBus(gSlackB)
+    print(gen[0])

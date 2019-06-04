@@ -103,7 +103,7 @@ class Mirror(object):
 
         # initialize agents
         ltd.mirror.create_mirror_agents(self)
-        ltd.mirror.findGlobalSlack(self)
+        ltd.mirror.find_Global_Slack(self)
 
         # Combined Collections
         self.Machines = self.Slack + self.Gens
