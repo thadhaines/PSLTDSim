@@ -3,7 +3,7 @@ from .Mirror import Mirror
 
 
 from .combinedSwing import combinedSwing
-from .distPacc2 import distPacc # testing alternate function
+from .distPacc3 import distPacc # testing alternate function
 from .findGlobalSlack import findGlobalSlack
 from .initInertiaH import initInertiaH
 from .initRunningVals import initRunningVals

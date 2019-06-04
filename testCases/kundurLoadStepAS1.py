@@ -8,7 +8,7 @@ Step of load up 30% at t= 2. One area model, one system slack
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.5,
+    'timeStep': 1,
     'endTime': 90,
     'slackTol': 1,
     'PY3msgGroup' : 3,
@@ -20,7 +20,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\kundurStep\\", # relative path from cwd
-    'fileName' : 'kundurStep2as',
+    'fileName' : 'kundurStepAS1',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.

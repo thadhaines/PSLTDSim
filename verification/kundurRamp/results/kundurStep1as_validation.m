@@ -9,28 +9,38 @@
 %   05/22/19    14:57   init - attempt at weighted f
 
 %% init
-clear; format compact; clc; close all;
+clear; format compact; clc; %close all;
 format long;
 
 %% Knowns
 PSDSfileName = 'kundur.step0.chf'
+LTDCaseName = 'kundurStepAS'
 
-%% import LTD data
-load('kundurStep0asF') % 2 sec
-mir1 = kundurStep0asF;
-clear kundurStep0asF
+% PSDSfileName = 'kundur.ramp01a.chf'
+% LTDCaseName = 'kundurRamp'
+%% import LTD data in an automatic way
+cases = {[LTDCaseName,'0F'],
+    [LTDCaseName,'1F'],
+    [LTDCaseName,'2F'],
+    [LTDCaseName,'3F'],
+    }
 
-load('kundurStep1asF') % 1 sec
-mir2 = kundurStep1asF;
-clear kundurStep1asF
+load(cases{1}) % 2 sec
+mir1 = eval(cases{1});
+clear eval(cases{1})
 
-load('kundurStep2asF') % .5 sec
-mir3 = kundurStep2asF;
-clear kundurStep2asF
+load(cases{2}) % 1 sec
+mir2 = eval(cases{2});
+clear eval(cases{2})
 
-load('kundurStep3asF') % .25 sec
-mir4 = kundurStep3asF;
-clear kundurStep3asF
+load(cases{3}) % 0.5 sec
+mir3 = eval(cases{3});
+clear eval(cases{3})
+
+load(cases{4}) % 1 sec
+mir4 = eval(cases{4});
+clear eval(cases{4})
+
 
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
@@ -313,12 +323,9 @@ xlim(x_lim)
 %% Q Comparison
 figure('position',ppos)
 legNames = {};
-plot(t, psds_data.Data(:,qg_col(1)))
-temp = strsplit(psds_data.Description{qg_col(1)});
-legNames{end+1} = temp{1};
 hold on
-for curCol=2:max(size(qg_col))
-    plot(t, psds_data.Data(:,qg_col(curCol)))
+for curCol=1:max(size(qg_col))
+    plot(t, psds_data.Data(:,qg_col(curCol)),'-')
     temp = strsplit(psds_data.Description{qg_col(curCol)});
     legNames{end+1} = temp{1};
 end
@@ -332,14 +339,14 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).S1.Q,'-o')
+        plot(mir.t, mir.(curArea).(curSlack).S1.Q,'-s')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = name;
     end
     
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
-        plot(mir.t, mir.(curArea).(curGen).G1.Q,'-o')
+        plot(mir.t, mir.(curArea).(curGen).G1.Q,'-s')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = name;
         

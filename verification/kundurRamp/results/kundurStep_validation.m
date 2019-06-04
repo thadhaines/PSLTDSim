@@ -15,22 +15,29 @@ format long;
 %% Knowns
 PSDSfileName = 'kundur.step0.chf'
 
-%% import LTD data
-load('kundurStep0F') % 2 sec
-mir1 = kundurStep0F;
-clear kundurStep0F
+LTDCaseName = 'kundurStep'
+%% import LTD data in an automatic way
+cases = {[LTDCaseName,'0F'],
+    [LTDCaseName,'1F'],
+    [LTDCaseName,'2F'],
+    [LTDCaseName,'3F'],
+    }
 
-load('kundurStep1F') % 1 sec
-mir2 = kundurStep1F;
-clear kundurStep1F
+load(cases{1}) % 2 sec
+mir1 = eval(cases{1});
+clear eval(cases{1})
 
-load('kundurStep2F') % .5 sec
-mir3 = kundurStep2F;
-clear kundurStep2F
+load(cases{2}) % 1 sec
+mir2 = eval(cases{2});
+clear eval(cases{2})
 
-load('kundurStep3F') % .25 sec
-mir4 = kundurStep3F;
-clear kundurStep3F
+load(cases{3}) % 0.5 sec
+mir3 = eval(cases{3});
+clear eval(cases{3})
+
+load(cases{4}) % 1 sec
+mir4 = eval(cases{4});
+clear eval(cases{4})
 
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
