@@ -81,9 +81,10 @@ class LoadAgent(object):
 
     def logStep(self):
         """Step to record log history"""
-        self.r_P[self.mirror.c_dp] = self.cv['P']
-        self.r_Q[self.mirror.c_dp] = self.cv['Q']
-        self.r_St[self.mirror.c_dp] = self.cv['St']
+        n = self.mirror.cv['dp']
+        self.r_P[n] = self.cv['P']
+        self.r_Q[n] = self.cv['Q']
+        self.r_St[n] = self.cv['St']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""

@@ -44,7 +44,8 @@ class Mirror(object):
         self.Dsys = simParams['Dsys']
         self.IPYmsgGroup = simParams['IPYmsgGroup']
         self.PY3msgGroup = simParams['PY3msgGroup']
-        self.dataPoints = int(self.endTime//self.timeStep + 1) # add extra points here...
+        # NOTE: for variable timestep, add extra points here...
+        self.dataPoints = int(self.endTime//self.timeStep + 1)
 
         # Simulation Variable Prefix Key
         # c_ ... current
@@ -52,12 +53,19 @@ class Mirror(object):
         # r_ ... running (time series)
 
         # Varaible initalization
-        self.c_dp = 0 # current data point
-        self.c_t = 0.0
+        self.cv = {
+            'dp' : 0,
+            't' : 0,
+            'f' : 1.0,
+            'fdot' : 0.0,
+            'deltaF' : 0.0, # in pu, defined as 1-f
+            }
+        #self.c_dp = 0 # current data point
+        #self.c_t = 0.0
 
-        self.c_f = 1.0
-        self.c_fdot = 0.0
-        self.c_deltaF = 0.0
+        #self.c_f = 1.0
+        #self.c_fdot = 0.0
+        #self.c_deltaF = 0.0
 
         self.ss_H = 0.0 # placeholder, Hsys used in maths
 
@@ -103,7 +111,6 @@ class Mirror(object):
 
         # initialize agents
         ltd.mirror.create_mirror_agents(self)
-        ltd.mirror.find_Global_Slack(self)
 
         # Combined Collections
         self.Machines = self.Slack + self.Gens
@@ -155,8 +162,10 @@ class Mirror(object):
 
         #Create search dictionaries
         self.searchDict = ltd.find.makeBusSearchDict(self)
-        # Link area slacks to mirror
-        ltd.mirror.find_Area_Slack(self)
+
+        # Link slacks to mirror
+        ltd.mirror.find_Global_Slack(self)
+        ltd.mirror.find_Area_Slack(self) # may have no point
 
         init_end = time.time()
         self.InitTime = init_end-init_start
@@ -189,20 +198,21 @@ class Mirror(object):
 
     def logStep(self):
         """Update Log information"""
-        self.r_f[self.c_dp] = self.c_f
-        self.r_fdot[self.c_dp] = self.c_fdot
-        self.r_deltaF[self.c_dp] = self.c_deltaF
+        n = self.cv['dp']
+        self.r_f[n] = self.cv['f']
+        self.r_fdot[n] = self.cv['fdot']
+        self.r_deltaF[n] = self.cv['deltaF']
 
-        self.r_ss_Pe[self.c_dp] = self.ss_Pe
-        self.r_ss_Pm[self.c_dp] = self.ss_Pm
-        self.r_ss_Pacc[self.c_dp] = self.ss_Pacc
+        self.r_ss_Pe[n] = self.ss_Pe
+        self.r_ss_Pm[n] = self.ss_Pm
+        self.r_ss_Pacc[n] = self.ss_Pacc
 
-        self.r_ss_Qgen[self.c_dp] = self.ss_Qgen
-        self.r_ss_Qload[self.c_dp] = self.ss_Qload
-        self.r_ss_Pload[self.c_dp] = self.ss_Pload
+        self.r_ss_Qgen[n] = self.ss_Qgen
+        self.r_ss_Qload[n] = self.ss_Qload
+        self.r_ss_Pload[n] = self.ss_Pload
 
-        self.r_PLosses[self.c_dp] = self.PLosses
-        self.r_QLosses[self.c_dp] = self.QLosses
+        self.r_PLosses[n] = self.PLosses
+        self.r_QLosses[n] = self.QLosses
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
@@ -240,7 +250,7 @@ class Mirror(object):
              'f': self.r_f,
              'fdot': self.r_fdot,
              'deltaF': self.r_deltaF,
-             'N': self.c_dp,
+             'N': self.cv['dp'],
              'Pe': self.r_ss_Pe,
              'Pm': self.r_ss_Pm,
              'Pacc': self.r_ss_Pacc,

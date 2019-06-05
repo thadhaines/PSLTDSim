@@ -99,8 +99,9 @@ class BusAgent(object):
 
     def logStep(self):
         """Put current values into log"""
-        self.r_Vm[self.mirror.c_dp] = self.cv['Vm']
-        self.r_Va[self.mirror.c_dp] = self.cv['Va']
+        n = self.mirror.cv['dp']
+        self.r_Vm[n] = self.cv['Vm']
+        self.r_Va[n] = self.cv['Va']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""

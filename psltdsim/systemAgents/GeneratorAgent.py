@@ -127,11 +127,12 @@ class GeneratorAgent(object):
 
     def logStep(self):
         """Step to record log history"""
-        self.r_Pe[self.mirror.c_dp] = self.cv['Pe']
-        self.r_Pm[self.mirror.c_dp] = self.cv['Pm']
-        self.r_Pref[self.mirror.c_dp] = self.cv['Pref']
-        self.r_Q[self.mirror.c_dp] = self.cv['Q']
-        self.r_St[self.mirror.c_dp] = self.cv['St']
+        n = self.mirror.cv['dp']
+        self.r_Pe[n] = self.cv['Pe']
+        self.r_Pm[n] = self.cv['Pm']
+        self.r_Pref[n] = self.cv['Pref']
+        self.r_Q[n] = self.cv['Q']
+        self.r_St[n] = self.cv['St']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""

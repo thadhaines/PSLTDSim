@@ -83,18 +83,18 @@ class RampAgent(object):
     def step(self):
         """Function called every timestep"""
         if self.ProcessFlag:
-            if self.mirror.c_t < self.startTime:
+            if self.mirror.cv['t'] < self.startTime:
                 # acts as a `wait until action'
                 return 0
 
-            if self.mirror.c_t >= self.startTime:
-                if self.mirror.c_t > self.endTime:
+            if self.mirror.cv['t'] >= self.startTime:
+                if self.mirror.cv['t'] > self.endTime:
                     # turn off action
                     self.ProcessFlag = 0
                     return 0
                 
                 # Select correct ramp incremenct
-                if self.mirror.c_t < (self.startTime + self.RAtime):
+                if self.mirror.cv['t'] < (self.startTime + self.RAtime):
                     # process ramp A
 
                     # calculate increments for percent and absolute if not calculated yet
@@ -109,7 +109,7 @@ class RampAgent(object):
                             self.RAslope = (self.RAVal - curVal)/self.RAtime*self.mirror.timeStep
 
                     self.increment = self.RAslope
-                elif self.mirror.c_t > (self.startTime + self.RAtime + self.holdTime):
+                elif self.mirror.cv['t'] > (self.startTime + self.RAtime + self.holdTime):
                     # process ramp B
                     if not self.RBslope and self.RBVal == 0:
                         #handle no ramp B case

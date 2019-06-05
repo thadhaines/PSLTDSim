@@ -42,11 +42,11 @@ class StepAgent(object):
     def step(self):
         """Function called every timestep - takes action only once"""
         if self.ProcessFlag:
-            if self.mirror.c_t < self.tStart:
+            if self.mirror.cv['t'] < self.tStart:
                 # acts as a pass
                 return 0
 
-            if self.mirror.c_t >= self.tStart:
+            if self.mirror.cv['t'] >= self.tStart:
                 # Perform Perturbance step
 
                 # Update correct attribute 

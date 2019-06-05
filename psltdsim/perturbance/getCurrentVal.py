@@ -4,4 +4,4 @@ def getCurrentVal(agent, attr):
     if attr in agent.cv:
         return agent.cv[attr]
     else:
-        print('* * Attribute not found in Agent...') # shouldn't ever print
+        print('* * Attribute ''%s'' not found in Agent...' % attr) # shouldn't ever print

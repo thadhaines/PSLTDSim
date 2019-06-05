@@ -24,7 +24,7 @@ def runSimPY3(mirror, amqpAgent):
     for agent in mirror.Log:
         agent.initRunningVals()
 
-    # Initalization value of Pe for [c_dp-1] functionality
+    # Initalization value of Pe for [...cv['dp']-1] functionality
     # NOTE: python does negative indexing, 
     # These values are appeneded now and popped once simulation ends
     mirror.r_ss_Pe.append(ltd.mirror.sumPe(mirror))
@@ -33,18 +33,18 @@ def runSimPY3(mirror, amqpAgent):
     mirror.r_fdot.append(0.0)
 
     # Start Simulation loop
-    while (mirror.c_t <= mirror.endTime) and mirror.simRun:
+    while (mirror.cv['t'] <= mirror.endTime) and mirror.simRun:
         if mirror.debug:
-            print("\n*** Data Point %d" % mirror.c_dp)
-            print("*** Simulation time: %.2f" % (mirror.c_t))
+            print("\n*** Data Point %d" % mirror.cv['dp'])
+            print("*** Simulation time: %.2f" % (mirror.cv['t']))
         else:
-            print("Simulation Time: %7.2f   " % mirror.c_t), # to print dots each step
+            print("Simulation Time: %7.2f   " % mirror.cv['t']), # to print dots each step
 
         # Step System Wide dynamics
         ltd.mirror.combinedSwing(mirror, mirror.ss_Pacc)
-        if mirror.c_f <= 0.0:
+        if mirror.cv['f'] <= 0.0:
             # check for unreal frequency
-            mirror.N = mirror.c_dp - 1
+            mirror.N = mirror.cv['dp'] - 1
             mirror.sysCrash = True
             break;
 
@@ -102,13 +102,13 @@ def runSimPY3(mirror, amqpAgent):
         # Calculate current system Pacc
         mirror.ss_Pacc = (
             mirror.ss_Pm 
-            - mirror.r_ss_Pe[mirror.c_dp-1] # Most recent PSLF sum
+            - mirror.r_ss_Pe[mirror.cv['dp']-1] # Most recent PSLF sum
             - mirror.ss_Pert_Pdelta
             )
             
         # Find current system Pacc Delta
         # NOTE: unused variable as of 2/2/19
-        mirror.r_Pacc_delta[mirror.c_dp] = mirror.ss_Pacc - mirror.r_ss_Pacc[mirror.c_dp-1]
+        mirror.r_Pacc_delta[mirror.cv['dp']] = mirror.ss_Pacc - mirror.r_ss_Pacc[mirror.cv['dp']-1]
 
         Hmsg = {'msgType' : 'Handoff',
                'HandoffType': 'PY3toIPY',
@@ -130,9 +130,9 @@ def runSimPY3(mirror, amqpAgent):
             agentX.logStep()
 
         # step time and data point
-        mirror.r_t[mirror.c_dp] = mirror.c_t
-        mirror.c_dp += 1
-        mirror.c_t += mirror.timeStep
+        mirror.r_t[mirror.cv['dp']] = mirror.cv['t']
+        mirror.cv['dp'] += 1
+        mirror.cv['t'] += mirror.timeStep
 
     print("_______________________")
     print("    Simulation Complete\n")
@@ -151,7 +151,7 @@ def runSimPY3(mirror, amqpAgent):
         # Handle appeneded data in dynamic models
         for dyn in mirror.Dynamics:
             if dyn.appenedData:
-                dyn.popUnsetData(mirror.c_dp)
+                dyn.popUnsetData(mirror.cv['dp'])
 
     if not mirror.sysCrash:
         PY3.send('toIPY',{'msgType' : 'endSim'})
