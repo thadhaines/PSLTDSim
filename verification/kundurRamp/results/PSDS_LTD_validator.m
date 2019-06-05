@@ -47,7 +47,7 @@ load(cases{4}) % 1 sec
 mir4 = eval(cases{4});
 clear eval(cases{4})
 
-
+mir = mir3; % for comparison plots
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 
@@ -229,7 +229,7 @@ for bv=1:max(size(v_col))
     temp = strsplit(psds_data.Description{v_col(bv)});
     legNames{end+1} = ['PSDS ', temp{1}];
 end
-mir = mir3;
+
 
 makeLegend = 1
 for area = 1:max(size(mir.areaN)) % for each area

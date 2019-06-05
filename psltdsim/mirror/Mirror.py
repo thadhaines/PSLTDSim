@@ -116,7 +116,7 @@ class Mirror(object):
         self.Machines = self.Slack + self.Gens
 
         # TODO: As logging capability added to agents, add to Log collection
-        self.Log = [self] + self.Load + self.Bus + self.Machines + self.Area
+        self.Log = [self] + self.Load + self.Bus + self.Machines + self.Area + self.Shunt + self.Branch
 
         # Check mirror accuracy in each Area, create machines list for each area
         for c_area in range(self.Narea):
@@ -162,6 +162,7 @@ class Mirror(object):
 
         #Create search dictionaries
         self.searchDict = ltd.find.makeBusSearchDict(self)
+        self.branchDict = ltd.find.makeBranchDict(self)
 
         # Link slacks to mirror
         ltd.mirror.find_Global_Slack(self)

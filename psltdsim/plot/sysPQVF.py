@@ -34,7 +34,7 @@ def sysPQVF(mirror, blkFlag=True):
                     marker = 10,
                     fillstyle='none',
                     linestyle = ':',
-                    label = 'Bus '+ mach.Busnam)
+                    label = 'Bus '+ bus.Busnam)
     ax[1][0].set_xlabel('Time [sec]')
     ax[1][0].set_ylabel('Voltage [PU]')
 

@@ -1,7 +1,6 @@
 def makeMirrorDictionary(mir):
-    """Makes dictionary of available Mirror data"""
-    # TODO: make less nested, may enable easier MATLAB import...
-    # TODO: append character to variable names that are only number 
+    """Makes dictionary of various Mirror data"""
+    # TODO: adjust as required to validate in MATLAB...
     import psltdsim as ltd
 
     rootD = mir.getDataDict()
@@ -17,6 +16,7 @@ def makeMirrorDictionary(mir):
         genBusN = []
         loadBusN = []
         slackBusN =[]
+        shuntBusN = []
         xBusN = []
 
         # create empty dictionary to fill
@@ -28,10 +28,14 @@ def makeMirrorDictionary(mir):
             Nload = len(mir.Area[c_area].Bus[c_bus].Load)
             Ngen = len(mir.Area[c_area].Bus[c_bus].Gens)
             Nslack = len(mir.Area[c_area].Bus[c_bus].Slack)
+            Nshunt = len(mir.Area[c_area].Bus[c_bus].Shunt)
 
             # create empty dictionaries if applicable and create bus ident
             ident = 'x'
 
+            if Nshunt>0:
+                shuntD = {}
+                ident = 'H'
             if Nload>0:
                 loadD = {}
                 ident = 'L'
@@ -41,6 +45,7 @@ def makeMirrorDictionary(mir):
             if Nslack>0:
                 slackD = {}
                 ident = 'S'
+            
 
             # create dictionary of dictionaries for objects on bus
             for c_load in range(Nload):
@@ -55,6 +60,10 @@ def makeMirrorDictionary(mir):
                 slackD['S'+str(c_slk+1)] = mir.Area[c_area].Bus[c_bus].Slack[c_slk].getDataDict()
                 slackBusN.append( mir.Area[c_area].Bus[c_bus].Extnum ) # str(mir.Area[c_area].Bus[c_bus].Extnum).zfill(3) )
 
+            for c_shnt in range(Nshunt):
+                shuntD['H'+str(c_shnt+1)] = mir.Area[c_area].Bus[c_bus].Shunt[c_shnt].getDataDict()
+                shuntBusN.append( mir.Area[c_area].Bus[c_bus].Extnum )
+
             # combine dictionaries to lone bus dictionary, if they exist
             if Nload>0:
                 busD = ltd.data.mergeDicts(busD, loadD)
@@ -62,10 +71,13 @@ def makeMirrorDictionary(mir):
                 busD = ltd.data.mergeDicts(busD, genD)
             if Nslack>0:
                 busD = ltd.data.mergeDicts(busD, slackD)
+            if Nshunt>0:
+                busD = ltd.data.mergeDicts(busD, shuntD)
 
             busD['Nload'] = Nload
             busD['Ngen'] = Ngen
             busD['Nslack'] = Nslack
+            busD['Nshunt'] = Nshunt
 
             # generate unique name for lone bus dict
             strBusName = ident + str(mir.Area[c_area].Bus[c_bus].Extnum)#.zfill(3) #if padding is desired
@@ -82,6 +94,7 @@ def makeMirrorDictionary(mir):
         areaD['genBusN'] = genBusN
         areaD['loadBusN'] = loadBusN
         areaD['slackBusN'] = slackBusN
+        areaD['shuntBusN'] = shuntBusN
         areaD['xBusN'] = xBusN
 
         # generate unique name for area dictionary

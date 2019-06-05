@@ -23,6 +23,12 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
             targetObj = ltd.find.findGenOnBus(mirror, idList[0])
         else:
             targetObj = ltd.find.findGenOnBus(mirror, idList[0], idList[1])
+
+    if tarType.lower() == 'shunt':
+        if len(idList) < 2:
+            targetObj = ltd.find.findShuntOnBus(mirror, idList[0])
+        else:
+            targetObj = ltd.find.findShuntOnBus(mirror, idList[0], idList[1])
               
     #Create Perturbance Agent
     if (perType.lower() == 'step') and targetObj:

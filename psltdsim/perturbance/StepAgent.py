@@ -23,7 +23,7 @@ class StepAgent(object):
 
          # Check if linking is okay
         attrCheck = ltd.perturbance.getCurrentVal(self.mObj, self.attr)
-        if not attrCheck:
+        if attrCheck == None:
             # Attribute not found or other linking error
             self.ProcessFlag = 0
 
@@ -56,17 +56,19 @@ class StepAgent(object):
                 # Perform Perturbance step
 
                 # Update correct attribute 
-                if self.attr == 'St':
-                    if self.tarType == 'load':
-                        if self.pertVal == 1:
-                            self.mObj.cv['St'] = 1
-                            self.mirror.ss_Pert_Pdelta += self.mObj.cv['P']
-                            self.mirror.ss_Pert_Qdelta += self.mObj.cv['Q']
-                        else:
-                            self.mObj.cv['St'] = 0
-                            self.mirror.ss_Pert_Pdelta -= self.mObj.cv['P']
-                            self.mirror.ss_Pert_Qdelta -= self.mObj.cv['Q']
-                    #TODO: handle different actions for each agent type...
+                if (self.attr == 'St') and (self.tarType == 'load'):
+                    if (self.pertVal == 1) and (self.mObj.cv['St'] ==0):
+                        self.mObj.cv['St'] = 1
+                        self.mirror.ss_Pert_Pdelta += self.mObj.cv['P']
+                        self.mirror.ss_Pert_Qdelta += self.mObj.cv['Q']
+                    elif (self.pertVal == 0) and (self.mObj.cv['St'] ==1):
+                        self.mObj.cv['St'] = 0
+                        self.mirror.ss_Pert_Pdelta -= self.mObj.cv['P']
+                        self.mirror.ss_Pert_Qdelta -= self.mObj.cv['Q']
+                    else:
+                        print("*** Perturbance Error: Status aready %d."
+                              % self.pertVal)
+                    #TODO: handle different actions for certain agent types.
 
                 elif self.attr == 'P':
                     oldVal = self.mObj.cv['P']
@@ -106,4 +108,5 @@ class StepAgent(object):
                 if self.mirror.debug:
                     # TODO: Make this output more informative
                     print(self)
+
                 return 1

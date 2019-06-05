@@ -24,16 +24,6 @@ print('Current Working Directory: %s' % os.getcwd())
 #os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
 #print(os.getcwd())
 """
-elif test_case == 3:
-    # Will no longer run due to parser errors
-    savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
-    dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
-
-elif test_case == 4:
-    savPath = r"C:\LTD\pslf_systems\GE_ex\g4_a1.sav"
-    dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",
-               r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd",
-               ]
 elif test_case == 5: # testing of ggov casting
     savPath = r"C:\LTD\pslf_systems\eele554\ggov1\ee554.sav"
     dydPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.ggov1.dyd"]
@@ -80,6 +70,7 @@ batchList =[
     #r".\testCases\kundurLoadRamp3.py",
 
     #r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack
+    r".\testCases\kundurLoadStepShunt0.py",
     #r".\testCases\kundurLoadStep2.py",
     #r".\testCases\kundurLoadStep1.py",
     #r".\testCases\kundurLoadStep3.py",
@@ -183,6 +174,7 @@ for testCase in batchList:
         if case == len(batchList):
             wait_start = time.time()
             print('\n*** Waiting for plot to close...')
+            ltd.plot.sysPQVF(mir, False)
             ltd.plot.sysPePmFLoad(mir, True)
             waitTime += time.time() - wait_start
         else:
