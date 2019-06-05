@@ -12,7 +12,7 @@ class StepAgent(object):
         self.tarType = tarType.lower()
         self.mObj = targetObj
 
-        self.attr = perParams[0].lower()
+        self.attr = perParams[0]
         self.tStart = float(perParams[1])
         self.pertVal = float(perParams[2])
 
@@ -50,59 +50,51 @@ class StepAgent(object):
                 # Perform Perturbance step
 
                 # Update correct attribute 
-                if self.attr == 'st':
+                if self.attr == 'St':
                     if self.tarType == 'load':
                         if self.pertVal == 1:
-                            mObj.St = 1
-                            self.mirror.ss_Pert_Pdelta += mObj.P
-                            self.mirror.ss_Pert_Qdelta += mObj.Q
+                            self.mObj.cv['St'] = 1
+                            self.mirror.ss_Pert_Pdelta += self.mObj.cv['P']
+                            self.mirror.ss_Pert_Qdelta += self.mObj.cv['Q']
                         else:
-                            mObj.St = 0
-                            self.mirror.ss_Pert_Pdelta -= mObj.P
-                            self.mirror.ss_Pert_Qdelta -= mObj.Q
+                            self.mObj.cv['St'] = 0
+                            self.mirror.ss_Pert_Pdelta -= self.mObj.cv['P']
+                            self.mirror.ss_Pert_Qdelta -= self.mObj.cv['Q']
                     #TODO: handle different actions for each agent type...
 
-                elif self.attr == 'p':
-                    oldVal = self.mObj.P
+                elif self.attr == 'P':
+                    oldVal = self.mObj.cv['P']
                     if self.stepType == 'rel':
-                        self.mObj.P += self.pertVal # relative step
+                        self.mObj.cv['P'] += self.pertVal # relative step
                     elif self.stepType == 'per':
-                        self.mObj.P = self.mObj.P * (1+self.pertVal/100.00) # percent change
+                        self.mObj.cv['P'] = self.mObj.cv['P'] * (1+self.pertVal/100.00) # percent change
                     else:
-                        self.mObj.P = self.pertVal # absolute step
+                        self.mObj.cv['P'] = self.pertVal # absolute step
 
-                    self.mirror.ss_Pert_Pdelta += self.mObj.P - oldVal
+                    self.mirror.ss_Pert_Pdelta += self.mObj.cv['P'] - oldVal
 
-                elif self.attr.lower() == 'q':
-                    oldVal = self.mObj.Q
+                elif self.attr.lower() == 'Q':
+                    oldVal = self.mObj.cv['Q']
                     if self.stepType == 'rel':
-                        self.mObj.Q += self.pertVal # relative step
+                        self.mObj.cv['Q'] += self.pertVal # relative step
                     elif self.stepType == 'per':
-                        self.mObj.Q = self.mObj.Q * (1+self.pertVal/100.00) # percent change
+                        self.mObj.cv['Q'] = self.mObj.cv['Q'] * (1+self.pertVal/100.00) # percent change
                     else:
-                        self.mObj.Q = self.pertVal # absolute step
+                        self.mObj.cv['Q'] = self.pertVal # absolute step
 
-                    self.mirror.ss_Pert_Qdelta += self.mObj.Q - oldVal
+                    self.mirror.ss_Pert_Qdelta += self.mObj.cv['Q'] - oldVal
 
-                elif self.attr == 'pset':
-                    # Used to change Pref of governed machine
-                    oldVal = self.mObj.Pset
+
+                # Generic way to handle current value steps.
+                elif self.attr in self.mObj.cv:
+                    # Used to change any attribute in current value dictionary
+                    oldVal = self.mObj.cv[self.attr]
                     if self.stepType == 'rel':
-                        self.mObj.Pset += self.pertVal # relative step
+                        self.mObj.cv[self.attr] += self.pertVal # relative step
                     elif self.stepType == 'per':
-                        self.mObj.Pset = self.mObj.Pset * (1+self.pertVal/100.00)
+                        self.mObj.cv[self.attr] = self.mObj.cv[self.attr] * (1+self.pertVal/100.00)
                     else:
-                        self.mObj.Pset = self.pertVal # absolute step
-
-                elif self.attr.lower() == 'pm':
-                    # Used to change Mechanical power of non gov machine.
-                    oldVal = self.mObj.Pm
-                    if self.stepType == 'rel':
-                        self.mObj.Pm += self.pertVal # relative step
-                    elif self.stepType == 'per':
-                        self.mObj.Pm = self.mObj.Pm * (1+self.pertVal/100.00)
-                    else:
-                        self.mObj.Pm = self.pertVal # absolute step
+                        self.mObj.cv[self.attr] = self.pertVal # absolute step
 
                 self.ProcessFlag = 0
                 if self.mirror.debug:

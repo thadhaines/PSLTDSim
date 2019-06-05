@@ -60,23 +60,23 @@ batchList =[
     #r".\testCases\ee5541GovRampsGens.py",
     #r".\testCases\ee554PsetStep.py", 
     #r".\testCases\ee554PmStepRamp.py",
-    r".\testCases\microWECCstep.py",
+    #r".\testCases\microWECCstep.py",
     #r".\testCases\miniWECCstepGroupA.py",
     #r".\testCases\miniWECCstepGroupB.py",
     #r".\testCases\miniWECCstepGroupC.py",
     #r".\testCases\ge4LoadStep.py", # probably not going to use
     r".\testCases\kundurLoadRamp0.py",
-    r".\testCases\kundurLoadRamp1.py",
-    r".\testCases\kundurLoadRamp2.py",
-    r".\testCases\kundurLoadRamp3.py",
+    #r".\testCases\kundurLoadRamp1.py",
+    #r".\testCases\kundurLoadRamp2.py",
+    #r".\testCases\kundurLoadRamp3.py",
     r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack
-    r".\testCases\kundurLoadStep2.py",# 2 area, 1 slack
-    r".\testCases\kundurLoadStep1.py",# 2 area, 1 slack
-    r".\testCases\kundurLoadStep3.py",# 2 area, 1 slack
-    r".\testCases\kundurLoadStepAS0.py", # 1 area, 1 slack
-    r".\testCases\kundurLoadStepAS1.py", # 1 area, 1 slack
-    r".\testCases\kundurLoadStepAS2.py", # 1 area, 1 slack
-    r".\testCases\kundurLoadStepAS3.py", # 1 area, 1 slack
+    #r".\testCases\kundurLoadStep2.py",# 2 area, 1 slack
+    #r".\testCases\kundurLoadStep1.py",# 2 area, 1 slack
+    #r".\testCases\kundurLoadStep3.py",# 2 area, 1 slack
+    #r".\testCases\kundurLoadStepAS0.py", # 1 area, 1 slack
+    #r".\testCases\kundurLoadStepAS1.py", # 1 area, 1 slack
+    #r".\testCases\kundurLoadStepAS2.py", # 1 area, 1 slack
+    #r".\testCases\kundurLoadStepAS3.py", # 1 area, 1 slack
             ]
 
 # Batch Run Parameters

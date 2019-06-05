@@ -27,12 +27,20 @@ class GeneratorAgent(object):
         self.Vsched = ltd.data.single2float(newGen.Vcsched) # This value seems unused in PSLF
 
         # Current Status
-        self.St = int(newGen.St)
-        self.IRP_flag = 1       # Inertia response participant flag
-        self.Pe = ltd.data.single2float(newGen.Pgen)   # Generated Power
-        self.Pm = self.Pe       # Initialize as equal
-        self.Pset = self.Pe
-        self.Q = ltd.data.single2float(newGen.Qgen)    # Q generatred
+        self.cv={
+            'St' : int(newGen.St),
+            'Pe' : ltd.data.single2float(newGen.Pgen),   # Generated Power
+            'Pref' : ltd.data.single2float(newGen.Pgen),
+            'Q' : ltd.data.single2float(newGen.Qgen),    # Q generatred
+            'Pm' : ltd.data.single2float(newGen.Pgen),       # Initialize as equal
+            'IRP_flag': 1,      # Inertia response participant flag
+            }
+        #self.St = int(newGen.St)
+        #self.IRP_flag = 1       # Inertia response participant flag
+        #self.Pe = ltd.data.single2float(newGen.Pgen)   # Generated Power
+        #self.Pm = self.Pe       # Initialize as equal
+        #self.Pset = self.Pe
+        #self.Q = ltd.data.single2float(newGen.Qgen)    # Q generatred
 
         # debug testing ltd.data.single2float
         #print('(PSLF) newGen.Pgen = ', newGen.Pgen)
@@ -63,15 +71,20 @@ class GeneratorAgent(object):
     def getPvals(self):
         """Make current status reflect PSLF values"""
         pObj = self.getPref()
-        self.Pe = ltd.data.single2float(pObj.Pgen)
-        self.Q = ltd.data.single2float(pObj.Qgen)
-        self.St = int(pObj.St)
+        
+        self.cv['Pe'] = ltd.data.single2float(pObj.Pgen)
+        self.cv['Q'] = ltd.data.single2float(pObj.Qgen)
+        self.cv['St'] = int(pObj.St)
+
+        #self.Pe = ltd.data.single2float(pObj.Pgen)
+        #self.Q = ltd.data.single2float(pObj.Qgen)
+        #self.St = int(pObj.St)
 
     def setPvals(self):
         """Send current mirror values to PSLF"""
         pObj = self.getPref()
-        pObj.Pgen = self.Pe
-        pObj.St = self.St
+        pObj.Pgen = self.cv['Pe']
+        pObj.St = self.cv['St']
         pObj.Save()
 
     def makeAMQPmsg(self):
@@ -80,26 +93,27 @@ class GeneratorAgent(object):
                'AgentType': 'Generator',
                'Busnum':self.Busnum,
                'Id': self.Id,
-               'Pe': self.Pe,
-               'Pm': self.Pm,
-               'Pset' : self.Pset,
-               'Q': self.Q,
-               'St':self.St,
+               'Pe': self.cv['Pe'],
+               'Pm': self.cv['Pm'],
+               'Pref' : self.cv['Pref'],
+               'Q': self.cv['Q'],
+               'St':self.cv['St'],
                }
         return msg
 
     def recAMQPmsg(self,msg):
         """Set message values to agent values"""
-        self.Pe = msg['Pe']
-        self.Pm = msg['Pm']
-        self.Pset = msg['Pset']
-        self.Q = msg['Q']
-        self.St = msg['St']
+        self.cv['Pe'] = msg['Pe']
+        self.cv['Pm'] = msg['Pm']
+        self.cv['Pref'] = msg['Pref']
+        self.cv['Q'] = msg['Q']
+        self.cv['St'] = msg['St']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
 
     def recDynamicMsg(self,msg):
         """Update machine dynamics from new dyd model information"""
+        # This is is not Needed *****
         # will require resetting machine H and system H tot....
         pass
 
@@ -107,23 +121,23 @@ class GeneratorAgent(object):
         """Initialize history values of mirror agent"""
         self.r_Pm = [0.0]*self.mirror.dataPoints
         self.r_Pe = [0.0]*self.mirror.dataPoints
-        self.r_Pset = [0.0]*self.mirror.dataPoints
+        self.r_Pref = [0.0]*self.mirror.dataPoints
         self.r_Q = [0.0]*self.mirror.dataPoints
         self.r_St = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Step to record log history"""
-        self.r_Pe[self.mirror.c_dp] = self.Pe
-        self.r_Pm[self.mirror.c_dp] = self.Pm
-        self.r_Pset[self.mirror.c_dp] = self.Pset
-        self.r_Q[self.mirror.c_dp] = self.Q
-        self.r_St[self.mirror.c_dp] = self.St
+        self.r_Pe[self.mirror.c_dp] = self.cv['Pe']
+        self.r_Pm[self.mirror.c_dp] = self.cv['Pm']
+        self.r_Pref[self.mirror.c_dp] = self.cv['Pref']
+        self.r_Q[self.mirror.c_dp] = self.cv['Q']
+        self.r_St[self.mirror.c_dp] = self.cv['St']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
         self.r_Pe = self.r_Pe[:N]
         self.r_Pm = self.r_Pm[:N]
-        self.r_Pset = self.r_Pset[:N]
+        self.r_Pref = self.r_Pref[:N]
         self.r_Q  =self.r_Q[:N]
         self.r_St = self.r_St[:N]
 
@@ -131,7 +145,7 @@ class GeneratorAgent(object):
         """Return collected data in dictionary form"""
         d = {'Pe': self.r_Pe,
              'Pm': self.r_Pm,
-             'Pset': self.r_Pset,
+             'Pref': self.r_Pref,
              'Q': self.r_Q,
              'St': self.r_St,
              'Mbase' : self.Mbase,

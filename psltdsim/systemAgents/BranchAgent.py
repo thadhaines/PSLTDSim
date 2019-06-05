@@ -15,6 +15,11 @@ class BranchAgent(object):
         self.Tbus = None
         self.Fbus = None
 
+        # Current Values
+        self.cv= {
+            'St', int(newBranch.St),
+            }
+
         #debug
         #print('branch %d id %s from bus %d' % 
         #(self.ScanBus, self.Ck, self.FbusIndex))

@@ -13,7 +13,7 @@ class ShuntAgent(object):
         self.Id = str(newShunt.Id)
         
         # Properties
-        self.St = int(newShunt.St)
+        #self.St = int(newShunt.St)
         self.B = ltd.data.single2float(newShunt.B) # PU Capacitance
         self.G = ltd.data.single2float(newShunt.G) # PU Inductance
         
@@ -26,6 +26,11 @@ class ShuntAgent(object):
         self.TBusnam = str(newShunt.GetToBusName())
         self.TBusnum = int(newShunt.GetToBusNumber())
         self.Tkv = ltd.data.single2float(newShunt.GetToBusBasekv())
+
+        # Current Status
+        self.cv={
+            'St' : int(newShunt.St),
+            }
 
     def __repr__(self):
         #Display more useful data for mirror

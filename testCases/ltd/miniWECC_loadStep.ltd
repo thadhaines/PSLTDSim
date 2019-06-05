@@ -1,0 +1,14 @@
+# LTD simulation models / perturbances
+# Similar format to dyd files.
+# Commented and empty lines are ignored during parsing.
+# Double quoted variable names in model parameters also ignored
+
+# Perturbances
+# target bus id(optional) : pertType attribute time val abs(optional)
+#load 3 : step p 2 101
+#load 3 : "pertType" step  "pertTarget" p "startTime" 30 "newVal" 100
+#load 3 : "pertType" ramp "pertTarget" p "startTime" 2 "RAtime" 5 "RAval" 2 "holdtime" 3 "RBtime" 3 "RBval" -2
+
+load 16 : step P 2 400 rel
+load 21 : step P 2 400 rel
+load 26 : step P 2 400 rel

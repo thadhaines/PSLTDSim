@@ -10,7 +10,7 @@ class tgov1Agent():
         self.mirror = mirror
         self.PSFLgov = PSLFgov
         self.Gen = PSLFgov.Gen
-        self.Pref = self.Gen.Pset
+        self.Pref = self.Gen.cv['Pref']
 
         self.appenedData = True
 
@@ -44,7 +44,7 @@ class tgov1Agent():
 
     def stepDynamics(self):
         """ Perform governor control"""
-        self.Pref = self.Gen.Pset # get newest set value.
+        self.Pref = self.Gen.cv['Pref'] # get newest set value.
 
         # Create system inputs
         delta_w = 1.0-self.mirror.c_f
@@ -75,12 +75,12 @@ class tgov1Agent():
         Pmech = y2[1] - delta_w*self.Dt*self.Mbase
 
         # Set Generator Mechanical Power
-        self.Gen.Pm = float(Pmech) # float because y2 is numpy ....
+        self.Gen.cv['Pm'] = float(Pmech) # float because y2 is numpy ....
 
     def stepInitDynamics(self):
         """ set Pm = Pe, calculate MW limits of valve position"""
-        self.Gen.Pm = self.Gen.Pe
-        self.Gen.Pset = self.Gen.Pe
+        self.Gen.cv['Pm'] = self.Gen.cv['Pe']
+        self.Gen.cv['Pref'] = self.Gen.cv['Pe']
         
         updated = False
         if self.mirror.debug:
@@ -109,9 +109,9 @@ class tgov1Agent():
         self.r_x1 = [0.0]*self.mirror.dataPoints
         self.r_x2 = [0.0]*self.mirror.dataPoints
 
-        # Append intit values to running state data
-        self.r_x1.append(self.Gen.Pm)
-        self.r_x2.append(self.Gen.Pm)
+        # Append init values to running state data
+        self.r_x1.append(self.Gen.cv['Pm'])
+        self.r_x2.append(self.Gen.cv['Pm'])
 
     def logStep(self):
         """Update Log information"""

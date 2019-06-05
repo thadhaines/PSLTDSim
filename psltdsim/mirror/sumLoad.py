@@ -5,17 +5,17 @@ def sumLoad(mirror):
     # for each area
     for area in mirror.Area:
         # reset current sums
-        area.P = 0.0
-        area.Q = 0.0
+        area.cv['P'] = 0.0
+        area.cv['Q'] = 0.0
 
         # sum each active load P and Q to area agent
         for load in area.Load:
-            if load.St == 1:
-                area.P += load.P
-                area.Q += load.Q
+            if load.cv['St'] == 1:
+                area.cv['P'] += load.cv['P']
+                area.cv['Q'] += load.cv['Q']
 
         # sum area agent totals to system
-        sysPload += area.P
-        sysQload += area.Q
+        sysPload += area.cv['P']
+        sysQload += area.cv['Q']
 
     return [sysPload,sysQload]

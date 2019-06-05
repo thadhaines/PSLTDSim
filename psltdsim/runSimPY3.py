@@ -61,7 +61,7 @@ def runSimPY3(mirror, amqpAgent):
         msg = []
         # set pe = pm (dynamic action)
         for machineX in mirror.Machines:
-            machineX.Pe = machineX.Pm            
+            machineX.cv['Pe'] = machineX.cv['Pm']            
             msg.append(machineX.makeAMQPmsg())
             msgcounter+=1
 

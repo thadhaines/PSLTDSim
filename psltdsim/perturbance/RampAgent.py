@@ -23,7 +23,7 @@ class RampAgent(object):
         if len(perParams) < 9:
             perParams.append('rel')
 
-        self.attr = perParams[0].lower()
+        self.attr = perParams[0]
         self.startTime = float(perParams[1])
         self.RAtime = float(perParams[2])
         self.RAVal = float(perParams[3])
@@ -129,23 +129,20 @@ class RampAgent(object):
                     self.increment = 0
 
                 # Update correct attribute 
-                if self.attr == 'p':
-                    oldVal = self.mObj.P
-                    self.mObj.P += self.increment
+                if self.attr.lower() == 'p':
+                    oldVal = self.mObj.cv['P']
+                    self.mObj.cv['P'] += self.increment
                     self.mirror.ss_Pert_Pdelta += self.increment
 
-                elif self.attr == 'q':
-                    oldVal = self.mObj.Q
-                    self.mObj.Q += self.increment
+                elif self.attr.lower() == 'q':
+                    oldVal = self.mObj.cv['Q']
+                    self.mObj.cv['Q'] += self.increment
                     mirror.ss_Pert_Qdelta += self.increment
 
-                elif self.attr == 'pset':
-                    oldVal = self.mObj.Pset
-                    self.mObj.Pset += self.increment
-
-                elif self.attr == 'pm':
-                    oldVal = self.mObj.Pm
-                    self.mObj.Pm += self.increment
+                elif self.attr in self.mObj.cv:
+                    # Used to handle Pref, and Pm...
+                    oldVal = self.mObj.cv[attr]
+                    self.mObj.cv[attr] += self.increment
 
                 if self.mirror.debug:
                     # TODO: Make this output more informative or remove?
