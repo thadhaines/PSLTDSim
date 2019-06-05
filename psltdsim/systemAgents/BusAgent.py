@@ -25,13 +25,18 @@ class BusAgent(object):
         self.SVD = []
 
         # Current Status
-        self.Vm = newBus.Vm     # Voltage Magnitude
-        self.Va = newBus.Va     # Voltage Angle (radians)
-        self.Basekv = ltd.data.single2float(newBus.Basekv)
+        self.cv = {
+            'Vm' :newBus.Vm,
+            'Va' : newBus.Va,
+            }
+        #self.Vm = newBus.Vm     # Voltage Magnitude
+        #self.Va = newBus.Va     # Voltage Angle (radians)
+        
 
         # Voltage settings
         #self.Vmax = newBus.Vmax # These values don't seem to be always set
         #self.Vmin = newBus.Vmin
+        self.Basekv = ltd.data.single2float(newBus.Basekv)
         self.Vsched = ltd.data.single2float(newBus.Vsched)
 
     def __str__(self):
@@ -58,8 +63,11 @@ class BusAgent(object):
     def getPvals(self):
         """Get most recent PSLF values"""
         pObj = self.getPref()
-        self.Vm = pObj.Vm
-        self.Va = pObj.Va
+        self.cv['Vm'] = pObj.Vm
+        self.cv['Va'] = pObj.Va
+
+        #self.Vm = pObj.Vm
+        #self.Va = pObj.Va
 
     def setPvals(self):
         """Set PSLF values"""
@@ -72,15 +80,15 @@ class BusAgent(object):
         msg = {'msgType' : 'AgentUpdate',
                'AgentType': 'Bus',
                'Extnum':self.Extnum,
-               'Vm': self.Vm,
-               'Va': self.Va,
+               'Vm': self.cv['Vm'],
+               'Va': self.cv['Va'],
                }
         return msg
 
     def recAMQPmsg(self,msg):
         """Set message values to agent values"""
-        self.Vm = msg['Vm']
-        self.Va = msg['Va']
+        self.cv['Vm'] = msg['Vm']
+        self.cv['Va'] = msg['Va']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
 
@@ -91,8 +99,9 @@ class BusAgent(object):
 
     def logStep(self):
         """Put current values into log"""
-        self.r_Vm[self.mirror.c_dp] = self.Vm
-        self.r_Va[self.mirror.c_dp] = self.Va
+        n = self.mirror.cv['dp']
+        self.r_Vm[n] = self.cv['Vm']
+        self.r_Va[n] = self.cv['Va']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""

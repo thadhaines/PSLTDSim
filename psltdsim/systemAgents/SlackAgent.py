@@ -9,8 +9,21 @@ class SlackAgent(GeneratorAgent):
 
         self.mirror = mirror
         self.Tol = mirror.slackTol
-        self.Pe_calc = self.Pe # for initial ss
-        self.Pe_error = 0.0
+
+        # Current Values
+        self.cv={
+            'St' : int(newGen.St),
+            'Pe' : ltd.data.single2float(newGen.Pgen),   # Generated Power
+            'Pref' : ltd.data.single2float(newGen.Pgen),
+            'Q' : ltd.data.single2float(newGen.Qgen),    # Q generatred
+            'Pm' : ltd.data.single2float(newGen.Pgen),       # Initialize as equal
+            'IRP_flag': 1,      # Inertia response participant flag
+            'Pe_calc' : ltd.data.single2float(newGen.Pgen), # for initial ss
+            'Pe_error' : 0.0,
+            }
+
+        #self.Pe_calc = self.Pe # for initial ss
+        #self.Pe_error = 0.0
 
     def makeAMQPmsg(self):
         """Make AMQP message to send cross process"""
@@ -18,25 +31,25 @@ class SlackAgent(GeneratorAgent):
                'AgentType': 'Generator',
                'Busnum':self.Busnum,
                'Id': self.Id,
-               'Pe': self.Pe,
-               'Pm': self.Pm,
-               'Pset' : self.Pset,
-               'Q': self.Q,
-               'St':self.St,
-               'Pe_calc':self.Pe_calc,
-               'Pe_error': self.Pe_error
+               'Pe': self.cv['Pe'],
+               'Pm': self.cv['Pm'],
+               'Pref' : self.cv['Pref'],
+               'Q': self.cv['Q'],
+               'St':self.cv['St'],
+               'Pe_calc':self.cv['Pe_calc'],
+               'Pe_error': self.cv['Pe_error'],
                }
         return msg
 
     def recAMQPmsg(self,msg):
         """Set message values to agent values"""
-        self.Pe = msg['Pe']
-        self.Pm = msg['Pm']
-        self.Pset = msg['Pset']
-        self.Q = msg['Q']
-        self.St = msg['St']
-        self.Pe_calc = msg['Pe_calc']
-        self.Pe_error = msg['Pe_error']
+        self.cv['Pe'] = msg['Pe']
+        self.cv['Pm'] = msg['Pm']
+        self.cv['Pref'] = msg['Pref']
+        self.cv['Q'] = msg['Q']
+        self.cv['St'] = msg['St']
+        self.cv['Pe_calc'] = msg['Pe_calc']
+        self.cv['Pe_error'] = msg['Pe_error']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
 
@@ -44,7 +57,7 @@ class SlackAgent(GeneratorAgent):
         """Initialize history values of mirror agent"""
         self.r_Pm = [0.0]*self.mirror.dataPoints
         self.r_Pe = [0.0]*self.mirror.dataPoints
-        self.r_Pset = [0.0]*self.mirror.dataPoints
+        self.r_Pref = [0.0]*self.mirror.dataPoints
         self.r_Q = [0.0]*self.mirror.dataPoints
         self.r_St = [0.0]*self.mirror.dataPoints
 
@@ -53,19 +66,20 @@ class SlackAgent(GeneratorAgent):
 
     def logStep(self):
         """Step to record log history"""
-        self.r_Pe[self.mirror.c_dp] = self.Pe
-        self.r_Pm[self.mirror.c_dp] = self.Pm
-        self.r_Pset[self.mirror.c_dp] = self.Pset
-        self.r_Q[self.mirror.c_dp] = self.Q
-        self.r_St[self.mirror.c_dp] = self.St
-        self.r_Pe_calc[self.mirror.c_dp] = self.Pe_calc
-        self.r_Pe_error[self.mirror.c_dp] = self.Pe_error
+        n = self.mirror.cv['dp']
+        self.r_Pe[n] = self.cv['Pe']
+        self.r_Pm[n] = self.cv['Pm']
+        self.r_Pref[n] = self.cv['Pref']
+        self.r_Q[n] = self.cv['Q']
+        self.r_St[n] = self.cv['St']
+        self.r_Pe_calc[n] = self.cv['Pe_calc']
+        self.r_Pe_error[n] = self.cv['Pe_error']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
         self.r_Pe = self.r_Pe[:N]
         self.r_Pm = self.r_Pm[:N]
-        self.r_Pset = self.r_Pset[:N]
+        self.r_Pref = self.r_Pref[:N]
         self.r_Q = self.r_Q[:N]
         self.r_St = self.r_St[:N]
         self.r_Pe_calc = self.r_Pe_calc[:N]
@@ -75,7 +89,7 @@ class SlackAgent(GeneratorAgent):
         """Return collected data in dictionary form"""
         d = {'Pe': self.r_Pe,
              'Pm': self.r_Pm,
-             'Pset': self.r_Pset,
+             'Pref': self.r_Pref,
              'Q': self.r_Q,
              'St': self.r_St,
              'Mbase' : self.Mbase,

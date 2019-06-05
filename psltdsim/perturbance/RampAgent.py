@@ -13,6 +13,8 @@ class RampAgent(object):
 
         self.mirror = mirror
         self.mObj = targetObj
+
+        # Handle under defined cases
         if len(perParams) < 5:
             perParams.append('rel')
         if len(perParams) < 6:
@@ -23,7 +25,14 @@ class RampAgent(object):
         if len(perParams) < 9:
             perParams.append('rel')
 
-        self.attr = perParams[0].lower()
+        self.attr = perParams[0]
+
+        # Check if linking is okay
+        attrCheck = ltd.perturbance.getCurrentVal(self.mObj, self.attr)
+        if not attrCheck:
+            # Attribute not found or other linking error
+            self.ProcessFlag = 0
+
         self.startTime = float(perParams[1])
         self.RAtime = float(perParams[2])
         self.RAVal = float(perParams[3])
@@ -83,18 +92,18 @@ class RampAgent(object):
     def step(self):
         """Function called every timestep"""
         if self.ProcessFlag:
-            if self.mirror.c_t < self.startTime:
+            if self.mirror.cv['t'] < self.startTime:
                 # acts as a `wait until action'
                 return 0
 
-            if self.mirror.c_t >= self.startTime:
-                if self.mirror.c_t > self.endTime:
+            if self.mirror.cv['t'] >= self.startTime:
+                if self.mirror.cv['t'] > self.endTime:
                     # turn off action
                     self.ProcessFlag = 0
                     return 0
                 
                 # Select correct ramp incremenct
-                if self.mirror.c_t < (self.startTime + self.RAtime):
+                if self.mirror.cv['t'] < (self.startTime + self.RAtime):
                     # process ramp A
 
                     # calculate increments for percent and absolute if not calculated yet
@@ -109,7 +118,7 @@ class RampAgent(object):
                             self.RAslope = (self.RAVal - curVal)/self.RAtime*self.mirror.timeStep
 
                     self.increment = self.RAslope
-                elif self.mirror.c_t > (self.startTime + self.RAtime + self.holdTime):
+                elif self.mirror.cv['t'] > (self.startTime + self.RAtime + self.holdTime):
                     # process ramp B
                     if not self.RBslope and self.RBVal == 0:
                         #handle no ramp B case
@@ -129,23 +138,20 @@ class RampAgent(object):
                     self.increment = 0
 
                 # Update correct attribute 
-                if self.attr == 'p':
-                    oldVal = self.mObj.P
-                    self.mObj.P += self.increment
+                if self.attr.lower() == 'p':
+                    oldVal = self.mObj.cv['P']
+                    self.mObj.cv['P'] += self.increment
                     self.mirror.ss_Pert_Pdelta += self.increment
 
-                elif self.attr == 'q':
-                    oldVal = self.mObj.Q
-                    self.mObj.Q += self.increment
+                elif self.attr.lower() == 'q':
+                    oldVal = self.mObj.cv['Q']
+                    self.mObj.cv['Q'] += self.increment
                     mirror.ss_Pert_Qdelta += self.increment
 
-                elif self.attr == 'pset':
-                    oldVal = self.mObj.Pset
-                    self.mObj.Pset += self.increment
-
-                elif self.attr == 'pm':
-                    oldVal = self.mObj.Pm
-                    self.mObj.Pm += self.increment
+                elif self.attr in self.mObj.cv:
+                    # Used to handle Pref, and Pm... in a general way
+                    oldVal = self.mObj.cv[self.attr]
+                    self.mObj.cv[self.attr] += self.increment
 
                 if self.mirror.debug:
                     # TODO: Make this output more informative or remove?

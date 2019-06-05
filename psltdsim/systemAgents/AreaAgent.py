@@ -27,10 +27,16 @@ class AreaAgent(object):
         self.AreaSlack = None
 
         # Current Timestep values
-        self.Pe = 0.0
-        self.Pm = 0.0
-        self.P = 0.0
-        self.Q = 0.0
+        self.cv={
+            'Pe' : 0.0,
+            'Pm' : 0.0,
+            'P' : 0.0,
+            'Q' : 0.0,
+            }
+        #self.Pe = 0.0
+        #self.Pm = 0.0
+        #self.P = 0.0
+        #self.Q = 0.0
 
         #TODO: Add mor ACE variables?
         self.beta = 0.0
@@ -44,10 +50,11 @@ class AreaAgent(object):
 
     def logStep(self):
         """Put current values into log"""
-        self.r_Pe[self.mirror.c_dp] = self.Pe
-        self.r_Pm[self.mirror.c_dp] = self.Pm
-        self.r_P[self.mirror.c_dp] = self.P
-        self.r_Q[self.mirror.c_dp] = self.Q
+        n = self.mirror.cv['dp']
+        self.r_Pe[n] = self.cv['Pe']
+        self.r_Pm[n] = self.cv['Pm']
+        self.r_P[n] = self.cv['P']
+        self.r_Q[n] = self.cv['Q']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
@@ -64,7 +71,8 @@ class AreaAgent(object):
              'Pe' : self.r_Pe,
              'Pm' : self.r_Pm,
              'P' : self.r_P,
-             'Q' : self.Q,
+             'Q' : self.r_Q,
+             'beta' : self.beta,
              }
         return d
 

@@ -1,16 +1,8 @@
 def getCurrentVal(agent, attr):
-    """Handle getting the most recent agent value for a number of attributes"""
-    if attr == 'p':
-        #load power
-        return agent.P
-    elif attr == 'q':
-        #load q
-        return agent.Q
-    elif attr == 'pset':
-        #governed generator Pset
-        return agent.Pset
-    elif attr == 'pm':
-        #un-governed generator Pm
-        return agent.Pm
+    """Handle getting the most recent agent value from cv dictionary"""
+
+    if attr in agent.cv:
+        return agent.cv[attr]
     else:
-        print('* * Attribute not found in Agent...') # shouldn't ever print
+        print('*** Attribute \'%s\' not found in Agent...' % attr) 
+        return None

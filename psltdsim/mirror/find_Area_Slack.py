@@ -1,5 +1,6 @@
 def find_Area_Slack(mirror):
     """Link each area to area slack"""
+    #May be totally un required...
     for c_area in mirror.Area:
         areaObj = col.AreaDAO.FindByAreaNumber(c_area.Area)
         pslfSwingBus = col.BusDAO.FindByIndex(areaObj.Iswng)

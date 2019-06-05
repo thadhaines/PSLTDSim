@@ -20,7 +20,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\miniWECCstep\\", # relative path from cwd
-    'fileName' : 'mwStepTS20',
+    'fileName' : 'miniWECCstep0',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.

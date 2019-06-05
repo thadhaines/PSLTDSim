@@ -5,15 +5,15 @@ def sumPe(mirror):
     # for each area
     for area in mirror.Area:
         # reset current sum
-        area.Pe = 0.0
+        area.cv['Pe'] = 0.0
 
         # sum each active machine Pe to area agent
         for mach in area.Machines:
-            if mach.St == 1:
-                area.Pe += mach.Pe
+            if mach.cv['St'] == 1:
+                area.cv['Pe'] += mach.cv['Pe']
 
         # sum area agent totals to system
-        sysPe += area.Pe
+        sysPe += area.cv['Pe']
 
     return sysPe
 

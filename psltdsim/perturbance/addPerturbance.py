@@ -28,16 +28,17 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
     if (perType.lower() == 'step') and targetObj:
         # perParams = [targetAttr, tStart, newVal, type='r']
         newStepAgent = ltd.perturbance.StepAgent(mirror, targetObj, tarType, perParams)
-        mirror.Perturbance.append(newStepAgent)
-        print("*** Perturbance Agent added!")
-        print(newStepAgent)
-        return
+        if newStepAgent.ProcessFlag:
+            mirror.Perturbance.append(newStepAgent)
+            print("*** Perturbance Agent added:")
+            print(newStepAgent)
+            return
 
     if (perType.lower() == 'ramp') and targetObj:
         # perParams = [targetAttr, tStart, RAtime, RAVal, holdTime, RBtime, RBVal]
         newRampAgent = ltd.perturbance.RampAgent(mirror, targetObj, tarType, perParams)
         mirror.Perturbance.append(newRampAgent)
-        print("*** Perturbance Agent added!")
+        print("*** Perturbance Agent added:")
         print(newRampAgent)
         return
 

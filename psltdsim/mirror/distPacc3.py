@@ -25,20 +25,20 @@ def distPacc(mirror, deltaPacc):
         for c_gen in mirror.Machines:
 
             # Ensure off generators don't suppy power
-            if c_gen.St == 0:
-                c_gen.Pe = 0
+            if c_gen.cv['St'] == 0:
+                c_gen.cv['Pe'] = 0
                 c_gen.setPvals()
                 continue
 
             if c_gen.globalSlack:
                 if iteration == 1:
                     #distribute to slack on First pass 
-                    c_gen.Pe = c_gen.Pe - Pacc * (c_gen.H/Hsys)
+                    c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hsys)
                     # Set Pe_calc
-                    c_gen.Pe_calc = c_gen.Pe 
+                    c_gen.cv['Pe_calc'] = c_gen.cv['Pe'] 
                 else:
                     # On later iterations, Reset generator to estimated value
-                    c_gen.Pe = c_gen.Pe_calc
+                    c_gen.cv['Pe'] = c_gen.cv['Pe_calc']
             
                 # Update PSLF values
                 c_gen.setPvals()
@@ -46,7 +46,7 @@ def distPacc(mirror, deltaPacc):
 
             #Distribute delta Pacc to non slack other gens
             else:
-                c_gen.Pe = c_gen.Pe - Pacc * (c_gen.H/Hsys) 
+                c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hsys) 
                 c_gen.setPvals()
                 c_gen.Bus.setPvals()
 
@@ -60,15 +60,15 @@ def distPacc(mirror, deltaPacc):
 
         # Calculate global slack error (could be an average in the future?)
         mirror.globalSlack.getPvals()
-        error = mirror.globalSlack.Pe_calc - mirror.globalSlack.Pe 
+        error = mirror.globalSlack.cv['Pe_calc'] - mirror.globalSlack.cv['Pe'] 
         
         if mirror.debug:
             print('expected: %.2f\tactual: %.2f\terror: %.2f' 
-                  % (mirror.globalSlack.Pe_calc, mirror.globalSlack.Pe, error))
+                  % (mirror.globalSlack.cv['Pe_calc'], mirror.globalSlack.cv['Pe'], error))
 
         # exit while loop if tolerance met
         if abs(error) <= tol:
-            mirror.globalSlack.Pe_error = error
+            mirror.globalSlack.cv['Pe_error'] = error
             tol_Flag = 0
             continue
 

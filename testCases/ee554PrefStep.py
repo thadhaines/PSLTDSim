@@ -3,13 +3,14 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Step of load up 30% at t= 2. One area model, one system slack
+Ramp two prefs to new and equal values with a 2 second offset between start times.
+Shows minor f changes 
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.25,
-    'endTime': 90,
+    'timeStep': 1,
+    'endTime': 60,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -19,13 +20,13 @@ simParams = {
     'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
     'integrationMethod' : 'rk45',
     # Data Export Parameters
-    'fileDirectory' : "\\delme\\kundurStep\\", # relative path from cwd
-    'fileName' : 'kundurStepAS3',
+    'fileDirectory' : "\\delme\\ee554PrefStep\\", # relative path from cwd
+    'fileName' : 'ee554PrefStep',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
     }
 
-savPath = r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD1a1s.sav"
-dydPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.dyd"]
-ltdPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur.step0.ltd"]
+savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
+dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.exc2Gov.dyd"]
+ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.PrefStep.ltd"]

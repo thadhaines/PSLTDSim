@@ -10,7 +10,7 @@ class tgov1Agent():
         self.mirror = mirror
         self.PSFLgov = PSLFgov
         self.Gen = PSLFgov.Gen
-        self.Pref = self.Gen.Pset
+        self.Pref = self.Gen.cv['Pref']
 
         self.appenedData = True
 
@@ -44,10 +44,10 @@ class tgov1Agent():
 
     def stepDynamics(self):
         """ Perform governor control"""
-        self.Pref = self.Gen.Pset # get newest set value.
+        self.Pref = self.Gen.cv['Pref'] # get newest set value.
 
         # Create system inputs
-        delta_w = 1.0-self.mirror.c_f
+        delta_w = 1.0-self.mirror.cv['f']
         PrefVec = np.array([self.Pref,self.Pref])
         dwVec = np.array([delta_w,delta_w])/self.R*self.Mbase
 
@@ -56,7 +56,7 @@ class tgov1Agent():
 
         # First dynamic Block
         _, y1, self.x1 = sig.lsim(self.sys1, U=uVector, T=self.t, 
-                                   X0=self.r_x1[self.mirror.c_dp-1], interp=True)
+                                   X0=self.r_x1[self.mirror.cv['dp']-1], interp=True)
         ys = y1
 
         # limit Valve position (i.e. Pm out)
@@ -68,19 +68,19 @@ class tgov1Agent():
 
         # Second block
         _, y2, self.x2 = sig.lsim(self.sys2, y1, T=self.t,
-                                   X0=self.r_x2[self.mirror.c_dp-1], interp=True)
+                                   X0=self.r_x2[self.mirror.cv['dp']-1], interp=True)
         self.mirror.DynamicSolns += 2
 
         # Accout for damping
         Pmech = y2[1] - delta_w*self.Dt*self.Mbase
 
         # Set Generator Mechanical Power
-        self.Gen.Pm = float(Pmech) # float because y2 is numpy ....
+        self.Gen.cv['Pm'] = float(Pmech) # float because y2 is numpy ....
 
     def stepInitDynamics(self):
         """ set Pm = Pe, calculate MW limits of valve position"""
-        self.Gen.Pm = self.Gen.Pe
-        self.Gen.Pset = self.Gen.Pe
+        self.Gen.cv['Pm'] = self.Gen.cv['Pe']
+        self.Gen.cv['Pref'] = self.Gen.cv['Pe']
         
         updated = False
         if self.mirror.debug:
@@ -109,14 +109,14 @@ class tgov1Agent():
         self.r_x1 = [0.0]*self.mirror.dataPoints
         self.r_x2 = [0.0]*self.mirror.dataPoints
 
-        # Append intit values to running state data
-        self.r_x1.append(self.Gen.Pm)
-        self.r_x2.append(self.Gen.Pm)
+        # Append init values to running state data
+        self.r_x1.append(self.Gen.cv['Pm'])
+        self.r_x2.append(self.Gen.cv['Pm'])
 
     def logStep(self):
         """Update Log information"""
-        self.r_x1[self.mirror.c_dp] = float(self.x1[1])
-        self.r_x2[self.mirror.c_dp] = float(self.x2[1])
+        self.r_x1[self.mirror.cv['dp']] = float(self.x1[1])
+        self.r_x2[self.mirror.cv['dp']] = float(self.x2[1])
 
     def popUnsetData(self, N):
         """Remove any appened init values from running values"""

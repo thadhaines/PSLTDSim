@@ -42,41 +42,45 @@ elif test_case == 5: # testing of ggov casting
 
 # List of simulation parameter .py files:
 batchList =[
-    #r".\testCases\miniWECCstepTS02.py",
-    #r".\testCases\miniWECCstepTS05.py",
-    #r".\testCases\miniWECCstepTS10.py",
-    #r".\testCases\miniWECCstepTS20.py",
-    #r".\testCases\miniWECCcrash.py",
+    r".\testCases\miniWECCstep0.py",
+    #r".\testCases\miniWECCstep1.py",
+    #r".\testCases\miniWECCstep2.py",
+    #r".\testCases\miniWECCstep3.py",
+
+    r".\testCases\miniWECCcrash.py",
+
+    r".\testCases\microWECCstep.py",
+
     #r".\testCases\ee554noGovStepUp.py",
     #r".\testCases\ee554noGovStepDown.py",
     #r".\testCases\ee554noGovSteps.py",
-    #r".\testCases\ee5541GovSteps.py",
+    r".\testCases\ee5541GovSteps.py",
     #r".\testCases\ee5542GovSteps.py",
+
     #r".\testCases\ee5541GovRampARel.py",
     #r".\testCases\ee5541GovRampAPer.py",
     #r".\testCases\ee5541GovRampAAbs.py",
     #r".\testCases\ee5541GovRampsPer.py",
     #r".\testCases\ee5541GovRampsAbs.py",
     #r".\testCases\ee5541GovRampsGens.py",
-    #r".\testCases\ee554PsetStep.py", 
+    r".\testCases\ee554PrefStep.py", 
     #r".\testCases\ee554PmStepRamp.py",
-    r".\testCases\microWECCstep.py",
+
+    # AMQP Message grouping speedup Tests
     #r".\testCases\miniWECCstepGroupA.py",
     #r".\testCases\miniWECCstepGroupB.py",
     #r".\testCases\miniWECCstepGroupC.py",
-    #r".\testCases\ge4LoadStep.py", # probably not going to use
-    r".\testCases\kundurLoadRamp0.py",
-    r".\testCases\kundurLoadRamp1.py",
-    r".\testCases\kundurLoadRamp2.py",
-    r".\testCases\kundurLoadRamp3.py",
+
+    r".\testCases\kundurLoadRamp0.py",# 2 area, 1 slack
+    #r".\testCases\kundurLoadRamp1.py",
+    #r".\testCases\kundurLoadRamp2.py",
+    #r".\testCases\kundurLoadRamp3.py",
+
     r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack
-    r".\testCases\kundurLoadStep2.py",# 2 area, 1 slack
-    r".\testCases\kundurLoadStep1.py",# 2 area, 1 slack
-    r".\testCases\kundurLoadStep3.py",# 2 area, 1 slack
-    r".\testCases\kundurLoadStepAS0.py", # 1 area, 1 slack
-    r".\testCases\kundurLoadStepAS1.py", # 1 area, 1 slack
-    r".\testCases\kundurLoadStepAS2.py", # 1 area, 1 slack
-    r".\testCases\kundurLoadStepAS3.py", # 1 area, 1 slack
+    #r".\testCases\kundurLoadStep2.py",
+    #r".\testCases\kundurLoadStep1.py",
+    #r".\testCases\kundurLoadStep3.py",
+
             ]
 
 # Batch Run Parameters
