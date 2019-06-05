@@ -21,6 +21,12 @@ class StepAgent(object):
         else:
             self.stepType = 'abs'
 
+         # Check if linking is okay
+        attrCheck = ltd.perturbance.getCurrentVal(self.mObj, self.attr)
+        if not attrCheck:
+            # Attribute not found or other linking error
+            self.ProcessFlag = 0
+
     def __repr__(self):
         """Display more useful data for mirror"""
         # mimic default __repr__

@@ -13,6 +13,8 @@ class RampAgent(object):
 
         self.mirror = mirror
         self.mObj = targetObj
+
+        # Handle under defined cases
         if len(perParams) < 5:
             perParams.append('rel')
         if len(perParams) < 6:
@@ -24,6 +26,13 @@ class RampAgent(object):
             perParams.append('rel')
 
         self.attr = perParams[0]
+
+        # Check if linking is okay
+        attrCheck = ltd.perturbance.getCurrentVal(self.mObj, self.attr)
+        if not attrCheck:
+            # Attribute not found or other linking error
+            self.ProcessFlag = 0
+
         self.startTime = float(perParams[1])
         self.RAtime = float(perParams[2])
         self.RAVal = float(perParams[3])
@@ -140,9 +149,9 @@ class RampAgent(object):
                     mirror.ss_Pert_Qdelta += self.increment
 
                 elif self.attr in self.mObj.cv:
-                    # Used to handle Pref, and Pm...
-                    oldVal = self.mObj.cv[attr]
-                    self.mObj.cv[attr] += self.increment
+                    # Used to handle Pref, and Pm... in a general way
+                    oldVal = self.mObj.cv[self.attr]
+                    self.mObj.cv[self.attr] += self.increment
 
                 if self.mirror.debug:
                     # TODO: Make this output more informative or remove?

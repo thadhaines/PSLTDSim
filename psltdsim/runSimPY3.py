@@ -3,7 +3,7 @@ def runSimPY3(mirror, amqpAgent):
     print("*** runSimPY3 start")
     PY3 = amqpAgent
 
-    # parse LTD to handle ltd models and perturbances
+    # parse LTD to handle perturbances
     if mirror.locations['ltdPath']:
         ltd.parse.parseLtd(mirror, mirror.locations['ltdPath'])
 

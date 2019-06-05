@@ -3,12 +3,12 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-MiniWECC step of +1200 MW at t=2. ts = 0.5
+MiniWECC step of +1200 MW at t=2. ts = 0.25
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.5,
+    'timeStep': 0.25,
     'endTime': 90,
     'slackTol': 1,
     'PY3msgGroup' : 5,
@@ -20,7 +20,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\miniWECCstep\\", # relative path from cwd
-    'fileName' : 'mwStepTS05',
+    'fileName' : 'miniWECCstep3',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
