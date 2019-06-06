@@ -2,11 +2,11 @@ def distPacc(mirror, deltaPacc):
     """Distribute Pe among generators until global slack error below tolerance.
     Adjust to account for all slack errors?
     Assumes:
-        Each system has only 1 slack bus
-        Each area has it's own designated slack gen
+        Each system has only 1 global slack bus
+        Each area has it's own designated slack gen (though it may not be used)
 
-    NOTE: pretty rough on the mulitple slack generator handling (i.e. untested)
-    TODO: account for status, IRP_flag, and mw limits of generators (Pmax)
+    NOTE: pretty rough on the mulitple slack generator handling (i.e. untested) - might work if in seperate islands....
+    TODO: IRP_flag..., and mw limits of generators (Pmax)
     """
 
     tol_Flag = 1 # goes to zero once error < tolerance

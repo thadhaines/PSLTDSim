@@ -25,6 +25,13 @@ def sysPQVF(mirror, blkFlag=True):
                     fillstyle='none',
                     linestyle = ':',
                     label = 'Q Gen '+ mach.Busnam)
+    for shunt in mir.Shunt:
+        if not all(v == 0 for v in shunt.r_Q):
+            ax[0][1].plot(mir.r_t, shunt.r_Q, 
+                        #marker = 10,
+                        fillstyle='none',
+                        linestyle = '-',
+                        label = 'Q Shunt '+ shunt.Bus.Busnam + ' ' +shunt.Id)
     ax[0][1].set_xlabel('Time [sec]')
     ax[0][1].set_ylabel('MVAR')
 

@@ -1,13 +1,12 @@
 def addPerturbance(mirror, tarType, idList, perType, perParams):
     """Add Perturbance to model.
-    tarType = 'Load'
+    tarType = 'load', 'gen', 'shunt'
     idList = [Busnumber, id] id is optional, first object chosen by default
-    perType = 'Step'
+    perType = 'step', 'ramp'
     perParams = list of specific perturbance parameters, will vary
         for a step: perParams = [targetAttr, tStart, newVal]
 
-    TODO: Add other tarTypes ('Gen') and perTypes ('Ramp')
-    Maybe rethink inputs as a dictionary?
+    TODO: Maybe rethink inputs as a dictionary?
     """
     targetObj= None
 
@@ -30,6 +29,10 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
         else:
             targetObj = ltd.find.findShuntOnBus(mirror, idList[0], idList[1])
               
+    if tarType.lower() == 'branch':
+        # Branches must have from, to, and ck id
+        targetObj = ltd.find.findBranchByTFC(mirror, idList)
+
     #Create Perturbance Agent
     if (perType.lower() == 'step') and targetObj:
         # perParams = [targetAttr, tStart, newVal, type='r']

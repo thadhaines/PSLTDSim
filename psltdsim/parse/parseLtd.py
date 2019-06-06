@@ -16,9 +16,10 @@ def parseLtd(mirror,ltdLoc):
 
             #print(line) # Debug
             parts = line.split()
+            t = parts[0].lower()# for shorter logic comparisons
 
             # send line to correct function based on line
-            if parts[0].lower() == "load" or "gen":
+            if (t == "load") or (t =="gen") or (t =="shunt"):
                 if mirror.debug:
                     print("*** Creating %s Perturbance..." % parts[0])
                 cleanLine = ltd.parse.cleanLtdStr(line)
@@ -35,6 +36,19 @@ def parseLtd(mirror,ltdLoc):
                                          cleanLine[3],
                                          cleanLine[4:])
 
+            elif t == "branch":
+                if mirror.debug:
+                    print("*** Creating %s Perturbance..." % parts[0])
+                cleanLine = ltd.parse.cleanLtdStr(line)
+
+                # turn clean line into idList
+                idList = cleanLine[1:4]
+
+                ltd.perturbance.addPerturbance(mirror, 
+                                          cleanLine[0],
+                                         idList,
+                                         cleanLine[4],
+                                         cleanLine[5:])
                 #print(line) # debug
 
                 foundPert += 1

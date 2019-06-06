@@ -22,8 +22,10 @@ format long;
 PSDSfileName = 'kundur.step0.chf'
 LTDCaseName = 'kundurStep'
 
-% PSDSfileName = 'kundur.ramp0.chf'
-% LTDCaseName = 'kundurRamp'
+PSDSfileName = 'kundur.ramp0.chf'
+LTDCaseName = 'kundurRamp'
+
+plotTheoSS = 0; % use for steps only - requires manual calcs of beta, MW delta
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'0F'],
     [LTDCaseName,'1F'],
@@ -47,7 +49,7 @@ load(cases{4}) % 1 sec
 mir4 = eval(cases{4});
 clear eval(cases{4})
 
-mir = mir3; % for comparison plots
+mir = mir2; % for comparison plots
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 
@@ -69,11 +71,10 @@ end
 fAve = fAve/N/60; % as PU
 
 %% Calculate weighted freq
-mir = mir1;
 Hsys = mir.Hsys
 weightedF = zeros(size(psds_data.Data(:,1),1),1);
 debug = 1;
-for area = 1:max(size(mir1.areaN)) % for each area
+for area = 1:max(size(mir.areaN)) % for each area
     if debug
         fprintf('area %d\n',mir.areaN(area) )
     end
@@ -125,7 +126,7 @@ mir02err = abs(mir4.f(end)-ssPu)*60
 
 %% Plot parameters
 ppos = [18 521 1252 373];
-x_lim = [mir1.t(1), mir1.t(end)];
+x_lim = [mir.t(1), mir.t(end)];
 y_lim = [.9975,1];
 bfz = 13;
 
@@ -162,8 +163,9 @@ plot(mir2.t, mir2.f*60 , '--','color',[.7 .7 .7],'linewidth',2)
 plot(mir3.t, mir3.f*60 , 'm-.','linewidth',2)
 plot(mir4.t, mir4.f*60 , 'k--','linewidth',2)
 
-line([mir4.t(1) mir4.t(end)],[ssPu,ssPu]*60,'linestyle',':','color',[.3 0 .7],'linewidth',2)
-
+if plotTheoSS
+    line([mir4.t(1) mir4.t(end)],[ssPu,ssPu]*60,'linestyle',':','color',[.3 0 .7],'linewidth',2)
+end
 
 legend({'Weighted PSDS','LTD 2 sec','LTD 1 sec','LTD 0.5 sec','LTD 0.25 sec','Theoretical SS'},'location','southeast')
 xlim(x_lim)

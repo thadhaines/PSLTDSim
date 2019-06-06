@@ -168,6 +168,10 @@ class Mirror(object):
         ltd.mirror.find_Global_Slack(self)
         ltd.mirror.find_Area_Slack(self) # may have no point
 
+        # Link branches to mirror
+        for branch in self.Branch:
+            branch.createLTDlinks()
+
         init_end = time.time()
         self.InitTime = init_end-init_start
         print("*** Python Mirror intialized.")

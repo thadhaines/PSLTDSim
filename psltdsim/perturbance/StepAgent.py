@@ -68,6 +68,26 @@ class StepAgent(object):
                     else:
                         print("*** Perturbance Error: Status aready %d."
                               % self.pertVal)
+
+                if (self.attr == 'St') and (self.tarType == 'gen'):
+                    # Generators must adjust system inertia - 
+                    # System Pm is calculated after perturbance steps
+                    if (self.pertVal == 1) and (self.mObj.cv['St'] ==0):
+                        self.mObj.cv['St'] = 1
+                        # handle initial pm values....
+                        # add inertial to system
+                        self.mirror.ss_H += self.mObj.H
+
+                    elif (self.pertVal == 0) and (self.mObj.cv['St'] ==1):
+                        self.mObj.cv['St'] = 0
+                        self.mObj.cv['Pm'] = 0
+                        self.mObj.cv['Pe'] = 0
+                        self.mObj.cv['Q'] = 0
+                        #remove inertia from system
+                        self.mirror.ss_H -= self.mObj.H
+                    else:
+                        print("*** Perturbance Error: Status aready %d."
+                              % self.pertVal)
                     #TODO: handle different actions for certain agent types.
 
                 elif self.attr == 'P':
@@ -96,6 +116,7 @@ class StepAgent(object):
                 # Generic way to handle current value steps.
                 elif self.attr in self.mObj.cv:
                     # Used to change any attribute in current value dictionary
+
                     oldVal = self.mObj.cv[self.attr]
                     if self.stepType == 'rel':
                         self.mObj.cv[self.attr] += self.pertVal # relative step

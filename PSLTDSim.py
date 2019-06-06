@@ -70,7 +70,9 @@ batchList =[
     #r".\testCases\kundurLoadRamp3.py",
 
     #r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack
-    r".\testCases\kundurLoadStepShunt0.py",
+    #r".\testCases\kundurLoadStepShunt0.py",
+    #r".\testCases\kundurLoadRampBranch0.py",
+    r".\testCases\kundurGenTrip0.py",
     #r".\testCases\kundurLoadStep2.py",
     #r".\testCases\kundurLoadStep1.py",
     #r".\testCases\kundurLoadStep3.py",
@@ -179,6 +181,7 @@ for testCase in batchList:
             waitTime += time.time() - wait_start
         else:
             ltd.plot.sysPePmFLoad(mir ,False)
+            ltd.plot.sysPQVF(mir, False)
 
 # End of Batch Output
 batchTime = time.time() - batchStart - waitTime

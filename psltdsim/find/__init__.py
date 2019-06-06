@@ -5,4 +5,5 @@ from .findLoadOnBus import findLoadOnBus
 from .findShuntOnBus import findShuntOnBus
 from .findBus import findBus
 from .makeBranchDict import makeBranchDict
-from .findBranchByScanBus import findBranchByScanBus
+from .findBranchByScanBusCk import findBranchByScanBusCk
+from .findBranchByTFC import findBranchByTFC
