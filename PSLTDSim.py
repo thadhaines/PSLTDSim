@@ -70,13 +70,21 @@ batchList =[
     #r".\testCases\kundurLoadRamp3.py",
 
     #r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack
-    #r".\testCases\kundurLoadStepShunt0.py",
-    #r".\testCases\kundurLoadRampBranch0.py",
-    r".\testCases\kundurGenTrip0.py",
     #r".\testCases\kundurLoadStep2.py",
     #r".\testCases\kundurLoadStep1.py",
     #r".\testCases\kundurLoadStep3.py",
 
+    #r".\testCases\kundurLoadStepShunt0.py",
+    #r".\testCases\kundurLoadRampBranch0.py",
+
+    # simple gen trips
+    #r".\testCases\kundurGenTrip00.py",
+    #r".\testCases\kundurGenTrip01.py",
+    #r".\testCases\kundurGenTrip02.py",
+    #r".\testCases\kundurGenTrip03.py",
+
+    # more complex gen trip off/on and ramp pm
+    r".\testCases\kundurGenTrip22.py",
             ]
 
 # Batch Run Parameters
@@ -176,12 +184,12 @@ for testCase in batchList:
         if case == len(batchList):
             wait_start = time.time()
             print('\n*** Waiting for plot to close...')
-            ltd.plot.sysPQVF(mir, False)
-            ltd.plot.sysPePmFLoad(mir, True)
+            ltd.plot.sysPQVF(mir, True)
+            #ltd.plot.sysPePmFLoad(mir, True)
             waitTime += time.time() - wait_start
         else:
-            ltd.plot.sysPePmFLoad(mir ,False)
             ltd.plot.sysPQVF(mir, False)
+            #ltd.plot.sysPePmFLoad(mir ,False)
 
 # End of Batch Output
 batchTime = time.time() - batchStart - waitTime

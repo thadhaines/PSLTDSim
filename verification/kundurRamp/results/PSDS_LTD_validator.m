@@ -22,8 +22,11 @@ format long;
 PSDSfileName = 'kundur.step0.chf'
 LTDCaseName = 'kundurStep'
 
-PSDSfileName = 'kundur.ramp0.chf'
-LTDCaseName = 'kundurRamp'
+% PSDSfileName = 'kundur.ramp0.chf'
+% LTDCaseName = 'kundurRamp'
+
+% PSDSfileName = 'kundur.gentrip0.chf'
+% LTDCaseName = 'kundurGenTrip0'
 
 plotTheoSS = 0; % use for steps only - requires manual calcs of beta, MW delta
 %% import LTD data in an automatic way

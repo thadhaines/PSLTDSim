@@ -16,8 +16,14 @@ class StepAgent(object):
         self.tStart = float(perParams[1])
         self.pertVal = float(perParams[2])
 
+        
+
         if len(perParams) > 3 :
-            self.stepType = perParams[3].lower()
+            if self.tarType == 'gen':
+                self.RestartVal = float(perParams[3])
+                self.stepType = 'abs'
+            else:
+                self.stepType = perParams[3].lower()
         else:
             self.stepType = 'abs'
 
@@ -74,6 +80,8 @@ class StepAgent(object):
                     # System Pm is calculated after perturbance steps
                     if (self.pertVal == 1) and (self.mObj.cv['St'] ==0):
                         self.mObj.cv['St'] = 1
+                        self.mObj.cv['Pm'] = self.RestartVal
+                        self.mObj.cv['Pe'] = self.RestartVal
                         # handle initial pm values....
                         # add inertial to system
                         self.mirror.ss_H += self.mObj.H

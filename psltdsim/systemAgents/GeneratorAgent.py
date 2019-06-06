@@ -84,7 +84,15 @@ class GeneratorAgent(object):
         """Send current mirror values to PSLF"""
         pObj = self.getPref()
         pObj.Pgen = self.cv['Pe']
-        pObj.St = self.cv['St']
+
+        if pObj.St != self.cv['St']:
+            # a change in status has occured
+            if self.cv['St'] == 0:
+                pObj.SetOutOfService()
+                pObj.Qgen = 0.0
+            elif self.cv['St'] == 1:
+                pObj.SetInService()
+            pObj.St = self.cv['St']
         pObj.Save()
 
     def makeAMQPmsg(self):

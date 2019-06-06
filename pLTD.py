@@ -9,7 +9,7 @@ import psltdsim as ltd
 
 dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
-mirLoc = os.path.join(dirname, 'delme','kundurStepShunt','kundurStepShunt0F.mir')
+mirLoc = os.path.join(dirname, 'delme','kundurGenTrip2','kundurGenTrip22F.mir')
 mir = ltd.data.readMirror(mirLoc)
 
 xend = max(mir.r_t)
@@ -20,9 +20,9 @@ ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
 ltd.plot.sysPLQF(mir, False)
+ltd.plot.sysPLQF(mir, False)
 
-
-#ltd.plot.sysPQgen(mir, False)
+ltd.plot.allPmDynamics(mir, False)
 ltd.plot.sysPQVF(mir, 1)
 
 

@@ -9,7 +9,7 @@ back to the starting value.
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 2,
+    'timeStep': 0.5,
     'endTime': 45,
     'slackTol': 1,
     'PY3msgGroup' : 3,
@@ -21,7 +21,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\kundurGenTrip0\\", # relative path from cwd
-    'fileName' : 'kundurGenTrip00',
+    'fileName' : 'kundurGenTrip02',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.

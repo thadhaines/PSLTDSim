@@ -1,14 +1,14 @@
 def distPacc(mirror, deltaPacc):
     """Distribute Pe among generators until global slack error below tolerance.
-    Could be altered later to account for all slack errors.
-    Assumes:
-        Eeach area has 1 slack generator
-        Each system has 1 global slack generator
 
-    NOTE: pretty rough on the mulitple slack generator handling (i.e. untested)
-    TODO: account for status, IRP_flag, and mw limits of generators (Pmax)
+    Assumes:
+        Each system has only 1 global slack bus
+        Each area has it's own designated slack gen (though it may not be used)
+
+    NOTE: pretty rough on the mulitple slack generator handling (i.e. untested) - might work if in seperate islands....
+    TODO: IRP_flag..., and mw limits of generators (Pmax)
     """
-    fp_Flag = 1
+
     tol_Flag = 1 # goes to zero once error < tolerance
 
     tol = mirror.slackTol
@@ -17,84 +17,58 @@ def distPacc(mirror, deltaPacc):
     Pacc = deltaPacc
     iteration = 1
 
-    """ # handled by findGlobalSlack
-    # create reference to global slack gen # assumes only 1 slack gen
-    for gen in mirror.Slack:
-        if gen.globalSlack:
-            globalSlack = gen
-            break
-    """
-
     while tol_Flag:
         tic1 = time.time()
         if mirror.debug:
             print("*** LTD: Distributing %.2f MW of Pacc, Iteration %d" % (Pacc, iteration))
-        #for each mirror area:
-        for c_area in mirror.Area:
-            if fp_Flag:
-                #distribute to slack on First pass and set Pe_calc
-                slackPacc = Pacc*(c_area.Slack[0].H/Hsys)
-                c_area.Slack[0].Pe = c_area.Slack[0].Pe - slackPacc 
+        #for each system area:
+        for c_gen in mirror.Machines:
 
-                # Estimated Pe post PF soln
-                c_area.Slack[0].Pe_calc = c_area.Slack[0].Pe 
-                c_area.Slack[0].setPvals()
-
-                # remove handled Pacc from rest of system distribution
-                Pacc = Pacc - slackPacc
-                # create new H without slack gen to distribute to
-                HsysDist = Hsys - c_area.Slack[0].H
-                fp_Flag = 0
-
-            else:
-                # Reset slack generators to estimated value
-                c_area.Slack[0].Pe = c_area.Slack[0].Pe_calc
-                c_area.Slack[0].setPvals()
-
-            #Distribute delta Pacc to all non-slack gens in area
-            for c_gen in c_area.Gens:
-                c_gen.Pe = c_gen.Pe - Pacc * (c_gen.H/HsysDist) 
+            # Ensure off generators don't suppy power
+            if c_gen.cv['St'] == 0:
+                c_gen.cv['Pe'] = 0
+                c_gen.cv['Q'] = 0
                 c_gen.setPvals()
-                # ensure Vsched in PSLF is correct
+                continue
+
+            if c_gen.globalSlack:
+                if iteration == 1:
+                    #distribute to slack on First pass 
+                    c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hsys)
+                    # Set Pe_calc
+                    c_gen.cv['Pe_calc'] = c_gen.cv['Pe'] 
+                else:
+                    # On later iterations, Reset generator to estimated value
+                    c_gen.cv['Pe'] = c_gen.cv['Pe_calc']
+            
+                # Update PSLF values
+                c_gen.setPvals()
                 c_gen.Bus.setPvals()
 
-            for c_slack in c_area.Slack:
-                if not c_slack.globalSlack:
-                    c_slack.Pe = c_slack.Pe - Pacc * (c_slack.H/HsysDist) 
-                    c_slack.setPvals()
-                    # ensure Vsched in PSLF is correct
-                    c_slack.Bus.setPvals()
+            #Distribute delta Pacc to non slack other gens
+            else:
+                c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hsys) 
+                c_gen.setPvals()
+                c_gen.Bus.setPvals()
 
         toc1 = time.time()
         # Pe is distributed to all generators in all areas, solve Power flow
         ltd.mirror.LTD_SolveCase(mirror)
-        
-        """
-        # moved outside loop to fully get PSLF values only after slack error ok.
-        # this may or may not make sense.
-        tic2 = time.time()
-        #Update mirror machines with PSLF values from power flow solution
-        for gen in mirror.Machines:
-            gen.getPvals()
-        toc2 = time.time()
-        mirror.IPYPvalsTime += toc2-tic2
-        """
 
         #update mirror timers
         mirror.IPYdistPaccTime += toc1-tic1
-        #mirror.IPYPvalsTime += toc2-tic2
 
         # Calculate global slack error (could be an average in the future?)
         mirror.globalSlack.getPvals()
-        error = mirror.globalSlack.Pe_calc - mirror.globalSlack.Pe 
+        error = mirror.globalSlack.cv['Pe_calc'] - mirror.globalSlack.cv['Pe'] 
         
         if mirror.debug:
             print('expected: %.2f\tactual: %.2f\terror: %.2f' 
-                  % (mirror.globalSlack.Pe_calc, mirror.globalSlack.Pe, error))
+                  % (mirror.globalSlack.cv['Pe_calc'], mirror.globalSlack.cv['Pe'], error))
 
         # exit while loop if tolerance met
         if abs(error) <= tol:
-            mirror.globalSlack.Pe_error = error
+            mirror.globalSlack.cv['Pe_error'] = error
             tol_Flag = 0
             continue
 
