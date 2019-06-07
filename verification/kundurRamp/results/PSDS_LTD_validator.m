@@ -22,13 +22,16 @@ format long;
 PSDSfileName = 'kundur.step0.chf'
 LTDCaseName = 'kundurStep'
 
-% PSDSfileName = 'kundur.ramp0.chf'
+% PSDSfileName = 'kundur.ramp0.chf' % 85 second ramp
 % LTDCaseName = 'kundurRamp'
+
+% PSDSfileName = 'kundur.ramp1.chf' % 40 second ramp
+% LTDCaseName = 'kundurRamp1'
 
 % PSDSfileName = 'kundur.gentrip0.chf'
 % LTDCaseName = 'kundurGenTrip0'
 
-plotTheoSS = 1; % use for steps only - requires manual calcs of beta, MW delta
+plotTheoSS = 0; % use for steps only - requires manual calcs of beta, MW delta
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'0F'],
     [LTDCaseName,'1F'],
@@ -52,7 +55,7 @@ load(cases{4}) % 1 sec
 mir4 = eval(cases{4});
 clear eval(cases{4})
 
-mir = mir4; % for comparison plots
+mir = mir2; % for comparison plots
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 
@@ -63,6 +66,8 @@ pg_col = jfind(psds_data, 'pg');
 pm_col = jfind(psds_data, 'pm'); % governor pm output
 qg_col = jfind(psds_data, 'qg');
 f_col = jfind(psds_data, 'fbu');
+ag_col = jfind(psds_data, 'abug');
+al_col = jfind(psds_data, 'abul');
 t = psds_data.Data(:,1); % PSDS time
 
 %% sum and average PSDS frequency data
@@ -342,7 +347,7 @@ ylabel('Power [MW]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
 
-%% Pe  Comparison
+%% Pm  Comparison
 figure('position',ppos)
 legNames ={};
 hold on
@@ -426,6 +431,50 @@ grid on
 title('Comparison of Reactive Power Output')
 xlabel('Time [sec]')
 ylabel('Reactive Power [MVAR]')
+set(gca,'fontsize',bfz)
+xlim(x_lim)
+
+%% Generator Angle  Comparison
+figure('position',ppos)
+legNames ={};
+hold on
+for curCol=1:max(size(ag_col))
+    plot(t, psds_data.Data(:,ag_col(curCol))./180.*pi)
+    temp = strsplit(psds_data.Description{ag_col(curCol)});
+    legNames{end+1} = ['PSDS ', temp{1}];
+end
+
+hold on
+
+for area = 1:max(size(mir.areaN)) % for each area
+    if debug
+        fprintf('area %d\n',mir.areaN(area) )
+    end
+    curArea = ['A',int2str(area)];
+    
+    for slack = 1:max(size(mir.(curArea).slackBusN))
+        curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
+        plot(mir.t, mir.(curArea).(curSlack).Va,'-o')
+        name = [(curArea),'.',(curSlack)];
+        legNames{end+1} = ['LTD ',name];
+    end
+    for gen = 1:max(size(mir.(curArea).genBusN))
+        curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
+        % place for for each gen in Ngen...
+        
+        plot(mir.t, mir.(curArea).(curGen).Va,'-o')
+        name = [(curArea),'.',(curGen)];
+        legNames{end+1} = ['LTD ',name];
+    end
+    
+end
+if makeLegend
+    legend(legNames)
+end
+grid on
+title('Comparison of Generator Angle')
+xlabel('Time [sec]')
+ylabel('Power [MW]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
 

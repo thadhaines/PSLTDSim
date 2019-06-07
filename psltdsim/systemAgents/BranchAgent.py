@@ -23,10 +23,10 @@ class BranchAgent(object):
             }
 
         # This may be unneccessary - but could be used for Ymatrix...
-        self.X = round(float(newBranch.Zsecx),6) 
-        self.R = round(float(newBranch.Zsecr),6)
-        self.B = round(float(newBranch.Bsec),6) # seems to round
-        self.Length = float(newBranch.Lngsec)
+        self.X = round(float(newBranch.Zsecx),6) # reactance
+        self.R = round(float(newBranch.Zsecr),6) # resistance
+        self.B = round(float(newBranch.Bsec),6) # susceptance (seems to round)
+        self.Length = float(newBranch.Lngsec) #  'informational only'
 
     def __repr__(self):
         """Display more useful data for mirror"""
