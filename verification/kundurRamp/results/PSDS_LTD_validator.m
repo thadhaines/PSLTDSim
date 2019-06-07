@@ -28,7 +28,7 @@ LTDCaseName = 'kundurStep'
 % PSDSfileName = 'kundur.gentrip0.chf'
 % LTDCaseName = 'kundurGenTrip0'
 
-plotTheoSS = 0; % use for steps only - requires manual calcs of beta, MW delta
+plotTheoSS = 1; % use for steps only - requires manual calcs of beta, MW delta
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'0F'],
     [LTDCaseName,'1F'],
@@ -52,7 +52,7 @@ load(cases{4}) % 1 sec
 mir4 = eval(cases{4});
 clear eval(cases{4})
 
-mir = mir2; % for comparison plots
+mir = mir4; % for comparison plots
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 

@@ -57,14 +57,20 @@ class tgov1Agent():
         # First dynamic Block
         _, y1, self.x1 = sig.lsim(self.sys1, U=uVector, T=self.t, 
                                    X0=self.r_x1[self.mirror.cv['dp']-1], interp=True)
-        ys = y1
 
-        # limit Valve position (i.e. Pm out)
-        for x in range(2):
-            if ys[x]>self.y1HighLimit:
-                ys[x] = self.y1HighLimit
-            elif ys[x]<self.y1LowLimit:
-                ys[x] = self.y1LowLimit
+        # limit state and output valve position
+        for ndx in range(len(self.x1)):
+            if self.x1[ndx] > self.y1HighLimit:
+                self.x1[ndx] = self.y1HighLimit
+            elif self.x1[ndx] <self.y1LowLimit:
+                self.x1[ndx] = self.y1LowLimit
+
+        for ndx in range(len(y1)):
+            if y1[ndx] > self.y1HighLimit:
+                y1[ndx] = self.y1HighLimit
+            elif y1[ndx] <self.y1LowLimit:
+                y1[ndx] = self.y1LowLimit
+        
 
         # Second block
         _, y2, self.x2 = sig.lsim(self.sys2, y1, T=self.t,

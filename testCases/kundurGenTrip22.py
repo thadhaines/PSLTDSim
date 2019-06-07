@@ -10,7 +10,7 @@ A shunt cap is set to turn on at t=20.
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.5,
+    'timeStep': 2,
     'endTime': 90,
     'slackTol': 1,
     'PY3msgGroup' : 3,

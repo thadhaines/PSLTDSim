@@ -69,10 +69,10 @@ batchList =[
     #r".\testCases\kundurLoadRamp2.py",
     #r".\testCases\kundurLoadRamp3.py",
 
-    #r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack
-    #r".\testCases\kundurLoadStep2.py",
-    #r".\testCases\kundurLoadStep1.py",
-    #r".\testCases\kundurLoadStep3.py",
+    r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack
+    r".\testCases\kundurLoadStep2.py",
+    r".\testCases\kundurLoadStep1.py",
+    r".\testCases\kundurLoadStep3.py",
 
     #r".\testCases\kundurLoadStepShunt0.py",
     #r".\testCases\kundurLoadRampBranch0.py",
@@ -84,7 +84,7 @@ batchList =[
     #r".\testCases\kundurGenTrip03.py",
 
     # more complex gen trip off/on and ramp pm
-    r".\testCases\kundurGenTrip22.py",
+    #r".\testCases\kundurGenTrip22.py",
             ]
 
 # Batch Run Parameters
