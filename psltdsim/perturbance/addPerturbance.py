@@ -8,31 +8,9 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
 
     TODO: Maybe rethink inputs as a dictionary?
     """
-    targetObj= None
 
-    #Locate target in mirror
-    if tarType.lower() == 'load':
-        if len(idList) < 2:
-            targetObj = ltd.find.findLoadOnBus(mirror, idList[0])
-        else:
-            targetObj = ltd.find.findLoadOnBus(mirror, idList[0], idList[1])
-
-    if tarType.lower() == 'gen':
-        if len(idList) < 2:
-            targetObj = ltd.find.findGenOnBus(mirror, idList[0])
-        else:
-            targetObj = ltd.find.findGenOnBus(mirror, idList[0], idList[1])
-
-    if tarType.lower() == 'shunt':
-        if len(idList) < 2:
-            targetObj = ltd.find.findShuntOnBus(mirror, idList[0])
-        else:
-            targetObj = ltd.find.findShuntOnBus(mirror, idList[0], idList[1])
-              
-    if tarType.lower() == 'branch':
-        # Branches must have from, to, and ck id
-        targetObj = ltd.find.findBranchByTFC(mirror, idList)
-
+    targetObj = ltd.find.findAgent(mirror, tarType, idList)
+    
     #Create Perturbance Agent
     if (perType.lower() == 'step') and targetObj:
         # perParams = [targetAttr, tStart, newVal, type='r']

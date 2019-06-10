@@ -46,7 +46,7 @@ batchList =[
     #r".\testCases\ee554noGovStepUp.py",
     #r".\testCases\ee554noGovStepDown.py",
     #r".\testCases\ee554noGovSteps.py",
-    #r".\testCases\ee5541GovSteps.py",
+    #r".\testCases\ee5541GovSteps.py", #*
     #r".\testCases\ee5542GovSteps.py",
 
     # Perturbance from ltd file testing
@@ -56,8 +56,8 @@ batchList =[
     #r".\testCases\ee5541GovRampsPer.py",
     #r".\testCases\ee5541GovRampsAbs.py",
     #r".\testCases\ee5541GovRampsGens.py",
-    #r".\testCases\ee554PrefStep.py", 
-    #r".\testCases\ee554PmStepRamp.py",
+    #r".\testCases\ee554PrefStep.py", #*
+    #r".\testCases\ee554PmStepRamp.py", #*
 
     # AMQP Message grouping speedup Tests
     #r".\testCases\miniWECCstepGroupA.py",
@@ -69,18 +69,18 @@ batchList =[
     #r".\testCases\kundurLoadRamp2.py",
     #r".\testCases\kundurLoadRamp3.py",
 
-    r".\testCases\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
-    r".\testCases\kundurLoadRamp11.py",
+    #r".\testCases\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
+    #r".\testCases\kundurLoadRamp11.py",
     r".\testCases\kundurLoadRamp12.py",
-    r".\testCases\kundurLoadRamp13.py",
+    #r".\testCases\kundurLoadRamp13.py",
 
     #r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack
-    #r".\testCases\kundurLoadStep2.py",
     #r".\testCases\kundurLoadStep1.py",
+    r".\testCases\kundurLoadStep2.py",
     #r".\testCases\kundurLoadStep3.py",
 
-    #r".\testCases\kundurLoadStepShunt0.py",
-    #r".\testCases\kundurLoadRampBranch0.py",
+    #r".\testCases\kundurLoadStepShunt0.py", #*
+    #r".\testCases\kundurLoadRampBranch0.py", #*
 
     # simple gen trips
     #r".\testCases\kundurGenTrip00.py",
@@ -89,7 +89,7 @@ batchList =[
     #r".\testCases\kundurGenTrip03.py",
 
     # more complex gen trip off/on and ramp pm
-    #r".\testCases\kundurGenTrip22.py",
+    #r".\testCases\kundurGenTrip22.py", #*
             ]
 
 # Batch Run Parameters

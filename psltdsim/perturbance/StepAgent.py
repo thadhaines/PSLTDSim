@@ -19,7 +19,8 @@ class StepAgent(object):
         
 
         if len(perParams) > 3 :
-            if self.tarType == 'gen':
+            if (self.tarType == 'gen') and (self.attr.lower() == 'st'):
+                # to handle a restart value
                 self.RestartVal = float(perParams[3])
                 self.stepType = 'abs'
             else:

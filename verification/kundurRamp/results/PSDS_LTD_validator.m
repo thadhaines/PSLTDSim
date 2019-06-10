@@ -13,10 +13,16 @@
 %   06/05/19    12:40   Added handling of plotting only unique bus voltages
 %   06/05/19    12:46   Added LTD and PSDS to voltage, p, and q plots
 %   06/05/19    12:56   Added comparison of Pm plot
+%   06/10/19    09:41   Added PSDS angles relative to angle col 1 (may or
+%                       may not always be the slack bus....
+%   06/10/19    14:17   Added an auto-scale to bus angle
 
 %% init
 clear; format compact; clc; close all;
 format long;
+
+% to Export pdfs.
+printFigs = 0;
 
 %% Knowns
 PSDSfileName = 'kundur.step0.chf'
@@ -161,6 +167,12 @@ ylabel('Frequency [Hz]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
 
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'F'],'-pdf'); % to print fig
+end
+
 %% Plot Average System frequency responses
 figure('position',ppos)
 
@@ -183,6 +195,12 @@ title('Comparison of Average System Frequency')
 ylabel('Frequency [Hz]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
+
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'AveF'],'-pdf'); % to print fig
+end
 
 %% split out PSDS data corresponding to LTD points and plot Hz difference
 % find index of t == 0 in PSLF data
@@ -228,6 +246,12 @@ title('Comparison of Absolute Frequency Deviation from PSDS')
 ylabel('Frequency [Hz]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
+
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'RelF'],'-pdf'); % to print fig
+end
 
 %% Voltage Comparison
 figure('position',ppos)
@@ -303,6 +327,12 @@ ylabel('Voltage [pu]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
 
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'V'],'-pdf'); % to print fig
+end
+
 %% Pe  Comparison
 figure('position',ppos)
 legNames ={};
@@ -323,7 +353,7 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).S1.Pe,'-o')
+        plot(mir.t, mir.(curArea).(curSlack).S1.Pe,'--o')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -331,7 +361,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         
-        plot(mir.t, mir.(curArea).(curGen).G1.Pe,'-o')
+        plot(mir.t, mir.(curArea).(curGen).G1.Pe,'--o')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -346,6 +376,12 @@ xlabel('Time [sec]')
 ylabel('Power [MW]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
+
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'Pe'],'-pdf'); % to print fig
+end
 
 %% Pm  Comparison
 figure('position',ppos)
@@ -367,7 +403,7 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).S1.Pm,'-o')
+        plot(mir.t, mir.(curArea).(curSlack).S1.Pm,'--o')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -375,7 +411,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         
-        plot(mir.t, mir.(curArea).(curGen).G1.Pm,'-o')
+        plot(mir.t, mir.(curArea).(curGen).G1.Pm,'--o')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -390,6 +426,12 @@ xlabel('Time [sec]')
 ylabel('Power [MW]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
+
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'Pm'],'-pdf'); % to print fig
+end
 
 %% Q Comparison
 figure('position',ppos)
@@ -410,14 +452,14 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).S1.Q,'-s')
+        plot(mir.t, mir.(curArea).(curSlack).S1.Q,'--s')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
     end
     
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
-        plot(mir.t, mir.(curArea).(curGen).G1.Q,'-s')
+        plot(mir.t, mir.(curArea).(curGen).G1.Q,'--s')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
         
@@ -434,18 +476,29 @@ ylabel('Reactive Power [MVAR]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
 
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'Q'],'-pdf'); % to print fig
+end
+
 %% Generator Angle  Comparison
+% PSDS need to have the reference subtracted from them to be centered
+% around 0
 figure('position',ppos)
 legNames ={};
 hold on
 for curCol=1:max(size(ag_col))
-    plot(t, psds_data.Data(:,ag_col(curCol))./180.*pi)
+    plot(t, ( psds_data.Data(:,ag_col(curCol))- psds_data.Data(:,ag_col(1)) ) ./180.*pi)
     temp = strsplit(psds_data.Description{ag_col(curCol)});
     legNames{end+1} = ['PSDS ', temp{1}];
 end
 
 hold on
-
+% Find nicer y limits..
+ymax = 0
+ymin = 0
+    
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
         fprintf('area %d\n',mir.areaN(area) )
@@ -454,17 +507,31 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).Va,'-o')
+        plot(mir.t, mir.(curArea).(curSlack).Va,'--o')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
+        
+        if max(mir.(curArea).(curSlack).Va) > ymax
+            ymax = max(mir.(curArea).(curSlack).Va);
+        end
+        if min(mir.(curArea).(curSlack).Va) < ymin
+            ymin = mmin(mir.(curArea).(curSlack).Va);
+        end
     end
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         
-        plot(mir.t, mir.(curArea).(curGen).Va,'-o')
+        plot(mir.t, mir.(curArea).(curGen).Va,'--o')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
+        
+        if max(mir.(curArea).(curGen).Va) > ymax
+            ymax = max(mir.(curArea).(curGen).Va);
+        end
+        if min(mir.(curArea).(curGen).Va) < ymin
+            ymin = min(mir.(curArea).(curGen).Va);
+        end
     end
     
 end
@@ -474,10 +541,14 @@ end
 grid on
 title('Comparison of Generator Angle')
 xlabel('Time [sec]')
-ylabel('Power [MW]')
+ylabel('Generator Angle [degrees]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
+ylim([ymin*1.2,ymax*1.2])
 
-%% pdf output code
-%set(gcf,'color','w'); % to remove border of figure
-%export_fig('XXXXXX','-pdf'); % to print fig
+
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'Angle'],'-pdf'); % to print fig
+end

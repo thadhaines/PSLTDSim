@@ -39,10 +39,7 @@ class BusAgent(object):
         self.Basekv = ltd.data.single2float(newBus.Basekv)
         self.Vsched = ltd.data.single2float(newBus.Vsched)
 
-    def __str__(self):
-        """Possible useful identification function"""
-        tag = "Bus "+self.Busnam+" in Area "+self.Area
-        return tag
+
 
     def __repr__(self):
         """Display more useful data for mirror"""
