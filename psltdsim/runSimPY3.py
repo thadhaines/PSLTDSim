@@ -10,9 +10,14 @@ def runSimPY3(mirror, amqpAgent):
     # Initialize PY3 specific Dynamics
     ltd.mirror.initPY3Dynamics(mirror)
 
-    # calculate area f response characteristic (beta)
+    # calculates all area P (required for IC init)
+    ltd.mirror.sumLoad(mirror) 
+    ltd.mirror.sumPe(mirror)
+
+    # calculate area f response characteristic (beta), and interchange ( IC )
     for area in mirror.Area:
         area.calcBeta()
+        area.initIC()
 
     print("\n*** Starting Simulation (PY3)")
     sim_start = time.time()
@@ -49,15 +54,18 @@ def runSimPY3(mirror, amqpAgent):
             break;
 
         # Calculate SCE
+        # NOTE: Not really SCE -> eqution needs reworking...
         for mach in mirror.Machines:
             mach.calcSCE()
-
+        
+        # Calculate Interchange and Station Control error for all areas
         for area in mirror.Area:
             area.sumSCE()
+            area.calcICerror()
 
-        # Calculate ACE (BA step thing...)
+        # Calculate ACE (BA step)
 
-        # Step Timers
+        # Step Timers (should probably happen when Time is stepped [below...])
 
         # Step Definite Time Controllers
 

@@ -13,7 +13,7 @@ simParams = {
     'slackTol': 3,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
-    'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
+    'Hinput' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # PU; 
     # Mathematical Options
     'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true

@@ -28,11 +28,11 @@ printFigs = 0;
 % PSDSfileName = 'kundur.step0.chf'
 % LTDCaseName = 'kundurStep'
 
-% PSDSfileName = 'kundur.ramp0.chf' % 85 second ramp
-% LTDCaseName = 'kundurRamp'
+PSDSfileName = 'kundur.ramp0.chf' % 40 second ramp down
+LTDCaseName = 'kundurRamp'
 
-PSDSfileName = 'kundur.ramp1.chf' % 40 second ramp
-LTDCaseName = 'kundurRamp1'
+% PSDSfileName = 'kundur.ramp1.chf' % 40 second ramp
+% LTDCaseName = 'kundurRamp1'
 
 % PSDSfileName = 'kundur.gentrip0.chf'
 % LTDCaseName = 'kundurGenTrip0'
@@ -85,7 +85,7 @@ end
 fAve = fAve/N/60; % as PU
 
 %% Calculate weighted freq
-Hsys = mir.Hsys
+Hsys = mir.Hss
 weightedF = zeros(size(psds_data.Data(:,1),1),1);
 debug = 1;
 for area = 1:max(size(mir.areaN)) % for each area
@@ -544,7 +544,7 @@ xlabel('Time [sec]')
 ylabel('Generator Angle [degrees]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
-ylim([ymin*1.2,ymax*1.2])
+ylim([ymin*1.5,ymax*1.5])
 
 
 % pdf output code

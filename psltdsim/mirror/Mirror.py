@@ -40,7 +40,7 @@ class Mirror(object):
         self.timeStep = simParams['timeStep']
         self.endTime = simParams['endTime']
         self.slackTol = simParams['slackTol']
-        self.Hinput = simParams['Hsys']
+        self.Hinput = simParams['Hinput']
         self.Dsys = simParams['Dsys']
         self.IPYmsgGroup = simParams['IPYmsgGroup']
         self.PY3msgGroup = simParams['PY3msgGroup']
@@ -252,7 +252,7 @@ class Mirror(object):
              'Qload': self.r_ss_Qload,
              'Sbase' : self.Sbase,
              'Hsys' : self.Hsys,
-
+             'Hss' : self.ss_H,
              'meta' : meta,
              }
         return d

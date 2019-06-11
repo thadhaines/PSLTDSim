@@ -13,7 +13,7 @@ def distPacc(mirror, deltaPacc):
 
     tol = mirror.slackTol
     error = tol + 1
-    Hsys = mirror.ss_H # MW*sec
+    Hss = mirror.ss_H # MW*sec
     Pacc = deltaPacc
     iteration = 1
 
@@ -34,7 +34,7 @@ def distPacc(mirror, deltaPacc):
             if c_gen.globalSlack:
                 if iteration == 1:
                     #distribute to slack on First pass 
-                    c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hsys)
+                    c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hss)
                     # Set Pe_calc
                     c_gen.cv['Pe_calc'] = c_gen.cv['Pe'] 
                 else:
@@ -47,7 +47,7 @@ def distPacc(mirror, deltaPacc):
 
             #Distribute delta Pacc to non slack other gens
             else:
-                c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hsys) 
+                c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hss) 
                 c_gen.setPvals()
                 c_gen.Bus.setPvals()
 

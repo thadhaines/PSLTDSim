@@ -34,7 +34,10 @@ class AreaAgent(object):
             'Pm' : 0.0,
             'P' : 0.0, # Load
             'Q' : 0.0, # Load
-            'SCEsum' : 0.0,
+            'SCEsum' : 0.0, # maybe not useful
+            'IC0' : 0, # scheduled interchange
+            'IC' :0,    # current area interchange
+            'ICerror' :0,
             }
 
         #Area Frequency response Characteristic
@@ -42,9 +45,32 @@ class AreaAgent(object):
 
     def sumSCE(self):
         """ Sum station control error in area """
+        #NOTE: Not really station control error
         self.cv['SCEsum'] = 0.0
         for mach in self.Machines:
             self.cv['SCEsum'] += mach.cv['SCE']
+
+    def calcICerror(self):
+        """ Calculate Interchange Error """
+        self.cv['IC'] = self.cv['Pe'] - self.cv['P']
+        self.cv['ICerror'] = self.cv['IC'] - self.cv['IC0']
+
+    def initIC(self):
+        """ Initiate Interchange Value (if <0, Importing Power)"""
+        self.cv['IC'] = self.cv['Pe'] - self.cv['P']
+        self.cv['IC0'] = self.cv['IC']
+
+    def calcBeta(self):
+        """Calculate Beta (area frequency response characteristic)"""
+        self.beta = 0.0
+        #for each machine
+        for mach in self.Machines:
+            #if machine has a gov
+            if mach.gov_model:
+                # convert droops to system base
+                Rnew = mach.gov_model.R*self.mirror.Sbase/mach.gov_model.Mbase
+                #sum 1/droop
+                self.beta += 1.0/Rnew
 
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
@@ -53,6 +79,8 @@ class AreaAgent(object):
         self.r_P = [0.0]*self.mirror.dataPoints
         self.r_Q = [0.0]*self.mirror.dataPoints
         self.r_SCEsum = [0.0]*self.mirror.dataPoints
+        self.r_IC = [0.0]*self.mirror.dataPoints
+        self.r_ICerror = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Put current values into log"""
@@ -62,6 +90,8 @@ class AreaAgent(object):
         self.r_P[n] = self.cv['P']
         self.r_Q[n] = self.cv['Q']
         self.r_SCEsum[n] = self.cv['SCEsum']
+        self.r_IC[n] = self.cv['IC']
+        self.r_ICerror[n] = self.cv['ICerror']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
@@ -70,6 +100,8 @@ class AreaAgent(object):
         self.r_P = self.r_P[:N]
         self.r_Q = self.r_Q[:N]
         self.r_SCEsum = self.r_SCEsum[:N]
+        self.r_IC = self.r_IC[:N]
+        self.r_ICerror = self.r_ICerror[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
@@ -82,6 +114,8 @@ class AreaAgent(object):
              'Q' : self.r_Q,
              'beta' : self.beta,
              'SCEsum' : self.r_SCEsum,
+             'IC' : self.r_IC,
+             'ICerror' : self.r_ICerror,
              }
         return d
 
@@ -127,14 +161,4 @@ class AreaAgent(object):
 
         return 0
 
-    def calcBeta(self):
-        """Calculate Beta (area frequency response characteristic)"""
-        self.beta = 0.0
-        #for each machine
-        for mach in self.Machines:
-            #if machine has a gov
-            if mach.gov_model:
-                # convert droops to system base
-                Rnew = mach.gov_model.R*self.mirror.Sbase/mach.gov_model.Mbase
-                #sum 1/droop
-                self.beta += 1.0/Rnew
+
