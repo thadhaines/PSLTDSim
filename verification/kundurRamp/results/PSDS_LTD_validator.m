@@ -25,14 +25,14 @@ format long;
 printFigs = 0;
 
 %% Knowns
-PSDSfileName = 'kundur.step0.chf'
-LTDCaseName = 'kundurStep'
+% PSDSfileName = 'kundur.step0.chf'
+% LTDCaseName = 'kundurStep'
 
 % PSDSfileName = 'kundur.ramp0.chf' % 85 second ramp
 % LTDCaseName = 'kundurRamp'
 
-% PSDSfileName = 'kundur.ramp1.chf' % 40 second ramp
-% LTDCaseName = 'kundurRamp1'
+PSDSfileName = 'kundur.ramp1.chf' % 40 second ramp
+LTDCaseName = 'kundurRamp1'
 
 % PSDSfileName = 'kundur.gentrip0.chf'
 % LTDCaseName = 'kundurGenTrip0'
@@ -489,7 +489,7 @@ figure('position',ppos)
 legNames ={};
 hold on
 for curCol=1:max(size(ag_col))
-    plot(t, ( psds_data.Data(:,ag_col(curCol))- psds_data.Data(:,ag_col(1)) ) ./180.*pi)
+    plot(t, ( psds_data.Data(:,ag_col(curCol))- psds_data.Data(:,ag_col(1)) ) ./180.*pi , '.')
     temp = strsplit(psds_data.Description{ag_col(curCol)});
     legNames{end+1} = ['PSDS ', temp{1}];
 end
@@ -539,7 +539,7 @@ if makeLegend
     legend(legNames)
 end
 grid on
-title('Comparison of Generator Angle')
+title('Comparison of Generator Voltage Angle')
 xlabel('Time [sec]')
 ylabel('Generator Angle [degrees]')
 set(gca,'fontsize',bfz)
