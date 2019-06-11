@@ -14,16 +14,15 @@ class SlackAgent(GeneratorAgent):
         self.cv={
             'St' : int(newGen.St),
             'Pe' : ltd.data.single2float(newGen.Pgen),   # Generated Power
-            'Pref' : ltd.data.single2float(newGen.Pgen),
+            'Pm' : ltd.data.single2float(newGen.Pgen),   # Initialize as equal
+            'Pref' : ltd.data.single2float(newGen.Pgen), # Steady state init
+            'P0' : ltd.data.single2float(newGen.Pgen),
             'Q' : ltd.data.single2float(newGen.Qgen),    # Q generatred
-            'Pm' : ltd.data.single2float(newGen.Pgen),       # Initialize as equal
-            'IRP_flag': 1,      # Inertia response participant flag
+            'IRP_flag': 1,      # Inertia response participant flag (not used)...
             'Pe_calc' : ltd.data.single2float(newGen.Pgen), # for initial ss
             'Pe_error' : 0.0,
+            'SCE' : 0,
             }
-
-        #self.Pe_calc = self.Pe # for initial ss
-        #self.Pe_error = 0.0
 
     def makeAMQPmsg(self):
         """Make AMQP message to send cross process"""
@@ -60,6 +59,7 @@ class SlackAgent(GeneratorAgent):
         self.r_Pref = [0.0]*self.mirror.dataPoints
         self.r_Q = [0.0]*self.mirror.dataPoints
         self.r_St = [0.0]*self.mirror.dataPoints
+        self.r_SCE = [0.0]*self.mirror.dataPoints
 
         self.r_Pe_calc = [0.0]*self.mirror.dataPoints
         self.r_Pe_error = [0.0]*self.mirror.dataPoints
@@ -72,6 +72,7 @@ class SlackAgent(GeneratorAgent):
         self.r_Pref[n] = self.cv['Pref']
         self.r_Q[n] = self.cv['Q']
         self.r_St[n] = self.cv['St']
+        self.r_SCE[n] = self.cv['SCE']
         self.r_Pe_calc[n] = self.cv['Pe_calc']
         self.r_Pe_error[n] = self.cv['Pe_error']
 
@@ -82,6 +83,7 @@ class SlackAgent(GeneratorAgent):
         self.r_Pref = self.r_Pref[:N]
         self.r_Q = self.r_Q[:N]
         self.r_St = self.r_St[:N]
+        self.r_SCE = self.r_SCE[:N]
         self.r_Pe_calc = self.r_Pe_calc[:N]
         self.r_Pe_error = self.r_Pe_error[:N]
 
@@ -97,5 +99,6 @@ class SlackAgent(GeneratorAgent):
              'Pe_calc' : self.r_Pe_calc,
              'Pe_error' : self.r_Pe_error,
              'Slack' : 1,
+             'SCE' : self.r_SCE,
              }
         return d

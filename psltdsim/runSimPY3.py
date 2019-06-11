@@ -48,15 +48,26 @@ def runSimPY3(mirror, amqpAgent):
             mirror.sysCrash = True
             break;
 
+        # Calculate SCE
+        for mach in mirror.Machines:
+            mach.calcSCE()
+
+        for area in mirror.Area:
+            area.sumSCE()
+
+        # Calculate ACE (BA step thing...)
+
+        # Step Timers
+
+        # Step Definite Time Controllers
+
         # Step Individual Agent Dynamics
         dynamic_start = time.time()
         for dynamicX in mirror.Dynamics:
             dynamicX.stepDynamics()
         mirror.DynamicTime += time.time()- dynamic_start
-        
 
-        # Send AMQP message to IPY (3/23/19 covers dynamic changes)
-        # Message grouping 
+        # Send grouped AMQP messages to IPY (3/23/19 covers dynamic changes)
         msgcounter = 0
         msg = []
         # set pe = pm (dynamic action)
@@ -71,7 +82,7 @@ def runSimPY3(mirror, amqpAgent):
                 PY3.send('toIPY', msg)
                 mirror.PY3SendTime += time.time()-send_start
                 mirror.PY3msgs +=1
-                msg = []
+                msg = [] # reset msg
 
         if len(msg) > 0:
             # send any group remainder messages
@@ -106,8 +117,8 @@ def runSimPY3(mirror, amqpAgent):
             - mirror.ss_Pert_Pdelta
             )
             
-        # Find current system Pacc Delta
-        # NOTE: unused variable as of 2/2/19
+        # Find current system Pacc Delta....
+        # NOTE: unused variable as of 2/2/19 -> if div by ts= Pacc dot... i.e. Jerk...
         mirror.r_Pacc_delta[mirror.cv['dp']] = mirror.ss_Pacc - mirror.r_ss_Pacc[mirror.cv['dp']-1]
 
         Hmsg = {'msgType' : 'Handoff',

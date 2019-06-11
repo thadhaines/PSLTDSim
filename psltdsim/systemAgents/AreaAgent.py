@@ -16,30 +16,35 @@ class AreaAgent(object):
         #self.Nxfmr = len(col.BranchDAO.FindByArea(self.Area))
 
         # Children
+        self.Branch = []
         self.Gens = []
         self.Load = []
         self.Slack = []
         self.Machines = []
+        self.PowerPlant = []
         self.Bus = []
         self.Shunt = []
-        self.Branch = []
-        self.SVD = []
+        self.BA = None
         self.AreaSlack = None
+        #self.SVD = []
 
         # Current Timestep values
         self.cv={
             'Pe' : 0.0,
             'Pm' : 0.0,
-            'P' : 0.0,
-            'Q' : 0.0,
+            'P' : 0.0, # Load
+            'Q' : 0.0, # Load
+            'SCEsum' : 0.0,
             }
-        #self.Pe = 0.0
-        #self.Pm = 0.0
-        #self.P = 0.0
-        #self.Q = 0.0
 
-        #TODO: Add mor ACE variables?
+        #Area Frequency response Characteristic
         self.beta = 0.0
+
+    def sumSCE(self):
+        """ Sum station control error in area """
+        self.cv['SCEsum'] = 0.0
+        for mach in self.Machines:
+            self.cv['SCEsum'] += mach.cv['SCE']
 
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
@@ -47,6 +52,7 @@ class AreaAgent(object):
         self.r_Pm = [0.0]*self.mirror.dataPoints
         self.r_P = [0.0]*self.mirror.dataPoints
         self.r_Q = [0.0]*self.mirror.dataPoints
+        self.r_SCEsum = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Put current values into log"""
@@ -55,6 +61,7 @@ class AreaAgent(object):
         self.r_Pm[n] = self.cv['Pm']
         self.r_P[n] = self.cv['P']
         self.r_Q[n] = self.cv['Q']
+        self.r_SCEsum[n] = self.cv['SCEsum']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
@@ -62,6 +69,7 @@ class AreaAgent(object):
         self.r_Pm = self.r_Pm[:N]
         self.r_P = self.r_P[:N]
         self.r_Q = self.r_Q[:N]
+        self.r_SCEsum = self.r_SCEsum[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
@@ -73,6 +81,7 @@ class AreaAgent(object):
              'P' : self.r_P,
              'Q' : self.r_Q,
              'beta' : self.beta,
+             'SCEsum' : self.r_SCEsum,
              }
         return d
 

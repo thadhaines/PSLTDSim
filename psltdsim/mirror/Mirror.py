@@ -54,18 +54,12 @@ class Mirror(object):
 
         # Varaible initalization
         self.cv = {
-            'dp' : 0,
+            'dp' : 0, # current data point
             't' : 0,
             'f' : 1.0,
             'fdot' : 0.0,
             'deltaF' : 0.0, # in pu, defined as 1-f
             }
-        #self.c_dp = 0 # current data point
-        #self.c_t = 0.0
-
-        #self.c_f = 1.0
-        #self.c_fdot = 0.0
-        #self.c_deltaF = 0.0
 
         self.ss_H = 0.0 # placeholder, Hsys used in maths
 
@@ -82,14 +76,17 @@ class Mirror(object):
 
         # Agent Collections
         self.Area = []
+        self.BA = []
+        self.Branch = []
         self.Bus = []
+        self.Dynamics = []
         self.Gens = []
         self.Load = []
-        self.Slack = []
         self.Perturbance = []
-        self.Dynamics = []
+        self.PowerPlant =[]
         self.Shunt = []
-        self.Branch = []
+        self.Slack = []
+        self.Timers =[]
         self.globalSlack = None
 
         # initial system solve
@@ -137,11 +134,6 @@ class Mirror(object):
 
         ltd.parse.parseDyd(self, dydPaths)
 
-        # parse LTD to handly ltd models and perturbances
-        # Moved to begining of runSimPY3 -> IPY mirror doesn't need ltd info
-        #if locations['ltdPath']:
-        #    ltd.parse.parseLtd(self, locations['ltdPath'])
-
         # ensure dyd changes reflected in mirror (i.e. mbase, mwcap)
         for gov in self.PSLFgov:
             gov.Gen.Pmax = gov.mwCap
@@ -155,10 +147,6 @@ class Mirror(object):
             self.Hsys = self.Hinput
         else:
             self.Hsys = self.ss_H
-
-        # calculate beta for each area NOTE: Nothing happends because dynamics not yet init..
-        #for c_area in self.Area:
-        #    c_area.calcBeta()
 
         #Create search dictionaries
         self.searchDict = ltd.find.makeBusSearchDict(self)

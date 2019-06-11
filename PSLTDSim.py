@@ -190,7 +190,7 @@ for testCase in batchList:
             wait_start = time.time()
             print('\n*** Waiting for plot to close...')
             ltd.plot.sysPQVF(mir, True)
-            ltd.plot.sysPePmFLoad(mir, True)
+            #ltd.plot.sysPePmFLoad(mir, True)
             waitTime += time.time() - wait_start
         else:
             ltd.plot.sysPQVF(mir, False)

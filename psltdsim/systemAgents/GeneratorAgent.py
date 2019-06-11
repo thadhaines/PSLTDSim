@@ -30,17 +30,13 @@ class GeneratorAgent(object):
         self.cv={
             'St' : int(newGen.St),
             'Pe' : ltd.data.single2float(newGen.Pgen),   # Generated Power
-            'Pref' : ltd.data.single2float(newGen.Pgen),
+            'Pm' : ltd.data.single2float(newGen.Pgen),   # Initialize as equal
+            'Pref' : ltd.data.single2float(newGen.Pgen), # Steady state init
             'Q' : ltd.data.single2float(newGen.Qgen),    # Q generatred
-            'Pm' : ltd.data.single2float(newGen.Pgen),       # Initialize as equal
-            'IRP_flag': 1,      # Inertia response participant flag
+            'IRP_flag': 1,      # Inertia response participant flag (not used)...
+            'SCE' : 0.0,
+            'P0' : ltd.data.single2float(newGen.Pgen)
             }
-        #self.St = int(newGen.St)
-        #self.IRP_flag = 1       # Inertia response participant flag
-        #self.Pe = ltd.data.single2float(newGen.Pgen)   # Generated Power
-        #self.Pm = self.Pe       # Initialize as equal
-        #self.Pset = self.Pe
-        #self.Q = ltd.data.single2float(newGen.Qgen)    # Q generatred
 
         # debug testing ltd.data.single2float
         #print('(PSLF) newGen.Pgen = ', newGen.Pgen)
@@ -64,6 +60,10 @@ class GeneratorAgent(object):
 
         return(tag1+tag2)
 
+    def calcSCE(self):
+        """ Calculate Station Control Error (if < 0, more power required) """
+        self.cv['SCE'] = self.cv['Pe'] - self.cv['P0']
+
     def getPref(self):
         """Return reference to PSLF object"""
         return col.GeneratorDAO.FindByBusIndexAndId(self.Scanbus,self.Id)
@@ -75,10 +75,6 @@ class GeneratorAgent(object):
         self.cv['Pe'] = ltd.data.single2float(pObj.Pgen)
         self.cv['Q'] = ltd.data.single2float(pObj.Qgen)
         self.cv['St'] = int(pObj.St)
-
-        #self.Pe = ltd.data.single2float(pObj.Pgen)
-        #self.Q = ltd.data.single2float(pObj.Qgen)
-        #self.St = int(pObj.St)
 
     def setPvals(self):
         """Send current mirror values to PSLF"""
@@ -119,18 +115,13 @@ class GeneratorAgent(object):
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
 
-    def recDynamicMsg(self,msg):
-        """Update machine dynamics from new dyd model information"""
-        # This is is not Needed *****
-        # will require resetting machine H and system H tot....
-        pass
-
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
-        self.r_Pm = [0.0]*self.mirror.dataPoints
         self.r_Pe = [0.0]*self.mirror.dataPoints
+        self.r_Pm = [0.0]*self.mirror.dataPoints
         self.r_Pref = [0.0]*self.mirror.dataPoints
         self.r_Q = [0.0]*self.mirror.dataPoints
+        self.r_SCE = [0.0]*self.mirror.dataPoints
         self.r_St = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
@@ -140,6 +131,7 @@ class GeneratorAgent(object):
         self.r_Pm[n] = self.cv['Pm']
         self.r_Pref[n] = self.cv['Pref']
         self.r_Q[n] = self.cv['Q']
+        self.r_SCE[n] = self.cv['SCE']
         self.r_St[n] = self.cv['St']
 
     def popUnsetData(self,N):
@@ -148,6 +140,7 @@ class GeneratorAgent(object):
         self.r_Pm = self.r_Pm[:N]
         self.r_Pref = self.r_Pref[:N]
         self.r_Q  =self.r_Q[:N]
+        self.r_SCE = self.r_SCE[:N]
         self.r_St = self.r_St[:N]
 
     def getDataDict(self):
@@ -157,6 +150,7 @@ class GeneratorAgent(object):
              'Pref': self.r_Pref,
              'Q': self.r_Q,
              'St': self.r_St,
+             'SCE' : self.r_SCE,
              'Mbase' : self.Mbase,
              'Hpu' : self.Hpu,
              'Slack' : 0,
