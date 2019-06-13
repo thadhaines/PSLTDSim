@@ -65,16 +65,16 @@ batchList =[
     #r".\testCases\miniWECCstepGroupC.py",
 
     r".\testCases\kundurLoadRamp0.py",# 2 area, 1 slack ramp down
-    #r".\testCases\kundurLoadRamp1.py",
-    #r".\testCases\kundurLoadRamp2.py",
-    #r".\testCases\kundurLoadRamp3.py",
+    r".\testCases\kundurLoadRamp1.py",
+    r".\testCases\kundurLoadRamp2.py",
+    r".\testCases\kundurLoadRamp3.py",
 
-    r".\testCases\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
+    #r".\testCases\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
     #r".\testCases\kundurLoadRamp11.py",
     #r".\testCases\kundurLoadRamp12.py",
     #r".\testCases\kundurLoadRamp13.py",
 
-    r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack 
+    #r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack 
     #r".\testCases\kundurLoadStep1.py",
     #r".\testCases\kundurLoadStep2.py",
     #r".\testCases\kundurLoadStep3.py",
@@ -94,8 +94,8 @@ batchList =[
 
 # Batch Run Parameters
 dispResults = False
-dispTiming = True
-makePlot = True
+dispTiming = False
+makePlot = False
 
 # Batch run counters
 case = 0

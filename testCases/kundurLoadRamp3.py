@@ -3,18 +3,18 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Ramp of load down 30% over 40 seconds.
+Ramp of load down 5% over 40 seconds.
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.25,
-    'endTime': 180,
-    'slackTol': 3,
+    'endTime': 80,
+    'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
-    'Hinput' : 7000.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
-    'Dsys' : 0.0, # PU; 
+    'Hinput' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
+    'Dsys' : 80.0, # MWs/Hz? 
     # Mathematical Options
     'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
     'integrationMethod' : 'rk45',
@@ -27,5 +27,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.sav"
-dydPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.dyd"]
+dydPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTDsameGens.dyd"]
 ltdPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur.ramp0.ltd"]

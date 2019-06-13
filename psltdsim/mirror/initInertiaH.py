@@ -14,7 +14,7 @@ def initInertiaH(mirror):
         if mirrorGen:
             # PSLF .sav values and .dyd values may be different
             # dyd values overwrite any sav values (Via PSLF user manual)
-            print('Found H for: %s' % mirrorGen)
+            if mirror.debug: print('*** Found H for: %s' % mirrorGen)
             mirrorGen.Hpu = mirror.PSLFmach[pdmod].H
             mirrorGen.Mbase = mirror.PSLFmach[pdmod].Mbase
             mirrorGen.H = mirror.PSLFmach[pdmod].H *mirror.PSLFmach[pdmod].Mbase

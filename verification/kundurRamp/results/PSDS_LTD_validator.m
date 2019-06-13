@@ -18,19 +18,19 @@
 %   06/10/19    14:17   Added an auto-scale to bus angle
 
 %% init
-clear; format compact; clc; close all;
+clear; format compact; clc; %close all;
 format long;
 
 % to Export pdfs.
 printFigs = 0;
 
 %% Knowns
-% PSDSfileName = 'kundur.step0.chf'
-% LTDCaseName = 'kundurStep'
+PSDSfileName = 'kundur.step0.chf'
+LTDCaseName = 'kundurStep'
 
 PSDSfileName = 'kundur.ramp0.chf' % 40 second ramp down
 LTDCaseName = 'kundurRamp'
-
+% % % 
 % PSDSfileName = 'kundur.ramp1.chf' % 40 second ramp
 % LTDCaseName = 'kundurRamp1'
 
@@ -61,7 +61,7 @@ load(cases{4}) % 1 sec
 mir4 = eval(cases{4});
 clear eval(cases{4})
 
-mir = mir2; % for comparison plots
+mir = mir3; % for comparison plots
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 

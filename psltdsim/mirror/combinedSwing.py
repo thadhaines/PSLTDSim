@@ -21,6 +21,7 @@ def combinedSwing(mirror, Pacc):
     # Adams Bashforth
     if mirror.simParams['integrationMethod'] == 'AB':
         mirror.cv['f'] = mirror.cv['f'] + 1.5*mirror.timeStep*fdot  -0.5*mirror.timeStep*mirror.r_fdot[mirror.cv['dp']-1]
+
     elif mirror.simParams['integrationMethod'] == 'rk45':
         # use scipy int.
         tic = time.time()
@@ -30,6 +31,7 @@ def combinedSwing(mirror, Pacc):
                       [0, mirror.timeStep], [mirror.cv['f']])
         mirror.cv['f'] = float(w.y[-1][-1]) # set current freq to last value
         mirror.IVPTime += time.time()-tic
+
     else:
         # Euler Integration - chosen by default
         mirror.cv['f'] = mirror.cv['f'] + (mirror.timeStep*fdot)

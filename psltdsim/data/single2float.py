@@ -4,4 +4,7 @@ def single2float(x):
     that has the same number of decimals as the original"""
     dPlaces = len(str(x).split('.')[1])
     y = round(float(x),dPlaces+2)
+
+    # NOTE: single precision max useful ness is 6 decimals
+    y = round(float(x),6)
     return y

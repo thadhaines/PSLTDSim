@@ -10,7 +10,7 @@ Ramp of load up 5% over 40 seconds.
 simParams = {
     'timeStep': 0.5,
     'endTime': 90,
-    'slackTol': 3,
+    'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
     'Hinput' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
@@ -27,5 +27,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.sav"
-dydPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.dyd"]
+dydPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTDsameGens.dyd"]
 ltdPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur.ramp1.ltd"]

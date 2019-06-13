@@ -96,14 +96,14 @@ class RampAgent(object):
                 # acts as a `wait until action'
                 return 0
 
-            if self.mirror.cv['t'] >= self.startTime:
+            if self.mirror.cv['t'] > self.startTime:
                 if self.mirror.cv['t'] > self.endTime:
                     # turn off action
                     self.ProcessFlag = 0
                     return 0
                 
                 # Select correct ramp incremenct
-                if self.mirror.cv['t'] < (self.startTime + self.RAtime):
+                if self.mirror.cv['t'] <= (self.startTime + self.RAtime):
                     # process ramp A
 
                     # calculate increments for percent and absolute if not calculated yet
