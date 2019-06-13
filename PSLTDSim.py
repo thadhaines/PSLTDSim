@@ -65,16 +65,16 @@ batchList =[
     #r".\testCases\miniWECCstepGroupC.py",
 
     r".\testCases\kundurLoadRamp0.py",# 2 area, 1 slack ramp down
-    r".\testCases\kundurLoadRamp1.py",
-    r".\testCases\kundurLoadRamp2.py",
-    r".\testCases\kundurLoadRamp3.py",
+    #r".\testCases\kundurLoadRamp1.py",
+    #r".\testCases\kundurLoadRamp2.py",
+    #r".\testCases\kundurLoadRamp3.py",
 
-    #r".\testCases\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
+    r".\testCases\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
     #r".\testCases\kundurLoadRamp11.py",
     #r".\testCases\kundurLoadRamp12.py",
     #r".\testCases\kundurLoadRamp13.py",
 
-    #r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack 
+    r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack 
     #r".\testCases\kundurLoadStep1.py",
     #r".\testCases\kundurLoadStep2.py",
     #r".\testCases\kundurLoadStep3.py",
@@ -189,12 +189,12 @@ for testCase in batchList:
         if case == len(batchList):
             wait_start = time.time()
             print('\n*** Waiting for plot to close...')
-            ltd.plot.sysPQVF(mir, True)
-            #ltd.plot.sysPePmFLoad(mir, True)
+            ltd.plot.sysPQVF(mir, False)
+            ltd.plot.sysPePmFLoad(mir, True)
             waitTime += time.time() - wait_start
         else:
             ltd.plot.sysPQVF(mir, False)
-            #ltd.plot.sysPePmFLoad(mir ,False)
+            ltd.plot.sysPePmFLoad(mir ,False)
 
 # End of Batch Output
 batchTime = time.time() - batchStart - waitTime

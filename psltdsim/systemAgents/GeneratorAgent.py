@@ -28,14 +28,14 @@ class GeneratorAgent(object):
 
         # Current Status
         self.cv={
-            'St' : int(newGen.St),
+            'IRPflag': False,      # Inertia response participant flag...
+            'P0' : ltd.data.single2float(newGen.Pgen),
             'Pe' : ltd.data.single2float(newGen.Pgen),   # Generated Power
             'Pm' : ltd.data.single2float(newGen.Pgen),   # Initialize as equal
             'Pref' : ltd.data.single2float(newGen.Pgen), # Steady state init
             'Q' : ltd.data.single2float(newGen.Qgen),    # Q generatred
-            'IRP_flag': 1,      # Inertia response participant flag (not used)...
             'SCE' : 0.0,
-            'P0' : ltd.data.single2float(newGen.Pgen)
+            'St' : int(newGen.St),
             }
 
         # debug testing ltd.data.single2float

@@ -19,6 +19,7 @@ def initInertiaH(mirror):
             mirrorGen.Mbase = mirror.PSLFmach[pdmod].Mbase
             mirrorGen.H = mirror.PSLFmach[pdmod].H *mirror.PSLFmach[pdmod].Mbase
             mirror.ss_H += mirrorGen.H
+
             # add refernece to PSLF machine model in python mirror generator
             mirrorGen.machine_model = mirror.PSLFmach[pdmod]
             linkedModels +=1

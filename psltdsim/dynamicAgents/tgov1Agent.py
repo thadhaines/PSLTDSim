@@ -87,6 +87,7 @@ class tgov1Agent():
         """ set Pm = Pe, calculate MW limits of valve position"""
         self.Gen.cv['Pm'] = self.Gen.cv['Pe']
         self.Gen.cv['Pref'] = self.Gen.cv['Pe']
+        self.mirror.ss_Hgov += self.Gen.H
         
         updated = False
         if self.mirror.debug:

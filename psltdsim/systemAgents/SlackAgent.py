@@ -12,13 +12,13 @@ class SlackAgent(GeneratorAgent):
 
         # Current Values
         self.cv={
+            'IRPflag': False,      # Inertia response participant flag...
             'St' : int(newGen.St),
             'Pe' : ltd.data.single2float(newGen.Pgen),   # Generated Power
             'Pm' : ltd.data.single2float(newGen.Pgen),   # Initialize as equal
             'Pref' : ltd.data.single2float(newGen.Pgen), # Steady state init
             'P0' : ltd.data.single2float(newGen.Pgen),
             'Q' : ltd.data.single2float(newGen.Qgen),    # Q generatred
-            'IRP_flag': 1,      # Inertia response participant flag (not used)...
             'Pe_calc' : ltd.data.single2float(newGen.Pgen), # for initial ss
             'Pe_error' : 0.0,
             'SCE' : 0,

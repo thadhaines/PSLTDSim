@@ -61,7 +61,8 @@ class Mirror(object):
             'deltaF' : 0.0, # in pu, defined as 1-f
             }
 
-        self.ss_H = 0.0 # placeholder, Hsys used in maths
+        self.ss_H = 0.0 
+        self.ss_Hgov = 0.0
 
         self.ss_Pe = 0.0
         self.ss_Pm = 0.0
