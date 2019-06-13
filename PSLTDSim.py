@@ -45,9 +45,9 @@ batchList =[
     # initial tgov1 testing
     #r".\testCases\ee554noGovStepUp.py",
     #r".\testCases\ee554noGovStepDown.py",
-    #r".\testCases\ee554noGovSteps.py",
-    #r".\testCases\ee5541GovSteps.py", #*
-    #r".\testCases\ee5542GovSteps.py",
+    r".\testCases\ee554noGovSteps.py",
+    r".\testCases\ee5541GovSteps.py", #*
+    r".\testCases\ee5542GovSteps.py",
 
     # Perturbance from ltd file testing
     #r".\testCases\ee5541GovRampARel.py",
@@ -64,10 +64,10 @@ batchList =[
     #r".\testCases\miniWECCstepGroupB.py",
     #r".\testCases\miniWECCstepGroupC.py",
 
-    r".\testCases\kundurLoadRamp0.py",# 2 area, 1 slack ramp down
-    r".\testCases\kundurLoadRamp1.py",
-    r".\testCases\kundurLoadRamp2.py",
-    r".\testCases\kundurLoadRamp3.py",
+    #r".\testCases\kundurLoadRamp0.py",# 2 area, 1 slack ramp down
+    #r".\testCases\kundurLoadRamp1.py",
+    #r".\testCases\kundurLoadRamp2.py",
+    #r".\testCases\kundurLoadRamp3.py",
 
     #r".\testCases\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
     #r".\testCases\kundurLoadRamp11.py",
@@ -94,8 +94,8 @@ batchList =[
 
 # Batch Run Parameters
 dispResults = False
-dispTiming = False
-makePlot = False
+dispTiming = True
+makePlot = True
 
 # Batch run counters
 case = 0

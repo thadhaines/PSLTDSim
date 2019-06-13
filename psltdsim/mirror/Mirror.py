@@ -44,6 +44,7 @@ class Mirror(object):
         self.Dsys = simParams['Dsys']
         self.IPYmsgGroup = simParams['IPYmsgGroup']
         self.PY3msgGroup = simParams['PY3msgGroup']
+        self.Reff = 0.0
         # NOTE: for variable timestep, add extra points here...
         self.dataPoints = int(self.endTime//self.timeStep + 1)
 

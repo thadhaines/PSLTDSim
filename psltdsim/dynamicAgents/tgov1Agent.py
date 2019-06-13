@@ -49,7 +49,7 @@ class tgov1Agent():
         # Create system inputs
         delta_w = 1.0-self.mirror.cv['f']
         PrefVec = np.array([self.Pref,self.Pref])
-        dwVec = np.array([delta_w,delta_w])/self.R*self.Mbase
+        dwVec = np.array([delta_w,delta_w])/(self.R*self.mirror.Reff)*self.Mbase
 
         # Perform sum and first gain block
         uVector = (PrefVec+dwVec)
