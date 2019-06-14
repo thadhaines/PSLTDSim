@@ -49,7 +49,7 @@ class tgov1Agent():
         # Create system inputs
         delta_w = 1.0-self.mirror.cv['f']
         PrefVec = np.array([self.Pref,self.Pref])
-        dwVec = np.array([delta_w,delta_w])/(self.R*self.mirror.Reff)*self.Mbase
+        dwVec = np.array([delta_w,delta_w])/(self.R)*self.Mbase #*self.mirror.Reff # not used in PSDS..
 
         # Perform sum and first gain block
         uVector = (PrefVec+dwVec)
@@ -87,12 +87,22 @@ class tgov1Agent():
         """ set Pm = Pe, calculate MW limits of valve position"""
         self.Gen.cv['Pm'] = self.Gen.cv['Pe']
         self.Gen.cv['Pref'] = self.Gen.cv['Pe']
+
         self.mirror.ss_Hgov += self.Gen.H
         
         updated = False
         if self.mirror.debug:
             print('*** Checking for updated model information for %d %s...' 
                   % (self.Gen.Busnum, self.Gen.Busnam))
+
+        # Ensure R is on correct base
+        if self.Gen.Mbase != self.mwCap:
+            Rnew = self.R*self.Gen.Mbase/self.mwCap
+            if self.mirror.debug:
+                print('... updated R from %.4f to %.4f' %
+                      (self.R, Rnew) )
+            self.R = Rnew
+            updated = True
 
         # ensure MWcap is read from gov dyd
         if self.Gen.Pmax != self.mwCap:

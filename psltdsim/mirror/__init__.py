@@ -1,7 +1,6 @@
 # This imports functions that will be available as psltdsim.mirror.*
 from .Mirror import Mirror
 
-
 from .combinedSwing import combinedSwing
 from .distPacc3 import distPacc # testing alternate function
 from .initInertiaH import initInertiaH

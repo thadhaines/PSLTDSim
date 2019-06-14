@@ -20,15 +20,15 @@ def combinedSwing(mirror, Pacc):
 
     # Adams Bashforth
     if mirror.simParams['integrationMethod'] == 'AB':
-        mirror.cv['f'] = mirror.cv['f'] + 1.5*mirror.timeStep*fdot  -0.5*mirror.timeStep*mirror.r_fdot[mirror.cv['dp']-1]
+        mirror.cv['f'] = f + 1.5*mirror.timeStep*fdot  -0.5*mirror.timeStep*mirror.r_fdot[mirror.cv['dp']-1]
 
     elif mirror.simParams['integrationMethod'] == 'rk45':
         # use scipy int.
         tic = time.time()
-        c = [HsysPU, PaccPU, mirror.Dsys, mirror.cv['f']]
-        f = lambda t, y,c: 1/(2*c[0])*(c[1]/y - c[2]*(1-c[3]))
-        w = solve_ivp(lambda t,y: f(t, y, c),
-                      [0, mirror.timeStep], [mirror.cv['f']])
+        c = [HsysPU, PaccPU, mirror.Dsys, f]
+        func = lambda t, y,c: 1/(2*c[0])*(c[1]/y - c[2]*(1-c[3]))
+        w = solve_ivp(lambda t,y: func(t, y, c),
+                      [0, mirror.timeStep], [f])
         mirror.cv['f'] = float(w.y[-1][-1]) # set current freq to last value
         mirror.IVPTime += time.time()-tic
 

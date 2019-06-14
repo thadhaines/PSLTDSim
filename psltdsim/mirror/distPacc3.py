@@ -8,7 +8,7 @@ def distPacc(mirror, deltaPacc):
     NOTE: pretty rough on the mulitple slack generator handling (i.e. untested) - might work if in seperate islands....
     TODO: IRP_flag..., and mw limits of generators (Pmax)
 
-    Same as original disPacc,with removal of slack inertia on second pass and
+    Same as original disPacc,with removal of slack inertia before second pass and
     all mirror agents refreshed each solution attempt
     """
 

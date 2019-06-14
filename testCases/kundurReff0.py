@@ -8,7 +8,7 @@ Ramp of load down 5% over 40 seconds.
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 2.0,
+    'timeStep': 1.0,
     'endTime': 80,
     'slackTol': 1,
     'PY3msgGroup' : 3,
@@ -27,5 +27,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.sav"
-dydPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTD.dyd"]
+dydPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur4LTDsameGens2.dyd"]
 ltdPath = [r"C:\LTD\pslf_systems\kundur4LTD\kundur.ramp0.ltd"]

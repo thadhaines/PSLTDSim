@@ -45,9 +45,9 @@ batchList =[
     # initial tgov1 testing
     #r".\testCases\ee554noGovStepUp.py",
     #r".\testCases\ee554noGovStepDown.py",
-    r".\testCases\ee554noGovSteps.py",
-    r".\testCases\ee5541GovSteps.py", #*
-    r".\testCases\ee5542GovSteps.py",
+    #r".\testCases\ee554noGovSteps.py",
+    #r".\testCases\ee5541GovSteps.py", #*
+    #r".\testCases\ee5542GovSteps.py",
 
     # Perturbance from ltd file testing
     #r".\testCases\ee5541GovRampARel.py",
@@ -90,12 +90,20 @@ batchList =[
 
     # more complex gen trip off/on and ramp pm
     #r".\testCases\kundurGenTrip22.py", #*
+
+    # tests of damping and Reff
+    #r".\testCases\kundurReff0.py", # 3/4 same gens
+    #r".\testCases\kundurReff2.py", # 2 govs the same, 1 un gov
+    #r".\testCases\kundurReff3.py", # dif H, mwcap
+    r".\testCases\kundurReff4.py", # dif mbase
+
+    #r".\testCases\kundurReff0damping.py",
             ]
 
 # Batch Run Parameters
 dispResults = False
-dispTiming = True
-makePlot = True
+dispTiming = False
+makePlot = False
 
 # Batch run counters
 case = 0
