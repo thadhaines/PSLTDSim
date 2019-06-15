@@ -15,7 +15,7 @@ elseif nargin >= 4
 end
 
 if nargin < 5
-    ppos = [18 521 1252 373];
+    ppos = [18 312 1252 373];
 else
     ppos = varargin{3};
 end

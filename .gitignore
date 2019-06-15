@@ -286,3 +286,6 @@ __pycache__/
 /notread.dyd
 *.bak
 *.dir
+/verification/sixMachine/sixMachineRamp1.chf
+/verification/sixMachine/sixMachineStep1.chf
+/verification/sixMachine/sixMachineStep2.chf

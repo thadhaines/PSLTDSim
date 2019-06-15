@@ -34,7 +34,7 @@ elif test_case == 5: # testing of ggov casting
 batchList =[
     # mini wecc tests
     #r".\testCases\miniWECC\miniWECCstep0.py",
-    r".\testCases\miniWECC\miniWECCstep1.py",
+    #r".\testCases\miniWECC\miniWECCstep1.py",
     #r".\testCases\miniWECC\miniWECCstep2.py",
     #r".\testCases\miniWECC\miniWECCstep3.py",
 
@@ -98,12 +98,17 @@ batchList =[
     #r".\testCases\kundur\kundurReff4.py", # dif mbase
 
     #r".\testCases\kundur\kundurReff0damping.py",
+
+    # Six Machine
+    r".\testCases\sixMachine\sixMachineStep1.py",
+    r".\testCases\sixMachine\sixMachineStep2.py",
+    r".\testCases\sixMachine\sixMachineRamp1.py",
             ]
 
 # Batch Run Parameters
 dispResults = False
-dispTiming = True
-makePlot = True
+dispTiming = False
+makePlot = False
 
 # Batch run counters
 case = 0

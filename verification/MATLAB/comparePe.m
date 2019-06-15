@@ -1,5 +1,5 @@
-function [  ] = comparePm( mir, psds_data, varargin )
-%compareQ Compare LTD mirror and psds simulation data
+function [  ] = comparePe( mir, psds_data, varargin )
+%comparePe Compare LTD mirror and psds simulation data
 %   optional inputs: case name, print figs, figure size
 %   PSDS angles need to have the reference subtracted from them to be centered
 %   around 0
@@ -15,7 +15,7 @@ elseif nargin >= 4
 end
 
 if nargin < 5
-    ppos = [18 521 1252 373];
+    ppos = [18 312 1252 373];
 else
     ppos = varargin{3};
 end
@@ -28,15 +28,15 @@ bfz = 13;
 t = psds_data.Data(:,1); % PSDS time
 
 % funtion specific
-pm_col = jfind(psds_data, 'pm'); % governor pm output
+pg_col = jfind(psds_data, 'pg');
 
-%% Pm  Comparison
+%% Pe  Comparison
 figure('position',ppos)
 legNames ={};
 hold on
-for curCol=1:max(size(pm_col))
-    plot(t, psds_data.Data(:,pm_col(curCol)))
-    temp = strsplit(psds_data.Description{pm_col(curCol)});
+for curCol=1:max(size(pg_col))
+    plot(t, psds_data.Data(:,pg_col(curCol)))
+    temp = strsplit(psds_data.Description{pg_col(curCol)});
     legNames{end+1} = ['PSDS ', temp{1}];
 end
 
@@ -50,7 +50,7 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).S1.Pm,'--o')
+        plot(mir.t, mir.(curArea).(curSlack).S1.Pe,'--o')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -58,7 +58,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         
-        plot(mir.t, mir.(curArea).(curGen).G1.Pm,'--o')
+        plot(mir.t, mir.(curArea).(curGen).G1.Pe,'--o')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -69,10 +69,11 @@ if makeLegend
 end
 grid on
 if noCase ==1
-    title('Comparison of Mechanical Power Output')
+    title('Comparison of Real Power Output')
 else
-    title({'Comparison of Mechanical Power Output'; ['Case: ', LTDCaseName]})
+    title({'Comparison of Real Power Output'; ['Case: ', LTDCaseName]})
 end
+
 xlabel('Time [sec]')
 ylabel('Power [MW]')
 set(gca,'fontsize',bfz)
@@ -81,10 +82,8 @@ xlim(x_lim)
 % pdf output code
 if printFigs
     set(gcf,'color','w'); % to remove border of figure
-    export_fig([LTDCaseName,'Pm'],'-pdf'); % to print fig
+    export_fig([LTDCaseName,'Pe'],'-pdf'); % to print fig
 end
-
-%% End of function
-
+%% end of function
 end
 
