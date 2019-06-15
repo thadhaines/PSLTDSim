@@ -7,9 +7,11 @@ function [  ] = comparePe( mir, psds_data, varargin )
 % Handle optional inputs
 if nargin == 2
     printFigs = 0;
+    noCase =1;
 elseif nargin >= 4
     LTDCaseName = varargin{1};
     printFigs = varargin{2};
+    noCase = 0;
 end
 
 if nargin < 5
@@ -22,10 +24,10 @@ end
 debug = 0;
 makeLegend = 1;
 x_lim = [mir.t(1), mir.t(end)];
-bfz = 13; 
+bfz = 13;
 t = psds_data.Data(:,1); % PSDS time
 
-% funtion specific 
+% funtion specific
 pg_col = jfind(psds_data, 'pg');
 
 %% Pe  Comparison
@@ -66,8 +68,12 @@ if makeLegend
     legend(legNames)
 end
 grid on
-%title('Comparison of Real Power Output')
-title({'Comparison of Real Power Output'; ['Case: ', LTDCaseName]})
+if noCase ==1
+    title('Comparison of Real Power Output')
+else
+    title({'Comparison of Real Power Output'; ['Case: ', LTDCaseName]})
+end
+
 xlabel('Time [sec]')
 ylabel('Power [MW]')
 set(gca,'fontsize',bfz)

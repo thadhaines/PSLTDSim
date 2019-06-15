@@ -33,77 +33,77 @@ elif test_case == 5: # testing of ggov casting
 # List of simulation parameter .py files:
 batchList =[
     # mini wecc tests
-    #r".\testCases\miniWECCstep0.py",
-    #r".\testCases\miniWECCstep1.py",
-    #r".\testCases\miniWECCstep2.py",
-    #r".\testCases\miniWECCstep3.py",
+    #r".\testCases\miniWECC\miniWECCstep0.py",
+    r".\testCases\miniWECC\miniWECCstep1.py",
+    #r".\testCases\miniWECC\miniWECCstep2.py",
+    #r".\testCases\miniWECC\miniWECCstep3.py",
 
-    #r".\testCases\miniWECCcrash.py",
+    #r".\testCases\miniWECC\miniWECCcrash.py",
 
-    #r".\testCases\microWECCstep.py",
+    #r".\testCases\microWECC\microWECCstep.py",
 
     # initial tgov1 testing
-    #r".\testCases\ee554noGovStepUp.py",
-    #r".\testCases\ee554noGovStepDown.py",
-    #r".\testCases\ee554noGovSteps.py",
-    #r".\testCases\ee5541GovSteps.py", #*
-    #r".\testCases\ee5542GovSteps.py",
+    #r".\testCases\ee554\ee554noGovStepUp.py",
+    #r".\testCases\ee554\ee554noGovStepDown.py",
+    #r".\testCases\ee554\ee554noGovStepss.py",
+    #r".\testCases\ee554\ee5541GovSteps.py", #*
+    #r".\testCases\ee554\ee5542GovSteps.py",
 
     # Perturbance from ltd file testing
-    #r".\testCases\ee5541GovRampARel.py",
-    #r".\testCases\ee5541GovRampAPer.py",
-    #r".\testCases\ee5541GovRampAAbs.py",
-    #r".\testCases\ee5541GovRampsPer.py",
-    #r".\testCases\ee5541GovRampsAbs.py",
-    #r".\testCases\ee5541GovRampsGens.py",
-    #r".\testCases\ee554PrefStep.py", #*
-    #r".\testCases\ee554PmStepRamp.py", #*
+    #r".\testCases\ee554\ee5541GovRampARel.py",
+    #r".\testCases\ee554\ee5541GovRampAPer.py",
+    #r".\testCases\ee554\ee5541GovRampAAbs.py",
+    #r".\testCases\ee554\ee5541GovRampsPer.py",
+    #r".\testCases\ee554\ee5541GovRampsAbs.py",
+    #r".\testCases\ee554\ee5541GovRampsGens.py",
+    #r".\testCases\ee554\ee554PrefStep.py", #*
+    #r".\testCases\ee554\see554PmStepRamp.py", #*
 
     # AMQP Message grouping speedup Tests
     #r".\testCases\miniWECCstepGroupA.py",
     #r".\testCases\miniWECCstepGroupB.py",
     #r".\testCases\miniWECCstepGroupC.py",
 
-    #r".\testCases\kundurLoadRamp0.py",# 2 area, 1 slack ramp down
-    #r".\testCases\kundurLoadRamp1.py",
-    #r".\testCases\kundurLoadRamp2.py",
-    #r".\testCases\kundurLoadRamp3.py",
+    #r".\testCases\kundur\kundurLoadRamp0.py",# 2 area, 1 slack ramp down
+    #r".\testCases\kundur\kundurLoadRamp1.py",
+    #r".\testCases\kundur\kundurLoadRamp2.py",
+    #r".\testCases\kundur\kundurLoadRamp3.py",
 
-    #r".\testCases\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
-    #r".\testCases\kundurLoadRamp11.py",
-    #r".\testCases\kundurLoadRamp12.py",
-    #r".\testCases\kundurLoadRamp13.py",
+    #r".\testCases\kundur\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
+    #r".\testCases\kundur\kundurLoadRamp11.py",
+    #r".\testCases\kundur\kundurLoadRamp12.py",
+    #r".\testCases\kundur\kundurLoadRamp13.py",
 
-    #r".\testCases\kundurLoadStep0.py",# 2 area, 1 slack 
-    #r".\testCases\kundurLoadStep1.py",
-    #r".\testCases\kundurLoadStep2.py",
-    #r".\testCases\kundurLoadStep3.py",
+    #r".\testCases\kundur\kundurLoadStep0.py",# 2 area, 1 slack 
+    #r".\testCases\kundur\kundurLoadStep1.py",
+    #r".\testCases\kundur\kundurLoadStep2.py",
+    #r".\testCases\kundur\kundurLoadStep3.py",
 
     #r".\testCases\kundurLoadStepShunt0.py", #*
     #r".\testCases\kundurLoadRampBranch0.py", #*
 
     # simple gen trips
-    #r".\testCases\kundurGenTrip00.py",
-    #r".\testCases\kundurGenTrip01.py",
-    #r".\testCases\kundurGenTrip02.py",
-    #r".\testCases\kundurGenTrip03.py",
+    #r".\testCases\kundur\kundurGenTrip00.py",
+    #r".\testCases\kundur\kundurGenTrip01.py",
+    #r".\testCases\kundur\kundurGenTrip02.py",
+    #r".\testCases\kundur\kundurGenTrip03.py",
 
     # more complex gen trip off/on and ramp pm
-    #r".\testCases\kundurGenTrip22.py", #*
+    #r".\testCases\kundur\kundurGenTrip22.py", #*
 
     # tests of damping and Reff
-    #r".\testCases\kundurReff0.py", # 3/4 same gens
-    #r".\testCases\kundurReff2.py", # 2 govs the same, 1 un gov
-    #r".\testCases\kundurReff3.py", # dif H, mwcap
-    r".\testCases\kundurReff4.py", # dif mbase
+    #r".\testCases\kundur\kundurReff0.py", # 3/4 same gens
+    #r".\testCases\kundur\kundurReff2.py", # 2 govs the same, 1 un gov
+    #r".\testCases\kundur\kundurReff3.py", # dif H, mwcap
+    #r".\testCases\kundur\kundurReff4.py", # dif mbase
 
-    #r".\testCases\kundurReff0damping.py",
+    #r".\testCases\kundur\kundurReff0damping.py",
             ]
 
 # Batch Run Parameters
 dispResults = False
-dispTiming = False
-makePlot = False
+dispTiming = True
+makePlot = True
 
 # Batch run counters
 case = 0

@@ -7,9 +7,11 @@ function [  ] = compareWfreq( mir, psds_data, varargin )
 % Handle optional inputs
 if nargin == 2
     printFigs = 0;
+    noCase =1;
 elseif nargin >= 4
     LTDCaseName = varargin{1};
     printFigs = varargin{2};
+    noCase = 0;
 end
 
 if nargin < 5
@@ -91,8 +93,11 @@ line([mir.t(1) mir.t(end)],[ssF,ssF],'linestyle',':','color',[.3 0 .7],'linewidt
 legend({'Weighted PSDS','LTD','Theoretical SS'},'location','southeast')
 xlim(x_lim)
 grid on
-%title('Comparison of Average System Frequency')
-title({'Comparison of Average System Frequency'; ['Case: ', LTDCaseName]})
+if noCase ==1
+    title('Comparison of Average System Frequency')
+else
+    title({'Comparison of Average System Frequency'; ['Case: ', LTDCaseName]})
+end
 ylabel('Frequency [Hz]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
@@ -141,8 +146,11 @@ plot(mir.t, abs(mir.f -mirA(1).PSDSf)*60, 'm','linewidth',.5)
 %legend({'LTD 2 sec','LTD 1 sec','LTD 0.5 sec','LTD 0.25 sec'},'location','northeast')
 xlim(x_lim)
 grid on
-%title('Comparison of Absolute Frequency Deviation from PSDS')
-title({'Comparison of Absolute Frequency Deviation from PSDS'; ['Case: ', LTDCaseName]})
+if noCase ==1
+    title('Comparison of Absolute Frequency Deviation from PSDS')
+else
+    title({'Comparison of Absolute Frequency Deviation from PSDS'; ['Case: ', LTDCaseName]})
+end
 ylabel('Frequency [Hz]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)

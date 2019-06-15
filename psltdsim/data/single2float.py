@@ -5,6 +5,6 @@ def single2float(x):
     dPlaces = len(str(x).split('.')[1])
     y = round(float(x),dPlaces+2)
 
-    # NOTE: single precision max useful ness is 6 decimals
-    y = round(float(x),6)
+    # NOTE: Alternative method:
+    #y = round(float(x),6)
     return y

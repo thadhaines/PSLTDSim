@@ -7,9 +7,11 @@ function [  ] = compareAngle( mir, psds_data, varargin )
 % Handle optional inputs
 if nargin == 2
     printFigs = 0;
+    noCase = 1;
 elseif nargin >= 4
     LTDCaseName = varargin{1};
     printFigs = varargin{2};
+    noCase = 0;
 end
 
 if nargin < 5
@@ -22,11 +24,11 @@ end
 debug = 0;
 makeLegend = 1;
 x_lim = [mir.t(1), mir.t(end)];
-bfz = 13; 
+bfz = 13;
 t = psds_data.Data(:,1); % PSDS time
 
-% funtion specific 
-ag_col = jfind(psds_data, 'abug');  
+% funtion specific
+ag_col = jfind(psds_data, 'abug');
 
 figure('position',ppos)
 legNames ={};
@@ -41,7 +43,7 @@ hold on
 % Find nicer y limits..
 ymax = 0;
 ymin = 0;
-    
+
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
         fprintf('area %d\n',mir.areaN(area) )
@@ -82,7 +84,11 @@ if makeLegend
     legend(legNames)
 end
 grid on
-title({'Comparison of Generator Voltage Angle'; ['Case: ', LTDCaseName]})
+if noCase ==1
+    title('Comparison of Generator Voltage Angle')
+else
+    title({'Comparison of Generator Voltage Angle'; ['Case: ', LTDCaseName]})
+end
 xlabel('Time [sec]')
 ylabel('Generator Angle [degrees]')
 set(gca,'fontsize',bfz)

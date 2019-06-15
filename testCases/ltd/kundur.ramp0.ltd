@@ -4,4 +4,4 @@
 # Double quoted variable names in model parameters also ignored
 
 # Perturbances
-load 9 : "pertType" ramp "pertTarget" P "startTime" 2 "RAtime" 85 "RAval" 30 "RAtype" per
+load 9 : "pertType" ramp "pertTarget" P "startTime" 2 "RAtime" 40 "RAval" -5 "RAtype" per
