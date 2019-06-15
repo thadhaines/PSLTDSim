@@ -19,9 +19,6 @@ def initPY3Dynamics(mirror):
             mirror.Dynamics.append(newLTDmod)
             mirror.Log.append(newLTDmod)
 
-    for dynamic in mirror.Dynamics:
-        dynamic.stepInitDynamics()
-
     # Calculate Reff of system
     machBase = 0.0
     govBase = 0.0
@@ -31,3 +28,8 @@ def initPY3Dynamics(mirror):
             govBase += mach.Mbase
 
     mirror.Reff = govBase/machBase
+
+    # Run All individual agent inits
+    for dynamic in mirror.Dynamics:
+        dynamic.stepInitDynamics()
+

@@ -9,13 +9,13 @@ Step of load down 5%.
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 45.0,
+    'endTime': 60.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
     'Hinput' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # Untested 
-    'Reff' : False, # Account for Governor R being affected by non-gov %
+    'ReffEnable' : False, # Account for Governor R being affected by non-gov %
     'freqEffects' : True, # w in swing equation will not be assumed 1 if true
     # Mathematical Options
     'integrationMethod' : 'rk45',

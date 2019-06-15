@@ -100,9 +100,13 @@ batchList =[
     #r".\testCases\kundur\kundurReff0damping.py",
 
     # Six Machine
-    r".\testCases\sixMachine\sixMachineStep1.py",
-    r".\testCases\sixMachine\sixMachineStep2.py",
+    #r".\testCases\sixMachine\sixMachineStep1.py",
+    #r".\testCases\sixMachine\sixMachineStep2.py",
+    #r".\testCases\sixMachine\sixMachineStep3.py",
+    #r".\testCases\sixMachine\sixMachineStep4.py",
     r".\testCases\sixMachine\sixMachineRamp1.py",
+    r".\testCases\sixMachine\sixMachineRamp2.py",
+    r".\testCases\sixMachine\sixMachineRamp3.py",
             ]
 
 # Batch Run Parameters

@@ -49,14 +49,14 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).S1.Q,'--s')
+        plot(mir.t, mir.(curArea).(curSlack).S1.Q,'s')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
     end
     
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
-        plot(mir.t, mir.(curArea).(curGen).G1.Q,'--s')
+        plot(mir.t, mir.(curArea).(curGen).G1.Q,'s')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
         

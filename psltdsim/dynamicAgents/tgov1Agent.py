@@ -104,6 +104,10 @@ class tgov1Agent():
             self.R = Rnew
             updated = True
 
+        # Account for Reff
+        if self.mirror.ReffEnable:
+            self.R = self.R*self.mirror.Reff
+
         # ensure MWcap is read from gov dyd
         if self.Gen.Pmax != self.mwCap:
             if self.mirror.debug:

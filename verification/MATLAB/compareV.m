@@ -52,7 +52,7 @@ for area = 1:max(size(mir.areaN)) % for each area
             % remove number from unique
             uniqueEntry(uniqueEntry == mir.(curArea).slackBusN(slack)) = [];
             curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-            plot(mir.t, mir.(curArea).(curSlack).Vm,'--o')
+            plot(mir.t, mir.(curArea).(curSlack).Vm,'o')
             name = [(curArea),'.',(curSlack)];
             legNames{end+1} = ['LTD ',name];
         end
@@ -63,7 +63,7 @@ for area = 1:max(size(mir.areaN)) % for each area
             % remove number from unique
             uniqueEntry(uniqueEntry == mir.(curArea).genBusN(gen)) = [];
             curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
-            plot(mir.t, mir.(curArea).(curGen).Vm,'--o')
+            plot(mir.t, mir.(curArea).(curGen).Vm,'o')
             name = [(curArea),'.',(curGen)];
             legNames{end+1} = ['LTD ',name];
         end

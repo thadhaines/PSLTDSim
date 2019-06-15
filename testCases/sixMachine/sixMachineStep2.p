@@ -1,6 +1,6 @@
 /* Stepping load on bus 9 up 5% at t=2*/
 
-@tend = 45.0
+@tend = 60.0
 
 /* Open .sav file */
 @ret = getf("C:\LTD\pslf_systems\sixMachine\sixMachine.sav")

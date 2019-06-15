@@ -44,6 +44,7 @@ class Mirror(object):
         self.Dsys = simParams['Dsys']
         self.IPYmsgGroup = simParams['IPYmsgGroup']
         self.PY3msgGroup = simParams['PY3msgGroup']
+        self.ReffEnable = simParams['ReffEnable']
         self.Reff = 0.0
         # NOTE: for variable timestep, add extra points here...
         self.dataPoints = int(self.endTime//self.timeStep + 1)
@@ -145,9 +146,14 @@ class Mirror(object):
 
         # Handle user input system inertia
         # NOTE: H is typically MW*sec unless noted as PU or in PSLF models
-        if self.Hinput > 0.0:
+        if type(self.Hinput) == str:
+            # Handle scaling of system H case
+            self.Hsys = self.ss_H*float(self.Hinput)
+        elif self.Hinput > 0.0:
+            # Handle Input of h as MW*sec
             self.Hsys = self.Hinput
         else:
+            # Use system sum of H
             self.Hsys = self.ss_H
 
         #Create search dictionaries

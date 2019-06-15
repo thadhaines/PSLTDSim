@@ -3,7 +3,7 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Ramp of load up 10% over 40 seconds.
+Ramp of load up 10% over 40 seconds. Hsys scaled by 75%
 """
 
 # Simulation Parameters Dictionary
@@ -13,7 +13,7 @@ simParams = {
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
-    'Hinput' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
+    'Hinput' : '.75', # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # Untested 
     'ReffEnable' : False, # Account for Governor R being affected by non-gov %
     'freqEffects' : True, # w in swing equation will not be assumed 1 if true
@@ -21,7 +21,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\sixMachineRamp\\", # relative path from cwd
-    'fileName' : 'SixMachineRamp1',
+    'fileName' : 'SixMachineRamp2',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.

@@ -52,7 +52,7 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).Va,'--o')
+        plot(mir.t, mir.(curArea).(curSlack).Va,'o')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
         
@@ -67,7 +67,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         
-        plot(mir.t, mir.(curArea).(curGen).Va,'--o')
+        plot(mir.t, mir.(curArea).(curGen).Va,'o')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
         
