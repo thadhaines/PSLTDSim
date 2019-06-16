@@ -20,8 +20,8 @@ printFigs = 0;
 % PSDSfileName = 'sixMachineStep1.chf'; % fast govs, default exciters
 % LTDCaseName = 'SixMachineStep1';
 
-PSDSfileName = 'sixMachineStep2.chf'; % mixed govs, fast exciters
-LTDCaseName = 'SixMachineStep2'; % match PSLF 
+% PSDSfileName = 'sixMachineStep2.chf'; % mixed govs, fast exciters
+% LTDCaseName = 'SixMachineStep2'; % match PSLF 
 %LTDCaseName = 'SixMachineStep3'; % system H reduced by 15% 
 %LTDCaseName = 'SixMachineStep4'; % Account for Reff
 

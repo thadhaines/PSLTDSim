@@ -1,0 +1,6 @@
+# LTD simulation models / perturbances
+# Similar format to dyd files.
+# Commented and empty lines are ignored during parsing.
+# Minamly defined step up
+# if Ramp type undefined, defaults to relative
+load 3 : "pertType" ramp "pertTarget" P "startTime" 2 "RAtime" 6 "RAval" 5 

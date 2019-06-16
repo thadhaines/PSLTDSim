@@ -1,7 +1,0 @@
-# LTD simulation models / perturbances
-# Similar format to dyd files.
-# Commented and empty lines are ignored during parsing.
-
-# Ramping by percent and abs 
-gen 21 : "pertType" ramp "pertTarget" Pm "startTime" 2 "RAtime" 6 "RAval" 20 "RAtype"  per 
-gen 21 : "pertType" ramp "pertTarget" Pm "startTime" 30 "RAtime" 10 "RAval" 50 "RAtype"  abs 

@@ -69,11 +69,6 @@ batchList =[
     #r".\testCases\kundur\kundurLoadRamp2.py",
     #r".\testCases\kundur\kundurLoadRamp3.py",
 
-    #r".\testCases\kundur\kundurLoadRamp10.py",# 2 area, 1 slack 40 sec ramp
-    #r".\testCases\kundur\kundurLoadRamp11.py",
-    #r".\testCases\kundur\kundurLoadRamp12.py",
-    #r".\testCases\kundur\kundurLoadRamp13.py",
-
     #r".\testCases\kundur\kundurLoadStep0.py",# 2 area, 1 slack 
     #r".\testCases\kundur\kundurLoadStep1.py",
     #r".\testCases\kundur\kundurLoadStep2.py",
@@ -100,19 +95,19 @@ batchList =[
     #r".\testCases\kundur\kundurReff0damping.py",
 
     # Six Machine
-    #r".\testCases\sixMachine\sixMachineStep1.py",
+    r".\testCases\sixMachine\sixMachineStep1.py",
     #r".\testCases\sixMachine\sixMachineStep2.py",
     #r".\testCases\sixMachine\sixMachineStep3.py",
     #r".\testCases\sixMachine\sixMachineStep4.py",
     r".\testCases\sixMachine\sixMachineRamp1.py",
-    r".\testCases\sixMachine\sixMachineRamp2.py",
-    r".\testCases\sixMachine\sixMachineRamp3.py",
+    #r".\testCases\sixMachine\sixMachineRamp2.py",
+    #r".\testCases\sixMachine\sixMachineRamp3.py",
             ]
 
 # Batch Run Parameters
 dispResults = False
-dispTiming = False
-makePlot = False
+dispTiming = True
+makePlot = True
 
 # Batch run counters
 case = 0

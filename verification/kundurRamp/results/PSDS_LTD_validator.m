@@ -18,7 +18,7 @@
 %   06/10/19    14:17   Added an auto-scale to bus angle
 
 %% init
-clear; format compact; clc; %close all;
+clear; format compact; clc; close all;
 format long;
 
 % to Export pdfs.
@@ -28,8 +28,8 @@ printFigs = 0;
 PSDSfileName = 'kundur.step0.chf'
 LTDCaseName = 'kundurStep'
 
-PSDSfileName = 'kundur.ramp0.chf' % 40 second ramp down
-LTDCaseName = 'kundurRamp'
+% PSDSfileName = 'kundur.ramp0.chf' % 40 second ramp down
+% LTDCaseName = 'kundurRamp'
 % % % 
 % PSDSfileName = 'kundur.ramp1.chf' % 40 second ramp
 % LTDCaseName = 'kundurRamp1'
@@ -61,7 +61,7 @@ load(cases{4}) % 1 sec
 mir4 = eval(cases{4});
 clear eval(cases{4})
 
-mir = mir3; % for comparison plots
+mir = mir2; % for comparison plots
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 
@@ -353,7 +353,7 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).S1.Pe,'--o')
+        plot(mir.t, mir.(curArea).(curSlack).S1.Pe,'o')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -361,7 +361,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         
-        plot(mir.t, mir.(curArea).(curGen).G1.Pe,'--o')
+        plot(mir.t, mir.(curArea).(curGen).G1.Pe,'o')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -403,7 +403,7 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).S1.Pm,'--o')
+        plot(mir.t, mir.(curArea).(curSlack).S1.Pm,'o')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -411,7 +411,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         
-        plot(mir.t, mir.(curArea).(curGen).G1.Pm,'--o')
+        plot(mir.t, mir.(curArea).(curGen).G1.Pm,'o')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
     end
@@ -452,14 +452,14 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).S1.Q,'--s')
+        plot(mir.t, mir.(curArea).(curSlack).S1.Q,'s')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
     end
     
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
-        plot(mir.t, mir.(curArea).(curGen).G1.Q,'--s')
+        plot(mir.t, mir.(curArea).(curGen).G1.Q,'s')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
         
@@ -507,7 +507,7 @@ for area = 1:max(size(mir.areaN)) % for each area
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).Va,'--o')
+        plot(mir.t, mir.(curArea).(curSlack).Va,'o')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
         
@@ -522,7 +522,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         
-        plot(mir.t, mir.(curArea).(curGen).Va,'--o')
+        plot(mir.t, mir.(curArea).(curGen).Va,'o')
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
         
@@ -550,5 +550,5 @@ ylim([ymin*1.5,ymax*1.5])
 % pdf output code
 if printFigs
     set(gcf,'color','w'); % to remove border of figure
-    export_fig([LTDCaseName,'Angle'],'-pdf'); % to print fig
+    export_fig([LTDCaseName,'Angle'],'-png'); % to print fig
 end
