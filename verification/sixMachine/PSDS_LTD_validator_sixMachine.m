@@ -48,7 +48,7 @@ comparePe(mir, psds_data, LTDCaseName, printFigs)
 compareWfreq(mir, psds_data, LTDCaseName, printFigs)
 
 %% Multi plot to compare other features
-%{
+%
 compareWfreq(mir, psds_data)
 close % to close relative comparison plot
 load('SixMachineStep3F')

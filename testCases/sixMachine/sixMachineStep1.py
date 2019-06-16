@@ -3,7 +3,7 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Step of load down 5%.
+Step of load up 10%.
 """
 
 # Simulation Parameters Dictionary

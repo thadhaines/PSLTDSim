@@ -3,7 +3,7 @@ debug = 0
 AMQPdebug = 0
 
 simNotes = """
-Step of load down 5%, Reff Enabled
+Step of load up 10%, Reff Enabled
 """
 
 # Simulation Parameters Dictionary

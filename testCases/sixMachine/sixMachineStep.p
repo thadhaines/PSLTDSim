@@ -1,4 +1,4 @@
-/* Stepping load on bus 9 up 5% at t=2*/
+/* Stepping load on bus 9 up 10% at t=2*/
 
 @tend = 30.0
 
@@ -38,7 +38,7 @@ $ck = "1"
 if (@index<0)
 	logterm("Error in Locating Perturbance Target.<")
 else
-	load[@index].p = load[@index].p*1.05
+	load[@index].p = load[@index].p*1.1
 	logterm("Pertrubance Executed.<")
 endif 
 
