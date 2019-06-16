@@ -8,6 +8,7 @@
 
 %   History:
 %   06/15/19    10:15   init - plots formatted
+%   06/16/19    09:52   added handling for multigen buses
 
 %% init
 clear; format compact; clc; close all;
@@ -17,16 +18,16 @@ format long;
 printFigs = 0;
 
 %% Knowns
-% PSDSfileName = 'sixMachineStep1.chf'; % fast govs, default exciters
-% LTDCaseName = 'SixMachineStep1';
+% % PSDSfileName = 'sixMachineStep1.chf'; % fast govs, default exciters
+% % LTDCaseName = 'SixMachineStep1';
 
-% PSDSfileName = 'sixMachineStep2.chf'; % mixed govs, fast exciters
-% LTDCaseName = 'SixMachineStep2'; % match PSLF 
+PSDSfileName = 'sixMachineStep2.chf'; % mixed govs, fast exciters
+LTDCaseName = 'SixMachineStep2'; % match PSLF 
 %LTDCaseName = 'SixMachineStep3'; % system H reduced by 15% 
 %LTDCaseName = 'SixMachineStep4'; % Account for Reff
-
-PSDSfileName = 'sixMachineRamp1.chf'; % mixed govs, fast exciters
-LTDCaseName = 'SixMachineRamp1';
+% 
+% PSDSfileName = 'sixMachineRamp1.chf'; % mixed govs, fast exciters
+% LTDCaseName = 'SixMachineRamp1';
 
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'F']};
@@ -52,11 +53,12 @@ compareWfreq(mir, psds_data)
 close % to close relative comparison plot
 load('SixMachineStep3F')
 mir = SixMachineStep3F;
-plot(mir.t,mir.f*60, 'b-','linewidth',1)
+plot(mir.t,mir.f*60, 'b-.','linewidth',1)
 load('SixMachineStep4F')
 mir = SixMachineStep4F;
 plot(mir.t,mir.f*60, '--','color',[.7 .7 .7],'linewidth',2)
 legend({'Weighted PSDS','LTD','Theoretical SS','LTD Scaled Hsys','LTD Reff'},'location','best')
+set(gcf, 'position', [18 312 626 373])
 %}
 %% Multi plot to compare other features RAMP
 %{
@@ -64,9 +66,11 @@ compareWfreq(mir, psds_data)
 close % to close relative comparison plot
 load('SixMachineRamp2F')
 mir = SixMachineRamp2F;
-plot(mir.t,mir.f*60, 'b-','linewidth',1)
+plot(mir.t,mir.f*60, 'b-.','linewidth',1)
 load('SixMachineRamp3F')
 mir = SixMachineRamp3F;
 plot(mir.t,mir.f*60, '--','color',[.7 .7 .7],'linewidth',2)
 legend({'Weighted PSDS','LTD','Theoretical SS','LTD Scaled Hsys','LTD Reff'},'location','best')
+
+set(gcf, 'position', [18 312 626 373])
 %}

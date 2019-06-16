@@ -35,12 +35,21 @@ figure('position',ppos)
 legNames = {};
 hold on
 for curCol=1:max(size(qg_col))
-    plot(t, psds_data.Data(:,qg_col(curCol)),'-')
     temp = strsplit(psds_data.Description{qg_col(curCol)});
+    % handle multiple bus gens
+    if curCol >1
+        dupe = strcmp(['PSDS ', temp{1}],legNames{curCol-1});
+    else
+        dupe = 0;
+    end
     legNames{end+1} = ['PSDS ', temp{1}];
+    if dupe == 1
+         plot(t, psds_data.Data(:,qg_col(curCol)),'--')
+    else
+        plot(t, psds_data.Data(:,qg_col(curCol)))
+    end
 end
-hold on
-
+%%
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
         fprintf('area %d\n',mir.areaN(area) )
@@ -54,12 +63,20 @@ for area = 1:max(size(mir.areaN)) % for each area
         legNames{end+1} = ['LTD ',name];
     end
     
-    for gen = 1:max(size(mir.(curArea).genBusN))
-        curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
-        plot(mir.t, mir.(curArea).(curGen).G1.Q,'s')
-        name = [(curArea),'.',(curGen)];
-        legNames{end+1} = ['LTD ',name];
-        
+uniueGens = unique(mir.(curArea).genBusN);
+    for gen = 1:max(size(uniueGens))
+        curGenBus = ['G',int2str(mir.(curArea).genBusN(gen))];
+        % place for for each gen in Ngen...
+        for GenId = 1:mir.(curArea).(curGenBus).Ngen
+            curGen = ['G',int2str(GenId)];
+            if GenId > 1
+                plot(mir.t, mir.(curArea).(curGenBus).(curGen).Q,'x')
+            else
+                plot(mir.t, mir.(curArea).(curGenBus).(curGen).Q,'o')
+            end
+            name = [(curArea),'.',(curGenBus),'.',int2str(GenId)];
+            legNames{end+1} = ['LTD ',name];
+        end
     end
     
 end

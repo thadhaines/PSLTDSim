@@ -66,8 +66,10 @@ for area = 1:max(size(mir.areaN)) % for each area
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
-        
+        % if same bus, will have same voltage and angle...
         plot(mir.t, mir.(curArea).(curGen).Va,'o')
+        
+        
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
         

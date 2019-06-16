@@ -35,13 +35,23 @@ figure('position',ppos)
 legNames ={};
 hold on
 for curCol=1:max(size(pg_col))
-    plot(t, psds_data.Data(:,pg_col(curCol)))
     temp = strsplit(psds_data.Description{pg_col(curCol)});
+    % handle multiple bus gens
+    if curCol >1
+        dupe = strcmp(['PSDS ', temp{1}],legNames{curCol-1});
+    else
+        dupe = 0;
+    end
     legNames{end+1} = ['PSDS ', temp{1}];
+    if dupe == 1
+         plot(t, psds_data.Data(:,pg_col(curCol)),'--')
+    else
+        plot(t, psds_data.Data(:,pg_col(curCol)))
+    end
 end
 
 hold on
-
+%%
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
         fprintf('area %d\n',mir.areaN(area) )
@@ -54,36 +64,42 @@ for area = 1:max(size(mir.areaN)) % for each area
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
     end
-    for gen = 1:max(size(mir.(curArea).genBusN))
-        curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
+    uniueGens = unique(mir.(curArea).genBusN);
+    for gen = 1:max(size(uniueGens))
+        curGenBus = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
+        for GenId = 1:mir.(curArea).(curGenBus).Ngen
+            curGen = ['G',int2str(GenId)];
+            if GenId > 1
+                plot(mir.t, mir.(curArea).(curGenBus).(curGen).Pe,'x')
+            else
+                plot(mir.t, mir.(curArea).(curGenBus).(curGen).Pe,'o')
+            end
+            name = [(curArea),'.',(curGenBus),'.',int2str(GenId)];
+            legNames{end+1} = ['LTD ',name];
+        end
         
-        plot(mir.t, mir.(curArea).(curGen).G1.Pe,'o')
-        name = [(curArea),'.',(curGen)];
-        legNames{end+1} = ['LTD ',name];
+    end
+    if makeLegend
+        legend(legNames)
+    end
+    grid on
+    if noCase ==1
+        title('Comparison of Real Power Output')
+    else
+        title({'Comparison of Real Power Output'; ['Case: ', LTDCaseName]})
     end
     
-end
-if makeLegend
-    legend(legNames)
-end
-grid on
-if noCase ==1
-    title('Comparison of Real Power Output')
-else
-    title({'Comparison of Real Power Output'; ['Case: ', LTDCaseName]})
-end
-
-xlabel('Time [sec]')
-ylabel('Power [MW]')
-set(gca,'fontsize',bfz)
-xlim(x_lim)
-
-% pdf output code
-if printFigs
-    set(gcf,'color','w'); % to remove border of figure
-    export_fig([LTDCaseName,'Pe'],'-pdf'); % to print fig
-end
-%% end of function
+    xlabel('Time [sec]')
+    ylabel('Power [MW]')
+    set(gca,'fontsize',bfz)
+    xlim(x_lim)
+    
+    % pdf output code
+    if printFigs
+        set(gcf,'color','w'); % to remove border of figure
+        export_fig([LTDCaseName,'Pe'],'-pdf'); % to print fig
+    end
+    %% end of function
 end
 
