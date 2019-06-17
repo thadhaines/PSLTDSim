@@ -31,6 +31,9 @@ class ShuntAgent(object):
             'St' : int(newShunt.St),
             }
 
+        # Children
+        self.Timer ={}
+
     def __repr__(self):
         #Display more useful data for mirror
         # mimic default __repr__

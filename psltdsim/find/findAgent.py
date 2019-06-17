@@ -3,6 +3,9 @@ def findAgent(mirror, tarType, idList):
     targetObj= None
 
     #Locate target in mirror
+    if tarType.lower() == 'mirror':
+        targetObj = mirror
+
     if tarType.lower() == 'bus':
         targetObj = ltd.find.findBus(mirror, idList[0])
 

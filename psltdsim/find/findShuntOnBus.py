@@ -34,7 +34,7 @@ def findShuntOnBus(mirror, Busnum, Id=None):
                             mirror.FindTime += time.time() - tic
                             return bShunt
     if Id:
-        print("Shunt on Bus %d with Id %s not Found" % (Busnum,Id))
+        print("Shunt on Bus %s with Id %s not Found" % (bnum,Id))
     else:
         print("Shunt on Bus %d not Found" % Busnum)
     mirror.FindTime += time.time() - tic

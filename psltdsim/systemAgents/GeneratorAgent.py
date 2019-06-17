@@ -38,15 +38,12 @@ class GeneratorAgent(object):
             'St' : int(newGen.St),
             }
 
-        # debug testing ltd.data.single2float
-        #print('(PSLF) newGen.Pgen = ', newGen.Pgen)
-        #print(type(newGen.Pgen))
-        #print('(LTD)  self.Pe = ', self.Pe)
-        #print(type(self.Pe))
-
         # PSLF dynamic models
         self.machine_model = False
         self.gov_model = False
+
+        # Children
+        self.Timer = {}
         
     def __repr__(self):
         """Display more useful data for mirror"""

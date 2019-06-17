@@ -3,9 +3,6 @@ def runSimPY3(mirror, amqpAgent):
     print("*** runSimPY3 start")
     PY3 = amqpAgent
 
-    # parse LTD to handle perturbances
-    if mirror.locations['ltdPath']:
-        ltd.parse.parseLtd(mirror, mirror.locations['ltdPath'])
 
     # Initialize PY3 specific Dynamics
     ltd.mirror.initPY3Dynamics(mirror)
@@ -18,6 +15,19 @@ def runSimPY3(mirror, amqpAgent):
     for area in mirror.Area:
         area.calcBeta()
         area.initIC()
+
+    # Place for user input 'code' to be run (timer defs, pp, BA, DTC, etc... )
+    if 'ltdPath' in mirror.locations:
+        exec(open(mirror.locations['ltdPath']).read());
+
+    # parse LTD to handle perturbances
+    if hasattr(mirror, 'sysPert'):
+        ltd.parse.parseLtd(mirror, mirror.sysPert)
+
+    # Create Timers
+    if hasattr(mirror, 'TimerInput'):
+        for timer in mirror.TimerInput:
+            ltd.systemAgents.TimerAgent(mir,timer, mirror.TimerInput[timer]) 
 
     print("\n*** Starting Simulation (PY3)")
     sim_start = time.time()
@@ -143,6 +153,10 @@ def runSimPY3(mirror, amqpAgent):
         if mirror.sysCrash:
             # break out of while loop
             break
+
+        # Step timers
+        for timerName in mirror.Timer:
+            mirror.Timer[timerName].step()
 
         # step log of Agents with ability
         for agentX in mirror.Log:

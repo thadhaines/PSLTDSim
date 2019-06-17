@@ -14,7 +14,7 @@ def findBus(mirror, Busnum):
             mirror.FindTime += time.time() - tic
             return mirror.searchDict[bnum]['Bus']
 
-    print("Bus %d not found." % Busnum)
+    print("Bus %s not found." % bnum)
     mirror.FindTime += time.time() - tic
     
     return None

@@ -23,6 +23,7 @@ class BusAgent(object):
         self.Load = []
         self.Shunt = []
         self.SVD = []
+        self.Timer ={}
 
         # Current Status
         self.cv = {

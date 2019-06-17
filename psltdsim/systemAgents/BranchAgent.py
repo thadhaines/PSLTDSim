@@ -36,9 +36,9 @@ class BranchAgent(object):
         tag1 =  "<%s object at %s> " % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "%s %s" %(str(self.Fbus.Extnum).zfill(3), self.Fbus.Busnam)
+        tag2 = "%s %s" %(str(self.Bus.Extnum), self.Bus.Busnam)
         # additional outputs
-        tag3 = "%s %s" %(str(self.Tbus.Extnum).zfill(3), self.Tbus.Busnam)
+        tag3 = "%s %s" %(str(self.TBus.Extnum), self.TBus.Busnam)
 
         return(tag1+' From '+tag2+' to '+tag3)
     

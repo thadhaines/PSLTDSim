@@ -3,5 +3,8 @@
 # Commented and empty lines are ignored during parsing.
 # Double quoted variable names in model parameters also ignored
 
+
 # Perturbances
-load 9 : step P 2 10 per
+mirror.sysPert = [
+    'load 9 : ramp P 2 40 10 per',
+    ]

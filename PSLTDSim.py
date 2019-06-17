@@ -96,17 +96,17 @@ batchList =[
 
     # Six Machine
     #r".\testCases\sixMachine\sixMachineStep1.py",
-    r".\testCases\sixMachine\sixMachineStep2.py",
-    r".\testCases\sixMachine\sixMachineStep3.py",
-    r".\testCases\sixMachine\sixMachineStep4.py",
+    #r".\testCases\sixMachine\sixMachineStep2.py",
+    #r".\testCases\sixMachine\sixMachineStep3.py",
+    #r".\testCases\sixMachine\sixMachineStep4.py",
     #r".\testCases\sixMachine\sixMachineRamp1.py",
-    #r".\testCases\sixMachine\sixMachineRamp2.py",
+    r".\testCases\sixMachine\sixMachineRamp2.py",
     #r".\testCases\sixMachine\sixMachineRamp3.py",
             ]
 
 # Batch Run Parameters
 dispResults = False
-dispTiming = True
+dispTiming = False
 makePlot = True
 
 # Batch run counters
@@ -127,11 +127,12 @@ for testCase in batchList:
     # override debugs
     #debug = 1
     #AMQPdebug = 1
+    debugTimer = 1
 
     print('*** Case {}/{}'.format(case, len(batchList)))
     print('*** %s' % testCase)
     print('\n*** Checking simulation files...')
-    userFiles = [savPath] + dydPath + ltdPath
+    userFiles = [savPath] + dydPath + [ltdPath]
     for fileLoc in (userFiles):
         if not os.path.isfile(fileLoc):
             print('*** Test Case Fail: %s' % testCase)
@@ -169,6 +170,7 @@ for testCase in batchList:
                'simNotes': simNotes,
                'debug': debug,
                'AMQPdebug' : AMQPdebug,
+               'debugTimer' : debugTimer,
                }
     PY3.send('toIPY', initMsg)
 

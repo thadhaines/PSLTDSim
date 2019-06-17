@@ -24,6 +24,7 @@ class AreaAgent(object):
         self.PowerPlant = []
         self.Bus = []
         self.Shunt = []
+        self.Timer ={}
         self.BA = None
         self.AreaSlack = None
         #self.SVD = []

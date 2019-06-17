@@ -1,6 +1,7 @@
 # Format of required info for batch runs.
 debug = 0
 AMQPdebug = 0
+debugTimer = 0
 
 simNotes = """
 Step of load up 10%, Reff Enabled
@@ -29,5 +30,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachine.sav"
-dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd"]
-ltdPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachineStep.ltd"]
+dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine.dyd"]
+ltdPath = r".\testCases\sixMachine\sixMachineStep.ltd.py"

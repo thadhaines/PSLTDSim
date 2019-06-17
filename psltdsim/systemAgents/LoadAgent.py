@@ -17,10 +17,10 @@ class LoadAgent(object):
             'Q' : ltd.data.single2float(newLoad.Q),
             'St' : int(newLoad.St),
             }
-        #self.P = ltd.data.single2float(newLoad.P)
-        #self.Q = ltd.data.single2float(newLoad.Q)
-        #self.St = int(newLoad.St)
+
         # dynamics?
+        # Children
+        self.Timer ={}
 
     def __repr__(self):
         """Display more useful data for mirror"""

@@ -1,7 +1,7 @@
 class Mirror(object):
     """Mirror class used as LTD system environment"""
 
-    def __init__(self, locations, simParams, simNotes=None, debug = 0, AMQPdebug =0):
+    def __init__(self, locations, simParams, simNotes=None, debug = 0, AMQPdebug =0, debugTimer = 0):
         """Carries out initialization of Mirror and meta data"""
         global PSLF
         from datetime import datetime
@@ -36,6 +36,7 @@ class Mirror(object):
         self.simParams = simParams
         self.locations = locations
         self.debug = debug
+        self.debugTimer = debugTimer
         self.AMQPdebug = AMQPdebug
         self.timeStep = simParams['timeStep']
         self.endTime = simParams['endTime']
@@ -57,7 +58,7 @@ class Mirror(object):
         # Varaible initalization
         self.cv = {
             'dp' : 0, # current data point
-            't' : 0,
+            't' : 0.0,
             'f' : 1.0,
             'fdot' : 0.0,
             'deltaF' : 0.0, # in pu, defined as 1-f
@@ -89,7 +90,7 @@ class Mirror(object):
         self.PowerPlant =[]
         self.Shunt = []
         self.Slack = []
-        self.Timers =[]
+        self.Timer ={}
         self.globalSlack = None
 
         # initial system solve
@@ -130,9 +131,7 @@ class Mirror(object):
         self.PSLFgov = []
         
         # read dyd, create pslf models
-        if locations['ltdPath']:
-            dydPaths = locations['dydPath'] + locations['ltdPath']
-        else:
+        if 'dydPath' in locations:
             dydPaths = locations['dydPath']
 
         ltd.parse.parseDyd(self, dydPaths)

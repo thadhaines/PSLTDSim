@@ -9,7 +9,7 @@ def sysPePmFLoad(mirror, blkFlag=True):
     fig, ax = plt.subplots(nrows=2, ncols=1,)
     
 
-    if len(mir.Machines) < 5:
+    if len(mir.Machines) < 7:
         normalizeFlag = False
     else:
         legendFlag = False
