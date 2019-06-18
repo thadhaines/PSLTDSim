@@ -4,9 +4,14 @@
 # Double quoted variable names in sysPert parameters ignored
 
 # Perturbances
-mirror.sysPert = [
+mirror.sysPerturbances = [
     'load 9 : step P 2 10 per',
     ]
+
+# Power Plants
+mirror.sysPowerPlants ={'pp1': ["gen 2 1: 0.25", "gen 2 2 : 0.75"],
+                        'pp2': ["gen 3 : 0.5", "gen 4 : 0.5"],
+                        }
 
 # Testing of Timers
 mirror.TimerInput = { 

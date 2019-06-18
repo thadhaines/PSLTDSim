@@ -21,8 +21,13 @@ def runSimPY3(mirror, amqpAgent):
         exec(open(mirror.locations['ltdPath']).read());
 
     # parse LTD to handle perturbances
-    if hasattr(mirror, 'sysPert'):
-        ltd.parse.parseLtd(mirror, mirror.sysPert)
+    if hasattr(mirror, 'sysPerturbances'):
+        ltd.parse.parseLtd(mirror, mirror.sysPerturbances)
+
+    # if defined Power Plants, pass each entry to agent class
+    if hasattr(mirror, 'sysPowerPlants'):
+        for name in mirror.sysPowerPlants:
+            ltd.systemAgents.PowerPlantAgent(mirror, name, mirror.sysPowerPlants[name])
 
     # Create Timers
     if hasattr(mirror, 'TimerInput'):

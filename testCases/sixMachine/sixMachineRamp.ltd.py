@@ -5,6 +5,6 @@
 
 
 # Perturbances
-mirror.sysPert = [
+mirror.sysPerturbances = [
     'load 9 : ramp P 2 40 10 per',
     ]

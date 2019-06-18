@@ -7,3 +7,4 @@ from .SlackAgent import SlackAgent
 from .ShuntAgent import ShuntAgent
 from .BranchAgent import BranchAgent
 from .TimerAgent import TimerAgent
+from .PowerPlantAgent import PowerPlantAgent
