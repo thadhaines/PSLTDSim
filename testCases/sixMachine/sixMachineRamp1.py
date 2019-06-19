@@ -30,5 +30,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachine.sav"
-dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine.dyd"]
+dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd"]
 ltdPath = r".\testCases\sixMachine\sixMachineRamp.ltd.py"

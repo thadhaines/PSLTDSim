@@ -7,7 +7,7 @@ function [  ] = compareAngle( mir, psds_data, varargin )
 % Handle optional inputs
 if nargin == 2
     printFigs = 0;
-    noCase = 1;
+    noCase =1;
 elseif nargin >= 4
     LTDCaseName = varargin{1};
     printFigs = varargin{2};
@@ -17,7 +17,11 @@ end
 if nargin < 5
     ppos = [18 312 1252 373];
 else
-    ppos = varargin{3};
+    if varargin{3} == 1
+    ppos = [18 312 626 373];
+    else
+    ppos = [18 312 1252 373];
+    end
 end
 
 % varables for plots to work

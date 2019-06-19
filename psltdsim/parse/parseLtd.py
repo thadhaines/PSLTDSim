@@ -50,4 +50,4 @@ def parseLtd(mirror,ltdList):
 
     if mirror.debug == 1:
         print("*** Parsed %d perturbances from:\n%s" 
-              % (totPertfound, ltdLoc))
+              % (totPertfound, ltdList))

@@ -10,7 +10,7 @@ Step of load up 10%.
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 30.0,
+    'endTime': 60.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -30,5 +30,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachine.sav"
-dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine.dyd"]
+dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd"]
 ltdPath = r".\testCases\sixMachine\sixMachineStep.ltd.py"

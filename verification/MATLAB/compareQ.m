@@ -17,7 +17,11 @@ end
 if nargin < 5
     ppos = [18 312 1252 373];
 else
-    ppos = varargin{3};
+    if varargin{3} == 1
+    ppos = [18 312 626 373];
+    else
+    ppos = [18 312 1252 373];
+    end
 end
 
 % varables for plots to work

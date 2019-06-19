@@ -15,7 +15,8 @@ clear; format compact; clc; close all;
 format long;
 
 % to Export pdfs.
-printFigs = 0;
+printFigs = 1;
+miniFlag = 1; % decrease plot width by half
 
 %% Knowns
 % % PSDSfileName = 'sixMachineStep1.chf'; % fast govs, default exciters
@@ -40,15 +41,15 @@ psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 
 %% external Plot Functions
-compareV(mir, psds_data, LTDCaseName, printFigs)
-compareQ(mir, psds_data, LTDCaseName, printFigs)
-compareAngle(mir, psds_data, LTDCaseName, printFigs)
-comparePm(mir, psds_data, LTDCaseName, printFigs)
-comparePe(mir, psds_data, LTDCaseName, printFigs)
-compareWfreq(mir, psds_data, LTDCaseName, printFigs)
+compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag)
+%compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag)
+compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag)
+%comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag)
+%comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag)
+%compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag)
 
 %% Multi plot to compare other features
-%
+%{
 compareWfreq(mir, psds_data)
 close % to close relative comparison plot
 load('SixMachineStep3F')
@@ -60,6 +61,7 @@ plot(mir.t,mir.f*60, '--','color',[.7 .7 .7],'linewidth',2)
 legend({'Weighted PSDS','LTD','Theoretical SS','LTD Scaled Hsys','LTD Reff'},'location','best')
 set(gcf, 'position', [18 312 626 373])
 %}
+
 %% Multi plot to compare other features RAMP
 %{
 compareWfreq(mir, psds_data)
