@@ -49,7 +49,7 @@ class tgov1Agent():
         # Create system inputs
         delta_w = 1.0-self.mirror.cv['f']
         PrefVec = np.array([self.Pref,self.Pref])
-        dwVec = np.array([delta_w,delta_w])/(self.R)*self.Mbase #*self.mirror.Reff # not used in PSDS..
+        dwVec = np.array([delta_w,delta_w])/(self.R)*self.Mbase 
 
         # Perform sum and first gain block
         uVector = (PrefVec+dwVec)
@@ -103,10 +103,6 @@ class tgov1Agent():
                       (self.R, Rnew) )
             self.R = Rnew
             updated = True
-
-        # Account for Reff
-        if self.mirror.ReffEnable:
-            self.R = self.R*self.mirror.Reff
 
         # ensure MWcap is read from gov dyd
         if self.Gen.Pmax != self.mwCap:

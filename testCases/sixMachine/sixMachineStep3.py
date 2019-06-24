@@ -16,7 +16,7 @@ simParams = {
     'IPYmsgGroup' : 60,
     'Hinput' : '.75', # MW*sec of entire system, if !> 0.0, will be calculated in code
     'Dsys' : 0.0, # Untested 
-    'ReffEnable' : False, # Account for Governor R being affected by non-gov %
+    'fBase' : 60.0, # System F base in Hertz
     'freqEffects' : True, # w in swing equation will not be assumed 1 if true
     # Mathematical Options
     'integrationMethod' : 'rk45',

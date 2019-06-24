@@ -7,6 +7,9 @@ def distPacc(mirror, deltaPacc):
 
     NOTE: pretty rough on the mulitple slack generator handling (i.e. untested) - might work if in seperate islands....
     TODO: IRP_flag..., and mw limits of generators (Pmax)
+
+    Same as original disPacc,with removal of slack inertia before second pass and
+    all mirror agents refreshed each solution attempt
     """
 
     tol_Flag = 1 # goes to zero once error < tolerance
@@ -37,6 +40,7 @@ def distPacc(mirror, deltaPacc):
                     c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hss)
                     # Set Pe_calc
                     c_gen.cv['Pe_calc'] = c_gen.cv['Pe'] 
+                    globalSlackH = c_gen.H
                 else:
                     # On later iterations, Reset generator to estimated value
                     c_gen.cv['Pe'] = c_gen.cv['Pe_calc']
@@ -66,19 +70,24 @@ def distPacc(mirror, deltaPacc):
             print('expected: %.2f\tactual: %.2f\terror: %.2f' 
                   % (mirror.globalSlack.cv['Pe_calc'], mirror.globalSlack.cv['Pe'], error))
 
+        tic2 = time.time()
+        #Update mirror machines with PSLF values from power flow solution
+        for gen in mirror.Machines:
+            gen.getPvals()
+        toc2 = time.time()
+        mirror.IPYPvalsTime += toc2-tic2
+
         # exit while loop if tolerance met
         if abs(error) <= tol:
             mirror.globalSlack.cv['Pe_error'] = error
             tol_Flag = 0
             continue
 
-        # tolerance not met, redistribute error
+        # tolerance not met, redistribute error to all machines minus global slack
+        if iteration == 1:
+            # Only remove global inertia once
+            Hss -= globalSlackH
+
         Pacc = error
         iteration +=1
 
-    tic2 = time.time()
-    #Update mirror machines with PSLF values from power flow solution
-    for gen in mirror.Machines:
-        gen.getPvals()
-    toc2 = time.time()
-    mirror.IPYPvalsTime += toc2-tic2

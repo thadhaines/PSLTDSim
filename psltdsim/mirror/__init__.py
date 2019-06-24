@@ -2,7 +2,7 @@
 from .Mirror import Mirror
 
 from .combinedSwing import combinedSwing
-from .distPacc3 import distPacc # testing alternate function
+from .distPacc import distPacc
 from .initInertiaH import initInertiaH
 from .initRunningVals import initRunningVals
 from .initPY3Dynamics import initPY3Dynamics

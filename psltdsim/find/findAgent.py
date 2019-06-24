@@ -21,7 +21,7 @@ def findAgent(mirror, tarType, idList):
         else:
             targetObj = ltd.find.findGenOnBus(mirror, idList[0], idList[1])
 
-    if tarType.lower() == 'shunt':
+    if (tarType.lower() == 'shunt') or (tarType.lower() == 'cap'):
         if len(idList) < 2:
             targetObj = ltd.find.findShuntOnBus(mirror, idList[0])
         else:

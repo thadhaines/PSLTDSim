@@ -86,14 +86,6 @@ batchList =[
     # more complex gen trip off/on and ramp pm
     #r".\testCases\kundur\kundurGenTrip22.py", #*
 
-    # tests of damping and Reff
-    #r".\testCases\kundur\kundurReff0.py", # 3/4 same gens
-    #r".\testCases\kundur\kundurReff2.py", # 2 govs the same, 1 un gov
-    #r".\testCases\kundur\kundurReff3.py", # dif H, mwcap
-    #r".\testCases\kundur\kundurReff4.py", # dif mbase
-
-    #r".\testCases\kundur\kundurReff0damping.py",
-
     # Six Machine
     #r".\testCases\sixMachine\sixMachineStep1.py",
     #r".\testCases\sixMachine\sixMachineStep2.py",
