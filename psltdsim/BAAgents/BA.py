@@ -8,6 +8,7 @@ class BA(object):
         self.name = name
         self.BAdict = BAdict
         self.actTime = float(BAdict['ActionTime'])
+        self.ctrlMachines = []
 
         # Current Value Dictionary
         self.cv = {
@@ -67,19 +68,42 @@ class BA(object):
                 else:
                     # Make new pFactor Dict
                     self.pDict[str(pFactor)] = [foundAgent]
+
+                # Add generators to BA ctrlMachines list
+                # check if power plant
+                if isinstance(foundAgent, ltd.systemAgents.PowerPlantAgent):
+                    # for each % entry in the PP pDict
+                    for key in foundAgent.pDict:
+                        # for each gen in participation group
+                        for PPgen in foundAgent.pDict[key]:
+                            self.ctrlMachines.append(PPgen)
+                            if PPgen.ACEpFactor == None:
+                                PPgen.ACEpFactor = float(pFactor)*float(key)
+                            else:
+                                print("*** Balanacing Authority Error: Duplicate Entry %s" % PPgen)
+                else:
+                    # Found Agent Not a power plant
+                    self.ctrlMachines.append(foundAgent)
+                    if foundAgent.ACEpFactor == None:
+                                foundAgent.ACEpFactor = float(pFactor)
+                    else:
+                        print("*** Balanacing Authority Error: Duplicate Entry %s" % foundAgent)
+
             else:
                 print('*** Balacing Authority Error: Target Agent %s Not Found.' % parsed[0])
         #end for
 
         # Calc participation factor sum
         self.pFsum = 0.0
-        for pF in self.pDict:
-            # multiply pFactor key by len of list and sum
-            self.pFsum += float(pF)*len(self.pDict[pF])
+
+        for gen in self.ctrlMachines:
+            self.pFsum += gen.ACEpFactor
 
         if self.pFsum != 1.0:
-            print("*** Balacing Authority % has a total Participation Factor of %.2f"
+            print("*** Balacing Authority %s has a total Participation Factor of %.2f"
                   % (self.name, self.pFsum))
+
+        # TODO: Test for duplicate machines...
 
         # Attach BA to mirror
         self.mirror.BA.append(self)

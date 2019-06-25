@@ -15,7 +15,10 @@ class GeneratorAgent(object):
         self.Scanbus = newGen.GetScanBusIndex()
         self.globalSlack = False
         self.areaSlack = False
-        self.distType = None # Used for BA distribution 
+
+        # Used for BA distribution 
+        self.distType = None 
+        self.ACEpFactor = None
 
         # Characteristic Data
         self.Mbase = ltd.data.single2float(newGen.Mbase)
@@ -54,7 +57,7 @@ class GeneratorAgent(object):
         tag1 =  "<%s object at %s> " % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "%s %s" %(str(self.Busnum).zfill(3), self.Busnam)
+        tag2 = "%s %s '%s'" %( self.Busnam, str(self.Busnum), self.Id)
 
         return(tag1+tag2)
 

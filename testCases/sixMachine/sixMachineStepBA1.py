@@ -10,7 +10,7 @@ Step of load up 10%.
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 180.0,
+    'endTime': 100.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -21,8 +21,8 @@ simParams = {
     # Mathematical Options
     'integrationMethod' : 'rk45',
     # Data Export Parameters
-    'fileDirectory' : "\\delme\\sixMachineStep\\", # relative path from cwd
-    'fileName' : 'SixMachineStep1',
+    'fileDirectory' : "\\delme\\sixMachineStepBA\\", # relative path from cwd
+    'fileName' : 'SixMachineStepBA1',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.

@@ -11,7 +11,7 @@ dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
 mirLoc = os.path.join(dirname, 'delme','kundurGenTrip2','kundurGenTrip22F.mir')
 mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
-#mirLoc = os.path.join(dirname, 'delme','kundurRamp1','kundurRamp12F.mir')
+mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA1F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 

@@ -6,7 +6,7 @@
 # Perturbances
 mirror.sysPerturbances = [
     'load 9 : step P 5 10 per',
-    'load 9 : step P 70 -75 rel',
+    #'load 9 : step P 70 -75 rel',
     ]
 
 # Power Plants
