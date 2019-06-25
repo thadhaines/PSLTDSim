@@ -2,6 +2,7 @@ class PowerPlantAgent(object):
     """Collection of Agents to further distribute ACE to"""
     def __init__(self,mirror,name, genList):
 
+        self.__class__ = PowerPlantAgent
         # Input references
         self.mirror = mirror
         self.name = name

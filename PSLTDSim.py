@@ -87,7 +87,8 @@ batchList =[
     #r".\testCases\kundur\kundurGenTrip22.py", #*
 
     # Six Machine
-    r".\testCases\sixMachine\sixMachineStep1.py",
+    #r".\testCases\sixMachine\sixMachineStep1.py",
+    r".\testCases\sixMachine\sixMachineStepBA1.py",
     #r".\testCases\sixMachine\sixMachineStep2.py",
     #r".\testCases\sixMachine\sixMachineStep3.py",
     #r".\testCases\sixMachine\sixMachineStep4.py",

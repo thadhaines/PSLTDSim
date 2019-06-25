@@ -9,7 +9,7 @@ class TLB(BA):
         # Caclulate ACE
         Pace = self.Area.cv['Pe'] - self.Area.cv['P'] - self.Area.cv['IC0']
         # B is positive
-        Face = 10*self.B*(self.mirror.cv['f']-1.0)*self.mirror.fBase
+        Face = 10*self.B*(self.mirror.cv['f']-1.0)*self.mirror.fBase # removed 10 since f in Hz
         self.cv['ACE'] = Pace + Face
         
         # Handle running integral of ACE
@@ -27,33 +27,34 @@ class TLB(BA):
                 fmP = float(mainPkey)
                 # for each participation dictionary list entry
                 for pEntry in range(len(self.pDict[mainPkey])):
+
                     # check if power plant
-                    if hasattr(self.pDict[mainPkey][pEntry], 'pDict'):
+                    if isinstance(self.pDict[mainPkey][pEntry], ltd.systemAgents.PowerPlantAgent):
                         # for each % entry in the PP pDict
                         for subPkey in self.pDict[mainPkey][pEntry].pDict:
                             # convert sub participation to float
                             fsP = float(subPkey)
+
                             # for each gen in participation group
                             for PPgen in self.pDict[mainPkey][pEntry].pDict[subPkey]:
                                 # check if gov model exists
-                                if PPgen.gov_model != False:
+                                if PPgen.gov_model == False:
                                     # if so distribute Negative ACE to Pmech
-                                    PPgen.cv['Pref'] -= self.cv['ACE']*fmP*fsP
+                                    PPgen.cv['Pm'] -= self.cv['ACE']*fmP*fsP
                                 else:
                                     # else distribute Negative ACE % to Pref
-                                    PPgen.cv['Pm'] -= self.cv['ACE']*fmP*fsP
+                                    PPgen.cv['Pref'] -= self.cv['ACE']*fmP*fsP
                     else:
                         # No Power Plants in BA
                         # for each % entry in BA pDict
-                        for BAgen in self.pDict[mainPkey]:
+                        BAgen = self.pDict[mainPkey][pEntry]
                         # check if gov model exists
-                            if BAgen.gov_model != False:
-                                # if so distribute Negative ACE to Pmech
-                                BAgen.cv['Pref'] -= self.cv['ACE']*fmP
-                            else:
-                                # else distribute Negative ACE % to Pref
-                                BAgen.cv['Pm'] -= self.cv['ACE']*fmP
-
+                        if BAgen.gov_model == False:
+                            # if so distribute Negative ACE to Pmech
+                            BAgen.cv['Pm'] -= self.cv['ACE']*fmP
+                        else:
+                            # else distribute Negative ACE % to Pref
+                            BAgen.cv['Pref'] -= self.cv['ACE']*fmP
 
         else:
             self.cv['distStep'] = 0
