@@ -1,4 +1,5 @@
 # these imort a folder with another __init___.py in it
+from . import BAAgents
 from . import data
 from . import dynamicAgents
 from . import find

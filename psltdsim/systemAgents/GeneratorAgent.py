@@ -15,6 +15,7 @@ class GeneratorAgent(object):
         self.Scanbus = newGen.GetScanBusIndex()
         self.globalSlack = False
         self.areaSlack = False
+        self.distType = None # Used for BA distribution 
 
         # Characteristic Data
         self.Mbase = ltd.data.single2float(newGen.Mbase)

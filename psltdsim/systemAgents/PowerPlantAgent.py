@@ -6,6 +6,7 @@ class PowerPlantAgent(object):
         self.mirror = mirror
         self.name = name
         self.genList = genList
+        self.distType = None # Used for BA distribution
         #Keep track of distributed ACE per unit?... Gen -> recACE?
 
         # Participation Dictionary init
@@ -44,3 +45,4 @@ class PowerPlantAgent(object):
                   % (self.name, self.pFsum))
         # Attach PowerPlant to Mirror
         self.mirror.PowerPlant.append(self)
+        self.mirror.ppDict[self.name] = self

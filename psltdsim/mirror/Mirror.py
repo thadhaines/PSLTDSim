@@ -80,6 +80,7 @@ class Mirror(object):
 
         # Agent Collections
         self.Area = []
+        self.BAdict = {}
         self.BA = []
         self.Branch = []
         self.Bus = []

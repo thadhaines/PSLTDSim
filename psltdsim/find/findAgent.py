@@ -6,8 +6,14 @@ def findAgent(mirror, tarType, idList):
     if tarType.lower() == 'mirror':
         targetObj = mirror
 
+    if tarType.lower() == 'area':
+        targetObj = ltd.find.findArea(mirror, idList)
+
     if tarType.lower() == 'bus':
         targetObj = ltd.find.findBus(mirror, idList[0])
+
+    if tarType.lower() == 'plant':
+        targetObj = ltd.find.findPowerPlant(mirror, idList[0])
 
     if tarType.lower() == 'load':
         if len(idList) < 2:

@@ -5,7 +5,6 @@ class SlackAgent(GeneratorAgent):
     def __init__(self, mirror, parentBus, newGen):
         super(SlackAgent, self).__init__(mirror, parentBus, newGen)
         self.globalSlack = 0
-        #self.areaSlack = 0 # may not be needed
 
         self.mirror = mirror
         self.Tol = mirror.slackTol

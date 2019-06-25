@@ -18,3 +18,25 @@ mirror.TimerInput = {
         'busVCounter':"bus 8 : Vm : < 0.9501 : 30",
         'mirrorF': " mirror : f : < .998 : 3",
         }
+
+# Testing of Balancing Authority input
+mirror.sysBA = {
+    'BA1':{
+        'Area':1,
+        'B':" 1.0 : p", # MW/0.1 Hz
+        'ActionTime': 5.00,
+        'Type':'TLB', # Tie-Line Bias
+        'Filtering': None,
+        'CtrlGens': ['plant pp1 : .65 : step',
+                    'gen 1 : .35 : step']
+        },
+    'BA2':{
+        'Area':2,
+        'B':" 1 : p", # MW/0.1 Hz
+        'ActionTime': 8.00,
+        'Type':'TLB', # Tie-Line Bias
+        'Filtering': None,
+        'CtrlGens': ['gen 4: .5 : step',
+                     'gen 5: .5 : step']
+        },
+    }

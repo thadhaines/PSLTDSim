@@ -17,6 +17,7 @@ def runSimPY3(mirror, amqpAgent):
         area.initIC()
 
     # Place for user input 'code' to be run (timer defs, pp, BA, DTC, etc... )
+    mirror.ppDict = {}
     if 'ltdPath' in mirror.locations:
         exec(open(mirror.locations['ltdPath']).read());
 
@@ -29,10 +30,20 @@ def runSimPY3(mirror, amqpAgent):
         for name in mirror.sysPowerPlants:
             ltd.systemAgents.PowerPlantAgent(mirror, name, mirror.sysPowerPlants[name])
 
-    # Create Timers
+    # Create any defined Balancing Authorities
+    if hasattr(mirror, 'sysBA'):
+        for name in mirror.sysBA:
+            if mirror.sysBA[name]['Type'] == 'TLB':
+                ltd.BAAgents.TLB(mirror, name, mirror.sysBA[name])
+        # Add BAs to Log
+        mirror.Log += mirror.BA
+
+    # Create Timers # NOTE: more of a debug than a useful thing -> Timers will be created by DTC
+    """
     if hasattr(mirror, 'TimerInput'):
         for timer in mirror.TimerInput:
             ltd.systemAgents.TimerAgent(mir,timer, mirror.TimerInput[timer]) 
+    """
 
     print("\n*** Starting Simulation (PY3)")
     sim_start = time.time()
@@ -79,6 +90,8 @@ def runSimPY3(mirror, amqpAgent):
             area.calcICerror()
 
         # Calculate ACE (BA step)
+        for ba in mirror.BA:
+            ba.step()
 
         # Step Timers (should probably happen when Time is stepped [below...])
 
@@ -164,8 +177,8 @@ def runSimPY3(mirror, amqpAgent):
             mirror.Timer[timerName].step()
 
         # step log of Agents with ability
-        for agentX in mirror.Log:
-            agentX.logStep()
+        for agent in mirror.Log:
+            agent.logStep()
 
         # step time and data point
         mirror.r_t[mirror.cv['dp']] = mirror.cv['t']
