@@ -17,17 +17,75 @@ mir = ltd.data.readMirror(mirLoc)
 
 xend = max(mir.r_t)
 
+# Plot controlled machines Pref and Pm
+for BA in mir.BA:
+    fig, ax = plt.subplots()
+    for gen in BA.ctrlMachines:
+        ax.plot(mir.r_t, gen.r_Pref,linestyle = '--',
+                label = 'Pref '+str(gen.Busnum)+' '+gen.Id  )
+        ax.plot(mir.r_t, gen.r_Pm,linestyle = '-',
+                label = 'Pm  '+str(gen.Busnum)+' '+gen.Id  )
+
+    ax.set_title('Area '+str(gen.Area)+ ' Controlled Machines Pref and Pm')
+    ax.set_xlim(0,xend)
+    ax.set_ylabel('MW')
+    ax.set_xlabel('Time [sec]')
+    ax.legend(loc=5)
+    ax.grid(True)
+    fig.set_dpi(150)
+    fig.set_size_inches(7.5, 2.5)
+    fig.tight_layout()
+    plt.show()
+    plt.pause(0.00001) # required for true non-blocking print...
+
+#Plot Interchange Error and ACE on same plot
+fig, ax = plt.subplots()
+ax.plot(mir.r_t, mir.BA[0].r_ACE, 
+        label= 'ACE')
+ax.plot(mir.r_t, mir.BA[0].Area.r_ICerror, 
+        linestyle='--',
+        label= 'IC Error')
+ax.set_title('Area 1 ACE and Interchange Error')
+ax.set_xlim(0,xend)
+ax.set_ylabel('MW')
+ax.set_xlabel('Time [sec]')
+ax.legend(loc=5)
+ax.grid(True)
+fig.set_dpi(150)
+fig.set_size_inches(7.5, 2.5)
+fig.tight_layout()
+plt.show()
+plt.pause(0.00001)
+
+#Plot System Frequency
+fig, ax = plt.subplots()
+fig.set_size_inches(6, 2)
+ax.plot(mir.r_t, np.array(mir.r_f)*60.0)
+ax.set_title('System Frequency')
+ax.set_ylabel('Hz')
+ax.set_xlabel('Time [sec]')
+ax.set_xlim(0,xend)
+#ax.legend()
+ax.grid(True)
+fig.set_dpi(150)
+fig.set_size_inches(7.5, 2.5)
+fig.tight_layout()
+plt.show()
+plt.pause(0.00001)
+
 print(mir)
-ltd.plot.sysLoad(mir, False)
-ltd.plot.sysVmVa(mir, False)
+#ltd.plot.sysLoad(mir, False)
+#ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
-ltd.plot.sysPLQF(mir, False)
-ltd.plot.sysPLQF(mir, False)
+#ltd.plot.sysPLQF(mir, False)
+#ltd.plot.sysPLQF(mir, False)
 
-ltd.plot.allPmDynamics(mir, False)
-ltd.plot.sysPQVF(mir, 1)
+#ltd.plot.allPmDynamics(mir, False)
+#ltd.plot.sysPQVF(mir, 1)
 
+
+# Plot ACE results
 
 """
 for gen in mir.Machines:
