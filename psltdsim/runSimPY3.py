@@ -92,6 +92,9 @@ def runSimPY3(mirror, amqpAgent):
         # Calculate ACE (BA step)
         for ba in mirror.BA:
             ba.step()
+        # Step any created AGC ramps
+        for AGCramp in mirror.AGCramp:
+            AGCramp.step()
 
         # Step Timers (should probably happen when Time is stepped [below...])
 
@@ -131,7 +134,7 @@ def runSimPY3(mirror, amqpAgent):
         mirror.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
         mirror.ss_Pert_Qdelta = 0.0 # intended for system loss calculations
 
-        # Step Perturbance Agents
+        # Step Perturbance Agents and AGC ramps
         for pertX in mirror.Perturbance:
             if pertX.step():
                 #if perturbance takes action, upday IPY

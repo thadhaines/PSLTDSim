@@ -30,12 +30,28 @@ class TLB(BA):
             # Distribute Ace
 
             for gen in self.ctrlMachines:
-                if gen.gov_model == False:
-                    # distribute Negative ACE to Pmech
-                    gen.cv['Pm'] -= ACE2dist*gen.ACEpFactor
-                else:
-                    # distribute Negative ACE % to Pref
-                    gen.cv['Pref'] -= ACE2dist*gen.ACEpFactor
+                if gen.distType.lower() == 'step':
+                    if gen.gov_model == False:
+                        # distribute Negative ACE to Pmech
+                        gen.cv['Pm'] -= ACE2dist*gen.ACEpFactor
+                    else:
+                        # distribute Negative ACE % to Pref
+                        gen.cv['Pref'] -= ACE2dist*gen.ACEpFactor
+
+                elif gen.distType.lower() == 'rampa':
+                    # Ramp value instead of step
+                    if gen.gov_model == False:
+                        # distribute Negative ACE to Pmech
+                        AGCramp = ltd.perturbance.RampAgent(self.mirror, 
+                                                            gen, ['Pm',self.mirror.cv['t'],
+                                                                  self.actTime, -ACE2dist*gen.ACEpFactor, 'rel'])
+                        self.mirror.AGCramp.append(AGCramp)
+                    else:
+                        # distribute Negative ACE % to Pref
+                        AGCramp = ltd.perturbance.RampAgent(self.mirror, 
+                                                            gen, ['Pref',self.mirror.cv['t'],
+                                                                  self.actTime, -ACE2dist*gen.ACEpFactor, 'rel'])
+                        self.mirror.AGCramp.append(AGCramp)
 
         else:
             self.cv['distStep'] = 0

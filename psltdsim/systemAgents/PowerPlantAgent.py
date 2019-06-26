@@ -18,6 +18,7 @@ class PowerPlantAgent(object):
             parsed = genStr.split(":")
             idStr = parsed[0].split()
             pFactor = float(parsed[1])
+            distType = parsed[2].strip()
             # Attempt to find mirror Agent
             foundAgent = ltd.find.findAgent(self.mirror ,idStr[0], idStr[1:] )
 
@@ -25,6 +26,7 @@ class PowerPlantAgent(object):
                 if self.mirror.debug:
                     print('Found', foundAgent)
                 agentRef = foundAgent
+                foundAgent.distType = distType
                 # Create dictionary Based on Participation Factor
                 if str(pFactor) in self.pDict:
                     # append dupe pFactor to previously made entry

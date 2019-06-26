@@ -99,7 +99,7 @@ batchList =[
 
 # Batch Run Parameters
 dispResults = False
-dispTiming = False
+dispTiming = True
 makePlot = True
 
 # Batch run counters

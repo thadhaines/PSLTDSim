@@ -14,53 +14,57 @@ mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
 mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA1F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
-
+ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
+#xend = 60
 
 # Plot controlled machines Pref and Pm
 for BA in mir.BA:
     fig, ax = plt.subplots()
     for gen in BA.ctrlMachines:
-        ax.plot(mir.r_t, gen.r_Pref,linestyle = '--',
-                label = 'Pref '+str(gen.Busnum)+' '+gen.Id  )
-        ax.plot(mir.r_t, gen.r_Pm,linestyle = '-',
+        ax.plot(mir.r_t, gen.r_Pm,linestyle = '-',linewidth=1,
                 label = 'Pm  '+str(gen.Busnum)+' '+gen.Id  )
+        ax.plot(mir.r_t, gen.r_Pref,linestyle = '--',linewidth=1.5,
+                label = 'Pref '+str(gen.Busnum)+' '+gen.Id  )
 
-    ax.set_title('Area '+str(gen.Area)+ ' Controlled Machines Pref and Pm')
+    ax.set_title('Area '+str(gen.Area)+ ' Controlled Machines Pm and Pref')
     ax.set_xlim(0,xend)
     ax.set_ylabel('MW')
     ax.set_xlabel('Time [sec]')
     ax.legend(loc=5)
     ax.grid(True)
     fig.set_dpi(150)
-    fig.set_size_inches(7.5, 2.5)
+    fig.set_size_inches(8, 2.5)
     fig.tight_layout()
-    plt.show()
+    plt.show(block=False)
     plt.pause(0.00001) # required for true non-blocking print...
 
 #Plot Interchange Error and ACE on same plot
 fig, ax = plt.subplots()
-ax.plot(mir.r_t, mir.BA[0].r_ACE, 
-        label= 'ACE')
-ax.plot(mir.r_t, mir.BA[0].Area.r_ICerror, 
-        linestyle='--',
-        label= 'IC Error')
-ax.set_title('Area 1 ACE and Interchange Error')
+for BA in mir.BA:
+    ax.plot(mir.r_t, BA.r_ACE, linewidth=1,
+            label= BA.name+' Calculated ACE')
+    ax.plot(mir.r_t, BA.r_ACEfilter, linewidth=1.25,linestyle=":",
+            label= BA.name+' Filtered ACE')
+    ax.plot(mir.r_t, BA.Area.r_ICerror, linewidth=1.5,
+            linestyle='--',
+            label= BA.name +' IC Error')
+ax.set_title('Balancing Authority ACE and Interchange Error')
 ax.set_xlim(0,xend)
 ax.set_ylabel('MW')
 ax.set_xlabel('Time [sec]')
 ax.legend(loc=5)
 ax.grid(True)
 fig.set_dpi(150)
-fig.set_size_inches(7.5, 2.5)
+fig.set_size_inches(8, 2.5)
 fig.tight_layout()
-plt.show()
+plt.show(block=False)
 plt.pause(0.00001)
 
 #Plot System Frequency
 fig, ax = plt.subplots()
 fig.set_size_inches(6, 2)
-ax.plot(mir.r_t, np.array(mir.r_f)*60.0)
+ax.plot(mir.r_t, np.array(mir.r_f)*60.0,linewidth=1,)
 ax.set_title('System Frequency')
 ax.set_ylabel('Hz')
 ax.set_xlabel('Time [sec]')
@@ -68,7 +72,7 @@ ax.set_xlim(0,xend)
 #ax.legend()
 ax.grid(True)
 fig.set_dpi(150)
-fig.set_size_inches(7.5, 2.5)
+fig.set_size_inches(8, 2.5)
 fig.tight_layout()
 plt.show()
 plt.pause(0.00001)

@@ -10,7 +10,7 @@ Step of load up 10%.
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 120.0,
+    'endTime': 1200.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,

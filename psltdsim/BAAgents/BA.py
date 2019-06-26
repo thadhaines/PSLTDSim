@@ -51,7 +51,6 @@ class BA(object):
             parsed = genStr.split(":")
             idStr = parsed[0].split()
             pFactor = float(parsed[1])
-            distType = parsed[2]
 
             # Attempt to find mirror Agent
             foundAgent = ltd.find.findAgent(self.mirror ,idStr[0], idStr[1:] )
@@ -59,8 +58,6 @@ class BA(object):
             if foundAgent:
                 if self.mirror.debug:
                     print('Found', foundAgent)
-                # attach dist type to gen agent
-                foundAgent.distType = distType
 
                 # Create dictionary Based on Participation Factor
                 if str(pFactor) in self.pDict:
@@ -84,6 +81,9 @@ class BA(object):
                                 print("*** Balanacing Authority Error: Duplicate Entry %s" % PPgen)
                 else:
                     # Found Agent Not a power plant
+                    # attach dist type to gen agent
+                    distType = parsed[2].strip()
+                    foundAgent.distType = distType
                     self.ctrlMachines.append(foundAgent)
                     if foundAgent.ACEpFactor == None:
                                 foundAgent.ACEpFactor = float(pFactor)
@@ -106,10 +106,22 @@ class BA(object):
 
         # TODO: Test for duplicate machines...
 
-        # Handle filter, only low pass ATM 06/26/19...
+        # Handle filter settings
         if self.BAdict['Filtering'] != None:
-            T1 = float(self.BAdict['Filtering'].split(":")[1])
-            self.filter = ltd.filterAgents.lowPassAgent(self.mirror,self,T1)
+
+            filterInput = self.BAdict['Filtering'].split(":")
+
+            if filterInput[0].lower().strip() == 'lowpass':
+                T1 = float(filterInput[1])
+                self.filter = ltd.filterAgents.lowPassAgent(self.mirror,self,T1)
+            elif filterInput[0].lower().strip() == 'integrator':
+                k = float(filterInput[1])
+                self.filter = ltd.filterAgents.integratorAgent(self.mirror,self,k)
+            elif filterInput[0].lower().strip() == 'pi':
+                params = filterInput[1].split()
+                k = float(params[0])
+                a = float(params[1])
+                self.filter = ltd.filterAgents.PIAgent(self.mirror,self,k,a)
         else:
             self.filter = None
 

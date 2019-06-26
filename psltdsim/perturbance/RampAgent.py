@@ -5,10 +5,10 @@ class RampAgent(object):
     Pm for non governed machines
     targetObj is a python mirror agent object reference
     perParams is a list: 
-    [targetAttr, tStart, RAtime, RAVal, holdTime, RBtime, RBVal]
+    [targetAttr, tStart, RAtime, RAVal, RAtype holdTime, RBtime, RBVal RBtype]
     """
 
-    def __init__(self, mirror, targetObj, tarType, perParams):
+    def __init__(self, mirror, targetObj, perParams):
         self.ProcessFlag = 1
 
         self.mirror = mirror

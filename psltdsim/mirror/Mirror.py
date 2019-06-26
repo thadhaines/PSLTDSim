@@ -88,6 +88,7 @@ class Mirror(object):
         self.Gens = []
         self.Load = []
         self.Perturbance = []
+        self.AGCramp = []
         self.PowerPlant =[]
         self.Shunt = []
         self.Slack = []

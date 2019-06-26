@@ -23,7 +23,7 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
 
     if (perType.lower() == 'ramp') and targetObj:
         # perParams = [targetAttr, tStart, RAtime, RAVal, holdTime, RBtime, RBVal]
-        newRampAgent = ltd.perturbance.RampAgent(mirror, targetObj, tarType, perParams)
+        newRampAgent = ltd.perturbance.RampAgent(mirror, targetObj, perParams)
         mirror.Perturbance.append(newRampAgent)
         print("*** Perturbance Agent added:")
         print(newRampAgent)
