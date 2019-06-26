@@ -200,9 +200,9 @@ def runSimPY3(mirror, amqpAgent):
         mirror.r_fdot.pop(len(mirror.r_fdot)-1)
 
         # Handle appeneded data in dynamic models
-        for dyn in mirror.Dynamics:
-            if dyn.appenedData:
-                dyn.popUnsetData(mirror.cv['dp'])
+        for agent in (mirror.Dynamics + mirror.Filter):
+            if agent.appenedData:
+                agent.popUnsetData(mirror.cv['dp'])
 
     if not mirror.sysCrash:
         PY3.send('toIPY',{'msgType' : 'endSim'})

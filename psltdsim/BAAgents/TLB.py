@@ -17,6 +17,13 @@ class TLB(BA):
         n = self.mirror.cv['dp']
         self.cv['ACEint'] += (self.cv['ACE']+self.r_ACE[n-1])/2.0*self.mirror.timeStep
 
+        # Deal with filtering
+        if self.filter != None:
+            self.cv['ACEfilter'] = self.filter.stepFilter(self.cv['ACE'])
+            ACE2dist = self.cv['ACEfilter']
+        else:
+            ACE2dist = self.cv['ACE']
+
         # Check if current time step is an action step
         if (self.mirror.cv['t'] % self.actTime) == 0:
             self.cv['distStep'] = 1
@@ -25,10 +32,10 @@ class TLB(BA):
             for gen in self.ctrlMachines:
                 if gen.gov_model == False:
                     # distribute Negative ACE to Pmech
-                    gen.cv['Pm'] -= self.cv['ACE']*gen.ACEpFactor
+                    gen.cv['Pm'] -= ACE2dist*gen.ACEpFactor
                 else:
                     # distribute Negative ACE % to Pref
-                    gen.cv['Pref'] -= self.cv['ACE']*gen.ACEpFactor
+                    gen.cv['Pref'] -= ACE2dist*gen.ACEpFactor
 
         else:
             self.cv['distStep'] = 0

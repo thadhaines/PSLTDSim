@@ -14,6 +14,7 @@ class BA(object):
         self.cv = {
             'ACE' : 0.0,
             'ACEint' :0.0,
+            'ACEfilter' : 0.0,
             'distStep' : 0,
             }
 
@@ -23,7 +24,7 @@ class BA(object):
             self.Area = testArea
             testArea.BA = self
 
-            # Handle setting B
+            # Handle setting Bias B
             bStr = BAdict['B'].split(":")
             bType = bStr[1].strip()
             if bType.lower() == 's':
@@ -105,6 +106,13 @@ class BA(object):
 
         # TODO: Test for duplicate machines...
 
+        # Handle filter, only low pass ATM 06/26/19...
+        if self.BAdict['Filtering'] != None:
+            T1 = float(self.BAdict['Filtering'].split(":")[1])
+            self.filter = ltd.filterAgents.lowPassAgent(self.mirror,self,T1)
+        else:
+            self.filter = None
+
         # Attach BA to mirror
         self.mirror.BA.append(self)
         self.mirror.BAdict[self.name] = self
@@ -115,6 +123,9 @@ class BA(object):
         self.r_ACEint = [0.0]*self.mirror.dataPoints
         self.r_distStep = [0.0]*self.mirror.dataPoints
 
+        if self.filter != None:
+            self.r_ACEfilter = [0.0]*self.mirror.dataPoints
+
     def logStep(self):
         """Step to record log history"""
         n = self.mirror.cv['dp']
@@ -122,8 +133,14 @@ class BA(object):
         self.r_ACEint[n] = self.cv['ACEint']
         self.r_distStep[n] = self.cv['distStep']
 
+        if self.filter != None:
+            self.r_ACEfilter[n] = self.cv['ACEfilter']
+
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
         self.r_ACE = self.r_ACE[:N]
         self.r_ACEint = self.r_ACEint[:N]
         self.r_distStep = self.r_distStep[:N]
+
+        if self.filter != None:
+            self.r_ACEfilter = self.r_ACEfilter[:N]

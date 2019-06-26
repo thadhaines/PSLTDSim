@@ -11,6 +11,7 @@ from . import terminal
 from . import amqp
 from . import parse
 from . import plot
+from . import filterAgents
 
 from .init_PSLF import init_PSLF
 

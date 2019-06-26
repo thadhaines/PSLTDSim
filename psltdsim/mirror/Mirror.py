@@ -93,6 +93,7 @@ class Mirror(object):
         self.Slack = []
         self.Timer ={}
         self.globalSlack = None
+        self.Filter = []
 
         # initial system solve
         try:

@@ -20,18 +20,18 @@ mirror.sysBA = {
     'BA1':{
         'Area':1,
         'B':" 1.0 : p", # MW/0.1 Hz
-        'ActionTime': 7.00,
+        'ActionTime': 5.00,
         'Type':'TLB', # Tie-Line Bias
-        'Filtering': None,
+        'Filtering': 'lowPass : 30.0',#None,
         'CtrlGens': ['plant pp1 : .60 : step',
                     'gen 1 : .40 : step']
         },
     'BA2':{
         'Area':2,
         'B':" 1.0 : p", # MW/0.1 Hz
-        'ActionTime': 7.00,
+        'ActionTime': 5.00,
         'Type':'TLB', # Tie-Line Bias
-        'Filtering': None,
+        'Filtering': 'lowPass : 30.0',
         'CtrlGens': ['plant pp2 : 1.0 : step']
         },
     }
