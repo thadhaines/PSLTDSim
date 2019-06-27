@@ -15,6 +15,7 @@ class BA(object):
             'ACE' : 0.0,
             'ACEint' :0.0,
             'ACEfilter' : 0.0,
+            'ACEdist' : 0.0,
             'distStep' : 0,
             }
 
@@ -133,6 +134,7 @@ class BA(object):
         """Initialize history values of mirror agent"""
         self.r_ACE = [0.0]*self.mirror.dataPoints
         self.r_ACEint = [0.0]*self.mirror.dataPoints
+        self.r_ACEdist = [0.0]*self.mirror.dataPoints
         self.r_distStep = [0.0]*self.mirror.dataPoints
 
         if self.filter != None:
@@ -143,6 +145,7 @@ class BA(object):
         n = self.mirror.cv['dp']
         self.r_ACE[n] = self.cv['ACE']
         self.r_ACEint[n] = self.cv['ACEint']
+        self.r_ACEdist[n] = self.cv['ACEdist']
         self.r_distStep[n] = self.cv['distStep']
 
         if self.filter != None:
@@ -152,6 +155,7 @@ class BA(object):
         """Erase data after N from non-converged cases"""
         self.r_ACE = self.r_ACE[:N]
         self.r_ACEint = self.r_ACEint[:N]
+        self.r_ACEdist = self.r_ACEdist[:N]
         self.r_distStep = self.r_distStep[:N]
 
         if self.filter != None:

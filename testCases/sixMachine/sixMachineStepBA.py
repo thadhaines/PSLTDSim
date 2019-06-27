@@ -4,13 +4,13 @@ AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
-Step of load up 10%. AGC using TLB 1
+Step of load up 10%.
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 1200.0,
+    'endTime': 120.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -22,7 +22,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\sixMachineStepBA\\", # relative path from cwd
-    'fileName' : 'SixMachineStepBA1',
+    'fileName' : 'SixMachineStepBA',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -31,4 +31,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachine.sav"
 dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd"]
-ltdPath = r".\testCases\sixMachine\sixMachineStepBA1.ltd.py"
+ltdPath = r".\testCases\sixMachine\sixMachineStepBA.ltd.py"

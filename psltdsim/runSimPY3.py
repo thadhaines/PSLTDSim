@@ -33,7 +33,8 @@ def runSimPY3(mirror, amqpAgent):
     # Create any defined Balancing Authorities
     if hasattr(mirror, 'sysBA'):
         for name in mirror.sysBA:
-            if mirror.sysBA[name]['Type'] == 'TLB':
+            BAtype = mirror.sysBA[name]['Type'].split(":")[0].strip()
+            if BAtype.lower() == 'tlb':
                 ltd.BAAgents.TLB(mirror, name, mirror.sysBA[name])
         # Add BAs to Log
         mirror.Log += mirror.BA
