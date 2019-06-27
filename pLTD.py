@@ -11,13 +11,13 @@ dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
 mirLoc = os.path.join(dirname, 'delme','kundurGenTrip2','kundurGenTrip22F.mir')
 mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
-mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA2F.mir')
+mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA3F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 #xend = 60
-
+caseName = mir.simParams['fileName'][:-1]
 # Plot controlled machines Pref and Pm
 for BA in mir.BA:
     fig, ax = plt.subplots()
@@ -34,9 +34,10 @@ for BA in mir.BA:
     ax.legend(loc=5)
     ax.grid(True)
     fig.set_dpi(150)
-    fig.set_size_inches(8, 2.5)
+    fig.set_size_inches(9, 2.5)
     fig.tight_layout()
     plt.show(block=False)
+    plt.savefig(caseName+BA.name+'.pdf', dpi=300)
     plt.pause(0.00001) # required for true non-blocking print...
 
 #Plot Interchange Error and ACE on same plot
@@ -57,9 +58,10 @@ ax.set_xlabel('Time [sec]')
 ax.legend(loc=5)
 ax.grid(True)
 fig.set_dpi(150)
-fig.set_size_inches(8, 2.5)
+fig.set_size_inches(9, 2.5)
 fig.tight_layout()
 plt.show(block=False)
+plt.savefig(caseName+'ACE'+'.pdf', dpi=300)
 plt.pause(0.00001)
 
 #Plot System Frequency
@@ -73,8 +75,9 @@ ax.set_xlim(0,xend)
 #ax.legend()
 ax.grid(True)
 fig.set_dpi(150)
-fig.set_size_inches(8, 2.5)
+fig.set_size_inches(9, 2.5)
 fig.tight_layout()
+plt.savefig(caseName+'Freq'+'.pdf', dpi=300)
 plt.show()
 plt.pause(0.00001)
 

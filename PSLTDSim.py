@@ -97,9 +97,10 @@ batchList =[
 
     # BA testing
     #r".\testCases\sixMachine\sixMachineStepBA.py",
-    r".\testCases\sixMachine\sixMachineStepBA0.py",
-    r".\testCases\sixMachine\sixMachineStepBA1.py",
-    r".\testCases\sixMachine\sixMachineStepBA2.py",
+    #r".\testCases\sixMachine\sixMachineStepBA0.py",
+    #r".\testCases\sixMachine\sixMachineStepBA1.py",
+    #r".\testCases\sixMachine\sixMachineStepBA2.py",
+    r".\testCases\sixMachine\sixMachineStepBA3.py",
             ]
 
 # Batch Run Parameters

@@ -23,7 +23,7 @@ mirror.sysBA = {
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
         'Filtering': 'PI : 0.1 0.0001',
-        'DeadZone' : None,
+        'Deadband' : None,
         'CtrlGens': ['plant pp1 : .60 ',
                     'gen 1 : .40 : rampA']
         },
@@ -33,7 +33,7 @@ mirror.sysBA = {
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
         'Filtering': 'PI : 0.1 0.0001',
-        'DeadZone' : None,
+        'Deadband' : None,
         'CtrlGens': ['plant pp2 : 1.0 ']
         },
     }
