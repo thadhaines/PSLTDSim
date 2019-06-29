@@ -1,6 +1,6 @@
 %%  PSDS_LTD_validator.m
 %   Thad Haines         Research
-%   Program Purpose:    Validate LTD simulations of various time steps to
+%   Program Purpose:    V6alidate LTD simulations of various time steps to
 %                       results generated from PSDS. PDSS results are in a
 %                       .chf file and have one fmeta and vmeta that
 %                       captures data from all areas.

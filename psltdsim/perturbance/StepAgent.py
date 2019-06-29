@@ -42,7 +42,9 @@ class StepAgent(object):
         tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "Stepping %s on Bus %d at time %.2f to %.2f %s" %(
+        tag2 = "Stepping %s %s %s on Bus %d at time %.2f to %.2f %s" %(
+            self.tarType,
+            self.mObj.Id,
             self.attr,
             self.mObj.Bus.Extnum,
             self.tStart,
@@ -86,6 +88,7 @@ class StepAgent(object):
                         # handle initial pm values....
                         # add inertial to system
                         self.mirror.ss_H += self.mObj.H
+                        self.mirror.Hsys += self.mObj.H
 
                     elif (self.pertVal == 0) and (self.mObj.cv['St'] ==1):
                         self.mObj.cv['St'] = 0
@@ -94,6 +97,7 @@ class StepAgent(object):
                         self.mObj.cv['Q'] = 0
                         #remove inertia from system
                         self.mirror.ss_H -= self.mObj.H
+                        self.mirror.Hsys -= self.mObj.H
                     else:
                         print("*** Perturbance Error: Status aready %d."
                               % self.pertVal)

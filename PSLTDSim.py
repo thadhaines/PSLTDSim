@@ -87,13 +87,19 @@ batchList =[
     #r".\testCases\kundur\kundurGenTrip22.py", #*
 
     # Six Machine
-    #r".\testCases\sixMachine\sixMachineStep1.py",
     #r".\testCases\sixMachine\sixMachineStep2.py",
     #r".\testCases\sixMachine\sixMachineStep3.py",
     #r".\testCases\sixMachine\sixMachineStep4.py",
     #r".\testCases\sixMachine\sixMachineRamp1.py",
     #r".\testCases\sixMachine\sixMachineRamp2.py",
     #r".\testCases\sixMachine\sixMachineRamp3.py",
+
+    # Six Machine Trips
+    #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
+    #r".\testCases\sixMachine\sixMachineTrip01.py", # Gen trip off/on
+    #r".\testCases\sixMachine\sixMachineTrip2.py", # Branch Tripping
+    #r".\testCases\sixMachine\sixMachineTrip1.py", # Gen 'trip' on - can't get PSLF to do the thing...
+
 
     # BA testing
     #r".\testCases\sixMachine\sixMachineStepBA.py",

@@ -15,21 +15,36 @@ clear; format compact; clc; close all;
 format long;
 
 % to Export pdfs.
-printFigs = 1;
-miniFlag = 1; % decrease plot width by half
+printFigs = 0;
+miniFlag = 0; % decrease plot width by half
 
 %% Knowns
 % % PSDSfileName = 'sixMachineStep1.chf'; % fast govs, default exciters
 % % LTDCaseName = 'SixMachineStep1';
 
-PSDSfileName = 'sixMachineStep2.chf'; % mixed govs, fast exciters
-LTDCaseName = 'SixMachineStep2'; % match PSLF 
+% PSDSfileName = 'sixMachineStep2.chf'; % mixed govs, fast exciters
+% LTDCaseName = 'SixMachineStep2'; % match PSLF 
 %LTDCaseName = 'SixMachineStep3'; % system H reduced by 15% 
 %LTDCaseName = 'SixMachineStep4'; % Account for Reff
 % 
 % PSDSfileName = 'sixMachineRamp1.chf'; % mixed govs, fast exciters
 % LTDCaseName = 'SixMachineRamp1';
+% 
+PSDSfileName = 'sixMachineGenTrip0.chf'; % mixed govs, fast exciters
+LTDCaseName = 'SixMachineTrip0'; % match PSLF 
+genChange = -90; % required for ss freq to be calculated
 
+% PSDSfileName = 'sixMachineGenTrip01.chf'; % mixed govs, fast exciters
+% LTDCaseName = 'SixMachineTrip01'; % match PSLF 
+% genChange = -0; % required for ss freq to be calculated
+
+% PSDSfileName = 'sixMachineGenTrip1.chf'; % mixed govs, fast exciters
+% LTDCaseName = 'SixMachineTrip1'; % match PSLF 
+% genChange = 90; % required for ss freq to be calculated
+% 
+% 
+PSDSfileName = 'sixMachineBranchTrip1.chf'; % mixed govs, fast exciters
+LTDCaseName = 'SixMachineTrip2'; % match PSLF 
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'F']};
 load(cases{1}) % 2 sec
@@ -42,12 +57,12 @@ psds_data = udread(PSDSfileName,[]);
 
 %% external Plot Functions
 compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-%compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag)
+compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag)
 compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-%comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-%comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-%compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-
+comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag)
+comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag)
+%compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, genChange)
+compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag) % doesn't handle changes in inertia
 %% Multi plot to compare other features
 %{
 compareWfreq(mir, psds_data)

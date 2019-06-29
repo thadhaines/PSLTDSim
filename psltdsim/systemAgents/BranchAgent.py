@@ -6,6 +6,7 @@ class BranchAgent(object):
         self.Area = area
 
         self.Ck = str(newBranch.Ck) # string
+        self.Id = self.Ck # used in __repr__
         self.ScanBus = int(newBranch.GetScanBusIndex()) #int <- use this to get PSLF objects
         self.Sec = int(newBranch.GetNsec())
 

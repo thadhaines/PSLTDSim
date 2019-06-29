@@ -16,6 +16,11 @@ mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA3F.mi
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
+printFigs = False
+#ltd.plot.sysPQVF(mir, 0)
+ltd.plot.sysPePmFLoad(mir, 1)
+
+"""
 #xend = 60
 caseName = mir.simParams['fileName'][:-1]
 # Plot controlled machines Pref and Pm
@@ -23,11 +28,11 @@ for BA in mir.BA:
     fig, ax = plt.subplots()
     for gen in BA.ctrlMachines:
         ax.plot(mir.r_t, gen.r_Pm,linestyle = '-',linewidth=1,
-                label = 'Pm  '+str(gen.Busnum)+' '+gen.Id  )
+                label = r'$P_m$  '+str(gen.Busnum)+' '+gen.Id  )
         ax.plot(mir.r_t, gen.r_Pref,linestyle = '--',linewidth=1.5,
-                label = 'Pref '+str(gen.Busnum)+' '+gen.Id  )
-
-    ax.set_title('Area '+str(gen.Area)+ ' Controlled Machines Pm and Pref')
+                label = r'$P_{ref}$ '+str(gen.Busnum)+' '+gen.Id  )
+        
+    ax.set_title(r'Area '+str(gen.Area)+ ' Controlled Machines $P_m$ and $P_{ref}$')
     ax.set_xlim(0,xend)
     ax.set_ylabel('MW')
     ax.set_xlabel('Time [sec]')
@@ -37,7 +42,7 @@ for BA in mir.BA:
     fig.set_size_inches(9, 2.5)
     fig.tight_layout()
     plt.show(block=False)
-    plt.savefig(caseName+BA.name+'.pdf', dpi=300)
+    if printFigs: plt.savefig(caseName+BA.name+'.pdf', dpi=300)
     plt.pause(0.00001) # required for true non-blocking print...
 
 #Plot Interchange Error and ACE on same plot
@@ -61,7 +66,7 @@ fig.set_dpi(150)
 fig.set_size_inches(9, 2.5)
 fig.tight_layout()
 plt.show(block=False)
-plt.savefig(caseName+'ACE'+'.pdf', dpi=300)
+if printFigs: plt.savefig(caseName+'ACE'+'.pdf', dpi=300)
 plt.pause(0.00001)
 
 #Plot System Frequency
@@ -77,10 +82,10 @@ ax.grid(True)
 fig.set_dpi(150)
 fig.set_size_inches(9, 2.5)
 fig.tight_layout()
-plt.savefig(caseName+'Freq'+'.pdf', dpi=300)
+if printFigs: plt.savefig(caseName+'Freq'+'.pdf', dpi=300)
 plt.show()
 plt.pause(0.00001)
-
+"""
 print(mir)
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysVmVa(mir, False)
@@ -90,7 +95,6 @@ print(mir)
 #ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.allPmDynamics(mir, False)
-#ltd.plot.sysPQVF(mir, 1)
 
 
 # Plot ACE results

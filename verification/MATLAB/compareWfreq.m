@@ -55,19 +55,23 @@ for area = 1:max(size(mir.areaN)) % for each area
         genSpd = psds_data.Data(:,genFloc(1)).*(weight/Hsys/60);
         weightedF = weightedF + genSpd;
     end
-    for gen = 1:max(size(mir.(curArea).genBusN))
-        curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
+    uniueGens = unique(mir.(curArea).genBusN);
+    for gen = 1:max(size(uniueGens))
+        curGenBus = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
-        psdsName = [int2str(mir.(curArea).genBusN(gen)),':',mir.(curArea).(curGen).BusName];
-        weight = mir.(curArea).(curGen).G1.Hpu*mir.(curArea).(curGen).G1.Mbase;
-        a = jfind(psds_data, psdsName);
-        genFloc = intersect(a,f_col);
-        if size(genFloc,2) >1
-            disp('mulit intersections gen:')
-            disp(psdsName) % prints name with multi intersections
+        for GenId = 1:mir.(curArea).(curGenBus).Ngen
+            curGen = ['G',int2str(GenId)];
+            psdsName = [int2str(mir.(curArea).(curGenBus).BusNum),':',mir.(curArea).(curGenBus).BusName];
+            weight = mir.(curArea).(curGenBus).(curGen).Hpu*mir.(curArea).(curGenBus).(curGen).Mbase;
+            a = jfind(psds_data, psdsName);
+            genFloc = intersect(a,f_col);
+            if size(genFloc,2) >1
+                disp('mulit intersections gen:')
+                disp(psdsName) % prints name with multi intersections
+            end
+            genSpd = psds_data.Data(:,genFloc(1)).*(weight/Hsys/60);
+            weightedF = weightedF + genSpd;
         end
-        genSpd = psds_data.Data(:,genFloc(1)).*(weight/Hsys/60);
-        weightedF = weightedF + genSpd;
     end
     
 end

@@ -11,7 +11,7 @@ def sysPQVF(mirror, blkFlag=True):
     ax[0][0].set_title('Real Power Generated')
     for mach in mir.Machines:
         ax[0][0].plot(mir.r_t, mach.r_Pe, 
-                    marker = 10,
+                    #marker = 10,
                     fillstyle='none',
                     linestyle = ':',
                     label = 'Pe Gen '+ mach.Busnam)
@@ -21,7 +21,7 @@ def sysPQVF(mirror, blkFlag=True):
     ax[0][1].set_title('Reactive Power Generated')
     for mach in mir.Machines:
         ax[0][1].plot(mir.r_t, mach.r_Q, 
-                    marker = 10,
+                    #marker = 10,
                     fillstyle='none',
                     linestyle = ':',
                     label = 'Q Gen '+ mach.Busnam)
@@ -38,7 +38,7 @@ def sysPQVF(mirror, blkFlag=True):
     ax[1][1].set_title('Bus Voltage Magnitude')
     for bus in mir.Bus:
         ax[1][1].plot(mir.r_t, bus.r_Vm, 
-                    marker = 10,
+                    #marker = 10,
                     fillstyle='none',
                     linestyle = ':',
                     label = 'Bus '+ bus.Busnam)
@@ -47,8 +47,8 @@ def sysPQVF(mirror, blkFlag=True):
 
     ax[1][0].set_title('System Mean Frequency')
     ax[1][0].plot(mir.r_t, mir.r_f,
-            marker = '.',
-            linestyle = ':',
+            #marker = '.',
+            #linestyle = ':',
             label = r'System Frequency')
     ax[1][0].set_xlabel('Time [sec]')
     ax[1][0].set_ylabel('Frequency [PU]')
