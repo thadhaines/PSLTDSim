@@ -32,11 +32,7 @@ elif test_case == 5: # testing of ggov casting
 
 # List of simulation parameter .py files:
 batchList =[
-    # mini wecc tests
-    #r".\testCases\miniWECC\miniWECCstep0.py",
-    #r".\testCases\miniWECC\miniWECCstep1.py",
-    #r".\testCases\miniWECC\miniWECCstep2.py",
-    #r".\testCases\miniWECC\miniWECCstep3.py",
+    
 
     #r".\testCases\miniWECC\miniWECCcrash.py",
 
@@ -85,7 +81,8 @@ batchList =[
 
     # more complex gen trip off/on and ramp pm
     #r".\testCases\kundur\kundurGenTrip22.py", #*
-
+    
+    # All six machine simulations seem to work correctly
     # Six Machine
     #r".\testCases\sixMachine\sixMachineStep2.py",
     #r".\testCases\sixMachine\sixMachineStep3.py",
@@ -99,14 +96,19 @@ batchList =[
     #r".\testCases\sixMachine\sixMachineTrip01.py", # Gen trip off/on
     #r".\testCases\sixMachine\sixMachineTrip2.py", # Branch Tripping
     #r".\testCases\sixMachine\sixMachineTrip1.py", # Gen 'trip' on - can't get PSLF to do the thing...
-
-
-    # BA testing
+    
+    # six machine BA testing
     #r".\testCases\sixMachine\sixMachineStepBA.py",
     #r".\testCases\sixMachine\sixMachineStepBA0.py",
     #r".\testCases\sixMachine\sixMachineStepBA1.py",
     #r".\testCases\sixMachine\sixMachineStepBA2.py",
-    r".\testCases\sixMachine\sixMachineStepBA3.py",
+    #r".\testCases\sixMachine\sixMachineStepBA3.py",
+    
+    # mini wecc tests -> kinda works?
+    #r".\testCases\miniWECC\miniWECCstep0.py",
+    #r".\testCases\miniWECC\miniWECCstep1.py",
+    #r".\testCases\miniWECC\miniWECCstep2.py",
+    #r".\testCases\miniWECC\miniWECCstep3.py",
             ]
 
 # Batch Run Parameters

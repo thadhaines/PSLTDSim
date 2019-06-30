@@ -7,9 +7,9 @@ def sysPePmFLoad(mirror, blkFlag=True):
     name = "tab20"
     cmap = get_cmap(name)  # type: matplotlib.colors.ListedColormap
     colors = cmap.colors  # type: list
-    print(colors)
+    #print(colors)
     mir = mirror
-    xend = 200#max(mir.r_t)
+    xend = max(mir.r_t)
 
     fig, ax = plt.subplots(nrows=2, ncols=1,)
     for subfig in ax:

@@ -8,6 +8,7 @@
 %   History:
 %   05/06/19    14:44   init
 %   05/14/19    14:03   added automatic LTD timestep accounting
+%   06/29/19    19:56   revisit post R fix...
 
 %% init
 clear; format compact; clc; close all;
@@ -15,6 +16,7 @@ format long;
 
 %% Knowns
 LTDfileName = 'miniWECC_loadStep02F.mat'
+LTDfileName = 'miniWECCstep2F.mat'
 PSDSfileName = 'miniWECC_loadStep.chf'
 
 %% import LTD data
