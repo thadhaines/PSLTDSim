@@ -34,8 +34,11 @@ t = psds_data.Data(:,1); % PSDS time
 % funtion specific
 qg_col = jfind(psds_data, 'qg');
 
+
+
 %% Q Comparison
 figure('position',ppos)
+set(gca,'linestyleorder',{'-',':','-.','--',':x'})
 legNames = {};
 hold on
 for curCol=1:max(size(qg_col))
@@ -47,13 +50,16 @@ for curCol=1:max(size(qg_col))
         dupe = 0;
     end
     legNames{end+1} = ['PSDS ', temp{1}];
+    % downsample data for faster plots
+    dsData = psds_data.Data(:,qg_col(curCol));
+    dsRate = 240/8;
     if dupe == 1
-         plot(t, psds_data.Data(:,qg_col(curCol)),'--')
+         plot(t(1:dsRate:end), dsData(1:dsRate:end),'--')
     else
-        plot(t, psds_data.Data(:,qg_col(curCol)))
+        plot(t(1:dsRate:end), dsData(1:dsRate:end))
     end
 end
-%%
+%% LTD plotting
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
         fprintf('area %d\n',mir.areaN(area) )
@@ -85,7 +91,8 @@ uniueGens = unique(mir.(curArea).genBusN);
     
 end
 if makeLegend
-    legend(legNames)
+    %legend(legNames)
+    columnlegend(2, cellstr(legNames), 'location','eastoutside')
 end
 grid on
 if noCase ==1

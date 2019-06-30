@@ -94,7 +94,8 @@ batchList =[
     # Six Machine Trips
     #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
     #r".\testCases\sixMachine\sixMachineTrip01.py", # Gen trip off/on
-    #r".\testCases\sixMachine\sixMachineTrip2.py", # Branch Tripping
+    #r".\testCases\sixMachine\sixMachineBTrip0.py", # Branch Tripping off
+    #r".\testCases\sixMachine\sixMachineTrip2.py", # Branch Tripping off/on
     #r".\testCases\sixMachine\sixMachineTrip1.py", # Gen 'trip' on - can't get PSLF to do the thing...
     
     # six machine BA testing
@@ -104,15 +105,17 @@ batchList =[
     #r".\testCases\sixMachine\sixMachineStepBA2.py",
     #r".\testCases\sixMachine\sixMachineStepBA3.py",
     
-    # mini wecc tests -> kinda works?
+    # mini wecc tests?
     #r".\testCases\miniWECC\miniWECCstep0.py",
     #r".\testCases\miniWECC\miniWECCstep1.py",
     #r".\testCases\miniWECC\miniWECCstep2.py",
     #r".\testCases\miniWECC\miniWECCstep3.py",
+
+    r".\testCases\miniWECC\miniWECCgenTrip0.py",
             ]
 
 # Batch Run Parameters
-dispResults = False
+dispResults = True
 dispTiming = True
 makePlot = True
 

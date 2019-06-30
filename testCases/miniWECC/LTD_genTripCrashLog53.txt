@@ -1,0 +1,194 @@
+In IPY redirect...
+{'HandoffType': 'PY3toIPY', 'Pacc': -435.00000000001455, 'msgType': 'Handoff', 'Pert_Pdelta': 0.0}
+* PY3toIPY handoff
+prev P load: 105985.000000
+current P load: 105985.000000
+Pert delta : 0.000000   Pacc -435.000000
+expected: 0.000000       -435.000000
+Perturbance P delta Match
+Pacc Match
+*** LTD: Distributing -435.00 MW of Pacc, Iteration 1
+Beginning solution
+You can interrupt SOLN with <Cntl-c>
+
+It -P-error- --Bus-- ----Name---- --Kv-- area -Q-error- --Bus-- ----Name---- --Kv-- area
+   -delta-A- --Bus-- ----Name---- --Kv-- area -delta-V- --Bus-- ----Name---- --Kv-- area
+
+ 0    4.2633      53 SDG-GEN       20.00    1  -71.4250      49 SC-49        500.00    1
+     10.2709      55 SDG-55       110.00    1  0.104277     103 MNT-103      230.00    1
+
+ 1   -0.7020      54 SDG-54       500.00    1    1.9695      49 SC-49        500.00    1
+      4.7730      55 SDG-55       110.00    1  0.103712      55 SDG-55       110.00    1
+
+ 2    1.0767      55 SDG-55       110.00    1    0.1826      55 SDG-55       110.00    1
+     82.1392      55 SDG-55       110.00    1  1.748695      55 SDG-55       110.00    1
+
+ 3  101.3166      54 SDG-54       500.00    1   52.7344      55 SDG-55       110.00    1
+    278.2173      55 SDG-55       110.00    1  2.740665      53 SDG-GEN       20.00    1
+
+ 4 -193.2022      54 SDG-54       500.00    1  810.8662      55 SDG-55       110.00    1
+     42.3168      52 SC-52        230.00    1  0.547776      55 SDG-55       110.00    1
+
+ 5   52.6068      55 SDG-55       110.00    1  200.6331      55 SDG-55       110.00    1
+     65.1522      53 SDG-GEN       20.00    1  0.563170      55 SDG-55       110.00    1
+
+ 6   30.9338      55 SDG-55       110.00    1   49.5185      55 SDG-55       110.00    1
+    149.7914      54 SDG-54       500.00    1  0.870878      54 SDG-54       500.00    1
+
+ 7   33.0169      55 SDG-55       110.00    1  -65.0312      57 LASVEGAS     500.00    1
+   2880.5991      55 SDG-55       110.00    1 18.117615      54 SDG-54       500.00    1
+
+ 8  245.0757      54 SDG-54       500.00    1  223.9316      54 SDG-54       500.00    1
+     70.2058      55 SDG-55       110.00    1  0.378723      54 SDG-54       500.00    1
+
+ 9   64.5537      54 SDG-54       500.00    1   60.4908      54 SDG-54       500.00    1
+     93.5233      55 SDG-55       110.00    1  0.094997      53 SDG-GEN       20.00    1
+
+It -P-error- --Bus-- ----Name---- --Kv-- area -Q-error- --Bus-- ----Name---- --Kv-- area
+   -delta-A- --Bus-- ----Name---- --Kv-- area -delta-V- --Bus-- ----Name---- --Kv-- area
+
+10   24.3688      55 SDG-55       110.00    1   17.0381      55 SDG-55       110.00    1
+     59.4342      54 SDG-54       500.00    1  0.417368      55 SDG-55       110.00    1
+
+11   17.5804      55 SDG-55       110.00    1    7.8905      61 PV-61        500.00    1
+     42.2959      55 SDG-55       110.00    1  0.901168      55 SDG-55       110.00    1
+
+12   22.0870      55 SDG-55       110.00    1   73.4881      63 PHX-63       500.00    1
+     16.0814      55 SDG-55       110.00    1  0.148651      55 SDG-55       110.00    1
+
+13   -4.5591      55 SDG-55       110.00    1   17.7221      63 PHX-63       500.00    1
+     10.5828      55 SDG-55       110.00    1  0.121005      55 SDG-55       110.00    1
+
+14    3.0140      55 SDG-55       110.00    1    3.0016      63 PHX-63       500.00    1
+      5.5029      55 SDG-55       110.00    1  0.130526      55 SDG-55       110.00    1
+
+15    0.8028      55 SDG-55       110.00    1    0.6315      52 SC-52        230.00    1
+     75.3235      55 SDG-55       110.00    1  1.607296      55 SDG-55       110.00    1
+
+16   67.6170      54 SDG-54       500.00    1   39.1311      55 SDG-55       110.00    1
+    266.4972      55 SDG-55       110.00    1  2.920609      53 SDG-GEN       20.00    1
+
+17 -133.4454      54 SDG-54       500.00    1  558.1630      55 SDG-55       110.00    1
+     56.1306      53 SDG-GEN       20.00    1  0.526573      55 SDG-55       110.00    1
+
+18   49.4588      55 SDG-55       110.00    1  138.0932      55 SDG-55       110.00    1
+    104.3050      54 SDG-54       500.00    1  0.705451      54 SDG-54       500.00    1
+
+19   32.3658      55 SDG-55       110.00    1   33.1036      55 SDG-55       110.00    1
+    452.8957      55 SDG-55       110.00    1  0.716826      55 SDG-55       110.00    1
+
+It -P-error- --Bus-- ----Name---- --Kv-- area -Q-error- --Bus-- ----Name---- --Kv-- area
+   -delta-A- --Bus-- ----Name---- --Kv-- area -delta-V- --Bus-- ----Name---- --Kv-- area
+
+20   38.0448      55 SDG-55       110.00    1   16.5559      52 SC-52        230.00    1
+    326.6619      54 SDG-54       500.00    1  4.108809      55 SDG-55       110.00    1
+
+21   66.6867      55 SDG-55       110.00    1  137.3597      54 SDG-54       500.00    1
+    149.7430      55 SDG-55       110.00    1  1.326245      55 SDG-55       110.00    1
+
+22  118.4120     112 SC-112       110.00    1   47.3383      54 SDG-54       500.00    1
+    102.6142      55 SDG-55       110.00    1  5.550318      55 SDG-55       110.00    1
+
+23   28.1265      55 SDG-55       110.00    1  118.6632      57 LASVEGAS     500.00    1
+   1342.8722      55 SDG-55       110.00    1  5.420668      53 SDG-GEN       20.00    1
+
+24   35.9450      55 SDG-55       110.00    1   60.8100      52 SC-52        230.00    1
+    632.1847      54 SDG-54       500.00    1  4.213779      53 SDG-GEN       20.00    1
+
+25 -312.4132      54 SDG-54       500.00    1  341.8130      55 SDG-55       110.00    1
+     92.0843      52 SC-52        230.00    1  0.717109      54 SDG-54       500.00    1
+
+WARNING: SOLUTION stopped due to maximum number of iterations or CONTROL-C hit
+
+Stopped after  26 iterations
+Estimated solution error     31241.3203 MW,        34181.3047 MVAR
+at buses                  54 SDG-54       500.00      55 SDG-55       110.00 Power Flow Solution returns: -2
+expected: 478.86        actual: 883.03  error: -404.16
+*** LTD: Distributing -404.16 MW of Pacc, Iteration 2
+Beginning solution
+You can interrupt SOLN with <Cntl-c>
+
+Initial voltage magnitude [  0.49] at bus     55 outside of range [0.5, 2.0] p.u
+  Resetting it to schedule value of [  1.00]
+
+Initial voltage magnitude [  0.17] at bus     54 outside of range [0.5, 2.0] p.u
+  Resetting it to schedule value of [  1.00]
+
+Initial voltage magnitude [  0.29] at bus     53 outside of range [0.5, 2.0] p.u
+  Resetting it to schedule value of [  1.02]
+
+It -P-error- --Bus-- ----Name---- --Kv-- area -Q-error- --Bus-- ----Name---- --Kv-- area
+   -delta-A- --Bus-- ----Name---- --Kv-- area -delta-V- --Bus-- ----Name---- --Kv-- area
+
+ 0  -53.9367      49 SC-49        500.00    1 -347.7013      49 SC-49        500.00    1
+    232.9004      55 SDG-55       110.00    1  4.540574      54 SDG-54       500.00    1
+
+Excessive mismatch, aborting iteration
+
+ 1 -1029.5880      55 SDG-55       110.00    1 -170.3492      53 SDG-GEN       20.00    1
+    232.9004      55 SDG-55       110.00    1  4.540574      54 SDG-54       500.00    1
+Stopped on divergence check, CASE NOT SOLVED
+Stopped on divergence check, CASE NOT SOLVED
+Power Flow Solution returns: -1
+*** Error Caught, Simulation Stopping...
+*** PSLF power flow solution did not converge.
+23:57:33.184000 IPY Sending      '{"msgType": "SysCrash"}'
+In PY3 redirect...
+{'msgType': 'SysCrash'}
+_______________________
+    Simulation Complete
+
+*** runSimPY3 end
+*** Mirror object saved to binary:
+*** 'C:\Users\heyth\source\repos\thadhaines\PSLTDSim\delme\miniWECCtrip\miniWECCgenTrip053F.mir'
+*** Exporting MATLAB .mat to:
+*** C:\Users\heyth\source\repos\thadhaines\PSLTDSim\delme\miniWECCtrip\miniWECCgenTrip053F
+_______________________
+   Data Export Complete
+*** psltdsim.terminal.dispSimResults(mirror)
+         ____           _____            ____         _______           _____        ________        ________
+         Time           Pload            Pacc         PaccDot           Sys f        Sys fDot        Slack Pe
+     0.000000   105985.000000       -0.000000        0.000000        1.000000        0.000000      460.383360
+     1.000000   105985.000000       -0.000000        0.000000        1.000000       -0.000000      460.383360
+End of simulation data.
+
+
+*** psltdsim.terminal.dispSimTandC(mirror)
+*** File name: miniWECCgenTrip053F
+
+Simulation Timings
+      Total Simulation Time:     0.981457
+           PY3 IVP CPU Time:     0.001994
+      PY3 Dynamics CPU Time:     0.062866
+      PY3 Message Send Time:     0.018921
+        PY3 Agent Find Time:     0.003988
+        IPY Agent Find Time:     0.002991
+          IPY distPacc Time:     0.006920
+      IPY PSLF Get/Set Time:     0.067818
+      IPY Message Make Time:     0.011978
+      IPY Message Send Time:     0.264275
+         Uncounted PY3 Time:     0.005983
+         Uncounted IPY Time:     0.363060
+       PSLF Power-Flow Time:     0.177643
+Simulation Counters
+          Sent PY3 Messages:           37
+          Sent IPY Messages:           12
+      PY3 Dynamic Solutions:          126
+       Power-Flow Solutions:            3
+Simulation Summary
+          Real time Speedup:     1.018893
+          Ave. PY3 msg send:     0.000511
+     PY3 Message Group Size:            3
+          Ave. IPY msg send:     0.022023
+     IPY Message Group Size:           60
+    Ave. Dynamic Soln. Time:     0.000499
+        Ave Power-Flow Time:     0.059214
+       Ave. P-F / Time Step:     1.500000
+       Mirror Creation Time:     0.503746
+             Simulated Time:     1.000000
+       Simulation Time Step:     1.000000
+
+*** Successfully ran 1/1 Test Cases in 4.96 seconds.
+
+*** Crashed Test Cases:
+.\testCases\miniWECC\miniWECCgenTrip0.py

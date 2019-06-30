@@ -30,5 +30,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
-dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
+dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECCLTD3.dyd"]
 ltdPath = r".\testCases\miniWECC\miniWECCStep.ltd.py"

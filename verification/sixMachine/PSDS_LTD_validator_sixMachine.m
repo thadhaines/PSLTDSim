@@ -30,21 +30,24 @@ miniFlag = 0; % decrease plot width by half
 % PSDSfileName = 'sixMachineRamp1.chf'; % mixed govs, fast exciters
 % LTDCaseName = 'SixMachineRamp1';
 % 
-PSDSfileName = 'sixMachineGenTrip0.chf'; % mixed govs, fast exciters
-LTDCaseName = 'SixMachineTrip0'; % match PSLF 
-genChange = -90; % required for ss freq to be calculated
+% PSDSfileName = 'sixMachineGenTrip0.chf'; % Single gen trip off
+% LTDCaseName = 'SixMachineTrip0';  
+% genChange = -90; % required for ss freq to be calculated _> Use trip plot function
 
-% PSDSfileName = 'sixMachineGenTrip01.chf'; % mixed govs, fast exciters
-% LTDCaseName = 'SixMachineTrip01'; % match PSLF 
-% genChange = -0; % required for ss freq to be calculated
+% PSDSfileName = 'sixMachineGenTrip01.chf'; % Single gen trip off/on -> PSDS goes unstable
+% LTDCaseName = 'SixMachineTrip01';  
+% genChange = -0; % required for ss freq to be calculated _> Use trip plot function
 
-% PSDSfileName = 'sixMachineGenTrip1.chf'; % mixed govs, fast exciters
-% LTDCaseName = 'SixMachineTrip1'; % match PSLF 
-% genChange = 90; % required for ss freq to be calculated
+% PSDSfileName = 'sixMachineGenTrip1.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
+% LTDCaseName = 'SixMachineTrip1';  
+% genChange = 90; % required for ss freq to be calculated _> Use trip plot function
 % 
 % 
-PSDSfileName = 'sixMachineBranchTrip1.chf'; % mixed govs, fast exciters
-LTDCaseName = 'SixMachineTrip2'; % match PSLF 
+PSDSfileName = 'sixMachineBranchTrip0.chf'; % trip two lines off
+LTDCaseName = 'SixMachineBTrip0'; % match PSLF 
+
+% PSDSfileName = 'sixMachineBranchTrip1.chf'; % trip two lines off, one on
+% LTDCaseName = 'SixMachineTrip2'; % match PSLF 
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'F']};
 load(cases{1}) % 2 sec

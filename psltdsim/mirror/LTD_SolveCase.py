@@ -24,5 +24,5 @@ def LTD_SolveCase(mirror=None):
 
     if errorCode == -1:
         '''Solution did not converge'''
-        raise ValueError('PSLF power flow solution did not converge.')
+        raise ValueError('*** PSLF power flow solution did not converge.')
         return
