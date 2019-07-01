@@ -11,16 +11,16 @@ dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
 mirLoc = os.path.join(dirname, 'delme','kundurGenTrip2','kundurGenTrip22F.mir')
 mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
-mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA3F.mir')
+mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA1F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 printFigs = False
 #ltd.plot.sysPQVF(mir, 0)
-ltd.plot.sysPePmFLoad(mir, 1)
+#ltd.plot.sysPePmFLoad(mir, 1)
 
-"""
+
 #xend = 60
 caseName = mir.simParams['fileName'][:-1]
 # Plot controlled machines Pref and Pm
@@ -49,10 +49,10 @@ for BA in mir.BA:
 fig, ax = plt.subplots()
 for BA in mir.BA:
     ax.plot(mir.r_t, BA.r_ACE, linewidth=1,
-            label= BA.name+' Calculated ACE')
+            label= BA.name+' ACE')
     if BA.filter != None:
         ax.plot(mir.r_t, BA.r_ACEfilter, linewidth=1.25,linestyle=":",
-                label= BA.name+' Filtered ACE')
+                label= BA.name+' SACE')
     ax.plot(mir.r_t, BA.Area.r_ICerror, linewidth=1.5,
             linestyle='--',
             label= BA.name +' IC Error')
@@ -85,7 +85,7 @@ fig.tight_layout()
 if printFigs: plt.savefig(caseName+'Freq'+'.pdf', dpi=300)
 plt.show()
 plt.pause(0.00001)
-"""
+
 print(mir)
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysVmVa(mir, False)
