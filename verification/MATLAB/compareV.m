@@ -33,6 +33,12 @@ t = psds_data.Data(:,1); % PSDS time
 
 % funtion specific
 v_col = jfind(psds_data, 'vmeta');
+ds = varargin{4};
+tds = dsmple(t,ds);
+
+if max(size(v_col)) > 20
+    makeLegend = 0;
+end
 
 %% Voltage Comparison
 figure('position',ppos)
@@ -40,7 +46,9 @@ legNames = {};
 
 hold on
 for bv=1:max(size(v_col))
-    plot(t, psds_data.Data(:,v_col(bv)))
+    
+    dsData = dsmple(psds_data.Data(:,v_col(bv)),ds);
+    plot(tds, dsData)
     temp = strsplit(psds_data.Description{v_col(bv)});
     legNames{end+1} = ['PSDS ', temp{1}];
 end

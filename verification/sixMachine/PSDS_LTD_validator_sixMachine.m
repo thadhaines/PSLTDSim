@@ -15,7 +15,7 @@ clear; format compact; clc; close all;
 format long;
 
 % to Export pdfs.
-printFigs = 0;
+printFigs = 1;
 miniFlag = 0; % decrease plot width by half
 
 %% Knowns
@@ -29,10 +29,11 @@ miniFlag = 0; % decrease plot width by half
 % 
 % PSDSfileName = 'sixMachineRamp1.chf'; % mixed govs, fast exciters
 % LTDCaseName = 'SixMachineRamp1';
-% 
-PSDSfileName = 'sixMachineGenTrip0.chf'; % Single gen trip off
-LTDCaseName = 'SixMachineTrip0';  
-genChange = -90; % required for ss freq to be calculated _> Use trip plot function
+
+% PSDSfileName = 'sixMachineGenTrip0.chf'; % Single gen trip off
+% LTDCaseName = 'SixMachineTrip0';  
+% genChange = -90; % required for ss freq to be calculated _> Use trip plot function
+
 
 % PSDSfileName = 'sixMachineGenTrip01.chf'; % Single gen trip off/on -> PSDS goes unstable
 % LTDCaseName = 'SixMachineTrip01';  
@@ -43,30 +44,34 @@ genChange = -90; % required for ss freq to be calculated _> Use trip plot functi
 % genChange = 90; % required for ss freq to be calculated _> Use trip plot function
 % 
 % 
-% PSDSfileName = 'sixMachineBranchTrip0.chf'; % trip two lines off
-% LTDCaseName = 'SixMachineBTrip0'; % match PSLF 
+PSDSfileName = 'sixMachineBranchTrip0.chf'; % trip two lines off
+LTDCaseName = 'SixMachineBTrip0'; % match PSLF 
+genChange = 0;
 
 % PSDSfileName = 'sixMachineBranchTrip1.chf'; % trip two lines off, one on
 % LTDCaseName = 'SixMachineTrip2'; % match PSLF 
+% genChange = 0;
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'F']};
 load(cases{1}) % 2 sec
 mir = eval(cases{1});
 clear eval(cases{1})
 
+
+fAdj = 0;
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 ds = 10;
 
 %% external Plot Functions
-compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag)
+%compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
-%compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag) % doesn't handle changes in inertia
+compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
 %% Multi plot to compare other features
 %{
 compareWfreq(mir, psds_data)

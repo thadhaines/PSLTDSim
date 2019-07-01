@@ -33,12 +33,13 @@ t = psds_data.Data(:,1); % PSDS time
 
 % funtion specific
 qg_col = jfind(psds_data, 'qg');
-
-
+ds = varargin{4};
+tds = dsmple(t,ds);
+dLeg = false;
 
 %% Q Comparison
 figure('position',ppos)
-set(gca,'linestyleorder',{'-',':','-.','--',':x'})
+set(gca,'linestyleorder',{'-',':.','-.','--',':x'})
 legNames = {};
 hold on
 for curCol=1:max(size(qg_col))
@@ -51,12 +52,12 @@ for curCol=1:max(size(qg_col))
     end
     legNames{end+1} = ['PSDS ', temp{1}];
     % downsample data for faster plots
-    dsData = psds_data.Data(:,qg_col(curCol));
-    dsRate = 240/8;
+    dsData = dsmple(psds_data.Data(:,qg_col(curCol)),ds);
+    
     if dupe == 1
-         plot(t(1:dsRate:end), dsData(1:dsRate:end),'--')
+         plot(tds, dsData,'--')
     else
-        plot(t(1:dsRate:end), dsData(1:dsRate:end))
+        plot(tds, dsData)
     end
 end
 %% LTD plotting
@@ -90,9 +91,18 @@ uniueGens = unique(mir.(curArea).genBusN);
     end
     
 end
-if makeLegend
-    %legend(legNames)
-    columnlegend(2, cellstr(legNames), 'location','eastoutside')
+if dLeg
+    if dColLeg
+        if max(size(legNames)) > 15
+            loc = 'eastoutside'
+        else
+            loc = 'best'
+        end
+        leg = columnlegend(2, cellstr(legNames), 'location',loc);
+        set(leg,'FontSize',bfz)
+    end
+else
+        legend(legNames)
 end
 grid on
 if noCase ==1

@@ -3,7 +3,7 @@ function [  ] = compareWfreq( mir, psds_data, varargin )
 %   optional inputs: case name, print figs, figure size
 %   PSDS angles need to have the reference subtracted from them to be centered
 %   around 0
-
+fAdj = 0;%(300*6.5)/mir.Hsys; % ghetto fix to created gen trip plots
 % Handle optional inputs
 if nargin == 2
     printFigs = 0;
@@ -33,9 +33,12 @@ t = psds_data.Data(:,1); % PSDS time
 
 % funtion specific 
 f_col = jfind(psds_data, 'fbu');
+
+ds = varargin{4}
+fAdj = varargin{5}
 %% Calculate weighted freq
 Hsys = mir.Hss;
-weightedF = zeros(size(psds_data.Data(:,1),1),1);
+weightedF = zeros(size(psds_data.Data(:,1),1),1)-fAdj;
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
         fprintf('area %d\n',mir.areaN(area) )
@@ -84,7 +87,7 @@ end
 
 sbase = mir.Sbase;
 deltaP = mir.Pe(1)-mir.Pe(end); % load change
-
+%deltaP = -212
 deltaFpu = deltaP/sbase*(1/beta);
 ssPu = 1 + deltaFpu;
 ssF = ssPu*60;
@@ -94,7 +97,7 @@ ssF = ssPu*60;
 figure('position',ppos)
 
 hold on
-plot(t, weightedF*60,'color', [0 1 0],'linewidth',1.5)
+plot(dsmple(t,ds), dsmple(weightedF*60,ds) ,'color', [0 1 0],'linewidth',1.5)
 plot(mir.t, mir.f*60 , 'm-.','linewidth',2)
 line([mir.t(1) mir.t(end)],[ssF,ssF],'linestyle',':','color',[.3 0 .7],'linewidth',1)
 

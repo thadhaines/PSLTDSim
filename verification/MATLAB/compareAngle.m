@@ -33,12 +33,21 @@ t = psds_data.Data(:,1); % PSDS time
 
 % funtion specific
 ag_col = jfind(psds_data, 'abug');
+ds = varargin{4};
+tds = dsmple(t,ds);
 
+if max(size(ag_col)) > 20
+    makeLegend = 0;
+end
+
+%% 
 figure('position',ppos)
 legNames ={};
 hold on
 for curCol=1:max(size(ag_col))
-    plot(t, ( psds_data.Data(:,ag_col(curCol))- psds_data.Data(:,ag_col(1)) ) ./180.*pi , '.')
+    angleData = ( psds_data.Data(:,ag_col(curCol))- psds_data.Data(:,ag_col(1)) ) ./180.*pi;
+    
+    plot(tds, dsmple(angleData,ds),'.')
     temp = strsplit(psds_data.Description{ag_col(curCol)});
     legNames{end+1} = ['PSDS ', temp{1}];
 end
@@ -104,7 +113,7 @@ ylim([ymin*1.5,ymax*1.5])
 % pdf output code
 if printFigs
     set(gcf,'color','w'); % to remove border of figure
-    export_fig([LTDCaseName,'Angle'],'-png'); % to print fig
+    export_fig([LTDCaseName,'Angle'],'-pdf'); % to print fig
 end
 
 end

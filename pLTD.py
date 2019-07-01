@@ -11,12 +11,12 @@ dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
 mirLoc = os.path.join(dirname, 'delme','kundurGenTrip2','kundurGenTrip22F.mir')
 mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
-mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA1F.mir')
+mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA3F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
-printFigs = False
+printFigs = True
 #ltd.plot.sysPQVF(mir, 0)
 #ltd.plot.sysPePmFLoad(mir, 1)
 
