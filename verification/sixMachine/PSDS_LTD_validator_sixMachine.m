@@ -30,9 +30,9 @@ miniFlag = 0; % decrease plot width by half
 % PSDSfileName = 'sixMachineRamp1.chf'; % mixed govs, fast exciters
 % LTDCaseName = 'SixMachineRamp1';
 % 
-% PSDSfileName = 'sixMachineGenTrip0.chf'; % Single gen trip off
-% LTDCaseName = 'SixMachineTrip0';  
-% genChange = -90; % required for ss freq to be calculated _> Use trip plot function
+PSDSfileName = 'sixMachineGenTrip0.chf'; % Single gen trip off
+LTDCaseName = 'SixMachineTrip0';  
+genChange = -90; % required for ss freq to be calculated _> Use trip plot function
 
 % PSDSfileName = 'sixMachineGenTrip01.chf'; % Single gen trip off/on -> PSDS goes unstable
 % LTDCaseName = 'SixMachineTrip01';  
@@ -43,8 +43,8 @@ miniFlag = 0; % decrease plot width by half
 % genChange = 90; % required for ss freq to be calculated _> Use trip plot function
 % 
 % 
-PSDSfileName = 'sixMachineBranchTrip0.chf'; % trip two lines off
-LTDCaseName = 'SixMachineBTrip0'; % match PSLF 
+% PSDSfileName = 'sixMachineBranchTrip0.chf'; % trip two lines off
+% LTDCaseName = 'SixMachineBTrip0'; % match PSLF 
 
 % PSDSfileName = 'sixMachineBranchTrip1.chf'; % trip two lines off, one on
 % LTDCaseName = 'SixMachineTrip2'; % match PSLF 
@@ -57,6 +57,7 @@ clear eval(cases{1})
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
+ds = 10;
 
 %% external Plot Functions
 compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag)
@@ -64,8 +65,8 @@ compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag)
 compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag)
 comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag)
 comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag)
-%compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, genChange)
-compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag) % doesn't handle changes in inertia
+compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+%compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag) % doesn't handle changes in inertia
 %% Multi plot to compare other features
 %{
 compareWfreq(mir, psds_data)

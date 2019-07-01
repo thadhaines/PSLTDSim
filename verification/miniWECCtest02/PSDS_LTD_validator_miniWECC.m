@@ -23,10 +23,10 @@ miniFlag = 0; % decrease plot width by half
 %PSDSfileName = 'miniWECC_loadStep.chf'; % NO PSS, system goes unstable Voltages off - exciters only
 PSDSfileName = 'miniWECC_loadStepPSS.chf'; % With PSS, frq and powers ok, voltages off (exciters + PSS)...
 LTDCaseName = 'miniWECCstep1'; % match PSLF 
-
-PSDSfileName = 'miniWECC_genTrip0.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
-LTDCaseName = 'miniWECCgenTrip0';  
-genChange = -212; % required for ss freq to be calculated _> Use trip plot function - Doesn't match theoretical...
+% 
+% PSDSfileName = 'miniWECC_genTrip0.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
+% LTDCaseName = 'miniWECCgenTrip0';  
+% genChange = -212; % required for ss freq to be calculated _> Use trip plot function - Doesn't match theoretical...
 
 
 ds = 300; % number of samples to skip in PSDS data plots
@@ -47,5 +47,5 @@ compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
-%compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds) % doesn't handle changes in inertia
+%compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds) % doesn't handle changes in inertia
