@@ -57,16 +57,17 @@ figure('position',ppos)
 axes('ColorOrder',flipud(imcomplement(colormap(spring(max(size(f_col))))))) % to make mess of lines look nicer
 hold on
 
-plot(dsmple(t,ds), dsmple(psds_data.Data(:,f_col(1)),ds),'linewidth',1.5 ,'HandleVisibility','off') % first frequency
+plot(dsmple(t,ds), dsmple(psds_data.Data(:,f_col(1)),ds),'linewidth',1.5 )%,'HandleVisibility','off') % first frequency
 for freq=2:max(size(f_col)-1)
     plot(dsmple(t,ds), dsmple(psds_data.Data(:,f_col(freq)),ds) ,'HandleVisibility','off') % all others
 end
 plot(dsmple(t,ds), dsmple(psds_data.Data(:,f_col(size(f_col,2))), ds),'linewidth',1.5) % last Freq
 
+plot(mir.t, mir.f*60 , 'w','linewidth',1.5,'HandleVisibility','off')
 plot(mir.t, mir.f*60 , 'm-.','linewidth',2)
 line([mir.t(1) mir.t(end)],[ssF,ssF],'linestyle',':','color',[.3 0 .7],'linewidth',1)
 
-legend({'PSDS','LTD','Theoretical SS'},'location','southeast')
+legend({'PSDS','PSDS','LTD','Theoretical SS'},'location','southeast')
 xlim(x_lim)
 grid on
 if noCase ==1

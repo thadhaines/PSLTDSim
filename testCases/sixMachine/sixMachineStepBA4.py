@@ -10,7 +10,7 @@ Step of load up 10%. AGC using TLB 2, meet ten minute zero ace of NERC criterion
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 660.0,
+    'endTime': 720.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,

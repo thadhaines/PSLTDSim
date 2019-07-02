@@ -16,7 +16,7 @@ clear; format compact; clc; close all;
 format long;
 
 % to Export pdfs.
-printFigs = 0;
+printFigs = true;
 miniFlag = 0; % decrease plot width by half
 
 %% Knowns
@@ -27,7 +27,7 @@ miniFlag = 0; % decrease plot width by half
 % 
 PSDSfileName = 'miniWECC_genTrip0.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
 LTDCaseName = 'miniWECCgenTrip0';  
-genChange = -212; % required for ss freq to be calculated _> Use trip plot function - Doesn't match theoretical...
+genChange = -212.5; % required for ss freq to be calculated _> Use trip plot function - Doesn't match theoretical...
 
 
 ds = 30; % number of samples to skip in PSDS data plots
@@ -39,16 +39,18 @@ mir = eval(cases{1});
 clear eval(cases{1})
 
 fAdj = (300*6.5)/mir.Hsys;
+systemLossAdj = mir.Pe(1)-mir.Pe(end);
+genChange = genChange + systemLossAdj;
 
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 
 %% external Plot Functions
-compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
-compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds) % doesn't handle changes in inertia
+%compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia

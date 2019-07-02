@@ -87,7 +87,7 @@ end
 
 sbase = mir.Sbase;
 deltaP = mir.Pe(1)-mir.Pe(end); % load change
-%deltaP = -212
+%deltaP = -212.5 + deltaP % specific to miniWECC gen trip 0
 deltaFpu = deltaP/sbase*(1/beta);
 ssPu = 1 + deltaFpu;
 ssF = ssPu*60;
