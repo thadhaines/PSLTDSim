@@ -104,7 +104,7 @@ batchList =[
     #r".\testCases\sixMachine\sixMachineStepBA1.py",
     #r".\testCases\sixMachine\sixMachineStepBA2.py",
     #r".\testCases\sixMachine\sixMachineStepBA3.py",
-    r".\testCases\sixMachine\sixMachineStepBA4.py",
+    #r".\testCases\sixMachine\sixMachineStepBA4.py",
     
     # mini wecc tests?
     #r".\testCases\miniWECC\miniWECCstep0.py",
@@ -113,6 +113,9 @@ batchList =[
     #r".\testCases\miniWECC\miniWECCstep3.py",
 
     #r".\testCases\miniWECC\miniWECCgenTrip0.py",
+
+    # Multi Area miniWECC
+    r".\testCases\miniWECC3Area\miniWECC3A0.py",
             ]
 
 # Batch Run Parameters

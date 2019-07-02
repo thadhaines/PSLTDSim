@@ -67,7 +67,7 @@ ds = 10;
 %% external Plot Functions
 %compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)

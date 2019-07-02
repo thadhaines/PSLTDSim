@@ -40,12 +40,27 @@ if max(size(ag_col)) > 20
     makeLegend = 0;
 end
 
-%% 
+%% find slack name Area
+%cycle through areas until one has a slackbus
+for areaN =1:max(size(mir.areaN))
+    curArea = ['A',int2str(mir.areaN(areaN))]
+    if max(size(mir.(curArea).slackBusN)) > 0
+        slackNum = ['S',int2str(mir.(curArea).slackBusN)]
+        slackName = mir.(curArea).(slackNum).BusName
+    end % if area has slackBusN
+end % for each area in mirror
+    
+%% find where ameta and slack name intersect
+slackInt = intersect(ag_col,jfind(psds_data,slackName))
+
+
+slackAng = psds_data.Data(:,slackInt);
+%% plot
 figure('position',ppos)
 legNames ={};
 hold on
 for curCol=1:max(size(ag_col))
-    angleData = ( psds_data.Data(:,ag_col(curCol))- psds_data.Data(:,ag_col(1)) ) ./180.*pi;
+    angleData = ( psds_data.Data(:,ag_col(curCol))- slackAng ) ./180.*pi;
     
     plot(tds, dsmple(angleData,ds),'.')
     temp = strsplit(psds_data.Description{ag_col(curCol)});

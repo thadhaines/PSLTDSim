@@ -35,16 +35,17 @@ t = psds_data.Data(:,1); % PSDS time
 v_col = jfind(psds_data, 'vmeta');
 ds = varargin{4};
 tds = dsmple(t,ds);
-
-if max(size(v_col)) > 20
-    makeLegend = 0;
-end
+dLeg = true;
+%if max(size(v_col)) > 20
+%    makeLegend = 0;
+%end
 
 %% Voltage Comparison
 figure('position',ppos)
 legNames = {};
 
 hold on
+set(gca,'linestyleorder',{'-', '-*', '-x', '-+', '-^', '-v', '--', '--*', '--x', '--+', '--^', '--v', ':', ':*', ':x', ':+', ':^', ':v'})
 for bv=1:max(size(v_col))
     
     dsData = dsmple(psds_data.Data(:,v_col(bv)),ds);
@@ -86,25 +87,37 @@ for area = 1:max(size(mir.areaN)) % for each area
             % remove number from unique
             uniqueEntry(uniqueEntry == mir.(curArea).loadBusN(load)) = [];
             curLoadbus = ['L',int2str(mir.(curArea).loadBusN(load))];
-            plot(mir.t, mir.(curArea).(curLoadbus).Vm,'x')
+            plot(mir.t, mir.(curArea).(curLoadbus).Vm,'o')
             name = [(curArea),'.',(curLoadbus)];
             legNames{end+1} = ['LTD ',name];
         end
     end
+
     uniqueEntry = unique(mir.(curArea).xBusN);
     for xbus = 1:max(size(mir.(curArea).xBusN))
         % remove number from unique
         if ismember(mir.(curArea).xBusN(xbus),uniqueEntry)
             uniqueEntry(uniqueEntry == mir.(curArea).xBusN(xbus)) = [];
             curXbus = ['x',int2str(mir.(curArea).xBusN(xbus))];
-            plot(mir.t, mir.(curArea).(curXbus).Vm,'s')
+            plot(mir.t, mir.(curArea).(curXbus).Vm,'o')
             name = [(curArea),'.',(curXbus)];
             legNames{end+1} = ['LTD ',name];
         end
     end
 end
 if makeLegend
+    if dLeg
+        if max(size(legNames)) > 15
+            loc = 'eastoutside';
+        else
+            loc = 'best';
+        end
+        
+        leg = columnlegend(2, cellstr(legNames), 'location',loc);
+        set(leg,'FontSize',bfz)
+    else
     legend(legNames)
+    end
     grid on
 end
 grid on
