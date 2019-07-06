@@ -87,6 +87,8 @@ batchList =[
     #r".\testCases\sixMachine\sixMachineStep2.py",
     #r".\testCases\sixMachine\sixMachineStep3.py",
     #r".\testCases\sixMachine\sixMachineStep4.py",
+    r".\testCases\sixMachine\sixMachineStep5.py", # step Pm of gov gen
+
     #r".\testCases\sixMachine\sixMachineRamp1.py",
     #r".\testCases\sixMachine\sixMachineRamp2.py",
     #r".\testCases\sixMachine\sixMachineRamp3.py",
@@ -115,7 +117,7 @@ batchList =[
     #r".\testCases\miniWECC\miniWECCgenTrip0.py",
 
     # Multi Area miniWECC
-    r".\testCases\miniWECC3Area\miniWECC3A0.py",
+    #r".\testCases\miniWECC3Area\miniWECC3A0.py",
             ]
 
 # Batch Run Parameters

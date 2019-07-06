@@ -139,3 +139,8 @@ class tgov1Agent():
         """Remove any appened init values from running values"""
         self.r_x1 = self.r_x1[:N]
         self.r_x2 = self.r_x2[:N]
+
+    def setState(self, newState):
+        """ When stepping Pm, states must be reset"""
+        self.x1[1] = newState
+        self.x2[1] = newState

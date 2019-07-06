@@ -138,6 +138,14 @@ class StepAgent(object):
                     else:
                         self.mObj.cv[self.attr] = self.pertVal # absolute step
 
+                    # Handle setting states if governed machine PM is stepped.
+                    # i.e. used to simulate dropping generation in controlled plant
+                    if self.attr == 'Pm' and hasattr(self.mObj, 'gov_model'):
+                        # Stepping mechanical power on generator
+                        if self.mObj.gov_model != False:
+                            # states must be adjusted  on 
+                            self.mObj.gov_model.setState(self.mObj.cv[self.attr])
+
                 self.ProcessFlag = 0
                 if self.mirror.debug:
                     # TODO: Make this output more informative
