@@ -14,6 +14,8 @@ mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
 
 mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA4F.mir')
 mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A0F.mir')
+mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A1F.mir')
+mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A2F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
@@ -94,10 +96,10 @@ print(mir)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, False)
-#ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.allPmDynamics(mir, False)
 
+#ltd.plot.sysPLQF(mir, True)
 
 # Plot ACE results
 

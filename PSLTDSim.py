@@ -23,17 +23,9 @@ print('Current Working Directory: %s' % os.getcwd())
 # workaround for interactive mode runs (Use as required)
 #os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
 #print(os.getcwd())
-"""
-elif test_case == 5: # testing of ggov casting
-    savPath = r"C:\LTD\pslf_systems\eele554\ggov1\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.ggov1.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.BigUpStep.ltd"]
-"""
 
 # List of simulation parameter .py files:
 batchList =[
-    
-
     #r".\testCases\miniWECC\miniWECCcrash.py",
 
     #r".\testCases\microWECC\microWECCstep.py",
@@ -87,7 +79,7 @@ batchList =[
     #r".\testCases\sixMachine\sixMachineStep2.py",
     #r".\testCases\sixMachine\sixMachineStep3.py",
     #r".\testCases\sixMachine\sixMachineStep4.py",
-    r".\testCases\sixMachine\sixMachineStep5.py", # step Pm of gov gen
+    #r".\testCases\sixMachine\sixMachineStep5.py", # step Pm of gov gen
 
     #r".\testCases\sixMachine\sixMachineRamp1.py",
     #r".\testCases\sixMachine\sixMachineRamp2.py",
@@ -114,14 +106,16 @@ batchList =[
     #r".\testCases\miniWECC\miniWECCstep2.py",
     #r".\testCases\miniWECC\miniWECCstep3.py",
 
-    #r".\testCases\miniWECC\miniWECCgenTrip0.py",
+    r".\testCases\miniWECC\miniWECCgenTrip0.py",
 
     # Multi Area miniWECC
-    #r".\testCases\miniWECC3Area\miniWECC3A0.py",
+    #r".\testCases\miniWECC3Area\miniWECC3A0.py", # simple step
+    #r".\testCases\miniWECC3Area\miniWECC3A1.py", # BA response, TLB type 2
+    #r".\testCases\miniWECC3Area\miniWECC3A2.py", # BA response, TLB type 0
             ]
 
 # Batch Run Parameters
-dispResults = True
+dispResults = False
 dispTiming = True
 makePlot = True
 

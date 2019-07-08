@@ -5,12 +5,12 @@ function [ devData ] = calcDeviation( t, mir, psdsData, LTDdata )
 
 LTDtNdx = 1;
 devData = zeros(size(psdsData));
-for pNdx=1:size(psdsData,1)
+for pNdx=1:max(max(size(psdsData)))
     
     nextNdx = LTDtNdx+1;
-    if nextNdx > max(size(LTDdata))
+    if nextNdx > max(max(size(LTDdata)))
         % avoid over adjusting
-        nextNdx = max(size(LTDdata));
+        nextNdx = max(max(size(LTDdata)));
     end
     
     

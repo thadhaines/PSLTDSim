@@ -4,6 +4,8 @@ def handoff(mirror,msg):
     hType = msg['HandoffType']
 
     if hType == 'PY3toIPY':
+        # Handle flat start flag
+        mirror.flatStart = msg['flatStart']
         # calc deltaP_pert and Pacc
         # Sum system loads to Account for any load changes from Perturbances
         mirror.prevPload = mirror.ss_Pload

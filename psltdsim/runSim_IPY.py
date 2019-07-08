@@ -29,6 +29,7 @@ def runSim_IPY(mirror, amqpAgent):
         # distPe loop thing (which is really distributes Pacc)
         try:
             ltd.mirror.distPacc(mirror, mirror.ss_Pacc )
+            mirror.flatStart = 0
         # Check for convergence
         except ValueError as e:
             # Catches error thown for non-convergene

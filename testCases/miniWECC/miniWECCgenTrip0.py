@@ -10,7 +10,7 @@ MiniWECC trip of colstrip (gen bus 32) at t=2,
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 180,    
+    'endTime': 90,    
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -22,7 +22,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\miniWECCtrip\\", # relative path from cwd
-    'fileName' : 'miniWECCgenTrip027',
+    'fileName' : 'miniWECCgenTrip032',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.

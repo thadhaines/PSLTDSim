@@ -92,14 +92,21 @@ dataNDX = intersect(pmCol, genCols)
 % genCols = jfind(psds_data, mir.A1.G27.BusName);
 % dataNDX = intersect(vmCol, genCols)
 
-
+x_lim= [0, 100];
 pData = psds_data.Data(:,dataNDX);
 t = psds_data.Data(:,1);
 figure
+subplot(2,1,1)
 stairs(mir.t, ltdData ,'-o')
 hold on
 plot(t, pData)
+grid on
+xlim(x_lim)
+legend({'LTD','PSDS'})
 
 cData = calcDeviation( t, mir, pData, ltdData );
-figure 
+subplot(2,1,2) 
 plot(t,cData)
+grid on
+xlim(x_lim)
+legend({'Deviation'})

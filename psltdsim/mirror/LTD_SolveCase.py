@@ -3,11 +3,17 @@ def LTD_SolveCase(mirror=None):
     Returns PSLF errorCode if available
     Only option not default is area interchange adjustment (turned off)
     """
+    if mirror == None:
+        flatStart = 0
+    else:
+        flatStart = mirror.flatStart
+        if mirror.debug: print('flat start = %d' % flatStart)
+
     soln_start = time.time()
     errorCode = PSLF.SolveCase(
         25, # maxIterations, Solpar.Itnrmx
         0, 	# iterationsBeforeVarLimits, Solpar.Itnrvl
-        0,	# flatStart, 
+        flatStart,	# flatStart, 
         1,	# tapAdjustment, Solpar.Tapadj
         1,	# switchedShuntAdjustment, Solpar.Swsadj
         1,	# phaseShifterAdjustment, Solpar.Psadj

@@ -66,10 +66,10 @@ class SlackAgent(GeneratorAgent):
     def logStep(self):
         """Step to record log history"""
         n = self.mirror.cv['dp']
-        self.r_Pe[n] = self.cv['Pe']
-        self.r_Pm[n] = self.cv['Pm']
+        self.r_Pe[n] = self.cv['Pe']* float(self.cv['St'])
+        self.r_Pm[n] = self.cv['Pm']* float(self.cv['St'])
         self.r_Pref[n] = self.cv['Pref']
-        self.r_Q[n] = self.cv['Q']
+        self.r_Q[n] = self.cv['Q']* float(self.cv['St'])
         self.r_St[n] = self.cv['St']
         self.r_SCE[n] = self.cv['SCE']
         self.r_Pe_calc[n] = self.cv['Pe_calc']

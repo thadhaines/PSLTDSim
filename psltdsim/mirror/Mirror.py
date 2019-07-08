@@ -12,6 +12,7 @@ class Mirror(object):
         self.created = datetime.now()
         self.simNotes = simNotes
         self.searchDict = None
+        self.flatStart = 0
 
         # Solution timing information
         self.SimTime = 0.0

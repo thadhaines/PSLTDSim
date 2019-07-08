@@ -165,9 +165,10 @@ def runSimPY3(mirror, amqpAgent):
                'HandoffType': 'PY3toIPY',
                'Pacc':mirror.ss_Pacc,
                'Pert_Pdelta': mirror.ss_Pert_Pdelta,
+               'flatStart' : mirror.flatStart,
                }
         PY3.send('toIPY', Hmsg)
-
+        mirror.flatStart = 0
         tic = time.time()
         PY3.receive('toPY3',PY3.redirect)
         mirror.PY3RecTime += time.time() - tic

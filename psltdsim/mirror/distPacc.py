@@ -27,11 +27,11 @@ def distPacc(mirror, deltaPacc):
         #for each system area:
         for c_gen in mirror.Machines:
 
-            # Ensure off generators don't suppy power
+            # Ensure off generators don't suppy power or get Pacc distribution
             if c_gen.cv['St'] == 0:
-                c_gen.cv['Pe'] = 0
-                c_gen.cv['Q'] = 0
-                c_gen.setPvals()
+                #c_gen.cv['Pe'] = 0
+                #c_gen.cv['Q'] = 0
+                #c_gen.setPvals()
                 continue
 
             if c_gen.globalSlack:

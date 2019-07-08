@@ -29,6 +29,10 @@ PSDSfileName = 'miniWECC_genTrip0.chf'; % turning GEN ON, couldn't figute out PS
 LTDCaseName = 'miniWECCgenTrip027';  
 genChange = -212.5; % required for ss freq to be calculated _> Use trip plot function - Doesn't match theoretical...
 
+PSDSfileName = 'miniWECC_genTrip032.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
+LTDCaseName = 'miniWECCgenTrip032';  
+genChange = -1429.5; % required for ss freq to be calculated _> Use trip plot function - Doesn't match theoretical...
+
 
 ds = 30; % number of samples to skip in PSDS data plots
 
@@ -47,16 +51,16 @@ psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 
 %% external Plot Functions
-compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+%compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 %compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
 
 % Deviation plots
-compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

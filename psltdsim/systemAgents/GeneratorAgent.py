@@ -80,13 +80,14 @@ class GeneratorAgent(object):
     def setPvals(self):
         """Send current mirror values to PSLF"""
         pObj = self.getPref()
-        pObj.Pgen = self.cv['Pe']
+        pObj.Pgen = self.cv['Pe']*self.cv['St']
 
         if pObj.St != self.cv['St']:
             # a change in status has occured
             if self.cv['St'] == 0:
                 pObj.SetOutOfService()
-                pObj.Qgen = 0.0
+                if self.mirror.debug: print('setting out of service....')
+                pObj.Pgen = 0.0
             elif self.cv['St'] == 1:
                 pObj.SetInService()
             pObj.St = self.cv['St']
@@ -128,10 +129,10 @@ class GeneratorAgent(object):
     def logStep(self):
         """Step to record log history"""
         n = self.mirror.cv['dp']
-        self.r_Pe[n] = self.cv['Pe']
-        self.r_Pm[n] = self.cv['Pm']
+        self.r_Pe[n] = self.cv['Pe'] * float(self.cv['St'])
+        self.r_Pm[n] = self.cv['Pm'] * float(self.cv['St'])
         self.r_Pref[n] = self.cv['Pref']
-        self.r_Q[n] = self.cv['Q']
+        self.r_Q[n] = self.cv['Q'] * float(self.cv['St'])
         self.r_SCE[n] = self.cv['SCE']
         self.r_St[n] = self.cv['St']
 

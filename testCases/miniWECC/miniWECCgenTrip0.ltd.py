@@ -5,6 +5,6 @@
 
 # Perturbances
 mirror.sysPerturbances = [
-    'gen 27 : step St 2 0', #27 trips ok, 32 and 53 do not...
+    'gen 32 : step St 2 0', #using a flatstart 27, 32, 60 trips ok, 53 do not...
     ]
 

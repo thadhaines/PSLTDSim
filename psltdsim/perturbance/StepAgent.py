@@ -85,6 +85,7 @@ class StepAgent(object):
                         self.mObj.cv['St'] = 1
                         self.mObj.cv['Pm'] = self.RestartVal
                         self.mObj.cv['Pe'] = self.RestartVal
+                        self.mirror.flatStart = 1
                         # handle initial pm values....
                         # add inertial to system
                         self.mirror.ss_H += self.mObj.H
@@ -92,9 +93,11 @@ class StepAgent(object):
 
                     elif (self.pertVal == 0) and (self.mObj.cv['St'] ==1):
                         self.mObj.cv['St'] = 0
-                        self.mObj.cv['Pm'] = 0
-                        self.mObj.cv['Pe'] = 0
-                        self.mObj.cv['Q'] = 0
+                        if self.mirror.debug: print('setting flat start')
+                        self.mirror.flatStart = 1
+                        #self.mObj.cv['Pm'] = 0
+                        #self.mObj.cv['Pe'] = 0
+                        #self.mObj.cv['Q'] = 0
                         #remove inertia from system
                         self.mirror.ss_H -= self.mObj.H
                         self.mirror.Hsys -= self.mObj.H

@@ -8,7 +8,7 @@ mirror.sysPerturbances = [
     'gen 62 : step Pm 2 -1000 rel',
     'gen 62 : step Pref 2 -1000 rel',
     ]
-"""
+
 # Balancing Authority Input
 mirror.sysBA = {
     'North':{
@@ -18,8 +18,13 @@ mirror.sysBA = {
         'Type':'TLB : 2', # Tie-Line Bias
         'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
-        'CtrlGens': ['plant pp1 : .60 ',
-                    'gen 1 : .40 : rampA']
+        'CtrlGens': [
+            'gen 1 : .20 ',
+            'gen 9 : .20 ',
+            'gen 17 : .20 ',
+            'gen 23 : .20 ',
+            'gen 118 : .20 ',
+                    ]
         },
     'East':{
         'Area':2,
@@ -28,7 +33,10 @@ mirror.sysBA = {
         'Type':'TLB : 2', # Tie-Line Bias
         'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
-        'CtrlGens': ['plant pp2 : 1.0 ']
+        'CtrlGens': [
+            'gen 68 : .50',
+            'gen 71 : .50',
+            ]
         },
     'South':{
         'Area':3,
@@ -37,7 +45,12 @@ mirror.sysBA = {
         'Type':'TLB : 2', # Tie-Line Bias
         'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
-        'CtrlGens': ['plant pp2 : 1.0 ']
+        'CtrlGens': [
+            'gen 41 : .20 ',
+            'gen 48 : .20 ',
+            'gen 59 : .20 ',
+            'gen 60 : .20 ',
+            'gen 65 : .20 ',
+                    ]
         },
     }
-"""
