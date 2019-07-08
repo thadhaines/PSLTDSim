@@ -29,7 +29,7 @@ for area = 1:max(size(mir.areaN)) % for each area
             % remove number from unique
             uniqueEntry(uniqueEntry == mir.(curArea).slackBusN(slack)) = [];
             curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-            plot(mir.t, mir.(curArea).(curSlack).Vm,'o')
+            plot(mir.t, mir.(curArea).(curSlack).Vm,'-o')
             name = [(curArea),'.',(curSlack)];
             legNames{end+1} = ['LTD ',name];
             
@@ -39,6 +39,7 @@ for area = 1:max(size(mir.areaN)) % for each area
             % Find psds data...
             pVdata = psds_data.Data(:,psdsVdataNdx);
             plot(t,pVdata)
+            grid()
             
             %{ 
             create data for deviation comparison
@@ -59,6 +60,7 @@ for area = 1:max(size(mir.areaN)) % for each area
             cData = calcDeviation( t, mir, pVdata, LTDdata );
             figure
             plot(t,cData)
+            grid()
         end
     end
 end
@@ -70,4 +72,34 @@ printFigs = false;
 miniFlag =  false;
 ds = 30;
 compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%% Closer look at individual item...
+
+% ltdData = mir.A1.G118.G1.Pe;
+% peCol = jfind(psds_data,'pg');
+% genCols = jfind(psds_data, mir.A1.G118.BusName);
+% dataNDX = intersect(peCol, genCols)
+
+ltdData = mir.A1.G48.G1.Pm;
+pmCol = jfind(psds_data,'pm');
+genCols = jfind(psds_data, mir.A1.G48.BusName);
+dataNDX = intersect(pmCol, genCols)
+
+% ltdData = mir.A1.G27.Vm;
+% vmCol = jfind(psds_data,'vmeta');
+% genCols = jfind(psds_data, mir.A1.G27.BusName);
+% dataNDX = intersect(vmCol, genCols)
+
+
+pData = psds_data.Data(:,dataNDX);
+t = psds_data.Data(:,1);
+figure
+stairs(mir.t, ltdData ,'-o')
+hold on
+plot(t, pData)
+
+cData = calcDeviation( t, mir, pData, ltdData );
+figure 
+plot(t,cData)

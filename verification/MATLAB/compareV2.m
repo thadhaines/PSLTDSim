@@ -45,7 +45,7 @@ figure('position',ppos)
 legNames = {};
 
 hold on
-set(gca,'linestyleorder',{'-', '-*', '-x', '-+', '-^', '-v', '--', '--*', '--x', '--+', '--^', '--v', ':', ':*', ':x', ':+', ':^', ':v'})
+%set(gca,'linestyleorder',{'-', '-*', '-x', '-+', '-^', '-v', '--', '--*', '--x', '--+', '--^', '--v', ':', ':*', ':x', ':+', ':^', ':v'})
 
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
