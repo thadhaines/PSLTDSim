@@ -68,8 +68,8 @@ end
 legend(legNames)
 
 %% Attempt at full Voltage Deviation plot
-printFigs = false;
-miniFlag =  false;
+printFigs = 1;
+miniFlag =  1;
 ds = 30;
 compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
@@ -103,10 +103,14 @@ plot(t, pData)
 grid on
 xlim(x_lim)
 legend({'LTD','PSDS'})
+ylabel('MW')
+xlabel('Time [sec]')
 
 cData = calcDeviation( t, mir, pData, ltdData );
 subplot(2,1,2) 
 plot(t,cData)
 grid on
 xlim(x_lim)
+ylabel('MW')
+xlabel('Time [sec]')
 legend({'Deviation'})

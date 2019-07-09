@@ -1,0 +1,30 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+%% Pointer to 'default' preamble
+\input{../../../../ResearchDocs/TEX/thad_preamble.tex}
+
+%% Header
+\rhead{Thad Haines \\ Page \thepage\ of \pageref{LastPage}}
+\chead{MiniWECC\\ Deviation Plots Introduced}
+\lhead{Research \\ }
+
+\begin{document}
+	\paragraph{Deviation Plots:} To make large numbers of comparisons easier to understand, deviation plots were created to show the difference between LTD and PSDS data.\\
+	
+	One way to think of these plots is $\text{LTD}_{data}+\text{Deviation}_{data} = \text{PSDS}_{data}$. (Assuming all time step issues are handled appropriately.)\\
+	
+	Alternatively, the deviation data could be thought of as data that is filtered out due to the larger time steps and assumptions made by LTD.\\
+	
+	\newcommand{\caseName}{miniWECCgenTrip027}
+	\includegraphics[width=\linewidth]{\caseName dev1} 
+	
+	\includegraphics[width=.5\linewidth]{\caseName Pe2} %
+	\includegraphics[width=.5\linewidth]{\caseName Pm2} 
+	
+	\includegraphics[width=.5\linewidth]{\caseName Q2} %
+	\includegraphics[width=.5\linewidth]{\caseName V2} 
+	
+	Angle deviation not included as PSDS angles wrap oddly and would result in a misleading deviation.
+\end{document}
