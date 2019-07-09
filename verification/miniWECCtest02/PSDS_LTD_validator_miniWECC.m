@@ -56,11 +56,13 @@ psds_data = udread(PSDSfileName,[]);
 %compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
-%compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
+compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+
+compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
 
 % Deviation plots
 compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

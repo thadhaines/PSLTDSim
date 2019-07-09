@@ -43,15 +43,15 @@ end
 %% find slack name Area
 %cycle through areas until one has a slackbus
 for areaN =1:max(size(mir.areaN))
-    curArea = ['A',int2str(mir.areaN(areaN))]
+    curArea = ['A',int2str(mir.areaN(areaN))];
     if max(size(mir.(curArea).slackBusN)) > 0
-        slackNum = ['S',int2str(mir.(curArea).slackBusN)]
-        slackName = mir.(curArea).(slackNum).BusName
+        slackNum = ['S',int2str(mir.(curArea).slackBusN)];
+        slackName = mir.(curArea).(slackNum).BusName;
     end % if area has slackBusN
 end % for each area in mirror
     
 %% find where ameta and slack name intersect
-slackInt = intersect(ag_col,jfind(psds_data,slackName))
+slackInt = intersect(ag_col,jfind(psds_data,slackName));
 
 
 slackAng = psds_data.Data(:,slackInt);
@@ -60,7 +60,7 @@ figure('position',ppos)
 legNames ={};
 hold on
 for curCol=1:max(size(ag_col))
-    angleData = ( psds_data.Data(:,ag_col(curCol))- slackAng ) ./180.*pi;
+    angleData = rad2deg(unwrap(deg2rad(( psds_data.Data(:,ag_col(curCol))- slackAng ))));
     
     plot(tds, dsmple(angleData,ds),'.')
     temp = strsplit(psds_data.Description{ag_col(curCol)});
@@ -74,38 +74,40 @@ ymin = 0;
 
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
-        fprintf('area %d\n',mir.areaN(area) )
+        fprintf('area %d\n',mir.areaN(area) );
     end
     curArea = ['A',int2str(area)];
     
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
-        plot(mir.t, mir.(curArea).(curSlack).Va,'o')
+        angData = rad2deg(mir.(curArea).(curSlack).Va);
+        plot(mir.t, angData,'o')
         name = [(curArea),'.',(curSlack)];
         legNames{end+1} = ['LTD ',name];
         
-        if max(mir.(curArea).(curSlack).Va) > ymax
-            ymax = max(mir.(curArea).(curSlack).Va);
+        if max(angData) > ymax
+            ymax = max(angData);
         end
-        if min(mir.(curArea).(curSlack).Va) < ymin
-            ymin = mmin(mir.(curArea).(curSlack).Va);
+        if min(angData) < ymin
+            ymin = mmin(angData);
         end
     end
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         % if same bus, will have same voltage and angle...
-        plot(mir.t, mir.(curArea).(curGen).Va,'o')
+        angData = rad2deg(mir.(curArea).(curGen).Va);
+        plot(mir.t, angData,'o')
         
         
         name = [(curArea),'.',(curGen)];
         legNames{end+1} = ['LTD ',name];
         
-        if max(mir.(curArea).(curGen).Va) > ymax
-            ymax = max(mir.(curArea).(curGen).Va);
+         if max(angData) > ymax
+            ymax = max(angData);
         end
-        if min(mir.(curArea).(curGen).Va) < ymin
-            ymin = min(mir.(curArea).(curGen).Va);
+        if min(angData) < ymin
+            ymin = min(angData);
         end
     end
     
@@ -123,7 +125,7 @@ xlabel('Time [sec]')
 ylabel('Generator Angle [degrees]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
-ylim([ymin*1.5,ymax*1.5])
+%ylim([ymin*1.5,ymax*1.5]);
 
 % pdf output code
 if printFigs
