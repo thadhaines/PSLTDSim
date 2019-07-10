@@ -98,19 +98,20 @@ batchList =[
     #r".\testCases\sixMachine\sixMachineStepBA4.py",
     
     # mini wecc tests - Confirmed working 7/9/19
-    r".\testCases\miniWECC\miniWECCstep0.py",
-    r".\testCases\miniWECC\miniWECCstep1.py",
-    r".\testCases\miniWECC\miniWECCstep2.py",
-    r".\testCases\miniWECC\miniWECCstep3.py",
+    #r".\testCases\miniWECC\miniWECCstep0.py",
+    #r".\testCases\miniWECC\miniWECCstep1.py",
+    #r".\testCases\miniWECC\miniWECCstep2.py",
+    #r".\testCases\miniWECC\miniWECCstep3.py",
 
-    r".\testCases\miniWECC\miniWECCcrash.py",
+    #r".\testCases\miniWECC\miniWECCcrash.py",
 
-    r".\testCases\miniWECC\miniWECCgenTrip0.py",
+    #r".\testCases\miniWECC\miniWECCgenTrip0.py",
 
     # Multi Area miniWECC
+    r".\testCases\miniWECC3Area\miniWECC3A00.py", # simple step (unscaled system)
     r".\testCases\miniWECC3Area\miniWECC3A0.py", # simple step
-    r".\testCases\miniWECC3Area\miniWECC3A1.py", # BA response, TLB type 2
-    r".\testCases\miniWECC3Area\miniWECC3A2.py", # BA response, TLB type 0
+    #r".\testCases\miniWECC3Area\miniWECC3A1.py", # BA response, TLB type 2
+    #r".\testCases\miniWECC3Area\miniWECC3A2.py", # BA response, TLB type 0
             ]
 
 # Batch Run Parameters

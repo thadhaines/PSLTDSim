@@ -56,6 +56,7 @@ slackInt = intersect(ag_col,jfind(psds_data,slackName));
 slackAng = psds_data.Data(:,slackInt);
 %% plot
 figure('position',ppos)
+set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(floor(max(size(ag_col)/2)))))))
 legNames ={};
 hold on
 

@@ -72,9 +72,9 @@ printFigs = 1;
 miniFlag =  1;
 ds = 30;
 compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %% Closer look at individual item...
 
 % ltdData = mir.A1.G118.G1.Pe;
@@ -82,15 +82,20 @@ compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % genCols = jfind(psds_data, mir.A1.G118.BusName);
 % dataNDX = intersect(peCol, genCols)
 
-ltdData = mir.A1.G48.G1.Pm;
-pmCol = jfind(psds_data,'pm');
-genCols = jfind(psds_data, mir.A1.G48.BusName);
-dataNDX = intersect(pmCol, genCols)
+% ltdData = mir.A1.G48.G1.Pm;
+% pmCol = jfind(psds_data,'pm');
+% genCols = jfind(psds_data, mir.A1.G48.BusName);
+% dataNDX = intersect(pmCol, genCols)
 
-% ltdData = mir.A1.G27.Vm;
+% ltdData = mir.A1.G34.Vm;
 % vmCol = jfind(psds_data,'vmeta');
-% genCols = jfind(psds_data, mir.A1.G27.BusName);
+% genCols = jfind(psds_data, mir.A1.G34.BusName);
 % dataNDX = intersect(vmCol, genCols)
+
+ltdData = mir.A1.G34.G1.Q;
+vmCol = jfind(psds_data,'qg');
+genCols = jfind(psds_data, mir.A1.G34.BusName);
+dataNDX = intersect(vmCol, genCols)
 
 x_lim= [0, 100];
 pData = psds_data.Data(:,dataNDX);

@@ -297,3 +297,5 @@ __pycache__/
 /verification/miniWECCtest02/miniWECC_loadStep.chf
 /verification/miniWECCtest02/miniWECC_loadStepPSS.chf
 /verification/miniWECCtest02/miniWECC_genTrip032.chf
+/verification/mw3Area/miniWECC_genStep47.chf
+/verification/mw3Area/miniWECC_genStep47US.chf

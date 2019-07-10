@@ -37,6 +37,7 @@ pg_col = jfind(psds_data, 'pg');
 figure('position',ppos)
 legNames ={};
 hold on
+set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(max(size(pg_col)))))))
 %set(gca,'linestyleorder',{'-', '-*', '-x', '-+', '-^', '-v', '--', '--*', '--x', '--+', '--^', '--v', ':', ':*', ':x', ':+', ':^', ':v'})
 for area = 1:max(size(mir.areaN)) % for each area
     if debug

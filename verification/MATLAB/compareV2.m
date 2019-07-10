@@ -1,4 +1,4 @@
-function [  ] = comparePe( mir, psds_data, varargin )
+function [  ] = compareV2( mir, psds_data, varargin )
 %compareV Compare LTD mirror and psds simulation data
 %   optional inputs: case name, print figs, figure size
 %   PSDS angles need to have the reference subtracted from them to be centered
@@ -43,8 +43,10 @@ dLeg = false;
 %% Voltage Comparison
 figure('position',ppos)
 legNames = {};
+set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(floor(max(size(v_col)/2))))))) % to make mess of lines look nicer
 
 hold on
+% For id, uncomment linestyle and change make legend to 1
 %set(gca,'linestyleorder',{'-', '-*', '-x', '-+', '-^', '-v', '--', '--*', '--x', '--+', '--^', '--v', ':', ':*', ':x', ':+', ':^', ':v'})
 
 for area = 1:max(size(mir.areaN)) % for each area

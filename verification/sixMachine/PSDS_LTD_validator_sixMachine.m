@@ -15,7 +15,7 @@ clear; format compact; clc; close all;
 format long;
 
 % to Export pdfs.
-printFigs = 1;
+printFigs = 0;
 miniFlag = 0; % decrease plot width by half
 
 %% Knowns
@@ -39,14 +39,14 @@ miniFlag = 0; % decrease plot width by half
 % LTDCaseName = 'SixMachineTrip01';  
 % genChange = -0; % required for ss freq to be calculated _> Use trip plot function
 
-% PSDSfileName = 'sixMachineGenTrip1.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
-% LTDCaseName = 'SixMachineTrip1';  
-% genChange = 90; % required for ss freq to be calculated _> Use trip plot function
+PSDSfileName = 'sixMachineGenTrip1.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
+LTDCaseName = 'SixMachineTrip1';  
+genChange = 90; % required for ss freq to be calculated _> Use trip plot function
 % 
 % 
-PSDSfileName = 'sixMachineBranchTrip0.chf'; % trip two lines off
-LTDCaseName = 'SixMachineBTrip0'; % match PSLF 
-genChange = 0;
+% PSDSfileName = 'sixMachineBranchTrip0.chf'; % trip two lines off
+% LTDCaseName = 'SixMachineBTrip0'; % match PSLF 
+% genChange = 0;
 
 % PSDSfileName = 'sixMachineBranchTrip1.chf'; % trip two lines off, one on
 % LTDCaseName = 'SixMachineTrip2'; % match PSLF 
@@ -65,13 +65,27 @@ psds_data = udread(PSDSfileName,[]);
 ds = 10;
 
 %% external Plot Functions
-%compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
-compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
+%compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
+
+%% Deviation plots
+compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+
+%% percent difference plots
+compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %% Multi plot to compare other features
 %{
 compareWfreq(mir, psds_data)

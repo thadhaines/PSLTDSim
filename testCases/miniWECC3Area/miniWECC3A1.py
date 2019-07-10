@@ -5,7 +5,8 @@ debugTimer = 0
 
 simNotes = """
 MiniWECC Multi Area step of -1000 MW at t=2 on gen bus 62. ts = 1
-Addition of 3 BAs using type 2 TLB
+Addition of 3 BAs using type 2 TLB 
+(both tie line and freq ACE distributed according to w deviation)
 """
 
 # Simulation Parameters Dictionary
@@ -30,6 +31,6 @@ simParams = {
     'deleteInit' : 0, # Delete initialized mirror
     }
 
-savPath = r"C:\LTD\pslf_systems\miniWECC\miniWECC3Area.sav"
+savPath = r"C:\LTD\pslf_systems\miniWECC\miniWECC3AreaLTD.sav"
 dydPath = [r"C:\LTD\pslf_systems\miniWECC\miniWECC_LTD.dyd"]
 ltdPath = r".\testCases\miniWECC3Area\miniWECC3A1.ltd.py"

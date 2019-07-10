@@ -17,7 +17,7 @@ format long;
 
 % to Export pdfs.
 printFigs = false;
-miniFlag = 0; % decrease plot width by half
+miniFlag = 1; % decrease plot width by half
 
 %% Knowns
 %PSDSfileName = 'miniWECC_loadStep.chf'; % NO PSS, system goes unstable Voltages off - exciters only
@@ -56,13 +56,20 @@ psds_data = udread(PSDSfileName,[]);
 %compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+% compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 
-compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
+%compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
 
-% Deviation plots
-compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%% Deviation plots
+% compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+
+%% percent difference plots
+compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
