@@ -10,7 +10,7 @@ Ramp of load up 10% over 40 seconds.
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 90.0,
+    'endTime': 120.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -29,6 +29,6 @@ simParams = {
     'deleteInit' : 0, # Delete initialized mirror
     }
 
-savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachine.sav"
-dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd"]
+savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachineTrips.sav"
+dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine.dyd"]
 ltdPath = r".\testCases\sixMachine\sixMachineRamp.ltd.py"

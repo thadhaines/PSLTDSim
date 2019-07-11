@@ -6,14 +6,14 @@ def LTD_SolveCase(mirror=None):
     if mirror == None:
         flatStart = 0
     else:
-        flatStart = mirror.flatStart
+        flatStart = 0 # never flat start ( could be changed to solnType options ) or reorder?
         if mirror.debug: print('flat start = %d' % flatStart)
 
     soln_start = time.time()
     errorCode = PSLF.SolveCase(
         25, # maxIterations, Solpar.Itnrmx
         0, 	# iterationsBeforeVarLimits, Solpar.Itnrvl
-        flatStart,	# flatStart, 
+        0,	# flatStart, 
         1,	# tapAdjustment, Solpar.Tapadj
         1,	# switchedShuntAdjustment, Solpar.Swsadj
         1,	# phaseShifterAdjustment, Solpar.Psadj

@@ -3,16 +3,16 @@
 @tend = 90.0
 
 /* Open .sav file */
-@ret = getf("C:\LTD\pslf_systems\sixMachine\sixMachine.sav")
+@ret = getf("C:\LTD\pslf_systems\sixMachine\sixMachineTrips.sav")
 
 /* MAKE SURE BASE CASE IS SOLVED. */
 @ret = soln()
 
 /* READ THE DYNAMIC DATA. */
-@ret = rdyd("C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd","",1)
+@ret = rdyd("C:\LTD\pslf_systems\sixMachine\sixMachine.dyd","",1)
 
 /* INIT THE DYNAMIC DATA AND SET THE CHANNEL FILE. Third field from end (2nd quote from end) is where inrun epcl paths go*/
-@ret = init("C:\LTD\pslf_systems\sixMachine\results\sixMachineRamp1.chf", "C:\LTD\pslf_systems\sixMachine\results\sixMachineRamp1.rep", 0, 1, "C:\LTD\inrun\smr1.p", "", 0)
+@ret = init("C:\LTD\pslf_systems\sixMachine\PSLFres\sixMachineRamp1.chf", "C:\LTD\pslf_systems\sixMachine\PSLFres\sixMachineRamp1.rep", 0, 1, "C:\LTD\inrun\smr1.p", "", 0)
 dypar[0].nplot   = 1     
 dypar[0].nscreen = 240*5
 

@@ -46,17 +46,20 @@ for areaN =1:max(size(mir.areaN))
     curArea = ['A',int2str(mir.areaN(areaN))];
     if max(size(mir.(curArea).slackBusN)) > 0
         slackNum = ['S',int2str(mir.(curArea).slackBusN)];
-        slackName = mir.(curArea).(slackNum).BusName;
+        busNam = mir.(curArea).(slackNum).BusName;
+        busNum = mir.(curArea).slackBusN;
+        tarId = 1;
+        break
     end % if area has slackBusN
 end % for each area in mirror
 
 %% find where ameta and slack name intersect
-slackInt = intersect(ag_col,jfind(psds_data,slackName));
-
-slackAng = psds_data.Data(:,slackInt);
+slackNdx = findPSDSndx(psds_data, busNum, busNam, tarId, 'ameta' );
+                    
+slackAng = psds_data.Data(:,slackNdx);
 %% plot
 figure('position',ppos)
-set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(floor(max(size(ag_col)/2)))))))
+%set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(floor(max(size(ag_col)/2)))))))
 legNames ={};
 hold on
 
@@ -73,26 +76,8 @@ for area = 1:max(size(mir.areaN)) % for each area
         %%
         % Comparison addition
         LTDdata = rad2deg(mir.(curArea).(curSlack).Va);
-        psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curSlack).BusName),jfind(psds_data, 'ameta'));
-        if max(size(psdsDataNdx))>1
-            % check for multiple intersect
-            if debug disp(name); end
-            psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curSlack).BusNum)),psdsDataNdx);
-            if max(size(psdsDataNdx))>1
-                % check for continued multipe intersects...
-                for dupe=1:max(size(psdsDataNdx))
-                    desc = strjoin(psds_data.Description(psdsDataNdx(dupe)));
-                    if debug disp(desc);end
-                    bus = strsplit(desc,':');
-                    bus = str2double(bus(1));
-                    if bus == mir.(curArea).(curSlack).BusNum
-                        psdsDataNdx = psdsDataNdx(dupe);
-                        break
-                    end
-                end
-            end
-            
-        end
+        
+        psdsDataNdx = findPSDSndx(psds_data, mir.(curArea).(curSlack).BusNum, mir.(curArea).(curSlack).BusName, 1, 'ameta' );
         
         if max(size(psdsDataNdx))==1
             pData = rad2deg(unwrap(deg2rad(( psds_data.Data(:,psdsDataNdx)- slackAng ))));
@@ -111,26 +96,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         %%
         % Comparison addition
         LTDdata = rad2deg(mir.(curArea).(curGen).Va);
-        psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curGen).BusName),jfind(psds_data, 'ameta'));
-        if max(size(psdsDataNdx))>1
-            % check for multiple intersect
-            if debug disp(curGen); end
-            psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curGen).BusNum)),psdsDataNdx);
-            if max(size(psdsDataNdx))>1
-                % check for continued multipe intersects...
-                for dupe=1:max(size(psdsDataNdx))
-                    desc = strjoin(psds_data.Description(psdsDataNdx(dupe)));
-                    if debug disp(desc);end
-                    bus = strsplit(desc,':');
-                    bus = str2double(bus(1));
-                    if bus == mir.(curArea).(curGen).BusNum
-                        psdsDataNdx = psdsDataNdx(dupe);
-                        break
-                    end
-                    
-                end
-            end
-        end
+        psdsDataNdx = findPSDSndx(psds_data, mir.(curArea).(curGen).BusNum, mir.(curArea).(curGen).BusName, 1, 'ameta' );
         
         % check if only one index exist, if so, plot
         if max(size(psdsDataNdx))==1

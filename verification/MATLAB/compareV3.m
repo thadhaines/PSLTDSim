@@ -65,15 +65,33 @@ for area = 1:max(size(mir.areaN)) % for each area
             
             % Comparison addition
             LTDdata = mir.(curArea).(curSlack).Vm;
+            
             psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curSlack).BusName),jfind(psds_data, 'vbug'));
-            if max(size(psdsDataNdx))>1
+            
+%
+        if max(size(psdsDataNdx))>1
                 % check for multiple intersect
-                if debug disp(name);end
+                if debug disp(name); end
                 psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curSlack).BusNum)),psdsDataNdx);
+                if max(size(psdsDataNdx))>1
+                    % check for continued multipe intersects...
+                    for dupe=1:max(size(psdsDataNdx))
+                        desc = strjoin(psds_data.Description(psdsDataNdx(dupe)));
+                        if debug disp(desc);end
+                        bus = strsplit(desc,':');
+                        bus = str2double(bus(1));
+                        if bus == mir.(curArea).(curSlack).BusNum
+                            psdsDataNdx = psdsDataNdx(dupe);
+                            break
+                        end
+                        
+                    end
+                end
+                pData = psds_data.Data(:,psdsDataNdx);
+                cData = calcPdiff( t, mir, pData, LTDdata );
+                plot(tds, dsmple(cData,ds))
             end
-            pData = psds_data.Data(:,psdsDataNdx);
-            cData = calcPdiff( t, mir, pData, LTDdata );
-            plot(tds, dsmple(cData,ds))
+        %
             
         end
     end
@@ -89,14 +107,30 @@ for area = 1:max(size(mir.areaN)) % for each area
             % Comparison addition
             LTDdata = mir.(curArea).(curGen).Vm;
             psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curGen).BusName),jfind(psds_data, 'vbug'));
-            if max(size(psdsDataNdx))>1
-                % check for multiple names
-                if debug disp(name);end;
+        %
+        if max(size(psdsDataNdx))>1
+                % check for multiple intersect
+                if debug disp(name); end
                 psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curGen).BusNum)),psdsDataNdx);
+                if max(size(psdsDataNdx))>1
+                    % check for continued multipe intersects...
+                    for dupe=1:max(size(psdsDataNdx))
+                        desc = strjoin(psds_data.Description(psdsDataNdx(dupe)));
+                        if debug disp(desc);end
+                        bus = strsplit(desc,':');
+                        bus = str2double(bus(1));
+                        if bus == mir.(curArea).(curGen).BusNum
+                            psdsDataNdx = psdsDataNdx(dupe);
+                            break
+                        end
+                        
+                    end
+                end
+                pData = psds_data.Data(:,psdsDataNdx);
+                cData = calcPdiff( t, mir, pData, LTDdata );
+                plot(tds, dsmple(cData,ds))
             end
-            pData = psds_data.Data(:,psdsDataNdx);
-            cData = calcDeviation( t, mir, pData, LTDdata );
-            plot(tds, dsmple(cData,ds))
+        %
             
         end
     end
@@ -114,12 +148,26 @@ for area = 1:max(size(mir.areaN)) % for each area
             psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curLoadbus).BusName),jfind(psds_data, 'vbul'));
             if max(size(psdsDataNdx))>1
                 % check for multiple intersect
-                if debug disp(name); end;
+                if debug disp(name); end
                 psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curLoadbus).BusNum)),psdsDataNdx);
+                if max(size(psdsDataNdx))>1
+                    % check for continued multipe intersects...
+                    for dupe=1:max(size(psdsDataNdx))
+                        desc = strjoin(psds_data.Description(psdsDataNdx(dupe)));
+                        if debug disp(desc);end
+                        bus = strsplit(desc,':');
+                        bus = str2double(bus(1));
+                        if bus == mir.(curArea).(curLoadbus).BusNum
+                            psdsDataNdx = psdsDataNdx(dupe);
+                            break
+                        end
+                        
+                    end
+                end
+                pData = psds_data.Data(:,psdsDataNdx);
+                cData = calcPdiff( t, mir, pData, LTDdata );
+                plot(tds, dsmple(cData,ds))
             end
-            pData = psds_data.Data(:,psdsDataNdx);
-            cData = calcPdiff( t, mir, pData, LTDdata );
-            plot(tds, dsmple(cData,ds))
         end
     end
     

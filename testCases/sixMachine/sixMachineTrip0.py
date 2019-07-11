@@ -9,8 +9,8 @@ Trip of Gen 5 (90 MW) at t = 2
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 0.5,
-    'endTime': 60.0,
+    'timeStep': 1.0,
+    'endTime': 90.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -30,5 +30,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachineTrips.sav"
-dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd"]
+dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine.dyd"]
 ltdPath = r".\testCases\sixMachine\sixMachineTrip.ltd.py"

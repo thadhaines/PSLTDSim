@@ -78,12 +78,10 @@ batchList =[
     #r".\testCases\sixMachine\sixMachineStep4.py",
     #r".\testCases\sixMachine\sixMachineStep5.py", # step Pm of gov gen
 
-    #r".\testCases\sixMachine\sixMachineRamp1.py",
     #r".\testCases\sixMachine\sixMachineRamp2.py",
     #r".\testCases\sixMachine\sixMachineRamp3.py",
 
     # Six Machine Trips
-    #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
     #r".\testCases\sixMachine\sixMachineTrip01.py", # Gen trip off/on
     #r".\testCases\sixMachine\sixMachineBTrip0.py", # Branch Tripping off
     #r".\testCases\sixMachine\sixMachineTrip2.py", # Branch Tripping off/on
@@ -108,10 +106,19 @@ batchList =[
     #r".\testCases\miniWECC\miniWECCgenTrip0.py",
 
     # Multi Area miniWECC
-    r".\testCases\miniWECC3Area\miniWECC3A00.py", # simple step (unscaled system)
-    r".\testCases\miniWECC3Area\miniWECC3A0.py", # simple step
+    #r".\testCases\miniWECC3Area\miniWECC3A00.py", # simple step (unscaled system)
+    #r".\testCases\miniWECC3Area\miniWECC3A0.py", # simple step
     #r".\testCases\miniWECC3Area\miniWECC3A1.py", # BA response, TLB type 2
     #r".\testCases\miniWECC3Area\miniWECC3A2.py", # BA response, TLB type 0
+
+    # Final Validations
+    #r".\testCases\sixMachine\sixMachineStep1.py",
+    #r".\testCases\sixMachine\sixMachineRamp1.py",
+    #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
+
+    #r".\testCases\miniWECCLTD\miniWECC3Astep.py"
+    #r".\testCases\miniWECCLTD\miniWECC3Aramp.py"
+    r".\testCases\miniWECCLTD\miniWECCgenTrip0.py"
             ]
 
 # Batch Run Parameters

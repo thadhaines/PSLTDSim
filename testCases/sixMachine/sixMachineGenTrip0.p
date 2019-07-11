@@ -9,10 +9,10 @@
 @ret = soln()
 
 /* READ THE DYNAMIC DATA. */
-@ret = rdyd("C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd","",1)
+@ret = rdyd("C:\LTD\pslf_systems\sixMachine\sixMachine.dyd","",1)
 
 /* INIT THE DYNAMIC DATA AND SET THE CHANNEL FILE. Third field from end (2nd quote from end) is where inrun epcl paths go*/
-@ret = init("C:\LTD\pslf_systems\sixMachine\results\sixMachineGenTrip0.chf", "C:\LTD\pslf_systems\sixMachine\results\sixMachineGenTrip0.rep", 0, 1, "", "", 0)
+@ret = init("C:\LTD\pslf_systems\sixMachine\PSLFres\sixMachineGenTrip0.chf", "C:\LTD\pslf_systems\sixMachine\PSLFres\sixMachineGenTrip0.rep", 0, 1, "", "", 0)
 dypar[0].nplot   = 1     
 dypar[0].nscreen = 240*5
 
