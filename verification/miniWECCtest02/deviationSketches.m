@@ -82,40 +82,56 @@ compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % genCols = jfind(psds_data, mir.A1.G118.BusName);
 % dataNDX = intersect(peCol, genCols)
 
-% ltdData = mir.A1.G48.G1.Pm;
-% pmCol = jfind(psds_data,'pm');
-% genCols = jfind(psds_data, mir.A1.G48.BusName);
-% dataNDX = intersect(pmCol, genCols)
+ltdData = mir.A1.G48.G1.Pm;
+pmCol = jfind(psds_data,'pm');
+genCols = jfind(psds_data, mir.A1.G48.BusName);
+dataNDX = intersect(pmCol, genCols)
 
 % ltdData = mir.A1.G34.Vm;
 % vmCol = jfind(psds_data,'vmeta');
 % genCols = jfind(psds_data, mir.A1.G34.BusName);
 % dataNDX = intersect(vmCol, genCols)
 
-ltdData = mir.A1.G34.G1.Q;
-vmCol = jfind(psds_data,'qg');
-genCols = jfind(psds_data, mir.A1.G34.BusName);
-dataNDX = intersect(vmCol, genCols)
+% ltdData = mir.A1.G34.G1.Q;
+% vmCol = jfind(psds_data,'qg');
+% genCols = jfind(psds_data, mir.A1.G34.BusName);
+% dataNDX = intersect(vmCol, genCols)
 
-x_lim= [0, 100];
+x_lim= [0, 11];
 pData = psds_data.Data(:,dataNDX);
 t = psds_data.Data(:,1);
-figure
-subplot(2,1,1)
-stairs(mir.t, ltdData ,'-o')
+ppos = [18 312 1252 373];
+bfz = 13;
+
+figure('position',ppos)
+
+subplot(1,3,1)
+plot(t, pData,'k','linewidth',.85)
 hold on
-plot(t, pData)
+stairs(mir.t, ltdData ,'m-o','linewidth',1.1)
+set(gca,'fontsize',bfz)
 grid on
 xlim(x_lim)
-legend({'LTD','PSDS'})
-ylabel('MW')
+legend({'PSDS','LTD'},'location','best')
+ylabel('Mechanical Power [MW]')
 xlabel('Time [sec]')
 
 cData = calcDeviation( t, mir, pData, ltdData );
-subplot(2,1,2) 
-plot(t,cData)
+subplot(1, 3, 2) 
+plot(t,cData,'m','linewidth',.85)
 grid on
 xlim(x_lim)
-ylabel('MW')
+ylabel('Deviation [MW]')
 xlabel('Time [sec]')
-legend({'Deviation'})
+set(gca,'fontsize',bfz)
+title('Examples of Comparison Plots')
+
+subplot(1,3,3) 
+cData = calcPdiff( t, mir, pData, ltdData );
+plot(t,cData,'m','linewidth',.85)
+grid on
+xlim(x_lim)
+ylabel('Percent Difference [%]')
+xlabel('Time [sec]')
+set(gca,'fontsize',bfz)
+

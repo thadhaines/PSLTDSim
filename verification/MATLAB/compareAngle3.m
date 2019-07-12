@@ -26,7 +26,7 @@ end
 
 % varables for plots to work
 debug = 0;
-makeLegend = 1;
+makeLegend = 0;
 x_lim = [mir.t(1), mir.t(end)];
 bfz = 13;
 t = psds_data.Data(:,1); % PSDS time
@@ -40,23 +40,31 @@ if max(size(ag_col)) > 20
     makeLegend = 0;
 end
 
+% for future RMS calcs
+linesPltd = 0;
+rSum = tds.*0;
+grey = [.75,.75,.75];
+lineSumd = 0;
+
 %% find slack name Area
 %cycle through areas until one has a slackbus
 for areaN =1:max(size(mir.areaN))
     curArea = ['A',int2str(mir.areaN(areaN))];
     if max(size(mir.(curArea).slackBusN)) > 0
         slackNum = ['S',int2str(mir.(curArea).slackBusN)];
-        busNam = mir.(curArea).(slackNum).BusName;
-        busNum = mir.(curArea).slackBusN;
-        tarId = 1;
+        slackName = mir.(curArea).(slackNum).BusName;
+        bNum = mir.(curArea).(slackNum).BusNum;
+        bName = mir.(curArea).(slackNum).BusName;
+        tarID = 1;
+        psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'abug' );
         break
     end % if area has slackBusN
 end % for each area in mirror
 
 %% find where ameta and slack name intersect
-slackNdx = findPSDSndx(psds_data, busNum, busNam, tarId, 'ameta' );
-                    
-slackAng = psds_data.Data(:,slackNdx);
+slackAng = psds_data.Data(:,psdsDataNdx);
+
+
 %% plot
 figure('position',ppos)
 %set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(floor(max(size(ag_col)/2)))))))
@@ -72,49 +80,73 @@ for area = 1:max(size(mir.areaN)) % for each area
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
         angData = rad2deg(mir.(curArea).(curSlack).Va);
-        
+        name = [(curArea),'.',(curSlack)];
         %%
         % Comparison addition
         LTDdata = rad2deg(mir.(curArea).(curSlack).Va);
         
-        psdsDataNdx = findPSDSndx(psds_data, mir.(curArea).(curSlack).BusNum, mir.(curArea).(curSlack).BusName, 1, 'ameta' );
+        % new find index and RMS
+        bNum = mir.(curArea).(curSlack).BusNum;
+        bName = mir.(curArea).(curSlack).BusName;
+        tarID = 1;
+        psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'abug' );
         
         if max(size(psdsDataNdx))==1
             pData = rad2deg(unwrap(deg2rad(( psds_data.Data(:,psdsDataNdx)- slackAng ))));
-            cData = calcPdiff( t, mir, pData, LTDdata );
-            plot(tds, dsmple(cData,ds))
-            
-            name = [(curArea),'.',(curSlack)];
-            legNames{end+1} = ['LTD ',name];
-            if debug disp(name); end
+            cData = dsmple(calcPdiff( t, mir, pData, LTDdata),ds);
+            plot(tds, cData,'color',grey,'linewidth',.5)
+            legNames{end+1} = name;
+            linesPltd = linesPltd+1;
+            if sum(isnan(cData(:))) == 0
+                rSum = rSum+cData.^2;
+                lineSumd = lineSumd +1;
+            end
+        else
+            disp(name)
         end
         %%
     end
     for gen = 1:max(size(mir.(curArea).genBusN))
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
-        
+        name = [(curArea),'.',(curGen)];
         %%
         % Comparison addition
         LTDdata = rad2deg(mir.(curArea).(curGen).Va);
-        psdsDataNdx = findPSDSndx(psds_data, mir.(curArea).(curGen).BusNum, mir.(curArea).(curGen).BusName, 1, 'ameta' );
         
-        % check if only one index exist, if so, plot
+        % new find index and RMS
+        bNum = mir.(curArea).(curGen).BusNum;
+        bName = mir.(curArea).(curGen).BusName;
+        tarID = 1;
+        psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'abug' );
+        
         if max(size(psdsDataNdx))==1
             pData = rad2deg(unwrap(deg2rad(( psds_data.Data(:,psdsDataNdx)- slackAng ))));
-            cData = calcPdiff( t, mir, pData, LTDdata );
-            plot(tds, dsmple(cData,ds))
-            
-            name = [(curArea),'.',(curGen)];
-            legNames{end+1} = ['LTD ',name];
-            if debug disp(name); end
+            cData = dsmple(calcPdiff( t, mir, pData, LTDdata),ds);
+            plot(tds, cData,'color',grey,'linewidth',.5)
+            legNames{end+1} = name;
+            linesPltd = linesPltd+1;
+            if sum(isnan(cData(:))) == 0
+                rSum = rSum+cData.^2;
+                lineSumd = lineSumd +1;
+            end
+        else
+            disp(name)
         end
         %%
         
     end
-    
 end
+
+% calculate and plot RMS
+RMS = sqrt(rSum./lineSumd);
+datas = plot(tds, RMS,'color',grey,'linewidth',1.5);
+rPlot = plot(tds, RMS,'k','linewidth',1.5);
+
 if makeLegend
     legend(legNames)
+else % make only general legend
+    dataName = [int2str(linesPltd),' Comparisons'];
+    legend([datas,rPlot],dataName,'RMS')
 end
 grid on
 if noCase ==1

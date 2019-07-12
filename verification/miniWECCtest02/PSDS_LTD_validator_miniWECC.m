@@ -61,15 +61,15 @@ psds_data = udread(PSDSfileName,[]);
 %compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
 
 %% Deviation plots
-% compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% percent difference plots
-compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

@@ -1,4 +1,4 @@
-function [  ] = comparePm3( mir, psds_data, varargin )
+function [  ] = comparePe( mir, psds_data, varargin )
 %comparePe Compare LTD mirror and psds simulation data
 %   optional inputs: case name, print figs, figure size
 
@@ -33,11 +33,17 @@ tds = dsmple(t, ds);
 % funtion specific
 pm_col = jfind(psds_data, 'pm');
 
+% for future RMS calcs
+linesPltd = 0;
+rSum = tds.*0;
+grey = [.75,.75,.75];
+lineSumd = 0;
+
 %% Pm  Comparison
 figure('position',ppos)
 legNames ={};
 hold on
-set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(floor(max(size(pm_col))))))))
+%set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(floor(max(size(pm_col))))))))
 %set(gca,'linestyleorder',{'-', '-*', '-x', '-+', '-^', '-v', '--', '--*', '--x', '--+', '--^', '--v', ':', ':*', ':x', ':+', ':^', ':v'})
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
@@ -51,33 +57,26 @@ for area = 1:max(size(mir.areaN)) % for each area
         
         % Comparison addition
         LTDdata = mir.(curArea).(curSlack).S1.Pm;
-        % find psds data by bus name
-        psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curSlack).BusName),pm_col);
-        if max(size(psdsDataNdx))>1
-            % check for multiple intersect, search by bus number
-            if debug disp(name); end
-            psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curSlack).BusNum)),psdsDataNdx);
-            if max(size(psdsDataNdx))>1
-                % check for continued multipe intersects... actually
-                % compare bus numbers
-                for dupe=1:max(size(psdsDataNdx))
-                    desc = strjoin(psds_data.Description(psdsDataNdx(dupe)));
-                    if debug disp(desc);end
-                    bus = strsplit(desc,':');
-                    bus = str2double(bus(1));
-                    if bus == mir.(curArea).(curSlack).BusNum
-                        psdsDataNdx = psdsDataNdx(dupe);
-                        break
-                    end
-                    
-                end
-            end
-        end
-        pData = psds_data.Data(:,psdsDataNdx);
-        cData = calcPdiff( t, mir, pData, LTDdata );
-        plot(tds, dsmple(cData,ds))
-        legNames{end+1} = [int2str(mir.(curArea).slackBusN(slack))];
         
+        % new find index and RMS
+        bNum = mir.(curArea).(curSlack).BusNum;
+        bName = mir.(curArea).(curSlack).BusName;
+        tarID = 1;
+        psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'pm' );
+        
+        if max(size(psdsDataNdx))==1
+            pData = psds_data.Data(:,psdsDataNdx);
+            cData = dsmple(calcPdiff( t, mir, pData, LTDdata),ds);
+            plot(tds, cData,'color',grey,'linewidth',.5)
+            legNames{end+1} = name;
+            linesPltd = linesPltd+1;
+            if sum(isnan(cData(:))) == 0
+                rSum = rSum+cData.^2;
+                lineSumd = lineSumd +1;
+            end
+        else
+            disp(name)
+        end
         
     end
     uniueGens = unique(mir.(curArea).genBusN);
@@ -88,53 +87,49 @@ for area = 1:max(size(mir.areaN)) % for each area
             curGen = ['G',int2str(GenId)];
             
             name = [int2str(mir.(curArea).genBusN(gen)),' ',int2str(GenId)];
-      
+            
             %start paste
             % Comparison addition
             LTDdata = mir.(curArea).(curGenBus).(curGen).Pm;
-            % find psds data by bus number            
-            bNN = intersect(jfind(psds_data, int2str(mir.(curArea).(curGenBus).BusNum)),jfind(psds_data, mir.(curArea).(curGenBus).BusName));
-            psdsDataNdx = intersect(bNN,pm_col);
-            if max(size(psdsDataNdx))>1
-                % check for multiple intersect, search by bus name
-                if debug disp(name); end
-                
-                psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curGenBus).BusName),psdsDataNdx);
-                if max(size(psdsDataNdx))>1
-                    % check for continued multipe intersects... actually
-                    % compare bus numbers
-                    for dupe=1:max(size(psdsDataNdx))
-                        desc = strjoin(psds_data.Description(psdsDataNdx(dupe)));
-                        if debug disp(desc);end
-                        % Should maybe check id?
-                        bus = strsplit(desc,':');
-                        bus = str2double(bus(1));
-                        if bus == mir.(curArea).(curGenBus).BusNum
-                            psdsDataNdx = psdsDataNdx(dupe);
-                            break
-                        end
-                        
-                    end
+            % Comparison and RMS
+            bNum = mir.(curArea).(curGenBus).BusNum;
+            bName = mir.(curArea).(curGenBus).BusName;
+            tarID = GenId;
+            psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'pm' );
+            
+            if max(size(psdsDataNdx))==1
+                pData = psds_data.Data(:,psdsDataNdx);
+                if isempty(pData)
+                    continue
                 end
+                cData = dsmple(calcPdiff( t, mir, pData, LTDdata),ds);
+                plot(tds, cData,'color',grey,'linewidth',.5)
+                legNames{end+1} = name;
+                linesPltd = linesPltd+1;
+                if sum(isnan(cData(:))) == 0
+                    rSum = rSum+cData.^2;
+                    lineSumd = lineSumd +1;
+                end
+            else
+                disp(name)
             end
-            if isempty(psdsDataNdx)
-                % account for un goverened generators
-                if debug disp(curGenBus);end
-                continue
-            end
-            pData = psds_data.Data(:,psdsDataNdx);
-            cData = calcPdiff( t, mir, pData, LTDdata );
-            plot(tds, dsmple(cData,ds))
-            legNames{end+1} = [name];
-            %end paste
         end
         
     end
-    if makeLegend
-        legend(legNames)
-    end
-    grid on
-    if noCase ==1
+end
+% calculate and plot RMS
+RMS = sqrt(rSum./lineSumd);
+datas = plot(tds, RMS,'color',grey,'linewidth',1.5);
+rPlot = plot(tds, RMS,'k','linewidth',1.5);
+
+if makeLegend
+    legend(legNames)
+else % make only general legend
+    dataName = [int2str(linesPltd),' Comparisons'];
+    legend([datas,rPlot],dataName,'RMS')
+end
+grid on
+if noCase ==1
         title('Percent Difference of LTD and PSDS Mechanical Power Outputs')
     else
         title({'Percent Difference of LTD and PSDS Mechanical Power Outputs'; ['Case: ', LTDCaseName]})
@@ -150,6 +145,6 @@ for area = 1:max(size(mir.areaN)) % for each area
         set(gcf,'color','w'); % to remove border of figure
         export_fig([LTDCaseName,'Pm3'],'-pdf'); % to print fig
     end
-    %% end of function
+%% end of function
 end
 

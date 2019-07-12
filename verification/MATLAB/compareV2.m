@@ -40,10 +40,15 @@ dLeg = false;
 %    makeLegend = 0;
 %end
 
+% for future RMS calcs
+linesPltd = 0;
+rSum = tds.*0;
+grey = [.75,.75,.75];
+
 %% Voltage Comparison
 figure('position',ppos)
 legNames = {};
-set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(floor(max(size(v_col)/2))))))) % to make mess of lines look nicer
+%set(gca,'ColorOrder',flipud(imcomplement(colormap(spring(floor(max(size(v_col)/2))))))) % to make mess of lines look nicer
 
 hold on
 % For id, uncomment linestyle and change make legend to 1
@@ -63,17 +68,22 @@ for area = 1:max(size(mir.areaN)) % for each area
             name = [(curArea),'.',(curSlack)];
             legNames{end+1} = ['LTD ',name];
             
-            % Comparison addition
+            % Comparison and RMS
             LTDdata = mir.(curArea).(curSlack).Vm;
-            psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curSlack).BusName),jfind(psds_data, 'vbug'));
-            if max(size(psdsDataNdx))>1
-                % check for multiple intersect
-                if debug disp(name);end
-                psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curSlack).BusNum)),psdsDataNdx);
+            bNum = mir.(curArea).(curSlack).BusNum;
+            bName = mir.(curArea).(curSlack).BusName;
+            tarID = 1;
+            psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'vmeta' );
+            
+            
+            if max(size(psdsDataNdx))==1
+                pData = psds_data.Data(:,psdsDataNdx);
+                cData = dsmple(calcDeviation( t, mir, pData, LTDdata),ds);
+                plot(tds, cData,'color',grey,'linewidth',.5)
+                
+                linesPltd = linesPltd+1;
+                rSum = rSum+cData.^2;
             end
-            pData = psds_data.Data(:,psdsDataNdx);
-            cData = calcDeviation( t, mir, pData, LTDdata );
-            plot(tds, dsmple(cData,ds))
             
         end
     end
@@ -88,15 +98,20 @@ for area = 1:max(size(mir.areaN)) % for each area
             
             % Comparison addition
             LTDdata = mir.(curArea).(curGen).Vm;
-            psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curGen).BusName),jfind(psds_data, 'vbug'));
-            if max(size(psdsDataNdx))>1
-                % check for multiple names
-                if debug disp(name);end;
-                psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curGen).BusNum)),psdsDataNdx);
+            bNum = mir.(curArea).(curGen).BusNum;
+            bName = mir.(curArea).(curGen).BusName;
+            tarID = 1;
+            psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'vmeta' );
+            
+            
+            if max(size(psdsDataNdx))==1
+                pData = psds_data.Data(:,psdsDataNdx);
+                cData = dsmple(calcDeviation( t, mir, pData, LTDdata ),ds);
+                plot(tds, cData,'color',grey,'linewidth',.5)
+                
+                linesPltd = linesPltd+1;
+                rSum = rSum+cData.^2;
             end
-            pData = psds_data.Data(:,psdsDataNdx);
-            cData = calcDeviation( t, mir, pData, LTDdata );
-            plot(tds, dsmple(cData,ds))
             
         end
     end
@@ -111,15 +126,20 @@ for area = 1:max(size(mir.areaN)) % for each area
             
             % Comparison addition
             LTDdata = mir.(curArea).(curLoadbus).Vm;
-            psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curLoadbus).BusName),jfind(psds_data, 'vbul'));
-            if max(size(psdsDataNdx))>1
-                % check for multiple intersect
-                if debug disp(name); end;
-                psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curLoadbus).BusNum)),psdsDataNdx);
+            bNum = mir.(curArea).(curLoadbus).BusNum;
+            bName = mir.(curArea).(curLoadbus).BusName;
+            tarID = 1;
+            psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'vmeta' );
+            
+            
+            if max(size(psdsDataNdx))==1
+                pData = psds_data.Data(:,psdsDataNdx);
+                cData = dsmple(calcDeviation( t, mir, pData, LTDdata ),ds);
+                plot(tds, cData,'color',grey,'linewidth',.5)
+                
+                linesPltd = linesPltd+1;
+                rSum = rSum+cData.^2;
             end
-            pData = psds_data.Data(:,psdsDataNdx);
-            cData = calcDeviation( t, mir, pData, LTDdata );
-            plot(tds, dsmple(cData,ds))
         end
     end
     
@@ -134,33 +154,32 @@ for area = 1:max(size(mir.areaN)) % for each area
             
             % Comparison addition
             LTDdata = mir.(curArea).(curXbus).Vm;
-            psdsDataNdx = intersect(jfind(psds_data, mir.(curArea).(curXbus).BusName),jfind(psds_data, 'vbus'));
-            if max(size(psdsDataNdx))>1
-                % check for multiple intersect
-                if debug disp(name); end
-                psdsDataNdx = intersect(jfind(psds_data, int2str(mir.(curArea).(curXbus).BusNum)),psdsDataNdx);
-                if max(size(psdsDataNdx))>1
-                    % check for continued multipe intersects...
-                    for dupe=1:max(size(psdsDataNdx))
-                        desc = strjoin(psds_data.Description(psdsDataNdx(dupe)));
-                        if debug disp(desc);end
-                        bus = strsplit(desc,':');
-                        bus = str2double(bus(1));
-                        if bus == mir.(curArea).(curXbus).BusNum
-                            psdsDataNdx = psdsDataNdx(dupe);
-                            break
-                        end
-                        
-                    end
-                end
+            
+            bNum = mir.(curArea).(curXbus).BusNum;
+            bName = mir.(curArea).(curXbus).BusName;
+            tarID = 1;
+            psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'vmeta' );
+            
+            
+            if max(size(psdsDataNdx))==1
                 pData = psds_data.Data(:,psdsDataNdx);
-                cData = calcDeviation( t, mir, pData, LTDdata );
-                plot(tds, dsmple(cData,ds))
+                cData = dsmple(calcDeviation( t, mir, pData, LTDdata),ds);
+                plot(tds, cData,'color',grey,'linewidth',.5)
+                
+                linesPltd = linesPltd+1;
+                rSum = rSum+cData.^2;
             end
+            
         end
         
     end
-    if makeLegend
+    % calculate and plot RMS
+    RMS = sqrt(rSum./linesPltd);
+    datas = plot(tds, RMS,'color',grey,'linewidth',1.5);
+    rPlot = plot(tds, RMS,'k','linewidth',1.5);
+    
+    
+    if makeLegend % make individual legend
         if dLeg
             if max(size(legNames)) > 15
                 loc = 'eastoutside';
@@ -174,6 +193,9 @@ for area = 1:max(size(mir.areaN)) % for each area
             legend(legNames)
         end
         grid on
+    else % make only general legend
+        dataName = [int2str(linesPltd),' Comparisons'];
+        legend([datas,rPlot],dataName,'RMSD')
     end
     grid on
     if noCase ==1
