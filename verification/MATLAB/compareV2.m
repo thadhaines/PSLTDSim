@@ -45,6 +45,7 @@ linesPltd = 0;
 rSum = tds.*0;
 grey = [.75,.75,.75];
 
+                absSum = 0;
 %% Voltage Comparison
 figure('position',ppos)
 legNames = {};
@@ -83,6 +84,7 @@ for area = 1:max(size(mir.areaN)) % for each area
                 
                 linesPltd = linesPltd+1;
                 rSum = rSum+cData.^2;
+                absSum = abs(cData)+ absSum;
             end
             
         end
@@ -111,6 +113,7 @@ for area = 1:max(size(mir.areaN)) % for each area
                 
                 linesPltd = linesPltd+1;
                 rSum = rSum+cData.^2;
+                absSum = abs(cData)+ absSum;
             end
             
         end
@@ -139,6 +142,7 @@ for area = 1:max(size(mir.areaN)) % for each area
                 
                 linesPltd = linesPltd+1;
                 rSum = rSum+cData.^2;
+                absSum = abs(cData)+ absSum;
             end
         end
     end
@@ -168,15 +172,19 @@ for area = 1:max(size(mir.areaN)) % for each area
                 
                 linesPltd = linesPltd+1;
                 rSum = rSum+cData.^2;
+                absSum = abs(cData)+ absSum;
             end
             
         end
         
     end
+end
+
     % calculate and plot RMS
     RMS = sqrt(rSum./linesPltd);
-    datas = plot(tds, RMS,'color',grey,'linewidth',1.5);
-    rPlot = plot(tds, RMS,'k','linewidth',1.5);
+    absDevMean = absSum ./ linesPltd;
+    datas = plot(tds, absDevMean,'color',grey,'linewidth',1.5);
+    rPlot = plot(tds, absDevMean,'k','linewidth',1.5);
     
     
     if makeLegend % make individual legend
@@ -195,7 +203,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         grid on
     else % make only general legend
         dataName = [int2str(linesPltd),' Comparisons'];
-        legend([datas,rPlot],dataName,'RMSD')
+        legend([datas,rPlot],dataName,'Average Absolute Deviation','location','best')
     end
     grid on
     if noCase ==1
@@ -204,7 +212,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         title({'Deviation of LTD Bus Voltage from PSDS'; ['Case: ', LTDCaseName]})
     end
     xlabel('Time [sec]')
-    ylabel('Voltage [pu]')
+    ylabel('Voltage Deviation [pu]')
     set(gca,'fontsize',bfz)
     xlim(x_lim)
     

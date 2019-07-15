@@ -19,37 +19,31 @@ ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
 
 % Six Machine
-% PSDSfileName = 'sixMachineGenTrip0.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
+% PSDSfileName = 'sixMachineGenTrip0.chf'; 
 % LTDCaseName = 'SixMachineTrip0';
-% genChange = -90; % required for ss freq to be calculated _> Use trip plot function
-% fAdj = 0;
-
-% PSDSfileName = 'sixMachineRamp1.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
+% genChange = -90;
+% 
+% PSDSfileName = 'sixMachineRamp1.chf'; 
 % LTDCaseName = 'SixMachineRamp1';
 % genChange = 0;
-% fAdj = 0;
-%
-% PSDSfileName = 'sixMachineStep1.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
+% 
+% PSDSfileName = 'sixMachineStep1.chf'; 
 % LTDCaseName = 'SixMachineStep1';
 % genChange = 0;
-% fAdj = 0;
 
+%%
 % Mini WECC
-% PSDSfileName = 'miniWECC_loadStep.chf'; % NO PSS, system goes unstable Voltages off - exciters only
-% LTDCaseName = 'miniWECC3ALTDstep'; % match PSLF
-% genChange = -0; % if system losses accounted for
-% genChange = -1200;
-% fAdj = 0;
-%
-% PSDSfileName = 'miniWECC_loadRamp.chf'; % NO PSS, system goes unstable Voltages off - exciters only
-% LTDCaseName = 'miniWECC3ALTDramp'; % match PSLF
-% genChange = -0; % if system losses accounted for
-% fAdj = 0;
+% PSDSfileName = 'miniWECC_loadStep.chf'; % 
+% LTDCaseName = 'miniWECC3ALTDstep'; %
+% genChange = 0;
 
-PSDSfileName = 'miniWECC_genTrip027.chf'; % turning GEN ON, couldn't figute out PSDS simulation - doesn't work right
-LTDCaseName = 'miniWECCgenTrip027';
-genChange = -201.9; % required for ss freq to be calculated _> Use trip plot function - Doesn't match theoretical...
-%%fAdj = (300*6.5)/mir.Hsys;
+PSDSfileName = 'miniWECC_loadRamp.chf'; % 
+LTDCaseName = 'miniWECC3ALTDramp'; % 
+genChange = -0; % 
+
+% PSDSfileName = 'miniWECC_genTrip027.chf'; % 
+% LTDCaseName = 'miniWECCgenTrip027';
+% genChange = -201.9; 
 
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'F']};
@@ -57,24 +51,21 @@ load(cases{1}) % 2 sec
 mir = eval(cases{1});
 clear eval(cases{1})
 
-fAdj = (300*6.5)/mir.Hsys;
-systemLossAdj = mir.Pe(1)-mir.Pe(end);
-genChange = genChange + systemLossAdj;
-
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 
-%% external Plot Functions
+%% Initial not super useful plots
 % compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
-% %
-% compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia, fAdj used for this
 
+%% Frequency plots
+%compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+%compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj, genChange) % doesn't handle changes in inertia, fAdj used for this
+compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 %% Deviation plots
 compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

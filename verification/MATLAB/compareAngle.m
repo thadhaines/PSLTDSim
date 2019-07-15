@@ -47,14 +47,17 @@ for areaN =1:max(size(mir.areaN))
     if max(size(mir.(curArea).slackBusN)) > 0
         slackNum = ['S',int2str(mir.(curArea).slackBusN)];
         slackName = mir.(curArea).(slackNum).BusName;
+        bNum = mir.(curArea).(slackNum).BusNum;
+        bName = mir.(curArea).(slackNum).BusName;
+        tarID = 1;
+        psdsDataNdx = findPSDSndx(psds_data, bNum, bName, tarID, 'abug' );
+        break
     end % if area has slackBusN
 end % for each area in mirror
-    
+
 %% find where ameta and slack name intersect
-slackInt = intersect(ag_col,jfind(psds_data,slackName));
+slackAng = psds_data.Data(:,psdsDataNdx);
 
-
-slackAng = psds_data.Data(:,slackInt);
 %% plot
 figure('position',ppos)
 legNames ={};

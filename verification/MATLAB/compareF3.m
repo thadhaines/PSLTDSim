@@ -1,9 +1,8 @@
-function [  ] = compareWfreq( mir, psds_data, varargin )
-%compareWfreq Compare LTD mirror and psds simulation data
+function [  ] = compareF3( mir, psds_data, varargin )
+%compareF3 Compare LTD mirror and psds simulation data
 %   optional inputs: case name, print figs, figure size
-%   PSDS angles need to have the reference subtracted from them to be centered
-%   around 0
-fAdj = 0;%(300*6.5)/mir.Hsys; % ghetto fix to created gen trip plots
+%   Handles trips (change of weights for ave freq), and system losses
+
 % Handle optional inputs
 if nargin == 2
     printFigs = 0;
@@ -35,10 +34,13 @@ t = psds_data.Data(:,1); % PSDS time
 f_col = jfind(psds_data, 'fbu');
 
 ds = varargin{4}
-fAdj = varargin{5}
+genChange = varargin{5}
+
+
+grey = [.75,.75,.75];
 %% Calculate weighted freq
 Hsys = mir.Hss;
-weightedF = zeros(size(psds_data.Data(:,1),1),1)-fAdj;
+weightedF = zeros(size(psds_data.Data(:,1),1),1);
 for area = 1:max(size(mir.areaN)) % for each area
     if debug
         fprintf('area %d\n',mir.areaN(area) )
@@ -48,7 +50,14 @@ for area = 1:max(size(mir.areaN)) % for each area
     for slack = 1:max(size(mir.(curArea).slackBusN))
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
         psdsName = mir.(curArea).(curSlack).BusName;
-        weight = mir.(curArea).(curSlack).S1.Hpu*mir.(curArea).(curSlack).S1.Mbase;
+        
+        % consider only generators that stay on entire sim
+        genSt = mir.(curArea).(curSlack).S1.St;
+        if all(genSt, 1)
+        weight = mir.(curArea).(curSlack).S1.Hpu * mir.(curArea).(curSlack).S1.Mbase;
+        else
+            weight = 0;
+        end
         a = jfind(psds_data, psdsName);
         genFloc = intersect(a,f_col);
         if size(genFloc,2) >1
@@ -65,7 +74,15 @@ for area = 1:max(size(mir.areaN)) % for each area
         for GenId = 1:mir.(curArea).(curGenBus).Ngen
             curGen = ['G',int2str(GenId)];
             psdsName = [int2str(mir.(curArea).(curGenBus).BusNum),':',mir.(curArea).(curGenBus).BusName];
-            weight = mir.(curArea).(curGenBus).(curGen).Hpu*mir.(curArea).(curGenBus).(curGen).Mbase;
+            
+            % consider only generators that stay on entire sim
+        genSt = mir.(curArea).(curGenBus).(curGen).St;
+        if all(genSt, 1)
+        weight = mir.(curArea).(curGenBus).(curGen).Hpu * mir.(curArea).(curGenBus).(curGen).Mbase;
+        else
+            weight = 0;
+        end
+        
             a = jfind(psds_data, psdsName);
             genFloc = intersect(a,f_col);
             if size(genFloc,2) >1
@@ -86,7 +103,7 @@ for area = 1:max(size(mir.areaN))
 end
 
 sbase = mir.Sbase;
-deltaP = mir.Pe(1)-mir.Pe(end); % load change
+deltaP = genChange + mir.Pe(1)-mir.Pe(end); % load change
 %deltaP = -212.5 + deltaP % specific to miniWECC gen trip 0
 deltaFpu = deltaP/sbase*(1/beta);
 ssPu = 1 + deltaFpu;
@@ -97,11 +114,26 @@ ssF = ssPu*60;
 figure('position',ppos)
 
 hold on
-plot(dsmple(t,ds), dsmple(weightedF*60,ds) ,'color', [0 1 0],'linewidth',1.5)
-plot(mir.t, mir.f*60 , 'm-.','linewidth',2)
-line([mir.t(1) mir.t(end)],[ssF,ssF],'linestyle',':','color',[.3 0 .7],'linewidth',1)
+% plot all freq
+numF = 0;
+for freq=1:max(size(f_col)-1)
+    plot(dsmple(t,ds), dsmple(psds_data.Data(:,f_col(freq)),ds),'color',grey,'linewidth',.5,'HandleVisibility','off') % all others
+    numF = numF +1;
+end
+plot(dsmple(t,ds), dsmple(psds_data.Data(:,f_col(size(f_col,2))), ds),'color',grey,'linewidth',1) % last Freq
+numF = numF +1;
+numFstr = [int2str(numF),' PSDS'];
 
-legend({'Weighted PSDS','LTD','Theoretical SS'},'location','best')
+
+% weighted psds
+plot(dsmple(t,ds), dsmple(weightedF*60,ds) ,'k','linewidth',1.75)
+
+% LTD
+plot(mir.t, mir.f*60 , 'm','linewidth',1.5)
+% Theoretical SS
+line([mir.t(1) mir.t(end)],[ssF,ssF],'linestyle','--')%,'color',[0,1,1],'linewidth',1) %[.3 0 .7]
+
+legend({numFstr,'Weighted PSDS','LTD','Theoretical SS'},'location','best')
 xlim(x_lim)
 grid on
 if noCase ==1
@@ -116,7 +148,7 @@ set(gca,'fontsize',bfz)
 % pdf output code
 if printFigs
     set(gcf,'color','w'); % to remove border of figure
-    export_fig([LTDCaseName,'AveF'],'-pdf'); % to print fig
+    export_fig([LTDCaseName,'F3'],'-pdf'); % to print fig
 end
 
 %% split out PSDS data corresponding to LTD points and plot Hz difference
@@ -154,6 +186,10 @@ figure('position',ppos)
 hold on
 
 plot(mir.t, abs(mir.f -mirA(1).PSDSf)*60, 'm','linewidth',.5)
+% % LTDdata =  mir.f;
+% % pData = weightedF;
+% % hold on
+% % plot( t, abs(calcDeviation(t, mir, pData, LTDdata)*60 ))
 %legend({'LTD 2 sec','LTD 1 sec','LTD 0.5 sec','LTD 0.25 sec'},'location','northeast')
 xlim(x_lim)
 grid on

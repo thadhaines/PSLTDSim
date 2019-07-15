@@ -39,6 +39,7 @@ rSum = tds.*0;
 grey = [.75,.75,.75];
 lineSumd = 0;
 
+                absSum = 0;
 %% Pe  Comparison
 figure('position',ppos)
 legNames ={};
@@ -72,6 +73,7 @@ for area = 1:max(size(mir.areaN)) % for each area
             linesPltd = linesPltd+1;
             if sum(isnan(cData(:))) == 0
                 rSum = rSum+cData.^2;
+                absSum = abs(cData)+ absSum;
                 lineSumd = lineSumd +1;
             end
         else
@@ -106,6 +108,7 @@ for area = 1:max(size(mir.areaN)) % for each area
                 linesPltd = linesPltd+1;
                 if sum(isnan(cData(:))) == 0
                 rSum = rSum+cData.^2;
+                absSum = abs(cData)+ absSum;
                 lineSumd = lineSumd +1;
             end
             else
@@ -119,14 +122,15 @@ for area = 1:max(size(mir.areaN)) % for each area
 end
 % calculate and plot RMS
 RMS = sqrt(rSum./lineSumd);
-datas = plot(tds, RMS,'color',grey,'linewidth',1.5);
-rPlot = plot(tds, RMS,'k','linewidth',1.5);
+    absDevMean = absSum ./ linesPltd;
+datas = plot(tds, absDevMean,'color',grey,'linewidth',1.5);
+rPlot = plot(tds, absDevMean,'k','linewidth',1.5);
 
 if makeLegend
     legend(legNames)
 else % make only general legend
     dataName = [int2str(linesPltd),' Comparisons'];
-    legend([datas,rPlot],dataName,'RMSD','location','best')
+    legend([datas,rPlot],dataName,'Average Absolute Percent Difference','location','best')
 end
 grid on
 if noCase ==1
@@ -138,6 +142,8 @@ if noCase ==1
     xlabel('Time [sec]')
     ylabel('Percent Difference [%]')
     set(gca,'fontsize',bfz)
+    set(gca,'GridLineStyle','--')
+    set(gca, 'GridAlpha', .07)
     xlim(x_lim)
     
     % pdf output code

@@ -32,8 +32,8 @@ bfz = 13;
 t = psds_data.Data(:,1); % PSDS time
 
 % funtion specific 
-ds = varargin{4};
-genChange = varargin{5};
+ds = varargin{4}
+genChange = varargin{5}
 
 f_col = jfind(psds_data, 'fbu');
 
@@ -67,7 +67,7 @@ plot(mir.t, mir.f*60 , 'w','linewidth',1.5,'HandleVisibility','off')
 plot(mir.t, mir.f*60 , 'm-.','linewidth',2)
 line([mir.t(1) mir.t(end)],[ssF,ssF],'linestyle',':','color',[.3 0 .7],'linewidth',1)
 
-legend({'PSDS','PSDS','LTD','Theoretical SS'},'location','southeast')
+legend({'PSDS','PSDS','LTD','Theoretical SS'},'location','best')
 xlim(x_lim)
 grid on
 if noCase ==1

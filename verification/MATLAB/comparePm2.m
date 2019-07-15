@@ -39,6 +39,7 @@ rSum = tds.*0;
 grey = [.75,.75,.75];
 lineSumd = 0;
 
+                absSum = 0;
 %% Pm  Comparison
 figure('position',ppos)
 legNames ={};
@@ -72,6 +73,7 @@ for area = 1:max(size(mir.areaN)) % for each area
             linesPltd = linesPltd+1;
             if sum(isnan(cData(:))) == 0
                 rSum = rSum+cData.^2;
+                absSum = abs(cData)+ absSum;
                 lineSumd = lineSumd +1;
             end
         else
@@ -108,6 +110,7 @@ for area = 1:max(size(mir.areaN)) % for each area
                 linesPltd = linesPltd+1;
                 if sum(isnan(cData(:))) == 0
                     rSum = rSum+cData.^2;
+                absSum = abs(cData)+ absSum;
                     lineSumd = lineSumd +1;
                 end
             else
@@ -119,14 +122,16 @@ for area = 1:max(size(mir.areaN)) % for each area
 end
 % calculate and plot RMS
 RMS = sqrt(rSum./lineSumd);
-datas = plot(tds, RMS,'color',grey,'linewidth',1.5);
-rPlot = plot(tds, RMS,'k','linewidth',1.5);
+
+absDevMean = absSum ./ lineSumd;
+datas = plot(tds, absDevMean,'color',grey,'linewidth',1.5);
+rPlot = plot(tds, absDevMean,'k','linewidth',1.5);
 
 if makeLegend
     legend(legNames)
 else % make only general legend
     dataName = [int2str(linesPltd),' Comparisons'];
-    legend([datas,rPlot],dataName,'RMSD')
+    legend([datas,rPlot],dataName,'Average Absolute Deviation','location','best')
 end
 grid on
 if noCase ==1
@@ -136,7 +141,7 @@ else
 end
 
 xlabel('Time [sec]')
-ylabel('Power [MW]')
+ylabel('Power Deviation [MW]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
 

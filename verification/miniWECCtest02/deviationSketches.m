@@ -102,13 +102,13 @@ pData = psds_data.Data(:,dataNDX);
 t = psds_data.Data(:,1);
 ppos = [18 312 1252 373];
 bfz = 13;
-
+grey = [0.75,0.75,0.75]./1.5;
 figure('position',ppos)
 
 subplot(1,3,1)
 plot(t, pData,'k','linewidth',.85)
 hold on
-stairs(mir.t, ltdData ,'m-o','linewidth',1.1)
+stairs(mir.t, ltdData ,'m','linewidth',1.1)
 set(gca,'fontsize',bfz)
 grid on
 xlim(x_lim)
@@ -118,17 +118,17 @@ xlabel('Time [sec]')
 
 cData = calcDeviation( t, mir, pData, ltdData );
 subplot(1, 3, 2) 
-plot(t,cData,'m','linewidth',.85)
+plot(t,cData,'color',grey,'linewidth',.85)
 grid on
 xlim(x_lim)
-ylabel('Deviation [MW]')
+ylabel('Power Deviation [MW]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
 title('Examples of Comparison Plots')
 
 subplot(1,3,3) 
 cData = calcPdiff( t, mir, pData, ltdData );
-plot(t,cData,'m','linewidth',.85)
+plot(t,cData,'color',grey,'linewidth',.85)
 grid on
 xlim(x_lim)
 ylabel('Percent Difference [%]')
