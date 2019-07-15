@@ -13,6 +13,12 @@ class GeneratorAgent(object):
         self.Busnam = newGen.GetBusName()
         self.Busnum = newGen.GetBusNumber()
         self.Scanbus = newGen.GetScanBusIndex()
+        self.globalSlack = False
+        self.areaSlack = False
+
+        # Used for BA distribution 
+        self.distType = None 
+        self.ACEpFactor = None
 
         # Characteristic Data
         self.Mbase = ltd.data.single2float(newGen.Mbase)
@@ -25,22 +31,23 @@ class GeneratorAgent(object):
         self.Vsched = ltd.data.single2float(newGen.Vcsched) # This value seems unused in PSLF
 
         # Current Status
-        self.St = int(newGen.St)
-        self.IRP_flag = 1       # Inertia response participant flag
-        self.Pe = ltd.data.single2float(newGen.Pgen)   # Generated Power
-        self.Pm = self.Pe       # Initialize as equal
-        self.Pset = self.Pe
-        self.Q = ltd.data.single2float(newGen.Qgen)    # Q generatred
-
-        # debug testing ltd.data.single2float
-        #print('(PSLF) newGen.Pgen = ', newGen.Pgen)
-        #print(type(newGen.Pgen))
-        #print('(LTD)  self.Pe = ', self.Pe)
-        #print(type(self.Pe))
+        self.cv={
+            'IRPflag': False,      # Inertia response participant flag...
+            'P0' : ltd.data.single2float(newGen.Pgen),
+            'Pe' : ltd.data.single2float(newGen.Pgen),   # Generated Power
+            'Pm' : ltd.data.single2float(newGen.Pgen),   # Initialize as equal
+            'Pref' : ltd.data.single2float(newGen.Pgen), # Steady state init
+            'Q' : ltd.data.single2float(newGen.Qgen),    # Q generatred
+            'SCE' : 0.0,
+            'St' : int(newGen.St),
+            }
 
         # PSLF dynamic models
         self.machine_model = False
         self.gov_model = False
+
+        # Children
+        self.Timer = {}
         
     def __repr__(self):
         """Display more useful data for mirror"""
@@ -50,9 +57,13 @@ class GeneratorAgent(object):
         tag1 =  "<%s object at %s> " % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "%s %s" %(str(self.Busnum).zfill(3), self.Busnam)
+        tag2 = "%s %s '%s'" %( self.Busnam, str(self.Busnum), self.Id)
 
         return(tag1+tag2)
+
+    def calcSCE(self):
+        """ Calculate Station Control Error (if < 0, more power required) """
+        self.cv['SCE'] = self.cv['Pe'] - self.cv['P0']
 
     def getPref(self):
         """Return reference to PSLF object"""
@@ -61,15 +72,25 @@ class GeneratorAgent(object):
     def getPvals(self):
         """Make current status reflect PSLF values"""
         pObj = self.getPref()
-        self.Pe = ltd.data.single2float(pObj.Pgen)
-        self.Q = ltd.data.single2float(pObj.Qgen)
-        self.St = int(pObj.St)
+        
+        self.cv['Pe'] = ltd.data.single2float(pObj.Pgen)
+        self.cv['Q'] = ltd.data.single2float(pObj.Qgen)
+        self.cv['St'] = int(pObj.St)
 
     def setPvals(self):
         """Send current mirror values to PSLF"""
         pObj = self.getPref()
-        pObj.Pgen = self.Pe
-        pObj.St = self.St
+        pObj.Pgen = self.cv['Pe']*self.cv['St']
+
+        if pObj.St != self.cv['St']:
+            # a change in status has occured
+            if self.cv['St'] == 0:
+                pObj.SetOutOfService()
+                if self.mirror.debug: print('setting out of service....')
+                pObj.Pgen = 0.0
+            elif self.cv['St'] == 1:
+                pObj.SetInService()
+            pObj.St = self.cv['St']
         pObj.Save()
 
     def makeAMQPmsg(self):
@@ -78,58 +99,60 @@ class GeneratorAgent(object):
                'AgentType': 'Generator',
                'Busnum':self.Busnum,
                'Id': self.Id,
-               'Pe': self.Pe,
-               'Pm': self.Pm,
-               'Q': self.Q,
-               'St':self.St,
+               'Pe': self.cv['Pe'],
+               'Pm': self.cv['Pm'],
+               'Pref' : self.cv['Pref'],
+               'Q': self.cv['Q'],
+               'St':self.cv['St'],
                }
         return msg
 
     def recAMQPmsg(self,msg):
         """Set message values to agent values"""
-        self.Pe = msg['Pe']
-        self.Pm = msg['Pm']
-        self.Q = msg['Q']
-        self.St = msg['St']
+        self.cv['Pe'] = msg['Pe']
+        self.cv['Pm'] = msg['Pm']
+        self.cv['Pref'] = msg['Pref']
+        self.cv['Q'] = msg['Q']
+        self.cv['St'] = msg['St']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
 
-    def recDynamicMsg(self,msg):
-        """Update machine dynamics from new dyd model information"""
-        # will require resetting machine H and system H tot....
-        pass
-
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
-        self.r_Pm = [0.0]*self.mirror.dataPoints
         self.r_Pe = [0.0]*self.mirror.dataPoints
-        self.r_Pset = [0.0]*self.mirror.dataPoints
+        self.r_Pm = [0.0]*self.mirror.dataPoints
+        self.r_Pref = [0.0]*self.mirror.dataPoints
         self.r_Q = [0.0]*self.mirror.dataPoints
+        self.r_SCE = [0.0]*self.mirror.dataPoints
         self.r_St = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Step to record log history"""
-        self.r_Pe[self.mirror.c_dp] = self.Pe
-        self.r_Pm[self.mirror.c_dp] = self.Pm
-        self.r_Pset[self.mirror.c_dp] = self.Pset
-        self.r_Q[self.mirror.c_dp] = self.Q
-        self.r_St[self.mirror.c_dp] = self.St
+        n = self.mirror.cv['dp']
+        self.r_Pe[n] = self.cv['Pe'] * float(self.cv['St'])
+        self.r_Pm[n] = self.cv['Pm'] * float(self.cv['St'])
+        self.r_Pref[n] = self.cv['Pref']
+        self.r_Q[n] = self.cv['Q'] * float(self.cv['St'])
+        self.r_SCE[n] = self.cv['SCE']
+        self.r_St[n] = self.cv['St']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
         self.r_Pe = self.r_Pe[:N]
         self.r_Pm = self.r_Pm[:N]
-        self.r_Pset = self.r_Pset[:N]
+        self.r_Pref = self.r_Pref[:N]
         self.r_Q  =self.r_Q[:N]
+        self.r_SCE = self.r_SCE[:N]
         self.r_St = self.r_St[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
         d = {'Pe': self.r_Pe,
              'Pm': self.r_Pm,
-             'Pset': self.r_Pset,
+             'Pref': self.r_Pref,
              'Q': self.r_Q,
              'St': self.r_St,
+             'SCE' : self.r_SCE,
              'Mbase' : self.Mbase,
              'Hpu' : self.Hpu,
              'Slack' : 0,

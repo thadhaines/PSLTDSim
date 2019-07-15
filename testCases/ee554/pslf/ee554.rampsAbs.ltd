@@ -1,0 +1,5 @@
+# LTD simulation models / perturbances
+# Similar format to dyd files.
+# Commented and empty lines are ignored during parsing.
+# Absolute ramping of load p
+load 3 : "pertType" ramp "pertTarget" P "startTime" 2 "RAtime" 6 "RAval" 90 "RAtype" abs "holdtime" 6 "RBtime" 4 "RBval" 100 "RBtype" abs

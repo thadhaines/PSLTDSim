@@ -25,7 +25,7 @@ if debug:
 ltd.init_PSLF(locations)
 
 # Create system mirror
-mir = ltd.mirror.Mirror(locations, simParams, simNotes, debug, AMQPdebug)
+mir = ltd.mirror.Mirror(locations, simParams, simNotes, debug, AMQPdebug, debugTimer)
 IPY.mirror = mir
 
 # Export mirror to specified location

@@ -32,6 +32,9 @@ def saveMirror(mir, simParams):
 
     import contextlib
     import shelve
+    #import dbm # not on windows
+    #dbm._defaultmod = dbm.ndbm
+
     with contextlib.closing(shelve.open(savName, 'c')) as shelf:
         shelf['mir'] = mir
     #pickle.dump(mir, f)

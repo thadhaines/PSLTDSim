@@ -16,21 +16,36 @@ format long;
 PSDSfileName = 'miniWECC_loadStep.chf'
 
 %% import LTD data
-load('miniWECC_loadStep01F.mat')
-mir1 = miniWECC_loadStep01F;
-clear miniWECC_loadStep01F
+% load('miniWECC_loadStep01F.mat')
+% mir1 = miniWECC_loadStep01F;
+% clear miniWECC_loadStep01F
+% 
+% load('miniWECC_loadStep02F.mat')
+% mir2 = miniWECC_loadStep02F;
+% clear miniWECC_loadStep02F
+% 
+% load('miniWECC_loadStep03F.mat')
+% mir3 = miniWECC_loadStep03F;
+% clear miniWECC_loadStep03F
+% 
+% load('miniWECC_loadStep04F.mat')
+% mir4 = miniWECC_loadStep04F;
+% clear miniWECC_loadStep04F
+load('miniWECCstep0F.mat')
+mir1 = miniWECCstep0F;
+clear miniWECCstep0F
 
-load('miniWECC_loadStep02F.mat')
-mir2 = miniWECC_loadStep02F;
-clear miniWECC_loadStep02F
+load('miniWECCstep1F.mat')
+mir2 = miniWECCstep1F;
+clear miniWECCstep1F
 
-load('miniWECC_loadStep03F.mat')
-mir3 = miniWECC_loadStep03F;
-clear miniWECC_loadStep03F
+load('miniWECCstep2F.mat')
+mir3 = miniWECCstep2F;
+clear miniWECCstep2F
 
-load('miniWECC_loadStep04F.mat')
-mir4 = miniWECC_loadStep04F;
-clear miniWECC_loadStep04F
+load('miniWECCstep3F.mat')
+mir4 = miniWECCstep3F;
+clear miniWECCstep3F
 
 %% import PSDS data
 psds_data = udread(PSDSfileName,[]);

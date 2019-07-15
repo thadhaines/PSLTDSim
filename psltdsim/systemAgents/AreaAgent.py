@@ -16,23 +16,62 @@ class AreaAgent(object):
         #self.Nxfmr = len(col.BranchDAO.FindByArea(self.Area))
 
         # Children
+        self.Branch = []
         self.Gens = []
         self.Load = []
         self.Slack = []
         self.Machines = []
+        self.PowerPlant = []
         self.Bus = []
         self.Shunt = []
-        self.Branch = []
-        self.SVD = []
+        self.Timer ={}
+        self.BA = None
+        self.AreaSlack = None
+        #self.SVD = []
 
         # Current Timestep values
-        self.Pe = 0.0
-        self.Pm = 0.0
-        self.P = 0.0
-        self.Q = 0.0
+        self.cv={
+            'Pe' : 0.0,
+            'Pm' : 0.0,
+            'P' : 0.0, # Load
+            'Q' : 0.0, # Load
+            'SCEsum' : 0.0, # maybe not useful
+            'IC0' : 0, # scheduled interchange
+            'IC' :0,    # current area interchange
+            'ICerror' :0,
+            }
 
-        #TODO: Add mor ACE variables?
+        #Area Frequency response Characteristic
         self.beta = 0.0
+
+    def sumSCE(self):
+        """ Sum station control error in area """
+        #NOTE: Not really station control error
+        self.cv['SCEsum'] = 0.0
+        for mach in self.Machines:
+            self.cv['SCEsum'] += mach.cv['SCE']
+
+    def calcICerror(self):
+        """ Calculate Interchange Error """
+        self.cv['IC'] = self.cv['Pe'] - self.cv['P']
+        self.cv['ICerror'] = self.cv['IC'] - self.cv['IC0']
+
+    def initIC(self):
+        """ Initiate Interchange Value (if <0, Importing Power)"""
+        self.cv['IC'] = self.cv['Pe'] - self.cv['P']
+        self.cv['IC0'] = self.cv['IC']
+
+    def calcBeta(self):
+        """Calculate Beta (area frequency response characteristic)"""
+        self.beta = 0.0
+        #for each machine
+        for mach in self.Machines:
+            #if machine has a gov
+            if mach.gov_model:
+                # convert droops to system base
+                Rnew = mach.gov_model.R*self.mirror.Sbase/mach.gov_model.Mbase
+                #sum 1/droop
+                self.beta += 1.0/Rnew
 
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
@@ -40,13 +79,20 @@ class AreaAgent(object):
         self.r_Pm = [0.0]*self.mirror.dataPoints
         self.r_P = [0.0]*self.mirror.dataPoints
         self.r_Q = [0.0]*self.mirror.dataPoints
+        self.r_SCEsum = [0.0]*self.mirror.dataPoints
+        self.r_IC = [0.0]*self.mirror.dataPoints
+        self.r_ICerror = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Put current values into log"""
-        self.r_Pe[self.mirror.c_dp] = self.Pe
-        self.r_Pm[self.mirror.c_dp] = self.Pm
-        self.r_P[self.mirror.c_dp] = self.P
-        self.r_Q[self.mirror.c_dp] = self.Q
+        n = self.mirror.cv['dp']
+        self.r_Pe[n] = self.cv['Pe']
+        self.r_Pm[n] = self.cv['Pm']
+        self.r_P[n] = self.cv['P']
+        self.r_Q[n] = self.cv['Q']
+        self.r_SCEsum[n] = self.cv['SCEsum']
+        self.r_IC[n] = self.cv['IC']
+        self.r_ICerror[n] = self.cv['ICerror']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
@@ -54,6 +100,9 @@ class AreaAgent(object):
         self.r_Pm = self.r_Pm[:N]
         self.r_P = self.r_P[:N]
         self.r_Q = self.r_Q[:N]
+        self.r_SCEsum = self.r_SCEsum[:N]
+        self.r_IC = self.r_IC[:N]
+        self.r_ICerror = self.r_ICerror[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
@@ -63,7 +112,11 @@ class AreaAgent(object):
              'Pe' : self.r_Pe,
              'Pm' : self.r_Pm,
              'P' : self.r_P,
-             'Q' : self.Q,
+             'Q' : self.r_Q,
+             'beta' : self.beta,
+             'SCEsum' : self.r_SCEsum,
+             'IC' : self.r_IC,
+             'ICerror' : self.r_ICerror,
              }
         return d
 
@@ -109,14 +162,4 @@ class AreaAgent(object):
 
         return 0
 
-    def calcBeta(self):
-        """Calculate Beta (area frequency response characteristic)"""
-        self.beta = 0.0
-        #for each machine
-        for mach in self.Machines:
-            #if machine has a gov
-            if mach.gov_model:
-                # convert droops to system base
-                Rnew = mach.gov_model.R*self.mirror.Sbase/mach.gov_model.Mbase
-                #sum 1/droop
-                self.beta += 1.0/Rnew
+

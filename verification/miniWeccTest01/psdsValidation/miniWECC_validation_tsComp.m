@@ -76,16 +76,15 @@ bfz = 13;
 figure('position',ppos)
 axes('ColorOrder',flipud(imcomplement(colormap(spring)))) % to make mess of lines look nicer
 hold on
-plot(t, psds_data.Data(:,f_col(1))/60,'linewidth',1.5)
+plot(t, psds_data.Data(:,f_col(1)),'linewidth',1.5)
 
 for freq=2:max(size(f_col)-1)
-    plot(t, psds_data.Data(:,f_col(freq))/60 ,'HandleVisibility','off')
+    plot(t, psds_data.Data(:,f_col(freq)) ,'HandleVisibility','off')
 end
-plot(mir4.t, mir4.f, 'k:','linewidth',1)
-plot(mir4.t, mir4.f, 'w','linewidth',3,'HandleVisibility','off')
-plot(t, psds_data.Data(:,f_col(size(f_col,2)))/60,'linewidth',1.5)
-plot(mir4.t, mir4.f, 'm-.','linewidth',2)
-legend({'PSDS','PSDS','PSDS','LTD'},'location','southeast')
+plot(mir4.t, mir4.f*60, 'w','linewidth',3,'HandleVisibility','off')
+plot(t, psds_data.Data(:,f_col(size(f_col,2))),'linewidth',1.5)
+plot(mir4.t, mir4.f*60, 'm-.','linewidth',2)
+legend({'PSDS','PSDS','LTD'},'location','southeast')
 
 xlim(x_lim)
 grid on

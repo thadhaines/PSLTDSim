@@ -24,148 +24,231 @@ print('Current Working Directory: %s' % os.getcwd())
 #os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
 #print(os.getcwd())
 
-# for extended terminal output
-debug = 0
-AMQPdebug = 0
+# List of simulation parameter .py files:
+batchList =[
 
-simNotes = """
+    # initial tgov1 testing
+    #r".\testCases\ee554\ee554noGovStepUp.py",
+    #r".\testCases\ee554\ee554noGovStepDown.py",
+    #r".\testCases\ee554\ee554noGovStepss.py",
+    #r".\testCases\ee554\ee5541GovSteps.py", #*
+    #r".\testCases\ee554\ee5542GovSteps.py",
 
-MiniWECC run to investigate functionality of dev code
-"""
+    # Perturbance from ltd file testing
+    #r".\testCases\ee554\ee5541GovRampARel.py",
+    #r".\testCases\ee554\ee5541GovRampAPer.py",
+    #r".\testCases\ee554\ee5541GovRampAAbs.py",
+    #r".\testCases\ee554\ee5541GovRampsPer.py",
+    #r".\testCases\ee554\ee5541GovRampsAbs.py",
+    #r".\testCases\ee554\ee5541GovRampsGens.py",
+    #r".\testCases\ee554\ee554PrefStep.py", #*
+    #r".\testCases\ee554\see554PmStepRamp.py", #*
 
-# Simulation Parameters Dictionary
-simParams = {
-    'timeStep': 0.5,
-    'endTime': 90,
-    'slackTol': 1,
-    'Hsys' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
-    'Dsys' : 0.0, # PU; TODO: Incoroporate into simulation (probably)
+    # AMQP Message grouping speedup Tests
+    #r".\testCases\miniWECCstepGroupA.py",
+    #r".\testCases\miniWECCstepGroupB.py",
+    #r".\testCases\miniWECCstepGroupC.py",
 
-    # Mathematical Options
-    'freqEffects' : 1, # w in swing equation will not be assumed 1 if this is true
-    'integrationMethod' : 'rk45',
+    #r".\testCases\kundur\kundurLoadRamp0.py",# 2 area, 1 slack ramp down
+    #r".\testCases\kundur\kundurLoadRamp1.py",
+    #r".\testCases\kundur\kundurLoadRamp2.py",
+    #r".\testCases\kundur\kundurLoadRamp3.py",
 
-    # Data Export Parameters
-    'fileDirectory' : "\\delme\\miniWeccTest01\\", # relative path from cwd
-    'fileName' : 'miniWECC_loadStep0b',
+    #r".\testCases\kundur\kundurLoadStep0.py",# 2 area, 1 slack 
+    #r".\testCases\kundur\kundurLoadStep1.py",
+    #r".\testCases\kundur\kundurLoadStep2.py",
+    #r".\testCases\kundur\kundurLoadStep3.py",
 
-    'exportFinalMirror': 1, # Export mirror with all data
-    'exportMat': 1, # if IPY: requies exportDict == 1 to work
-    'exportDict' : 0, # when using python 3 no need to export dicts.
-    }
+    #r".\testCases\kundurLoadStepShunt0.py", #*
+    #r".\testCases\kundurLoadRampBranch0.py", #*
 
-# Fast debug case switching
-# TODO: MAYBE enable new dyd replacement... maybe already handled?
-test_case = 2
+    # simple gen trips
+    #r".\testCases\kundur\kundurGenTrip00.py",
+    #r".\testCases\kundur\kundurGenTrip01.py",
+    #r".\testCases\kundur\kundurGenTrip02.py",
+    #r".\testCases\kundur\kundurGenTrip03.py",
 
-if test_case == 0:
-    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.BigUpStep.ltd"]
-elif test_case == 'bigUp':
-    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.BigUpStep.ltd"]
-elif test_case == 'bigDown':
-    savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.excNoGov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.BigDownStep.ltd"]
-elif test_case == 'noGovSteps':
-    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.excNoGov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
-elif test_case == 'tGovSteps':
-    savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.exc1Gov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.steps.ltd"]
-elif test_case == 'tGov2Steps':
-    savPath = r"C:\LTD\pslf_systems\eele554\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ee554.exc2Gov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ee554.steps.ltd"]
-elif test_case == 'tGovRamp':
-    savPath = r"C:\LTD\pslf_systems\eele554\tgov\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.exc1Gov.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\tgov\ee554.ramp.ltd"]
-elif test_case == 1:
-    savPath = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microBusData.sav"
-    dydPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\MicroWECC_PSLF\microWECC_loadStep.ltd"]
+    # more complex gen trip off/on and ramp pm
+    #r".\testCases\kundur\kundurGenTrip22.py", #*
+    
+    # All six machine simulations seem to work correctly
+    # Six Machine
+    #r".\testCases\sixMachine\sixMachineStep2.py",
+    #r".\testCases\sixMachine\sixMachineStep3.py",
+    #r".\testCases\sixMachine\sixMachineStep4.py",
+    #r".\testCases\sixMachine\sixMachineStep5.py", # step Pm of gov gen
 
-elif test_case == 2:
-    savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
-    dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_loadStep.ltd"]
-elif test_case == 'miniCrash':
-    savPath = r"C:\LTD\pslf_systems\MiniPSLF_PST\dmini-v3c1_RJ7_working.sav"
-    dydPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_LTD.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_miniCrash.ltd"]
+    #r".\testCases\sixMachine\sixMachineRamp2.py",
+    #r".\testCases\sixMachine\sixMachineRamp3.py",
 
-elif test_case == 3:
-    # Will no longer run due to parser errors
-    savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav"
-    dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWecc.dyd"]
-elif test_case == 4:
-    savPath = r"C:\LTD\pslf_systems\GE_ex\g4_a1.sav"
-    dydPath = [r"C:\LTD\pslf_systems\GE_ex\g4_a.dyd",
-               r"C:\LTD\pslf_systems\GE_ex\g4_a.ltd", #pgov1 on slacks
-               ]
-elif test_case == 5: # testing of ggov casting
-    savPath = r"C:\LTD\pslf_systems\eele554\ggov1\ee554.sav"
-    dydPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.ggov1.dyd"]
-    ltdPath = [r"C:\LTD\pslf_systems\eele554\ggov1\ee554.BigUpStep.ltd"]
+    # Six Machine Trips
+    #r".\testCases\sixMachine\sixMachineTrip01.py", # Gen trip off/on
+    #r".\testCases\sixMachine\sixMachineBTrip0.py", # Branch Tripping off
+    #r".\testCases\sixMachine\sixMachineTrip2.py", # Branch Tripping off/on
+    #r".\testCases\sixMachine\sixMachineTrip1.py", # Gen 'trip' on - can't get PSLF to do the thing...
+    
+    # six machine BA testing
+    #r".\testCases\sixMachine\sixMachineStepBA.py",
+    #r".\testCases\sixMachine\sixMachineStepBA0.py",
+    #r".\testCases\sixMachine\sixMachineStepBA1.py",
+    #r".\testCases\sixMachine\sixMachineStepBA2.py",
+    #r".\testCases\sixMachine\sixMachineStepBA3.py",
+    #r".\testCases\sixMachine\sixMachineStepBA4.py",
+    
+    # mini wecc tests - Confirmed working 7/9/19
+    #r".\testCases\miniWECC\miniWECCstep0.py",
+    #r".\testCases\miniWECC\miniWECCstep1.py",
+    #r".\testCases\miniWECC\miniWECCstep2.py",
+    #r".\testCases\miniWECC\miniWECCstep3.py",
 
-# Handle undefined ltdPath
-if not 'ltdPath' in dir(): 
-    ltdPath = None
+    #r".\testCases\miniWECC\miniWECCcrash.py",
 
-# Required Paths Dictionary
-locations = {
-    # path to folder containing middleware dll (default behavior)
-    'middlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
-    # path to folder containing PSLF license (default behavior)
-    'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
-    'savPath' : savPath,
-    'dydPath': dydPath,
-    'ltdPath' : ltdPath,
-    }
-del savPath, dydPath, ltdPath, test_case
+    #r".\testCases\miniWECC\miniWECCgenTrip0.py",
 
-# Code Start
-ltd.terminal.dispCodeTitle()
+    # Multi Area miniWECC
+    #r".\testCases\miniWECC3Area\miniWECC3A00.py", # simple step (unscaled system)
+    #r".\testCases\miniWECC3Area\miniWECC3A0.py", # simple step
+    #r".\testCases\miniWECC3Area\miniWECC3A1.py", # BA response, TLB type 2
+    #r".\testCases\miniWECC3Area\miniWECC3A2.py", # BA response, TLB type 0
 
-# Init PY3 AMQP
-init_start = time.time()
-host = '127.0.0.1'
-PY3 = ltd.amqp.AMQPAgent('PY3',host)
+    # Final Validations
+    #r".\testCases\sixMachine\sixMachineStep1.py",
+    #r".\testCases\sixMachine\sixMachineRamp1.py",
+    #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
 
-# Clear AMQP queues
-ltd.amqp.clearQ(host, ['toPY3', 'toIPY'])
+    #r".\testCases\miniWECCLTD\miniWECC3Astep.py"
+    #r".\testCases\miniWECCLTD\miniWECC3Aramp.py"
+    #r".\testCases\miniWECCLTD\miniWECCgenTrip0.py"
 
-# create and send init msg
-initMsg = {'msgType': 'init',
-           'locations': locations,
-           'simParams': simParams,
-           'simNotes': simNotes,
-           'debug': debug,
-           'AMQPdebug' : AMQPdebug,
-           }
-PY3.send('toIPY', initMsg)
+    # BA research with AGC
+    r".\testCases\BA_tests\miniWECC3A0.py", # BA response, TLB type 0, -1000 MW gen in area 3
+    #r".\testCases\BA_tests\miniWECC3A1.py", # BA response, TLB type 2, -1000 MW gen in area 3
 
-# Start IPY - assumes ironpython on path
-cmd = "ipy32 IPY_PSLTDSim.py"
-ipyProc = subprocess.Popen(cmd)
+    #r".\testCases\BA_tests\miniWECC3A2.py", # BA response, TLB type 2, + 400MW wind in area 1
+    #r".\testCases\BA_tests\miniWECC3A3.py", # BA response, TLB type 2, + 400MW wind in area 2
+    r".\testCases\BA_tests\miniWECC3A4.py", # BA response, TLB type 0, + 400MW wind in area 1
+    r".\testCases\BA_tests\miniWECC3A5.py", # BA response, TLB type 0, + 400MW wind in area 2
 
-# Wait for mirror message
-PY3.receive('toPY3',PY3.redirect)
-print(mir)
-PY3.mirror = mir
+            ]
 
-## begin PY3 simulation loop 
-ltd.runSimPY3(mir, PY3)
+# Batch Run Parameters
+dispResults = False
+dispTiming = True
+makePlot = True
 
-# Additional post simulation operations
-ltd.terminal.dispSimResults(mir)
-ltd.terminal.dispSimTandC(mir)
-#ltd.plot.allPmDynamics(mir)
-#ltd.plot.sysPePmFLoad(mir)
+# Batch run counters
+case = 0
+failed = 0
+failedTestCase = []
+crashedTestCase = []
+batchStart = time.time()
+waitTime = 0.0
 
+for testCase in batchList:
+    fail = False
+    case+=1
+
+    exec(open(testCase).read());
+    ltd.terminal.dispCodeTitle()
+
+    # override debugs
+    #debug = 1
+    #AMQPdebug = 1
+    #debugTimer = 1
+
+    print('*** Case {}/{}'.format(case, len(batchList)))
+    print('*** %s' % testCase)
+    print('\n*** Checking simulation files...')
+    userFiles = [savPath] + dydPath + [ltdPath]
+    for fileLoc in (userFiles):
+        if not os.path.isfile(fileLoc):
+            print('*** Test Case Fail: %s' % testCase)
+            print('File does not exist: ' + fileLoc)
+            failedTestCase.append( testCase + '\nFile does not exist: ' + fileLoc)
+            fail = True
+    if fail:
+        failed += 1
+        continue
+    
+    # Required Paths Dictionary
+    locations = {
+        # path to folder containing middleware dll (default behavior)
+        'middlewareFilePath': r"C:\Program Files (x86)\GE PSLF\PslfMiddleware" ,
+        # path to folder containing PSLF license (default behavior)
+        'pslfPath':  r"C:\Program Files (x86)\GE PSLF",
+        'savPath' : savPath,
+        'dydPath': dydPath,
+        'ltdPath' : ltdPath,
+        }
+
+    # Init PY3 AMQP
+    print('*** Initializing AMQP...')
+    init_start = time.time()
+    host = '127.0.0.1'
+    PY3 = ltd.amqp.AMQPAgent('PY3',host)
+
+    # Clear AMQP queues
+    ltd.amqp.clearQ(host, ['toPY3', 'toIPY'])
+
+    # create and send init msg
+    initMsg = {'msgType': 'init',
+               'locations': locations,
+               'simParams': simParams,
+               'simNotes': simNotes,
+               'debug': debug,
+               'AMQPdebug' : AMQPdebug,
+               'debugTimer' : debugTimer,
+               }
+    PY3.send('toIPY', initMsg)
+
+    # Start IPY - assumes ironpython on path
+    print('*** Creating IPY process...')
+    cmd = "ipy32 IPY_PSLTDSim.py"
+    ipyProc = subprocess.Popen(cmd)
+
+    # Wait for mirror message
+    print('*** Waiting for mirror...')
+    PY3.receive('toPY3',PY3.redirect)
+    print(mir)
+    PY3.mirror = mir
+
+    # begin PY3 simulation loop 
+    ltd.runSimPY3(mir, PY3)
+    # ensure IPY closes
+    ipyProc.kill()
+
+    if mir.sysCrash:
+        crashedTestCase.append(testCase)
+
+    # Additional optional post simulation outputs
+    if dispResults:
+        ltd.terminal.dispSimResults(mir)
+    if dispTiming:
+        ltd.terminal.dispSimTandC(mir)    
+    if makePlot:
+        # only hold for last plot
+        if case == len(batchList):
+            wait_start = time.time()
+            print('\n*** Waiting for plot to close...')
+            ltd.plot.sysPQVF(mir, False)
+            ltd.plot.sysPePmFLoad(mir, True)
+            waitTime += time.time() - wait_start
+        else:
+            ltd.plot.sysPQVF(mir, False)
+            ltd.plot.sysPePmFLoad(mir ,False)
+
+# End of Batch Output
+batchTime = time.time() - batchStart - waitTime
+print('\n*** Successfully ran %d/%d Test Cases in %.2f seconds.' % (case-failed, 
+                                                     len(batchList),
+                                                     batchTime))
+
+if len(crashedTestCase) > 0:
+    print('\n*** Crashed Test Cases:')
+    for case in crashedTestCase:
+        print(case)
+
+if len(failedTestCase) > 0:
+    print('\n*** Failed Test Cases:')
+    for case in failedTestCase:
+        print(case)

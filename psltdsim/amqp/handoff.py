@@ -1,9 +1,11 @@
 def handoff(mirror,msg):
     """Handle PY3<->IPY handoff messages"""
-    compTol = 1E-4 # comparison tolerance to compare floats
+    compTol = 1E-3 # comparison tolerance to compare floats
     hType = msg['HandoffType']
 
     if hType == 'PY3toIPY':
+        # Handle flat start flag
+        mirror.flatStart = msg['flatStart']
         # calc deltaP_pert and Pacc
         # Sum system loads to Account for any load changes from Perturbances
         mirror.prevPload = mirror.ss_Pload

@@ -3,16 +3,48 @@ def runSimPY3(mirror, amqpAgent):
     print("*** runSimPY3 start")
     PY3 = amqpAgent
 
-    # parse LTD to handle ltd models and perturbances
-    if mirror.locations['ltdPath']:
-        ltd.parse.parseLtd(mirror, mirror.locations['ltdPath'])
 
     # Initialize PY3 specific Dynamics
     ltd.mirror.initPY3Dynamics(mirror)
 
-    # calculate area f response characteristic (beta)
+    # calculates all area P (required for IC init)
+    ltd.mirror.sumLoad(mirror) 
+    ltd.mirror.sumPe(mirror)
+
+    # calculate area f response characteristic (beta), and interchange ( IC )
     for area in mirror.Area:
         area.calcBeta()
+        area.initIC()
+
+    # Place for user input 'code' to be run (timer defs, pp, BA, DTC, etc... )
+    mirror.ppDict = {}
+    if 'ltdPath' in mirror.locations:
+        exec(open(mirror.locations['ltdPath']).read());
+
+    # parse LTD to handle perturbances
+    if hasattr(mirror, 'sysPerturbances'):
+        ltd.parse.parseLtd(mirror, mirror.sysPerturbances)
+
+    # if defined Power Plants, pass each entry to agent class
+    if hasattr(mirror, 'sysPowerPlants'):
+        for name in mirror.sysPowerPlants:
+            ltd.systemAgents.PowerPlantAgent(mirror, name, mirror.sysPowerPlants[name])
+
+    # Create any defined Balancing Authorities
+    if hasattr(mirror, 'sysBA'):
+        for name in mirror.sysBA:
+            BAtype = mirror.sysBA[name]['Type'].split(":")[0].strip()
+            if BAtype.lower() == 'tlb':
+                ltd.BAAgents.TLB(mirror, name, mirror.sysBA[name])
+        # Add BAs to Log
+        mirror.Log += mirror.BA
+
+    # Create Timers # NOTE: more of a debug than a useful thing -> Timers will be created by DTC
+    """
+    if hasattr(mirror, 'TimerInput'):
+        for timer in mirror.TimerInput:
+            ltd.systemAgents.TimerAgent(mir,timer, mirror.TimerInput[timer]) 
+    """
 
     print("\n*** Starting Simulation (PY3)")
     sim_start = time.time()
@@ -24,7 +56,7 @@ def runSimPY3(mirror, amqpAgent):
     for agent in mirror.Log:
         agent.initRunningVals()
 
-    # Initalization value of Pe for [c_dp-1] functionality
+    # Initalization value of Pe for [...cv['dp']-1] functionality
     # NOTE: python does negative indexing, 
     # These values are appeneded now and popped once simulation ends
     mirror.r_ss_Pe.append(ltd.mirror.sumPe(mirror))
@@ -33,63 +65,83 @@ def runSimPY3(mirror, amqpAgent):
     mirror.r_fdot.append(0.0)
 
     # Start Simulation loop
-    while (mirror.c_t <= mirror.endTime) and mirror.simRun:
+    while (mirror.cv['t'] <= mirror.endTime) and mirror.simRun:
         if mirror.debug:
-            print("\n*** Data Point %d" % mirror.c_dp)
-            print("*** Simulation time: %.2f" % (mirror.c_t))
+            print("\n*** Data Point %d" % mirror.cv['dp'])
+            print("*** Simulation time: %.2f" % (mirror.cv['t']))
         else:
-            print("Simulation Time: %7.2f   " % mirror.c_t), # to print dots each step
+            print("Simulation Time: %7.2f   " % mirror.cv['t']), # to print dots each step
 
         # Step System Wide dynamics
         ltd.mirror.combinedSwing(mirror, mirror.ss_Pacc)
-        if mirror.c_f <= 0.0:
+        if mirror.cv['f'] <= 0.0:
             # check for unreal frequency
-            mirror.N = mirror.c_dp - 1
+            mirror.N = mirror.cv['dp'] - 1
             mirror.sysCrash = True
             break;
+
+        # Calculate SCE
+        # NOTE: Not really SCE -> eqution needs reworking...
+        for mach in mirror.Machines:
+            mach.calcSCE()
+        
+        # Calculate Interchange and Station Control error for all areas
+        for area in mirror.Area:
+            area.sumSCE()
+            area.calcICerror()
+
+        # Calculate ACE (BA step)
+        for ba in mirror.BA:
+            ba.step()
+        # Step any created AGC ramps
+        for AGCramp in mirror.AGCramp:
+            AGCramp.step()
+
+        # Step Timers (should probably happen when Time is stepped [below...])
+
+        # Step Definite Time Controllers
 
         # Step Individual Agent Dynamics
         dynamic_start = time.time()
         for dynamicX in mirror.Dynamics:
             dynamicX.stepDynamics()
         mirror.DynamicTime += time.time()- dynamic_start
-        
+
+        # Send grouped AMQP messages to IPY (3/23/19 covers dynamic changes)
+        msgcounter = 0
+        msg = []
         # set pe = pm (dynamic action)
         for machineX in mirror.Machines:
-            machineX.Pe = machineX.Pm
-            # Send AMQP message to IPY (3/23/19 covers dynamic changes)
+            machineX.cv['Pe'] = machineX.cv['Pm']            
+            msg.append(machineX.makeAMQPmsg())
+            msgcounter+=1
+
+            if (msgcounter % mirror.PY3msgGroup) == 0:
+                # send message if group limit achieved
+                send_start = time.time()
+                PY3.send('toIPY', msg)
+                mirror.PY3SendTime += time.time()-send_start
+                mirror.PY3msgs +=1
+                msg = [] # reset msg
+
+        if len(msg) > 0:
+            # send any group remainder messages
             send_start = time.time()
-            PY3.send('toIPY',machineX.makeAMQPmsg())
-            send_end = time.time()
-            mirror.PY3SendTime += send_end-send_start
-            mirror.PY3msgs+=1
-
-        #Using Grouping - seems to cause slow down...
-        """
-        # set pe = pm (dynamic action)
-        for machineX in mirror.Machines:
-            machineX.Pe = machineX.Pm
-
-        machMsg = ltd.amqp.makeGroupMsg(mirror.Machines)
-        send_start = time.time()
-        PY3.send('toIPY',machMsg)
-        send_end = time.time()
-        mirror.PY3SendTime += send_end-send_start
-        mirror.PY3msgs+=1
-        """
+            PY3.send('toIPY', msg)
+            mirror.PY3SendTime += time.time()-send_start
+            mirror.PY3msgs +=1
 
         # Initialize Pertrubance delta
         mirror.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
         mirror.ss_Pert_Qdelta = 0.0 # intended for system loss calculations
 
-        # Step Perturbance Agents
+        # Step Perturbance Agents and AGC ramps
         for pertX in mirror.Perturbance:
             if pertX.step():
                 #if perturbance takes action, upday IPY
                 send_start = time.time()
                 PY3.send('toIPY', pertX.mObj.makeAMQPmsg())
-                send_end = time.time()
-                mirror.PY3SendTime += send_end-send_start
+                mirror.PY3SendTime += time.time() -send_start
                 mirror.PY3msgs+=1
 
         # Sum system loads to Account for any load changes from Perturbances
@@ -101,21 +153,22 @@ def runSimPY3(mirror, amqpAgent):
         # Calculate current system Pacc
         mirror.ss_Pacc = (
             mirror.ss_Pm 
-            - mirror.r_ss_Pe[mirror.c_dp-1] # Most recent PSLF sum
+            - mirror.r_ss_Pe[mirror.cv['dp']-1] # Most recent PSLF sum
             - mirror.ss_Pert_Pdelta
             )
             
-        # Find current system Pacc Delta
-        # NOTE: unused variable as of 2/2/19
-        mirror.r_Pacc_delta[mirror.c_dp] = mirror.ss_Pacc - mirror.r_ss_Pacc[mirror.c_dp-1]
+        # Find current system Pacc Delta....
+        # NOTE: unused variable as of 2/2/19 -> if div by ts= Pacc dot... i.e. Jerk...
+        mirror.r_Pacc_delta[mirror.cv['dp']] = mirror.ss_Pacc - mirror.r_ss_Pacc[mirror.cv['dp']-1]
 
         Hmsg = {'msgType' : 'Handoff',
                'HandoffType': 'PY3toIPY',
                'Pacc':mirror.ss_Pacc,
                'Pert_Pdelta': mirror.ss_Pert_Pdelta,
+               'flatStart' : mirror.flatStart,
                }
         PY3.send('toIPY', Hmsg)
-
+        mirror.flatStart = 0
         tic = time.time()
         PY3.receive('toPY3',PY3.redirect)
         mirror.PY3RecTime += time.time() - tic
@@ -124,14 +177,18 @@ def runSimPY3(mirror, amqpAgent):
             # break out of while loop
             break
 
+        # Step timers
+        for timerName in mirror.Timer:
+            mirror.Timer[timerName].step()
+
         # step log of Agents with ability
-        for agentX in mirror.Log:
-            agentX.logStep()
+        for agent in mirror.Log:
+            agent.logStep()
 
         # step time and data point
-        mirror.r_t[mirror.c_dp] = mirror.c_t
-        mirror.c_dp += 1
-        mirror.c_t += mirror.timeStep
+        mirror.r_t[mirror.cv['dp']] = mirror.cv['t']
+        mirror.cv['dp'] += 1
+        mirror.cv['t'] += mirror.timeStep
 
     print("_______________________")
     print("    Simulation Complete\n")
@@ -148,9 +205,9 @@ def runSimPY3(mirror, amqpAgent):
         mirror.r_fdot.pop(len(mirror.r_fdot)-1)
 
         # Handle appeneded data in dynamic models
-        for dyn in mirror.Dynamics:
-            if dyn.appenedData:
-                dyn.popUnsetData(mirror.c_dp)
+        for agent in (mirror.Dynamics + mirror.Filter):
+            if agent.appenedData:
+                agent.popUnsetData(mirror.cv['dp'])
 
     if not mirror.sysCrash:
         PY3.send('toIPY',{'msgType' : 'endSim'})

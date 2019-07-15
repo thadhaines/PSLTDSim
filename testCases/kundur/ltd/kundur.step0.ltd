@@ -1,0 +1,7 @@
+# LTD simulation models / perturbances
+# Attribute name case sensitive.
+# Commented and empty lines are ignored during parsing.
+# Double quoted variable names in model parameters also ignored
+
+# Perturbances
+load 9 : step P 2 30 per

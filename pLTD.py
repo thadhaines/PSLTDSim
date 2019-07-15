@@ -9,22 +9,99 @@ import psltdsim as ltd
 
 dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
-mirLoc = os.path.join(dirname, 'delme','miniWeccTest01','miniWECC_loadStep0bF.mir')
-mir = ltd.data.readMirror(mirLoc)
+mirLoc = os.path.join(dirname, 'delme','kundurGenTrip2','kundurGenTrip22F.mir')
+mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
 
+mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA4F.mir')
+mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A0F.mir')
+mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A1F.mir')
+mirLoc = os.path.join(dirname, 'delme','BA','miniWECC3A2F.mir')
+
+mir = ltd.data.readMirror(mirLoc)
+ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
+printFigs = False
+#ltd.plot.sysPQVF(mir, 0)
+#ltd.plot.sysPePmFLoad(mir, 1)
+mini = 1 # rethink - use to scale width of figures
+
+#xend = 60
+caseName = mir.simParams['fileName'][:-1]
+# Plot controlled machines Pref and Pm
+for BA in mir.BA:
+    fig, ax = plt.subplots()
+    for gen in BA.ctrlMachines:
+        ax.plot(mir.r_t, gen.r_Pm,linestyle = '-',linewidth=1,
+                label = r'$P_m$  '+str(gen.Busnum)+' '+gen.Id  )
+        ax.plot(mir.r_t, gen.r_Pref,linestyle = '--',linewidth=1.5,
+                label = r'$P_{ref}$ '+str(gen.Busnum)+' '+gen.Id  )
+        
+    ax.set_title(r'Area '+str(gen.Area)+ ' Controlled Machines $P_m$ and $P_{ref}$')
+    ax.set_xlim(0,xend)
+    ax.set_ylabel('MW')
+    ax.set_xlabel('Time [sec]')
+    ax.legend(loc=5)
+    ax.grid(True)
+    fig.set_dpi(150)
+    fig.set_size_inches(9/mini, 2.5)
+    fig.tight_layout()
+    plt.show(block=False)
+    if printFigs: plt.savefig(caseName+BA.name+'.pdf', dpi=300)
+    plt.pause(0.00001) # required for true non-blocking print...
+
+#Plot Interchange Error and ACE on same plot
+fig, ax = plt.subplots()
+for BA in mir.BA:
+    ax.plot(mir.r_t, BA.r_ACE, linewidth=1,
+            label= BA.name+' ACE')
+    if BA.filter != None:
+        ax.plot(mir.r_t, BA.r_ACEfilter, linewidth=1.25,linestyle=":",
+                label= BA.name+' SACE')
+    ax.plot(mir.r_t, BA.Area.r_ICerror, linewidth=1.5,
+            linestyle='--',
+            label= BA.name +' IC Error')
+ax.set_title('Balancing Authority ACE and Interchange Error')
+ax.set_xlim(0,xend)
+ax.set_ylabel('MW')
+ax.set_xlabel('Time [sec]')
+ax.legend(loc=10)
+ax.grid(True)
+fig.set_dpi(150)
+fig.set_size_inches(9/mini, 2.5)
+fig.tight_layout()
+plt.show(block=False)
+if printFigs: plt.savefig(caseName+'ACE'+'.pdf', dpi=300)
+plt.pause(0.00001)
+
+#Plot System Frequency
+fig, ax = plt.subplots()
+fig.set_size_inches(6, 2)
+ax.plot(mir.r_t, np.array(mir.r_f)*60.0,linewidth=1,)
+ax.set_title('System Frequency')
+ax.set_ylabel('Hz')
+ax.set_xlabel('Time [sec]')
+ax.set_xlim(0,xend)
+#ax.legend()
+ax.grid(True)
+fig.set_dpi(150)
+fig.set_size_inches(9/mini, 2.5)
+fig.tight_layout()
+if printFigs: plt.savefig(caseName+'Freq'+'.pdf', dpi=300)
+plt.show()
+plt.pause(0.00001)
 
 print(mir)
 #ltd.plot.sysLoad(mir, False)
+#ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
+#ltd.plot.sysPLQF(mir, False)
+
+#ltd.plot.allPmDynamics(mir, False)
+
 #ltd.plot.sysPLQF(mir, True)
 
-
-#ltd.plot.sysPQgen(mir, False)
-#ltd.plot.sysPQVF(mir, True)
-
-#ltd.plot.sysVmVa(mir, True)
+# Plot ACE results
 
 """
 for gen in mir.Machines:

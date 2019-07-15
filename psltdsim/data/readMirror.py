@@ -6,10 +6,12 @@ def readMirror(fileLocation):
     import pickle as pickle
 
     #f = open(fileLocation,"rb")
+
     import shelve
     import contextlib
     with contextlib.closing(shelve.open(fileLocation, 'r')) as shelf:
         mir = shelf['mir']
+    
     #shelf['mir'] = mir
     
     #mir = pickle.load(f)

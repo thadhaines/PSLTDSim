@@ -13,7 +13,6 @@ class ShuntAgent(object):
         self.Id = str(newShunt.Id)
         
         # Properties
-        self.St = int(newShunt.St)
         self.B = ltd.data.single2float(newShunt.B) # PU Capacitance
         self.G = ltd.data.single2float(newShunt.G) # PU Inductance
         
@@ -26,6 +25,14 @@ class ShuntAgent(object):
         self.TBusnam = str(newShunt.GetToBusName())
         self.TBusnum = int(newShunt.GetToBusNumber())
         self.Tkv = ltd.data.single2float(newShunt.GetToBusBasekv())
+
+        # Current Status
+        self.cv={
+            'St' : int(newShunt.St),
+            }
+
+        # Children
+        self.Timer ={}
 
     def __repr__(self):
         #Display more useful data for mirror
@@ -40,3 +47,59 @@ class ShuntAgent(object):
         tag3 = "%s %s" %(str(self.TBusnum).zfill(3), self.TBusnam)
 
         return(tag1+tag2+' to '+tag3)
+
+    def getPref(self):
+        """Return reference to PSLF object"""
+        return col.ShuntDAO.FindBusShunt(self.Bus.Scanbus, self.Id)
+
+    def getPvals(self):
+        """Make current status reflect PSLF values"""
+        pObj = self.getPref()
+        self.cv['St'] = int(pObj.St)
+
+    def setPvals(self):
+        """Set PSLF values"""
+        pObj = self.getPref()
+        pObj.St = int(self.cv['St'])
+        pObj.Save()
+
+    def makeAMQPmsg(self):
+        """Make AMQP message to send cross process"""
+        msg = {'msgType' : 'AgentUpdate',
+               'AgentType': 'Shunt',
+               'Busnum':self.Bus.Extnum,
+               'Id': self.Id,
+               'St': int(self.cv['St']),
+               }
+        return msg
+
+    def recAMQPmsg(self,msg):
+        """Set message values to agent values"""
+        self.cv['St'] = int(msg['St'])
+        if self.mirror.AMQPdebug: 
+            print('AMQP values set!')
+
+    def initRunningVals(self):
+        """Initialize history values of mirror agent"""
+        self.r_St = [0.0]*self.mirror.dataPoints
+        self.r_Q = [0.0]*self.mirror.dataPoints
+
+    def logStep(self):
+        """Step to record log history"""
+        n = self.mirror.cv['dp']
+        self.r_St[n] = self.cv['St']
+        # Running Q is positive for Capacitive MVARS
+        self.r_Q[n] = (self.B*self.mirror.Sbase - self.G*self.mirror.Sbase)*self.cv['St']
+        
+    def popUnsetData(self,N):
+        """Erase data after N from non-converged cases"""
+        self.r_St = self.r_St[:N]
+        self.r_Q = self.r_Q[:N]
+
+    def getDataDict(self):
+        """Return collected data in dictionary form"""
+        d = {
+             'St': self.r_St,
+             'Q' : self.r_Q,
+             }
+        return d
