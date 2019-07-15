@@ -23,11 +23,11 @@ ds = 30; % number of samples to skip in PSDS data plots
 % LTDCaseName = 'SixMachineTrip0';
 % genChange = -90;
 % 
-% PSDSfileName = 'sixMachineRamp1.chf'; 
+% PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
 % LTDCaseName = 'SixMachineRamp1';
 % genChange = 0;
 % 
-% PSDSfileName = 'sixMachineStep1.chf'; 
+% PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
 % LTDCaseName = 'SixMachineStep1';
 % genChange = 0;
 
@@ -37,9 +37,9 @@ ds = 30; % number of samples to skip in PSDS data plots
 % LTDCaseName = 'miniWECC3ALTDstep'; %
 % genChange = 0;
 
-PSDSfileName = 'miniWECC_loadRamp.chf'; % 
-LTDCaseName = 'miniWECC3ALTDramp'; % 
-genChange = -0; % 
+% PSDSfileName = 'miniWECC_loadRamp.chf'; % 
+% LTDCaseName = 'miniWECC3ALTDramp'; % 
+% genChange = -0; % 
 
 % PSDSfileName = 'miniWECC_genTrip027.chf'; % 
 % LTDCaseName = 'miniWECCgenTrip027';

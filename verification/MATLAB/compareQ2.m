@@ -38,7 +38,7 @@ linesPltd = 0;
 rSum = tds.*0;
 grey = [.75,.75,.75];
 
-                absSum = 0;
+absSum = 0;
 %% Pe  Comparison
 figure('position',ppos)
 legNames ={};
@@ -71,7 +71,7 @@ for area = 1:max(size(mir.areaN)) % for each area
             legNames{end+1} = name;
             linesPltd = linesPltd+1;
             rSum = rSum+cData.^2;
-                absSum = abs(cData)+ absSum;
+            absSum = abs(cData)+ absSum;
         else
             disp(name)
         end
@@ -127,23 +127,23 @@ else % make only general legend
     legend([datas,rPlot],dataName,'Average Absolute Deviation','location','best')
 end
 grid on
-  if noCase ==1
-        title('Deviation of LTD Reactive Power Output from PSDS')
-    else
-        title({'Deviation of LTD Reactive Power Output from PSDS'; ['Case: ', LTDCaseName]})
-    end
-    
-    xlabel('Time [sec]')
-    ylabel('Power Deviation [MVAR]')
-    set(gca,'fontsize',bfz)
-    xlim(x_lim)
-    
-    % pdf output code
-    if printFigs
-        set(gcf,'color','w'); % to remove border of figure
-        export_fig([LTDCaseName,'Q2'],'-pdf'); % to print fig
-    endfig([LTDCaseName,'Pe2'],'-pdf'); % to print fig
+if noCase ==1
+    title('Deviation of LTD Reactive Power Output from PSDS')
+else
+    title({'Deviation of LTD Reactive Power Output from PSDS'; ['Case: ', LTDCaseName]})
 end
+
+xlabel('Time [sec]')
+ylabel('Power Deviation [MVAR]')
+set(gca,'fontsize',bfz)
+xlim(x_lim)
+
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'Q2'],'-pdf'); % to print fig
+end
+
 %% end of function
 end
 
