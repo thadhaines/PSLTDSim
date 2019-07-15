@@ -3,7 +3,7 @@ Purpose:  Use Python 3 and PSLF to simulate long-term power system dynamics.
 
 Examples of long-term dynamics:  
 1. A 20 minute wind ramp causes a governor action response that in turn affects the area control error (ACE), and is later corrected by automatic generator control (AGC [a.k.a. load frequency control or LFC]). 
-1. A Generator is tripped in an area that is importing power. Governor action from other areas will respond before AGC works to restore tie-line balance.
+2. A Generator is tripped in an area that is importing power. Governor action from other areas will respond before AGC works to restore tie-line balance.
 
 Warning: Work in progress - everything may be broken. Nothing guaranteed.
 
@@ -13,14 +13,20 @@ Requires IronPython (32 bit) to be on system path.
 
 ## What this code does:
   -Uses an agent-based approach to power system modeling.
+  
   -Creates a time sequence of power flows while accounting for combined system frequency, all generator mechanical powers and associated staes, and balancing authority ACE.
+  
   -Uses the PSLF system model format and power flow solver.
+  
   -Communicates with PSLF via Ironpython.
+  
   -Reads PSLF dyd files and creates python equivalents of one governor (tgov1).
 
 ## What this code doesn't do:
   -Implement a generic governor for models that are not fully created in Python (i.e. anything besides tgov1).
+  
   -Use definite time controllers to change the status of agents in the system according to user programmable logic.
+  
   -Handle tripping of any generator (power-flow solution diverges).
 
 ## Notes:
