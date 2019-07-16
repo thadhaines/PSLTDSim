@@ -15,12 +15,13 @@ mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
 mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA4F.mir')
 mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A0F.mir')
 mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A1F.mir')
-mirLoc = os.path.join(dirname, 'delme','BA','miniWECC3A2F.mir')
+mirLoc = os.path.join(dirname, 'delme','BA','miniWECC3A5F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
-printFigs = False
+printFigs = True
+
 #ltd.plot.sysPQVF(mir, 0)
 #ltd.plot.sysPePmFLoad(mir, 1)
 mini = 1 # rethink - use to scale width of figures
@@ -28,19 +29,35 @@ mini = 1 # rethink - use to scale width of figures
 #xend = 60
 caseName = mir.simParams['fileName'][:-1]
 # Plot controlled machines Pref and Pm
+mins = np.array(mir.r_t)/60.0;
+minEnd = max(mins)
+firstPlot = True
+
 for BA in mir.BA:
     fig, ax = plt.subplots()
     for gen in BA.ctrlMachines:
-        ax.plot(mir.r_t, gen.r_Pm,linestyle = '-',linewidth=1,
-                label = r'$P_m$  '+str(gen.Busnum)+' '+gen.Id  )
-        ax.plot(mir.r_t, gen.r_Pref,linestyle = '--',linewidth=1.5,
+        normVal = gen.r_Pm[0]
+        ax.plot(mins, np.array(gen.r_Pm)/normVal, linestyle = '-',linewidth=1,
+                label = r'$P_m$  '+str(gen.Busnum)+' '+gen.Id+' Norm: '+str(round(normVal,2))  )
+        ax.plot(mins, np.array(gen.r_Pref)/normVal, linestyle = '--',linewidth=1.5,
                 label = r'$P_{ref}$ '+str(gen.Busnum)+' '+gen.Id  )
         
-    ax.set_title(r'Area '+str(gen.Area)+ ' Controlled Machines $P_m$ and $P_{ref}$')
-    ax.set_xlim(0,xend)
-    ax.set_ylabel('MW')
-    ax.set_xlabel('Time [sec]')
-    ax.legend(loc=5)
+    if firstPlot:
+        # Scale current axis.
+        box = ax.get_position()
+        boxW = box.width * 1.05
+        firstPlot = False
+
+    ax.set_position([box.x0, box.y0, boxW, box.height])
+
+    # Put a legend to the right of the current axis
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    ax.set_title(r'Area '+str(gen.Area)+' ('+ BA.name + ') Controlled Machines $P_m$ and $P_{ref}$ \n Case: ' + caseName)
+    ax.set_xlim(0,minEnd)
+    ax.set_ylabel('Normalized % Change [MW]')
+    ax.set_xlabel('Time [minutes]')
+    #ax.legend(loc=0)
     ax.grid(True)
     fig.set_dpi(150)
     fig.set_size_inches(9/mini, 2.5)
@@ -52,19 +69,27 @@ for BA in mir.BA:
 #Plot Interchange Error and ACE on same plot
 fig, ax = plt.subplots()
 for BA in mir.BA:
-    ax.plot(mir.r_t, BA.r_ACE, linewidth=1,
+    ax.plot(mins, BA.r_ACE, linewidth=1,
             label= BA.name+' ACE')
     if BA.filter != None:
-        ax.plot(mir.r_t, BA.r_ACEfilter, linewidth=1.25,linestyle=":",
+        ax.plot(mins, BA.r_ACEfilter, linewidth=1.25,linestyle=":",
                 label= BA.name+' SACE')
-    ax.plot(mir.r_t, BA.Area.r_ICerror, linewidth=1.5,
+    ax.plot(mins, BA.Area.r_ICerror, linewidth=1.5,
             linestyle='--',
             label= BA.name +' IC Error')
-ax.set_title('Balancing Authority ACE and Interchange Error')
-ax.set_xlim(0,xend)
+# Scale current axis.
+#box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 1.05, box.height])
+
+# Put a legend to the right of the current axis
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+ax.set_title('Balancing Authority ACE and Interchange Error\n Case: ' + caseName)
+ax.set_xlim(0,minEnd)
 ax.set_ylabel('MW')
-ax.set_xlabel('Time [sec]')
-ax.legend(loc=10)
+ax.set_xlabel('Time [minutes]')
+
+#ax.legend(loc=0)
 ax.grid(True)
 fig.set_dpi(150)
 fig.set_size_inches(9/mini, 2.5)
@@ -76,11 +101,11 @@ plt.pause(0.00001)
 #Plot System Frequency
 fig, ax = plt.subplots()
 fig.set_size_inches(6, 2)
-ax.plot(mir.r_t, np.array(mir.r_f)*60.0,linewidth=1,)
-ax.set_title('System Frequency')
+ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1,)
+ax.set_title('System Frequency\n Case: ' + caseName)
 ax.set_ylabel('Hz')
-ax.set_xlabel('Time [sec]')
-ax.set_xlim(0,xend)
+ax.set_xlabel('Time [minutes]')
+ax.set_xlim(0,minEnd)
 #ax.legend()
 ax.grid(True)
 fig.set_dpi(150)
