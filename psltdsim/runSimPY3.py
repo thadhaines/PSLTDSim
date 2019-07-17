@@ -70,7 +70,8 @@ def runSimPY3(mirror, amqpAgent):
             print("\n*** Data Point %d" % mirror.cv['dp'])
             print("*** Simulation time: %.2f" % (mirror.cv['t']))
         else:
-            print("Simulation Time: %7.2f   " % mirror.cv['t']), # to print dots each step
+            #print("Simulation Time: %7.2f   " % mirror.cv['t']), # to print dots each step
+            print("Simulation Time:%4d Minutes%3d Seconds   " % (mirror.cv['t']//60, mirror.cv['t']%60 ) ), # to print dots each step
 
         # Step System Wide dynamics
         ltd.mirror.combinedSwing(mirror, mirror.ss_Pacc)

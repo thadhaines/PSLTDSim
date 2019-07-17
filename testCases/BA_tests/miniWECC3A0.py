@@ -7,6 +7,7 @@ simNotes = """
 MiniWECC Multi Area step of -1000 MW at t=2 on gen bus 62. ts = 1
 Addition of 3 BAs using type 0 TLB 
 (both tie line and freq ACE distributed according to w deviation)
+ensure all controlled machines have governors.
 """
 
 # Simulation Parameters Dictionary
@@ -23,7 +24,7 @@ simParams = {
     # Mathematical Options
     'integrationMethod' : 'rk45',
     # Data Export Parameters
-    'fileDirectory' : "\\delme\\BA\\", # relative path from cwd
+    'fileDirectory' : "\\delme\\BA2\\", # relative path from cwd
     'fileName' : 'miniWECC3A0',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work

@@ -121,12 +121,12 @@ batchList =[
     #r".\testCases\miniWECCLTD\miniWECCgenTrip0.py"
 
     # BA research with AGC
-    r".\testCases\BA_tests\miniWECC3A0.py", # BA response, TLB type 0, -1000 MW gen in area 3
+    #r".\testCases\BA_tests\miniWECC3A0.py", # BA response, TLB type 0, -1000 MW gen in area 3
     #r".\testCases\BA_tests\miniWECC3A1.py", # BA response, TLB type 2, -1000 MW gen in area 3
 
     #r".\testCases\BA_tests\miniWECC3A2.py", # BA response, TLB type 2, + 400MW wind in area 1
     #r".\testCases\BA_tests\miniWECC3A3.py", # BA response, TLB type 2, + 400MW wind in area 2
-    r".\testCases\BA_tests\miniWECC3A4.py", # BA response, TLB type 0, + 400MW wind in area 1
+    #r".\testCases\BA_tests\miniWECC3A4.py", # BA response, TLB type 0, + 400MW wind in area 1
     r".\testCases\BA_tests\miniWECC3A5.py", # BA response, TLB type 0, + 400MW wind in area 2
 
             ]

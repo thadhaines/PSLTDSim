@@ -7,6 +7,7 @@ simNotes = """
 MiniWECC Multi Area ramp of pm on gen 25 (+400 MW over 1200 seconds)
 3 BAs using type 2 TLB 
 (both tie line and freq ACE distributed according to w deviation)
+ensure all controlled machines have governors.
 """
 
 # Simulation Parameters Dictionary
@@ -23,7 +24,7 @@ simParams = {
     # Mathematical Options
     'integrationMethod' : 'rk45',
     # Data Export Parameters
-    'fileDirectory' : "\\delme\\BA\\", # relative path from cwd
+    'fileDirectory' : "\\delme\\BA2\\", # relative path from cwd
     'fileName' : 'miniWECC3A2',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work

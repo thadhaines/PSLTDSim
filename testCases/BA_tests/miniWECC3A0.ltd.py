@@ -33,7 +33,7 @@ mirror.sysBA = {
         'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
         'CtrlGens': [
-            'gen 68 : .50 : rampA',
+            'gen 107 : .50 : rampA',
             'gen 71 : .50 : rampA',
             ]
         },
