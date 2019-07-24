@@ -12,10 +12,15 @@ class LoadAgent(object):
         self.Zone = newLoad.Zone
 
         # Current Status
-        self.P = ltd.data.single2float(newLoad.P)
-        self.Q = ltd.data.single2float(newLoad.Q)
-        self.St = int(newLoad.St)
+        self.cv = {
+            'P' : ltd.data.single2float(newLoad.P),
+            'Q' : ltd.data.single2float(newLoad.Q),
+            'St' : int(newLoad.St),
+            }
+
         # dynamics?
+        # Children
+        self.Timer ={}
 
     def __repr__(self):
         """Display more useful data for mirror"""
@@ -36,16 +41,16 @@ class LoadAgent(object):
     def getPvals(self):
         """Make current status reflect PSLF values"""
         pObj = self.getPref()
-        self.P = ltd.data.single2float(pObj.P)
-        self.Q = ltd.data.single2float(pObj.Q)
-        self.St = int(pObj.St)
+        self.cv['P'] = ltd.data.single2float(pObj.P)
+        self.cv['Q'] = ltd.data.single2float(pObj.Q)
+        self.cv['St'] = int(pObj.St)
 
     def setPvals(self):
         """Set PSLF values"""
         pObj = self.getPref()
-        pObj.P = self.P
-        pObj.Q = self.Q
-        pObj.St = self.St
+        pObj.P = self.cv['P']
+        pObj.Q = self.cv['Q']
+        pObj.St = self.cv['St']
         pObj.Save()
 
     def makeAMQPmsg(self):
@@ -54,17 +59,17 @@ class LoadAgent(object):
                'AgentType': 'Load',
                'Busnum':self.Busnum,
                'Id': self.Id,
-               'P': self.P,
-               'Q': self.Q,
-               'St': self.St,
+               'P': self.cv['P'],
+               'Q': self.cv['Q'],
+               'St': self.cv['St'],
                }
         return msg
 
     def recAMQPmsg(self,msg):
         """Set message values to agent values"""
-        self.P = msg['P']
-        self.Q = msg['Q']
-        self.St = msg['St']
+        self.cv['P'] = msg['P']
+        self.cv['Q'] = msg['Q']
+        self.cv['St'] = msg['St']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
 
@@ -76,9 +81,10 @@ class LoadAgent(object):
 
     def logStep(self):
         """Step to record log history"""
-        self.r_P[self.mirror.c_dp] = self.P
-        self.r_Q[self.mirror.c_dp] = self.Q
-        self.r_St[self.mirror.c_dp] = self.St
+        n = self.mirror.cv['dp']
+        self.r_P[n] = self.cv['P']
+        self.r_Q[n] = self.cv['Q']
+        self.r_St[n] = self.cv['St']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""

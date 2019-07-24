@@ -1,0 +1,10 @@
+# LTD simulation models / perturbances
+# Attribute name case sensitive.
+# Commented and empty lines are ignored during parsing.
+# Double quoted variable names in model parameters also ignored
+
+# Perturbances
+gen 4 : step St 2 0
+#gen 4 : step St 32 1 100
+
+#gen 4 : "pertType" ramp "pertTarget" Pm "startTime" 40 "RAtime" 30 "RAval" 350 "RAtype" abs

@@ -1,7 +1,7 @@
 class Mirror(object):
     """Mirror class used as LTD system environment"""
 
-    def __init__(self, locations, simParams, simNotes=None, debug = 0, AMQPdebug =0):
+    def __init__(self, locations, simParams, simNotes=None, debug = 0, AMQPdebug =0, debugTimer = 0):
         """Carries out initialization of Mirror and meta data"""
         global PSLF
         from datetime import datetime
@@ -12,16 +12,13 @@ class Mirror(object):
         self.created = datetime.now()
         self.simNotes = simNotes
         self.searchDict = None
+        self.flatStart = 0
 
         # Solution timing information
         self.SimTime = 0.0
         self.IVPTime = 0.0
         self.DynamicTime = 0.0
-        self.DynamicSolns = 0
         self.PFTime = 0.0
-        self.PFSolns = 0
-        self.PY3msgs = 0
-        self.IPYmsgs = 0
         self.IPYmsgMake = 0.0
         self.IPYSendTime = 0.0
         self.IPYdistPaccTime = 0.0
@@ -30,18 +27,29 @@ class Mirror(object):
         self.PY3RecTime = 0.0
         self.FindTime = 0.0
         self.IPYFindTime = 0.0
+        # Solution Counters
+        self.DynamicSolns = 0
+        self.PFSolns = 0
+        self.PY3msgs = 0
+        self.IPYmsgs = 0
 
         # Simulation Parameters from User
         self.simParams = simParams
         self.locations = locations
+        self.debug = debug
+        self.debugTimer = debugTimer
+        self.AMQPdebug = AMQPdebug
         self.timeStep = simParams['timeStep']
         self.endTime = simParams['endTime']
         self.slackTol = simParams['slackTol']
-        self.Hinput = simParams['Hsys']
+        self.Hinput = simParams['Hinput']
         self.Dsys = simParams['Dsys']
-        self.debug = debug
-        self.AMQPdebug = AMQPdebug
-        self.dataPoints = int(self.endTime//self.timeStep + 1) # add extra points here...
+        self.IPYmsgGroup = simParams['IPYmsgGroup']
+        self.PY3msgGroup = simParams['PY3msgGroup']
+        self.fBase = simParams['fBase']
+
+        # NOTE: for variable timestep, add extra points here...
+        self.dataPoints = int(self.endTime//self.timeStep + 1)
 
         # Simulation Variable Prefix Key
         # c_ ... current
@@ -49,14 +57,16 @@ class Mirror(object):
         # r_ ... running (time series)
 
         # Varaible initalization
-        self.c_dp = 0 # current data point
-        self.c_t = 0.0
+        self.cv = {
+            'dp' : 0, # current data point
+            't' : 0.0,
+            'f' : 1.0,
+            'fdot' : 0.0,
+            'deltaF' : 0.0, # in pu, defined as 1-f
+            }
 
-        self.c_f = 1.0
-        self.c_fdot = 0.0
-        self.c_deltaF = 0.0
-
-        self.ss_H = 0.0 # placeholder, Hsys used in maths
+        self.ss_H = 0.0 
+        self.ss_Hgov = 0.0
 
         self.ss_Pe = 0.0
         self.ss_Pm = 0.0
@@ -71,14 +81,21 @@ class Mirror(object):
 
         # Agent Collections
         self.Area = []
+        self.BAdict = {}
+        self.BA = []
+        self.Branch = []
         self.Bus = []
+        self.Dynamics = []
         self.Gens = []
         self.Load = []
-        self.Slack = []
         self.Perturbance = []
-        self.Dynamics = []
+        self.AGCramp = []
+        self.PowerPlant =[]
         self.Shunt = []
-        self.Branch = []
+        self.Slack = []
+        self.Timer ={}
+        self.globalSlack = None
+        self.Filter = []
 
         # initial system solve
         try:
@@ -99,13 +116,12 @@ class Mirror(object):
 
         # initialize agents
         ltd.mirror.create_mirror_agents(self)
-        ltd.mirror.findGlobalSlack(self)
 
         # Combined Collections
         self.Machines = self.Slack + self.Gens
 
         # TODO: As logging capability added to agents, add to Log collection
-        self.Log = [self] + self.Load + self.Bus + self.Machines + self.Area
+        self.Log = [self] + self.Load + self.Bus + self.Machines + self.Area + self.Shunt + self.Branch
 
         # Check mirror accuracy in each Area, create machines list for each area
         for c_area in range(self.Narea):
@@ -119,17 +135,10 @@ class Mirror(object):
         self.PSLFgov = []
         
         # read dyd, create pslf models
-        if locations['ltdPath']:
-            dydPaths = locations['dydPath'] + locations['ltdPath']
-        else:
+        if 'dydPath' in locations:
             dydPaths = locations['dydPath']
 
         ltd.parse.parseDyd(self, dydPaths)
-
-        # parse LTD to handly ltd models and perturbances
-        # Moved to begining of runSimPY3 -> IPY mirror doesn't need ltd info
-        #if locations['ltdPath']:
-        #    ltd.parse.parseLtd(self, locations['ltdPath'])
 
         # ensure dyd changes reflected in mirror (i.e. mbase, mwcap)
         for gov in self.PSLFgov:
@@ -140,17 +149,27 @@ class Mirror(object):
 
         # Handle user input system inertia
         # NOTE: H is typically MW*sec unless noted as PU or in PSLF models
-        if self.Hinput > 0.0:
+        if type(self.Hinput) == str:
+            # Handle scaling of system H case
+            self.Hsys = self.ss_H*float(self.Hinput)
+        elif self.Hinput > 0.0:
+            # Handle Input of h as MW*sec
             self.Hsys = self.Hinput
         else:
+            # Use system sum of H
             self.Hsys = self.ss_H
-
-        # calculate beta for each area NOTE: Nothing happends because dynamics not yet init..
-        #for c_area in self.Area:
-        #    c_area.calcBeta()
 
         #Create search dictionaries
         self.searchDict = ltd.find.makeBusSearchDict(self)
+        self.branchDict = ltd.find.makeBranchDict(self)
+
+        # Link slacks to mirror
+        ltd.mirror.find_Global_Slack(self)
+        ltd.mirror.find_Area_Slack(self) # may have no point
+
+        # Link branches to mirror
+        for branch in self.Branch:
+            branch.createLTDlinks()
 
         init_end = time.time()
         self.InitTime = init_end-init_start
@@ -183,20 +202,21 @@ class Mirror(object):
 
     def logStep(self):
         """Update Log information"""
-        self.r_f[self.c_dp] = self.c_f
-        self.r_fdot[self.c_dp] = self.c_fdot
-        self.r_deltaF[self.c_dp] = self.c_deltaF
+        n = self.cv['dp']
+        self.r_f[n] = self.cv['f']
+        self.r_fdot[n] = self.cv['fdot']
+        self.r_deltaF[n] = self.cv['deltaF']
 
-        self.r_ss_Pe[self.c_dp] = self.ss_Pe
-        self.r_ss_Pm[self.c_dp] = self.ss_Pm
-        self.r_ss_Pacc[self.c_dp] = self.ss_Pacc
+        self.r_ss_Pe[n] = self.ss_Pe
+        self.r_ss_Pm[n] = self.ss_Pm
+        self.r_ss_Pacc[n] = self.ss_Pacc
 
-        self.r_ss_Qgen[self.c_dp] = self.ss_Qgen
-        self.r_ss_Qload[self.c_dp] = self.ss_Qload
-        self.r_ss_Pload[self.c_dp] = self.ss_Pload
+        self.r_ss_Qgen[n] = self.ss_Qgen
+        self.r_ss_Qload[n] = self.ss_Qload
+        self.r_ss_Pload[n] = self.ss_Pload
 
-        self.r_PLosses[self.c_dp] = self.PLosses
-        self.r_QLosses[self.c_dp] = self.QLosses
+        self.r_PLosses[n] = self.PLosses
+        self.r_QLosses[n] = self.QLosses
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
@@ -234,7 +254,7 @@ class Mirror(object):
              'f': self.r_f,
              'fdot': self.r_fdot,
              'deltaF': self.r_deltaF,
-             'N': self.c_dp,
+             'N': self.cv['dp'],
              'Pe': self.r_ss_Pe,
              'Pm': self.r_ss_Pm,
              'Pacc': self.r_ss_Pacc,
@@ -243,7 +263,7 @@ class Mirror(object):
              'Qload': self.r_ss_Qload,
              'Sbase' : self.Sbase,
              'Hsys' : self.Hsys,
-
+             'Hss' : self.ss_H,
              'meta' : meta,
              }
         return d

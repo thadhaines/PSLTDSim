@@ -9,15 +9,17 @@ def initInertiaH(mirror):
     # for each found pslf machine model
     for pdmod in range(len(mirror.PSLFmach)): 
 
-        mirrorGen = ltd.find.findGenOnBus(mirror, mirror.PSLFmach[pdmod].Busnum)
+        mirrorGen = ltd.find.findGenOnBus(mirror, mirror.PSLFmach[pdmod].Busnum, mirror.PSLFmach[pdmod].Id)
 
         if mirrorGen:
             # PSLF .sav values and .dyd values may be different
             # dyd values overwrite any sav values (Via PSLF user manual)
+            if mirror.debug: print('*** Found H for: %s' % mirrorGen)
             mirrorGen.Hpu = mirror.PSLFmach[pdmod].H
             mirrorGen.Mbase = mirror.PSLFmach[pdmod].Mbase
             mirrorGen.H = mirror.PSLFmach[pdmod].H *mirror.PSLFmach[pdmod].Mbase
-            mirror.ss_H += mirrorGen.H 
+            mirror.ss_H += mirrorGen.H
+
             # add refernece to PSLF machine model in python mirror generator
             mirrorGen.machine_model = mirror.PSLFmach[pdmod]
             linkedModels +=1

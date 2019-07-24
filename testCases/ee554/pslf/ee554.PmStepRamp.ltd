@@ -1,0 +1,9 @@
+# LTD simulation models / perturbances
+# Similar format to dyd files.
+# Commented and empty lines are ignored during parsing.
+# Double quoted variable names in model parameters also ignored
+
+# Perturbances
+
+gen 21 : "pertType" step  "pertTarget" Pm "startTime" 2 "newVal" -5 "type" per
+gen 21 : "pertType" ramp  "pertTarget" Pm "startTime" 20 "RAtime" 20 "RAval" 50 "RAtype" abs

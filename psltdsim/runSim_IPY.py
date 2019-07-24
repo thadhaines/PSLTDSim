@@ -16,7 +16,7 @@ def runSim_IPY(mirror, amqpAgent):
 
     # handle AMQP messages and update mir/PSLF accordingly
     IPY.receive('toIPY',IPY.redirect)
-    agentPSLFupdates = mirror.Machines + mirror.Bus +mirror.Load
+    agentPSLFupdates = mirror.Machines + mirror.Bus +mirror.Load + mirror.Shunt + mirror.Branch
 
     ## enter some while loop for simulation run
     while mirror.simRun:
@@ -29,6 +29,7 @@ def runSim_IPY(mirror, amqpAgent):
         # distPe loop thing (which is really distributes Pacc)
         try:
             ltd.mirror.distPacc(mirror, mirror.ss_Pacc )
+            mirror.flatStart = 0
         # Check for convergence
         except ValueError as e:
             # Catches error thown for non-convergene
@@ -38,26 +39,36 @@ def runSim_IPY(mirror, amqpAgent):
             mirror.simRun = False
             break;
 
-        # send new values to PY3
-        get_start = time.time()
+        # Using the msgGroup simParam and modulo to send messages
+        msgcounter = 0
+        msg = []
         for agent in agentPSLFupdates:
+            # get new values from PSLF
+            get_start = time.time()
             agent.getPvals()
-            
-        make_start = time.time()
-        machMsg = ltd.amqp.makeGroupMsg(mirror.Machines)
-        busMsg = ltd.amqp.makeGroupMsg(mirror.Bus)
-        loadMsg = ltd.amqp.makeGroupMsg(mirror.Load)
+            mirror.IPYPvalsTime += time.time() -get_start
+            # append created AMQP msg to group message
+            make_start = time.time()
+            msg.append(agent.makeAMQPmsg())
+            mirror.IPYmsgMake += time.time() - make_start
 
-        send_start = time.time()
-        IPY.send('toPY3', machMsg)
-        IPY.send('toPY3', busMsg)
-        IPY.send('toPY3', loadMsg)
+            msgcounter+=1
 
-        send_end = time.time()
-        mirror.IPYPvalsTime += make_start -get_start
-        mirror.IPYmsgMake += send_start - make_start
-        mirror.IPYSendTime += send_end-send_start
-        sentMsgs +=3
+            if (msgcounter % mirror.IPYmsgGroup) == 0:
+                # send message if group limit achieved
+                send_start = time.time()
+                IPY.send('toPY3', msg)
+                mirror.IPYSendTime += time.time()-send_start
+                sentMsgs +=1
+                msg = []
+
+        if len(msg) > 0:
+            # send any group remainder messages
+            send_start = time.time()
+            IPY.send('toPY3', msg)
+            mirror.IPYSendTime += time.time()-send_start
+            sentMsgs +=1
+        
 
         # send hand off of Sum Pe
         mirror.ss_Pe = ltd.mirror.sumPe(mirror)

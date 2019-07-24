@@ -23,7 +23,7 @@ class genrou(object):
         self.Busnum = parts[1]
         self.Busnam = parts[2]
         self.Base_kV = parts[3]
-        self.Zone = parts[4]
+        self.Id = parts[4]
         self.Rlevel = parts[5]
 
         #if isinstance(parts[6], basestring):

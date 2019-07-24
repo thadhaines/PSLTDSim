@@ -5,14 +5,14 @@ def sumPm(mirror):
     # for each area
     for area in mirror.Area:
         # reset current sum
-        area.Pm = 0.0
+        area.cv['Pm'] = 0.0
 
         # sum each active machine Pm to area agent
         for mach in area.Machines:
-            if mach.St == 1:
-                area.Pm += mach.Pm
+            if mach.cv['St'] == 1:
+                area.cv['Pm'] += mach.cv['Pm']
 
         # sum area agent totals to system
-        sysPm += area.Pm
+        sysPm += area.cv['Pm']
 
     return sysPm

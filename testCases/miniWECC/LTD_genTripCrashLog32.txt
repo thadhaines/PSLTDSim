@@ -1,0 +1,97 @@
+In IPY redirect...
+{'HandoffType': 'PY3toIPY', 'Pacc': -1429.5000000000146, 'msgType': 'Handoff', 'Pert_Pdelta': 0.0}
+* PY3toIPY handoff
+prev P load: 105985.000000
+current P load: 105985.000000
+Pert delta : 0.000000   Pacc -1429.500000
+expected: 0.000000       -1429.500000
+Perturbance P delta Match
+Pacc Match
+*** LTD: Distributing -1429.50 MW of Pacc, Iteration 1
+Beginning solution
+You can interrupt SOLN with <Cntl-c>
+
+It -P-error- --Bus-- ----Name---- --Kv-- area -Q-error- --Bus-- ----Name---- --Kv-- area
+   -delta-A- --Bus-- ----Name---- --Kv-- area -delta-V- --Bus-- ----Name---- --Kv-- area
+
+ 0   13.8461      32 COLS-GEN      20.00    1  -71.4250      49 SC-49        500.00    1
+     87.4744      32 COLS-GEN      20.00    1  0.946379      33 COLSTRP      500.00    1
+
+ 1  -93.0123      32 COLS-GEN      20.00    1   51.9179      33 COLSTRP      500.00    1
+     97.4184      32 COLS-GEN      20.00    1  0.671771      32 COLS-GEN      20.00    1
+
+ 2  334.4607      32 COLS-GEN      20.00    1  143.2892      33 COLSTRP      500.00    1
+     17.8952      30 MNT-GEN       20.00    1  1.147258      30 MNT-GEN       20.00    1
+
+ 3   87.2405      32 COLS-GEN      20.00    1   37.7330      33 COLSTRP      500.00    1
+   8330.6761      76 IDA-76        20.00    1 62.766499      77 IDA-77       230.00    1
+
+Excessive mismatch, aborting iteration
+
+ 4  468.0493      77 IDA-77       230.00    1 1163.3152      77 IDA-77       230.00    1
+   8330.6761      76 IDA-76        20.00    1 62.766499      77 IDA-77       230.00    1
+Stopped on divergence check, CASE NOT SOLVED
+Stopped on divergence check, CASE NOT SOLVED
+Power Flow Solution returns: -1
+*** Error Caught, Simulation Stopping...
+*** PSLF power flow solution did not converge.
+23:59:34.116000 IPY Sending      '{"msgType": "SysCrash"}'
+In PY3 redirect...
+{'msgType': 'SysCrash'}
+_______________________
+    Simulation Complete
+
+*** runSimPY3 end
+*** Mirror object saved to binary:
+*** 'C:\Users\heyth\source\repos\thadhaines\PSLTDSim\delme\miniWECCtrip\miniWECCgenTrip032F.mir'
+*** Exporting MATLAB .mat to:
+*** C:\Users\heyth\source\repos\thadhaines\PSLTDSim\delme\miniWECCtrip\miniWECCgenTrip032F
+_______________________
+   Data Export Complete
+*** psltdsim.terminal.dispSimResults(mirror)
+         ____           _____            ____         _______           _____        ________        ________
+         Time           Pload            Pacc         PaccDot           Sys f        Sys fDot        Slack Pe
+     0.000000   105985.000000       -0.000000        0.000000        1.000000        0.000000      460.383360
+     1.000000   105985.000000       -0.000000        0.000000        1.000000       -0.000000      460.383360
+End of simulation data.
+
+
+*** psltdsim.terminal.dispSimTandC(mirror)
+*** File name: miniWECCgenTrip032F
+
+Simulation Timings
+      Total Simulation Time:     0.855758
+           PY3 IVP CPU Time:     0.001994
+      PY3 Dynamics CPU Time:     0.061902
+      PY3 Message Send Time:     0.021887
+        PY3 Agent Find Time:     0.003617
+        IPY Agent Find Time:     0.002045
+          IPY distPacc Time:     0.004967
+      IPY PSLF Get/Set Time:     0.065742
+      IPY Message Make Time:     0.003990
+      IPY Message Send Time:     0.277260
+         Uncounted PY3 Time:     0.006012
+         Uncounted IPY Time:     0.238420
+       PSLF Power-Flow Time:     0.173584
+Simulation Counters
+          Sent PY3 Messages:           37
+          Sent IPY Messages:           12
+      PY3 Dynamic Solutions:          126
+       Power-Flow Solutions:            3
+Simulation Summary
+          Real time Speedup:     1.168554
+          Ave. PY3 msg send:     0.000592
+     PY3 Message Group Size:            3
+          Ave. IPY msg send:     0.023105
+     IPY Message Group Size:           60
+    Ave. Dynamic Soln. Time:     0.000491
+        Ave Power-Flow Time:     0.057861
+       Ave. P-F / Time Step:     1.500000
+       Mirror Creation Time:     0.501732
+             Simulated Time:     1.000000
+       Simulation Time Step:     1.000000
+
+*** Successfully ran 1/1 Test Cases in 4.83 seconds.
+
+*** Crashed Test Cases:
+.\testCases\miniWECC\miniWECCgenTrip0.py

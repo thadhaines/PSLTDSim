@@ -3,6 +3,12 @@ def LTD_SolveCase(mirror=None):
     Returns PSLF errorCode if available
     Only option not default is area interchange adjustment (turned off)
     """
+    if mirror == None:
+        flatStart = 0
+    else:
+        flatStart = 0 # never flat start ( could be changed to solnType options ) or reorder?
+        if mirror.debug: print('flat start = %d' % flatStart)
+
     soln_start = time.time()
     errorCode = PSLF.SolveCase(
         25, # maxIterations, Solpar.Itnrmx
@@ -24,5 +30,5 @@ def LTD_SolveCase(mirror=None):
 
     if errorCode == -1:
         '''Solution did not converge'''
-        raise ValueError('PSLF power flow solution did not converge.')
+        raise ValueError('*** PSLF power flow solution did not converge.')
         return

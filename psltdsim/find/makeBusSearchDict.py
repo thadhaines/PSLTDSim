@@ -2,8 +2,9 @@ def makeBusSearchDict(mirror):
     """ returns dictionary used in updated search"""
     finDict = {}
     namesDict = {}
+    mFlag = False # creates machines entry
     for bus in mirror.Bus:
-        mflag = False
+
         # index bus by external number
         finDict[str(bus.Extnum)] = {'Bus':bus}
         # populate rest of bus dictionary with agents

@@ -1,15 +1,17 @@
 # these imort a folder with another __init___.py in it
+from . import BAAgents
 from . import data
 from . import dynamicAgents
 from . import find
 from . import mirror
-from . import perturbanceAgents
+from . import perturbance
 from . import pslfModels
 from . import systemAgents
 from . import terminal
 from . import amqp
 from . import parse
 from . import plot
+from . import filterAgents
 
 from .init_PSLF import init_PSLF
 
