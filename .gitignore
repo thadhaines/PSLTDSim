@@ -286,3 +286,5 @@ __pycache__/
 /notread.dyd
 *.bak
 *.dir
+*.chf
+/delme
