@@ -288,3 +288,4 @@ __pycache__/
 *.dir
 *.chf
 /delme
+/testCases/miniWECCLTDPSS/miniWECC_LTD_PSS.dyd
