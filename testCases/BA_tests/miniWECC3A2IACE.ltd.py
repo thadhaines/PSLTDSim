@@ -15,7 +15,9 @@ mirror.sysBA = {
         'B':" 1.0 : p", # MW/0.1 Hz
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
-        'IncludeIACE' : False,
+        'IncludeIACE' : True,
+        'IACEscale' : 1/1000,
+        'IACEdeadband' : 50E-6, # Pu Hz
         'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
         'CtrlGens': [
@@ -30,7 +32,9 @@ mirror.sysBA = {
         'B':" 1.0 : p", # MW/0.1 Hz
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
-        'IncludeIACE' : False,
+        'IncludeIACE' : True,
+        'IACEscale' : 1/1000,
+        'IACEdeadband' : 50E-6, # Pu Hz
         'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
         'CtrlGens': [
@@ -43,7 +47,9 @@ mirror.sysBA = {
         'B':" 1.0 : p", # MW/0.1 Hz
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
-        'IncludeIACE' : False,
+        'IncludeIACE' : True,
+        'IACEscale' : 1/1000,
+        'IACEdeadband' : 50E-6, # Pu Hz
         'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
         'CtrlGens': [

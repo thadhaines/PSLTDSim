@@ -24,9 +24,11 @@ print(os.getcwd())
 debug = 1
 
 simNotes = """
-Retest of ipy code after refactor - simple step up and down with gov
+DEBUG
 """
 
+
+"""
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 0.25,
@@ -40,8 +42,8 @@ simParams = {
     'integrationMethod' : 'euler',
 
     # Data Export Parameters
-    'fileDirectory' : "\\verification\\miniWeccTest01\\", # relative path must exist before simulation
-    'fileName' : 'miniWECC_loadStep06IPY',
+    'fileDirectory' : "\\DEBUG\\", # relative path must exist before simulation
+    'fileName' : 'DEBUG',
 
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
@@ -77,6 +79,12 @@ elif test_case == 4:
 
 if not 'ltdPath' in dir(): # handle undefined ltdPath
     ltdPath = None
+"""
+
+testCase = r".\testCases\BA_tests\miniWECC3A2IACE.py"
+exec(open(testCase).read());
+ltd.terminal.dispCodeTitle()
+
 
 # Required Paths Dictionary
 locations = {
@@ -93,6 +101,7 @@ del savPath, dydPath
 ### Start Simulation functions calls
 ltd.init_PSLF(locations)
 
+print('debug Stop')
 """
 # mirror arguments: locations, simParams, debug flag
 initStart = time.time()
@@ -124,24 +133,24 @@ if simParams['exportDict']:
 
 """
 
-    # Change current working directory to data destination.
-    cwd = os.getcwd()
-    if simParams['fileDirectory'] :
-        os.chdir(cwd + simParams['fileDirectory'])
+# Change current working directory to data destination.
+cwd = os.getcwd()
+if simParams['fileDirectory'] :
+    os.chdir(cwd + simParams['fileDirectory'])
 
-    dictName = simParams['fileName']
-    D = makeModelDictionary(mir)
-    savedName = saveModelDictionary(D,dictName)
-    os.chdir(cwd)
+dictName = simParams['fileName']
+D = makeModelDictionary(mir)
+savedName = saveModelDictionary(D,dictName)
+os.chdir(cwd)
     
 
-    if  simParams['exportMat']:
-        # use cmd to run python 3 32 bit script...
-        cmd = "py -3-32 makeMat.py " + savedName +" " + dictName  + " "+ simParams['fileDirectory'] 
+if  simParams['exportMat']:
+    # use cmd to run python 3 32 bit script...
+    cmd = "py -3-32 makeMat.py " + savedName +" " + dictName  + " "+ simParams['fileDirectory'] 
 
-        matProc = subprocess.Popen(cmd)
-        matReturnCode = matProc.wait()
-        matProc.send_signal(signal.SIGTERM)
+    matProc = subprocess.Popen(cmd)
+    matReturnCode = matProc.wait()
+    matProc.send_signal(signal.SIGTERM)
 """
 """
 

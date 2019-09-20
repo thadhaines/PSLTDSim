@@ -16,7 +16,7 @@ def runSim_IPY(mirror, amqpAgent):
 
     # handle AMQP messages and update mir/PSLF accordingly
     IPY.receive('toIPY',IPY.redirect)
-    agentPSLFupdates = mirror.Machines + mirror.Bus +mirror.Load + mirror.Shunt + mirror.Branch
+    agentPSLFupdates = mirror.Machines + mirror.Bus +mirror.Load + mirror.Shunt + mirror.Branch + mirror.Area
 
     ## enter some while loop for simulation run
     while mirror.simRun:

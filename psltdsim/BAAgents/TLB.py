@@ -12,12 +12,15 @@ class TLB(BA):
         else:
             self.AGCtype = 0
 
+        self.wScale = 10e3
+
     def step(self):
         # Caclulate ACE
-        deltaw = self.mirror.cv['f']-1.0
-        Pace = self.Area.cv['Pe'] - self.Area.cv['P'] - self.Area.cv['IC0']
+        deltaw = self.mirror.cv['f']*self.wScale-self.wScale
+        Pace = self.Area.cv['IC'] - self.Area.cv['IC0']
+        # self.Area.cv['Pe'] - self.Area.cv['P'] - self.Area.cv['IC0'] # previous calc...
         # B is handled as a positive, though it 'is' a negative number
-        Face = 10*self.B*deltaw*self.mirror.fBase # 10 is standard since f in Hz
+        Face = 10*self.B*deltaw*self.mirror.fBase/self.wScale # 10 is standard since f in Hz
 
         # 'Fully' calculated ACE
         self.cv['ACE'] = Pace + Face
@@ -39,9 +42,17 @@ class TLB(BA):
             else:
                 self.cv['ACEdist'] = 0
 
-        # Handle running integral of ACE using trapezoidal integration
+        # Handle computing integral of ACE using trapezoidal integration
         n = self.mirror.cv['dp']
         self.cv['ACEint'] += (self.cv['ACE']+self.r_ACE[n-1])/2.0*self.mirror.timeStep
+
+        # Include Integral of ACE
+        if self.BAdict['IncludeIACE']:
+            # If deltaw larger than deadband setting
+            if abs(deltaw/self.wScale) >= self.BAdict['IACEdeadband']:
+                # Add to dispatch signal if same sign as freq deviation
+                if np.sign(deltaw) == np.sign(self.cv['ACEint']):
+                    self.cv['ACEdist'] += self.cv['ACEint']* float(self.BAdict['IACEscale'])
 
         # Deal with filtering
         if self.filter != None:

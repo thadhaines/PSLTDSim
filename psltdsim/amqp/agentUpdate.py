@@ -17,6 +17,9 @@ def agentUpdate(mirror, msg):
     elif tarType == 'Branch':
         target = ltd.find.findBranchByScanBusCk(mirror, msg['ScanBus'], msg['Ck'])
 
+    elif tarType == 'Area':
+        target = ltd.find.findArea(mirror, msg['AreaNum'])
+
     else:
         print("Unrecognized Target Type: %s" % tarType)
         return

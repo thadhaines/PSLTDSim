@@ -2,10 +2,12 @@
 # Attribute name case sensitive.
 # Commented and empty lines are ignored
 # Double quoted variable names in sysPert parameters ignored
+# IACE included
 
 # Perturbances
 mirror.sysPerturbances = [
-    'gen 25 : ramp Pm 2 1200 400 rel',
+    'gen 62 : step Pm 2 -1000 rel',
+    'gen 62 : step Pref 2 -1000 rel',
     ]
 
 # Balancing Authority Input
@@ -15,8 +17,10 @@ mirror.sysBA = {
         'B':" 1.0 : p", # MW/0.1 Hz
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
-        'IncludeIACE' : False,
-        'Filtering': 'PI : 0.04 0.0001',
+        'IncludeIACE' : True,
+        'IACEscale' : 1/1000,
+        'IACEdeadband' : 30E-6, # Pu Hz
+        'Filtering': 'PI : 0.03 0.0001',
         'Deadband' : None,
         'CtrlGens': [
             'gen 1 : .25 : rampA',
@@ -30,8 +34,10 @@ mirror.sysBA = {
         'B':" 1.0 : p", # MW/0.1 Hz
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
-        'IncludeIACE' : False,
-        'Filtering': 'PI : 0.04 0.0001',
+        'IncludeIACE' : True,
+        'IACEscale' : 1/1000,
+        'IACEdeadband' : 30E-6, # Pu Hz
+        'Filtering': 'PI : 0.03 0.0001',
         'Deadband' : None,
         'CtrlGens': [
             'gen 107 : .50 : rampA',
@@ -43,8 +49,10 @@ mirror.sysBA = {
         'B':" 1.0 : p", # MW/0.1 Hz
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
-        'IncludeIACE' : False,
-        'Filtering': 'PI : 0.04 0.0001',
+        'IncludeIACE' : True,
+        'IACEscale' : 1/1000,
+        'IACEdeadband' : 30E-6, # Pu Hz
+        'Filtering': 'PI : 0.03 0.0001',
         'Deadband' : None,
         'CtrlGens': [
             'gen 41 : .25 : rampA',

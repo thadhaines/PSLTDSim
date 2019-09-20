@@ -44,22 +44,57 @@ class AreaAgent(object):
         #Area Frequency response Characteristic
         self.beta = 0.0
 
+        # Init Interchange in IPY
+        self.initIC()
+
+    def getPref(self):
+        """Return reference to PSLF object"""
+        return col.AreaDAO.FindByAreaNumber(self.Area) # untested....
+
+    def getPvals(self):
+        """Get most recent PSLF values"""
+        pObj = self.getPref()
+        self.cv['IC'] = float(pObj.Pnet)
+
+    def setPvals(self):
+        """Set PSLF values"""
+        # areas have nothing to set
+        pass
+
+    def makeAMQPmsg(self):
+        """Make AMQP message to send cross process"""
+        msg = {'msgType' : 'AgentUpdate',
+               'AgentType': 'Area',
+               'AreaNum':self.Area,
+               'IC': self.cv['IC'],
+               }
+        return msg
+
+    def recAMQPmsg(self,msg):
+        """Set message values to agent values"""
+        self.cv['IC'] = msg['IC']
+        if self.mirror.AMQPdebug: 
+            print('AMQP values set!')
+
     def sumSCE(self):
         """ Sum station control error in area """
-        #NOTE: Not really station control error
+        #NOTE: Not really station control error -Unused 9/20/2019
         self.cv['SCEsum'] = 0.0
         for mach in self.Machines:
             self.cv['SCEsum'] += mach.cv['SCE']
 
     def calcICerror(self):
         """ Calculate Interchange Error """
-        self.cv['IC'] = self.cv['Pe'] - self.cv['P']
+        #self.cv['IC'] = self.cv['Pe'] - self.cv['P'] # should be repopulated every step by AMQP
         self.cv['ICerror'] = self.cv['IC'] - self.cv['IC0']
 
     def initIC(self):
         """ Initiate Interchange Value (if <0, Importing Power)"""
-        self.cv['IC'] = self.cv['Pe'] - self.cv['P']
-        self.cv['IC0'] = self.cv['IC']
+        #self.cv['IC'] = self.cv['Pe'] - self.cv['P']
+        #self.cv['IC0'] = self.cv['IC']
+        pRef = self.getPref()
+        self.cv['IC0'] = float(pRef.Pnet)
+        self.cv['IC'] = self.cv['IC0']
 
     def calcBeta(self):
         """Calculate Beta (area frequency response characteristic)"""

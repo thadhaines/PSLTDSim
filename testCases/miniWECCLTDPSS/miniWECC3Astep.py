@@ -29,6 +29,6 @@ simParams = {
     'deleteInit' : 0, # Delete initialized mirror
     }
 
-savPath = r"C:\LTD\pslf_systems\miniWECC\miniWECC3AreaLTD.sav"
+savPath = r"C:\LTD\pslf_systems\miniWECC\miniWECC3AreaLTDPSS.sav"
 dydPath = [r"C:\LTD\pslf_systems\miniWECC\miniWECC_LTD_PSS.dyd"]
 ltdPath = r".\testCases\miniWECCLTDPSS\miniWECCStep.ltd.py"

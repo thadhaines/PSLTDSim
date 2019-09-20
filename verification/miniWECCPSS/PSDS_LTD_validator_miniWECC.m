@@ -17,7 +17,7 @@ clear; format compact; clc; close all;
 format long;
 
 % to Export pdfs.
-printFigs = true; % false;% 
+printFigs =  false;% true; %
 miniFlag = 1; % decrease plot width by half
 
 %% Knowns

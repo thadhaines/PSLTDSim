@@ -14,7 +14,7 @@ def runSimPY3(mirror, amqpAgent):
     # calculate area f response characteristic (beta), and interchange ( IC )
     for area in mirror.Area:
         area.calcBeta()
-        area.initIC()
+        #area.initIC()
 
     # Place for user input 'code' to be run (timer defs, pp, BA, DTC, etc... )
     mirror.ppDict = {}
