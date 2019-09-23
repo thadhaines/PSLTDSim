@@ -21,7 +21,7 @@ mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A2IACEF.mir')
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
-printFigs = False
+printFigs = True # False
 
 #ltd.plot.sysPQVF(mir, 0)
 #ltd.plot.sysPePmFLoad(mir, 1)

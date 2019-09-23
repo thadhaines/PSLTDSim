@@ -18,9 +18,10 @@ mirror.sysBA = {
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
         'IncludeIACE' : True,
+        'IACEwidow' : 120, # seconds - size of window
         'IACEscale' : 1/1000,
         'IACEdeadband' : 30E-6, # Pu Hz
-        'Filtering': 'PI : 0.03 0.0001',
+        'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
         'CtrlGens': [
             'gen 1 : .25 : rampA',
@@ -35,9 +36,10 @@ mirror.sysBA = {
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
         'IncludeIACE' : True,
+        'IACEwidow' : 120, # seconds - size of window
         'IACEscale' : 1/1000,
         'IACEdeadband' : 30E-6, # Pu Hz
-        'Filtering': 'PI : 0.03 0.0001',
+        'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
         'CtrlGens': [
             'gen 107 : .50 : rampA',
@@ -50,9 +52,10 @@ mirror.sysBA = {
         'ActionTime': 5.00,
         'Type':'TLB : 2', # Tie-Line Bias
         'IncludeIACE' : True,
+        'IACEwidow' : 120, # seconds - size of window
         'IACEscale' : 1/1000,
         'IACEdeadband' : 30E-6, # Pu Hz
-        'Filtering': 'PI : 0.03 0.0001',
+        'Filtering': 'PI : 0.04 0.0001',
         'Deadband' : None,
         'CtrlGens': [
             'gen 41 : .25 : rampA',

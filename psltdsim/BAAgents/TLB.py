@@ -12,33 +12,39 @@ class TLB(BA):
         else:
             self.AGCtype = 0
 
-        self.wScale = 10e3
+        if self.BAdict['IACEwidow'] > 0:
+            # create window integrator if window lengtht exists
+            self.wIntAgent = ltd.systemAgents.WindowIntegratorAgent(
+                self.mirror, self.BAdict['IACEwidow'])
+            self.windowInt = True
+        else:
+            self.windowInt = False
 
     def step(self):
         # Caclulate ACE
-        deltaw = self.mirror.cv['f']*self.wScale-self.wScale
+        deltaw = self.mirror.cv['f']-1.0
         Pace = self.Area.cv['IC'] - self.Area.cv['IC0']
-        # self.Area.cv['Pe'] - self.Area.cv['P'] - self.Area.cv['IC0'] # previous calc...
+
         # B is handled as a positive, though it 'is' a negative number
-        Face = 10*self.B*deltaw*self.mirror.fBase/self.wScale # 10 is standard since f in Hz
+        Face = 10*self.B*deltaw*self.mirror.fBase # 10 is standard since f in Hz
 
         # 'Fully' calculated ACE
         self.cv['ACE'] = Pace + Face
 
         if self.AGCtype == 0:
-            self.cv['ACEdist'] = Pace + Face
+            self.cv['ACEdist'] = self.cv['ACE']
 
         elif self.AGCtype ==1:
-            # only apply Tie Line interchange if same sign as delta w
+            # only apply Tie Line interchange if same sign as delta w; always send frequency bias
             if np.sign(Pace) == np.sign(deltaw):
-                self.cv['ACEdist'] = Pace + Face
+                self.cv['ACEdist'] = self.cv['ACE']
             else:
                 self.cv['ACEdist'] = Face
 
         elif self.AGCtype == 2:
             # only apply ACE if same sign as delta w
-            if np.sign(Pace) == np.sign(deltaw):
-                self.cv['ACEdist'] = Pace + Face
+            if np.sign(self.cv['ACE']) == np.sign(deltaw):
+                self.cv['ACEdist'] = self.cv['ACE']
             else:
                 self.cv['ACEdist'] = 0
 
@@ -46,15 +52,27 @@ class TLB(BA):
         n = self.mirror.cv['dp']
         self.cv['ACEint'] += (self.cv['ACE']+self.r_ACE[n-1])/2.0*self.mirror.timeStep
 
+        # handle optional window integration agent
+        if self.windowInt:
+            curIACE = self.wIntAgent.step(self.cv['ACE'], self.r_ACE[n-1])
+        else:
+            curIACE = self.cv['ACEint']
+
         # Include Integral of ACE
         if self.BAdict['IncludeIACE']:
             # If deltaw larger than deadband setting
-            if abs(deltaw/self.wScale) >= self.BAdict['IACEdeadband']:
+            if (abs(deltaw) >= self.BAdict['IACEdeadband']):
                 # Add to dispatch signal if same sign as freq deviation
-                if np.sign(deltaw) == np.sign(self.cv['ACEint']):
-                    self.cv['ACEdist'] += self.cv['ACEint']* float(self.BAdict['IACEscale'])
+                if np.sign(deltaw) == np.sign(curIACE):
+                    self.cv['ACEdist'] += curIACE * float(self.BAdict['IACEscale'])
 
-        # Deal with filtering
+        # attempts at resolving steady state ACE
+        if abs(deltaw) <= self.BAdict['IACEdeadband']*.8 :# deltaw 2x less than deadband
+            # send IACE if less than arbitrary limit, and helpful to ACE
+            if abs(self.cv['ACE']) <= 5.0 and np.sign(self.cv['ACEdist']) == np.sign(curIACE):
+                self.cv['ACEdist'] += curIACE / self.wIntAgent.windowSize
+
+        # Put ACEdist through filter
         if self.filter != None:
             self.cv['ACEfilter'] = self.filter.stepFilter(self.cv['ACEdist'])
             ACE2dist = self.cv['ACEfilter']
