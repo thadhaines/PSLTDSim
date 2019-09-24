@@ -117,6 +117,7 @@ class AreaAgent(object):
         self.r_SCEsum = [0.0]*self.mirror.dataPoints
         self.r_IC = [0.0]*self.mirror.dataPoints
         self.r_ICerror = [0.0]*self.mirror.dataPoints
+        self.r_Losses = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Put current values into log"""
@@ -128,6 +129,8 @@ class AreaAgent(object):
         self.r_SCEsum[n] = self.cv['SCEsum']
         self.r_IC[n] = self.cv['IC']
         self.r_ICerror[n] = self.cv['ICerror']
+        self.r_Losses[n] = self.cv['Pe']-self.cv['P']-self.cv['IC']
+
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
@@ -138,6 +141,7 @@ class AreaAgent(object):
         self.r_SCEsum = self.r_SCEsum[:N]
         self.r_IC = self.r_IC[:N]
         self.r_ICerror = self.r_ICerror[:N]
+        self.r_Losses[n] = self.r_Losses[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
