@@ -21,102 +21,9 @@ mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A2IACEF.mir')
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
-printFigs = False
-
-#ltd.plot.sysPQVF(mir, 0)
-#ltd.plot.sysPePmFLoad(mir, 1)
-mini = 1 # rethink - use to scale width of figures
-
-#xend = 60
-caseName = mir.simParams['fileName'][:-1]
-# Plot controlled machines Pref and Pm
-mins = np.array(mir.r_t)/60.0;
-minEnd = max(mins)
-firstPlot = True
-
-for BA in mir.BA:
-    fig, ax = plt.subplots()
-    for gen in BA.ctrlMachines:
-        normVal = gen.r_Pm[0]
-        ax.plot(mins, np.array(gen.r_Pm)/normVal, linestyle = '-',linewidth=1,
-                label = r'$P_m$  '+str(gen.Busnum)+' '+gen.Id+' Norm: '+str(round(normVal,2))  )
-        ax.plot(mins, np.array(gen.r_Pref)/normVal, linestyle = '--',linewidth=1.5,
-                label = r'$P_{ref}$ '+str(gen.Busnum)+' '+gen.Id  )
-        
-    if firstPlot:
-        # Scale current axis.
-        box = ax.get_position()
-        boxW = box.width * 1.05
-        firstPlot = False
-
-    ax.set_position([box.x0, box.y0, boxW, box.height])
-
-    # Put a legend to the right of the current axis
-    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-    ax.set_title(r'Area '+str(gen.Area)+' ('+ BA.name + ') Controlled Machines $P_m$ and $P_{ref}$ \n Case: ' + caseName)
-    ax.set_xlim(0,minEnd)
-    ax.set_ylabel('Normalized % Change [MW]')
-    ax.set_xlabel('Time [minutes]')
-    #ax.legend(loc=0)
-    ax.grid(True)
-    fig.set_dpi(150)
-    fig.set_size_inches(9/mini, 2.5)
-    fig.tight_layout()
-    plt.show(block=False)
-    if printFigs: plt.savefig(caseName+BA.name+'.pdf', dpi=300)
-    plt.pause(0.00001) # required for true non-blocking print...
-
-#Plot Interchange Error and ACE on same plot
-fig, ax = plt.subplots()
-for BA in mir.BA:
-    ax.plot(mins, BA.r_ACE, linewidth=1,
-            label= BA.name+' ACE')
-    if BA.filter != None:
-        ax.plot(mins, BA.r_ACEfilter, linewidth=1.25,linestyle=":",
-                label= BA.name+' SACE')
-    ax.plot(mins, BA.Area.r_ICerror, linewidth=1.5,
-            linestyle='--',
-            label= BA.name +' IC Error')
-# Scale current axis.
-#box = ax.get_position()
-ax.set_position([box.x0, box.y0, box.width * 1.05, box.height])
-
-# Put a legend to the right of the current axis
-ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-ax.set_title('Balancing Authority ACE and Interchange Error\n Case: ' + caseName)
-ax.set_xlim(0,minEnd)
-ax.set_ylabel('MW')
-ax.set_xlabel('Time [minutes]')
-
-#ax.legend(loc=0)
-ax.grid(True)
-fig.set_dpi(150)
-fig.set_size_inches(9/mini, 2.5)
-fig.tight_layout()
-plt.show(block=False)
-if printFigs: plt.savefig(caseName+'ACE'+'.pdf', dpi=300)
-plt.pause(0.00001)
-
-#Plot System Frequency
-fig, ax = plt.subplots()
-fig.set_size_inches(6, 2)
-ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1,)
-ax.set_title('System Frequency\n Case: ' + caseName)
-ax.set_ylabel('Hz')
-ax.set_xlabel('Time [minutes]')
-ax.set_xlim(0,minEnd)
-#ax.legend()
-ax.grid(True)
-fig.set_dpi(150)
-fig.set_size_inches(9/mini, 2.5)
-fig.tight_layout()
-if printFigs: plt.savefig(caseName+'Freq'+'.pdf', dpi=300)
-plt.show()
-plt.pause(0.00001)
-
 print(mir)
+
+printFigs = False
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -128,6 +35,73 @@ print(mir)
 #ltd.plot.sysPLQF(mir, True)
 
 # Plot ACE results
+ltd.plot.BAplots01(mir, False)
+
+### Plot detailed SACE
+#Plot SACE from all areas on same plot
+mins = np.array(mir.r_t)/60.0;
+minEnd = max(mins)
+caseName = mir.simParams['fileName'][:-1]
+mini = 1
+
+fig, ax = plt.subplots()
+for BA in mir.BA:
+    if BA.filter != None:
+        ax.plot(mins, BA.r_ACEfilter, linewidth=1.25,linestyle=":",
+                label= BA.name+' SACE')
+
+# Scale current axis.
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 1.05, box.height])
+
+# Put a legend to the right of the current axis
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+ax.set_title('Balancing Authority SACE\n Case: ' + caseName)
+ax.set_xlim(0,minEnd)
+ax.set_ylabel('MW')
+ax.set_xlabel('Time [minutes]')
+
+#ax.legend(loc=0)
+ax.grid(True)
+fig.set_dpi(150)
+fig.set_size_inches(9/mini, 2.5)
+fig.tight_layout()
+if printFigs: plt.savefig(caseName+'SACE'+'.pdf', dpi=300)
+plt.show(block = False)
+plt.pause(0.00001)
+
+### Plot Area Change in Losses over time
+mins = np.array(mir.r_t)/60.0;
+minEnd = max(mins)
+caseName = mir.simParams['fileName'][:-1]
+mini = 1
+
+fig, ax = plt.subplots()
+for area in mir.Area:
+    ax.plot(mins, np.array(area.r_Losses)-area.r_Losses[0], linewidth=1.25,#linestyle=":",
+                label= 'Area '+ str(area.Area)+', Norm: '+ str(int(area.r_Losses[0])))
+
+# Scale current axis.
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 1.05, box.height])
+
+# Put a legend to the right of the current axis
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+ax.set_title('Area Change in Losses\n Case: ' + caseName)
+ax.set_xlim(0,minEnd)
+ax.set_ylabel('MW')
+ax.set_xlabel('Time [minutes]')
+
+#ax.legend(loc=0)
+ax.grid(True)
+fig.set_dpi(150)
+fig.set_size_inches(9/mini, 2.5)
+fig.tight_layout()
+if printFigs: plt.savefig(caseName+'Losses'+'.pdf', dpi=300)
+plt.show()
+plt.pause(0.00001)
 
 """
 for gen in mir.Machines:
