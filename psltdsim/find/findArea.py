@@ -7,5 +7,5 @@ def findArea(mirror, area):
         if cArea.Area == areaNum:
             return cArea
 
-    print("*** Area %s Not Found")
+    print("*** Area %d Not Found" % area)
     return None

@@ -30,6 +30,8 @@ class tgov1Agent():
         self.T3 = PSLFgov.T3
         self.Dt = PSLFgov.Dt
 
+        self.deadband = 0.0
+
         self.t = [0 , self.mirror.timeStep] # will have to be moved if ts = variable
 
         # Dynamic init
@@ -48,6 +50,10 @@ class tgov1Agent():
 
         # Create system inputs
         delta_w = 1.0-self.mirror.cv['f']
+        # handle deadband
+        if abs(delta_w) < self.deadband:
+            delta_w = 0.0
+
         PrefVec = np.array([self.Pref,self.Pref])
         dwVec = np.array([delta_w,delta_w])/(self.R)*self.Mbase 
 
@@ -70,7 +76,6 @@ class tgov1Agent():
                 y1[ndx] = self.y1HighLimit
             elif y1[ndx] <self.y1LowLimit:
                 y1[ndx] = self.y1LowLimit
-        
 
         # Second block
         _, y2, self.x2 = sig.lsim(self.sys2, y1, T=self.t,
@@ -115,6 +120,12 @@ class tgov1Agent():
         # Ensure correct limiting values
         self.y1HighLimit = self.Vmax * self.mwCap
         self.y1LowLimit = self.Vmin * self.mwCap
+
+        # Ensure correct deadband from BA
+        if self.Gen.AreaAgent.BA:
+            # Generator belongs to a BA, check if deadband set
+            if 'GovDeadband' in self.Gen.AreaAgent.BA.BAdict:
+                self.deadband = self.Gen.AreaAgent.BA.BAdict['GovDeadband']/self.mirror.simParams['fBase']
 
         if self.mirror.debug and not updated:
             print('... nothing updated.')

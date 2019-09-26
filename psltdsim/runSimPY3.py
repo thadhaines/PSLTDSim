@@ -3,9 +3,8 @@ def runSimPY3(mirror, amqpAgent):
     print("*** runSimPY3 start")
     PY3 = amqpAgent
 
-
-    # Initialize PY3 specific Dynamics
-    ltd.mirror.initPY3Dynamics(mirror)
+    # Create PY3 specific Dynamic agents (i.e. govs)
+    ltd.mirror.createPY3DynamicAgents(mirror)
 
     # calculates all area P (required for IC init)
     ltd.mirror.sumLoad(mirror) 
@@ -14,7 +13,6 @@ def runSimPY3(mirror, amqpAgent):
     # calculate area f response characteristic (beta), and interchange ( IC )
     for area in mirror.Area:
         area.calcBeta()
-        #area.initIC()
 
     # Place for user input 'code' to be run (timer defs, pp, BA, DTC, etc... )
     mirror.ppDict = {}
@@ -45,6 +43,9 @@ def runSimPY3(mirror, amqpAgent):
         for timer in mirror.TimerInput:
             ltd.systemAgents.TimerAgent(mir,timer, mirror.TimerInput[timer]) 
     """
+
+    # Initialize dynamics to ensure correct settings
+    ltd.mirror.initPY3Dynamics(mirror)
 
     print("\n*** Starting Simulation (PY3)")
     sim_start = time.time()

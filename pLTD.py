@@ -16,7 +16,7 @@ mirLoc = os.path.join(dirname, 'delme','sixMachineStepBA','SixMachineStepBA4F.mi
 mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A0F.mir')
 mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A1F.mir')
 mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A1IACEF.mir')
-mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A2IACEF.mir')
+#mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A2IACEF.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)

@@ -1,6 +1,6 @@
 class GeneratorAgent(object):
     """Generator Agent for LTD mirror"""
-    def __init__(self, mirror, parentBus, newGen):
+    def __init__(self, mirror, areaAgent, parentBus, newGen):
         # mirror/Parent Reference
         self.mirror = mirror
         self.Bus = parentBus
@@ -9,6 +9,7 @@ class GeneratorAgent(object):
         self.Id = newGen.Id
         self.Lid = newGen.Lid
         self.Area = newGen.Area
+        self.AreaAgent = areaAgent
         self.Zone = newGen.Zone
         self.Busnam = newGen.GetBusName()
         self.Busnum = newGen.GetBusNumber()

@@ -37,7 +37,7 @@ def create_mirror_agents(mirror):
 
             #for each found bus in area
             for c_bus in range(n_bus):
-                
+
                 ltd.mirror.incorporate_bus(mirror, a_busses[c_bus], newAreaAgent)
 
                 # Count objects found on bus

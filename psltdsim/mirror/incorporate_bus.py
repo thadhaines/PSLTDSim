@@ -16,13 +16,13 @@ def incorporate_bus(mirror, newBus, areaAgent):
         for c_gen in range(newBusAgent.Ngen):
 
             if slackFlag:
-                newGenAgent = ltd.systemAgents.SlackAgent(mir, newBusAgent, b_gen[c_gen])
+                newGenAgent = ltd.systemAgents.SlackAgent(mir, areaAgent, newBusAgent, b_gen[c_gen])
                 # add references to slack gen in bus, mirror, and area
                 newBusAgent.Slack.append(newGenAgent)
                 mirror.Slack.append(newGenAgent)
                 areaAgent.Slack.append(newGenAgent)
             else:
-                newGenAgent = ltd.systemAgents.GeneratorAgent(mir, newBusAgent, b_gen[c_gen])
+                newGenAgent = ltd.systemAgents.GeneratorAgent(mir, areaAgent, newBusAgent, b_gen[c_gen])
                 # add references to gen in bus, mirror, and area
                 newBusAgent.Gens.append(newGenAgent)
                 mirror.Gens.append(newGenAgent)
