@@ -23,7 +23,7 @@ ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
 
-printFigs = False
+printFigs = False # True
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -35,7 +35,7 @@ printFigs = False
 #ltd.plot.sysPLQF(mir, True)
 
 # Plot ACE results
-ltd.plot.BAplots01(mir, False)
+ltd.plot.BAplots01(mir, False, printFigs)
 
 ### Plot detailed SACE
 #Plot SACE from all areas on same plot
@@ -47,8 +47,10 @@ mini = 1
 fig, ax = plt.subplots()
 for BA in mir.BA:
     if BA.filter != None:
-        ax.plot(mins, BA.r_ACEfilter, linewidth=1.25,linestyle=":",
+        ax.plot(mins, BA.r_ACEfilter, linewidth=1.25,#linestyle=":",
                 label= BA.name+' SACE')
+    ax.plot(mins, BA.r_ACEdist, linewidth=1.25,linestyle=":",
+                label= BA.name+' ACE dist')
 
 # Scale current axis.
 box = ax.get_position()

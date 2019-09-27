@@ -29,6 +29,7 @@ class tgov1Agent():
         self.T2 = PSLFgov.T2 # in sec
         self.T3 = PSLFgov.T3
         self.Dt = PSLFgov.Dt
+        self.uVector = [0,0]
 
         self.t = [0 , self.mirror.timeStep] # will have to be moved if ts = variable
 
@@ -52,10 +53,10 @@ class tgov1Agent():
         dwVec = np.array([delta_w,delta_w])/(self.R)*self.Mbase 
 
         # Perform sum and first gain block
-        uVector = (PrefVec+dwVec)
+        self.uVector = (PrefVec+dwVec)
 
         # First dynamic Block
-        _, y1, self.x1 = sig.lsim(self.sys1, U=uVector, T=self.t, 
+        _, y1, self.x1 = sig.lsim(self.sys1, U=self.uVector, T=self.t, 
                                    X0=self.r_x1[self.mirror.cv['dp']-1], interp=True)
 
         # limit state and output valve position
@@ -125,6 +126,7 @@ class tgov1Agent():
         # History Values
         self.r_x1 = [0.0]*self.mirror.dataPoints
         self.r_x2 = [0.0]*self.mirror.dataPoints
+        self.r_u = [0.0]*self.mirror.dataPoints
 
         # Append init values to running state data
         self.r_x1.append(self.Gen.cv['Pm'])
@@ -134,11 +136,13 @@ class tgov1Agent():
         """Update Log information"""
         self.r_x1[self.mirror.cv['dp']] = float(self.x1[1])
         self.r_x2[self.mirror.cv['dp']] = float(self.x2[1])
+        self.r_u[self.mirror.cv['dp']] = float(self.uVector[0])
 
     def popUnsetData(self, N):
         """Remove any appened init values from running values"""
         self.r_x1 = self.r_x1[:N]
         self.r_x2 = self.r_x2[:N]
+        self.r_u = self.r_u[:N]
 
     def setState(self, newState):
         """ When stepping Pm, states must be reset"""
