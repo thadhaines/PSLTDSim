@@ -61,13 +61,13 @@ class TLB(BA):
         # Include Integral of ACE
         if self.BAdict['IncludeIACE']:
             # If deltaw larger than deadband setting
-            if (abs(deltaw) >= self.BAdict['IACEdeadband']):
+            if (abs(deltaw) >= self.BAdict['IACEdeadband']/self.mirror.simParams['fBase']):
                 # Add to dispatch signal if same sign as freq deviation
                 if np.sign(deltaw) == np.sign(curIACE):
                     self.cv['ACEdist'] += curIACE * float(self.BAdict['IACEscale'])
 
         # attempts at resolving steady state ACE
-        if abs(deltaw) <= self.BAdict['IACEdeadband']*.8 :# deltaw 2x less than deadband
+        if abs(deltaw) <= self.BAdict['IACEdeadband']/self.mirror.simParams['fBase']*.8 :# deltaw 2x less than deadband
             # send IACE if less than arbitrary limit, and helpful to ACE
             if abs(self.cv['ACE']) <= 5.0 and np.sign(self.cv['ACEdist']) == np.sign(curIACE):
                 self.cv['ACEdist'] += curIACE / self.wIntAgent.windowSize

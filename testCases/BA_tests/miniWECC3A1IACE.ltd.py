@@ -15,15 +15,15 @@ mirror.sysBA = {
     'North':{
         'Area':1,
         'B':" 1.0 : p", # MW/0.1 Hz
-        'ActionTime': 120, # seconds
+        'ActionTime': 5, # seconds
         'Type':'TLB : 2', # Tie-Line Bias
-        'IncludeIACE' : True,
+        'IncludeIACE' : False,
         'IACEwidow' : 120, # seconds - size of window
         'IACEscale' : 1/500,
-        'IACEdeadband' : 30E-6, # Pu Hz
+        'IACEdeadband' : .002, # Hz
         'Filtering': 'PI : 0.04 0.0001',
         'AGCDeadband' : None, # MW?
-        'GovDeadband' : .036, # Hz
+        'GovDeadband' : .0, # Hz
         'CtrlGens': [
             'gen 1 : .25 : rampA',
             'gen 17 : .25 : rampA',
@@ -34,15 +34,15 @@ mirror.sysBA = {
     'East':{
         'Area':2,
         'B':" 1.0 : p", # MW/0.1 Hz
-        'ActionTime': 120, # Seconds
+        'ActionTime': 5, # Seconds
         'Type':'TLB : 2', # Tie-Line Bias
-        'IncludeIACE' : True,
+        'IncludeIACE' : False,
         'IACEwidow' : 120, # seconds - size of window
         'IACEscale' : 1/500,
-        'IACEdeadband' : 30E-6, # Pu Hz
+        'IACEdeadband' : .002, # Hz
         'Filtering': 'PI : 0.04 0.0001',
         'AGCDeadband' : None, # MW?
-        'GovDeadband' : .036, # Hz
+        'GovDeadband' : .0, # Hz
         'CtrlGens': [
             'gen 107 : .50 : rampA',
             'gen 71 : .50 : rampA',
@@ -51,15 +51,15 @@ mirror.sysBA = {
     'South':{
         'Area':3,
         'B':" 1.0 : p", # MW/0.1 Hz
-        'ActionTime': 120, # seconds
+        'ActionTime': 5, # seconds
         'Type':'TLB : 2', # Tie-Line Bias
-        'IncludeIACE' : True,
+        'IncludeIACE' : False,
         'IACEwidow' : 120, # seconds - size of window
         'IACEscale' : 1/500,
-        'IACEdeadband' : 30E-6, # Pu Hz
+        'IACEdeadband' : .002, # Hz
         'Filtering': 'PI : 0.04 0.0001',
         'AGCDeadband' : None, # MW?
-        'GovDeadband' : .036, # Hz
+        'GovDeadband' : .0, # Hz
         'CtrlGens': [
             'gen 41 : .25 : rampA',
             'gen 48 : .25 : rampA',

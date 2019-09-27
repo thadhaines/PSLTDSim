@@ -18,3 +18,4 @@ from .allPmDynamics import allPmDynamics
 from .sysPemLQF import sysPemLQF
 
 from .BAplots01 import BAplots01
+from .BAgovU import BAgovU

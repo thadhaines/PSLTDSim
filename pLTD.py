@@ -36,6 +36,7 @@ printFigs = False # True
 
 # Plot ACE results
 ltd.plot.BAplots01(mir, False, printFigs)
+ltd.plot.BAgovU(mir, False, printFigs)
 
 ### Plot detailed SACE
 #Plot SACE from all areas on same plot
