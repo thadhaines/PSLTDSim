@@ -2,8 +2,8 @@ from .GeneratorAgent import GeneratorAgent
 
 class SlackAgent(GeneratorAgent):
     """Derived from GeneratorAgent for Slack Generator"""
-    def __init__(self, mirror, parentBus, newGen):
-        super(SlackAgent, self).__init__(mirror, parentBus, newGen)
+    def __init__(self, mirror, areaAgent, parentBus, newGen):
+        super(SlackAgent, self).__init__(mirror, areaAgent, parentBus, newGen)
         self.globalSlack = 0
 
         self.mirror = mirror

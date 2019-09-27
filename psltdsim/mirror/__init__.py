@@ -6,10 +6,13 @@ from .distPacc import distPacc
 from .initInertiaH import initInertiaH
 from .initRunningVals import initRunningVals
 from .initPY3Dynamics import initPY3Dynamics
+from .createPY3DynamicAgents import createPY3DynamicAgents
 
 from .sumLoad import sumLoad
 from .sumPe import sumPe
 from .sumPm import sumPm
+
+
 
 # Note: Functions with underscores are only for exectution in IPY32
 from .create_mirror_agents import create_mirror_agents
