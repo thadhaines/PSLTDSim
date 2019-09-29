@@ -1,13 +1,24 @@
 """Test script to parse dyd file, and tally models found"""
-import psltdsim as ltd
+
 import pprint
+import os
+
+print(os.getcwd())
+# workaround for interactive mode runs (Use as required)
+#os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
+print(os.getcwd())
+
+import psltdsim as ltd
 
 # location of cases
-dydLoc = '14ls11e_21P1a_dg.dyd' # light summer 2014
+#dydLoc = '14ls11e_21P1a_dg.dyd' # light summer 2014
 #dydLoc = '16HS31_dg.dyd' # heavy summer 2016
-#dydLoc = '18HSP2a1.dyd' # heavy spring 2018
+dydLoc = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1.dyd"
+
+#dydLoc = r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim\tests\dydParse\sixMachineGENERICmodels.dyd"
 #dydLoc = '18HSP2a1_dg.dyd' # heavy spring 2018
-dydLoc = r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_V9_RJ_govsfixed_fadded.dyd"
+#dydLoc = r"C:\LTD\pslf_systems\MiniPSLF_PST\miniWECC_V9_RJ_govsfixed_fadded.dyd"
 #dydLoc = r"C:\LTD\pslf_systems\MicroWECC_PSLF\microDynamicsData_LTD.dyd"
 
 """ Start of dictionary tally definitions """
