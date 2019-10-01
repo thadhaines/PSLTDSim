@@ -37,9 +37,9 @@ def parseDyd(mirror,dydLoc):
         'tgov1':   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, # droop as first param, damping as last (7th)
         'ccbt1' :  {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 'Not Listed',}, # rvalve 2
         'gast' :   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 10,}, # damping not used, single shaft turbine
-        'ieeeg1' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 'Not Listed',}, # uses reciprocal of droop, db1 = intential dedband (hysterisis deadband)
-        'ieeeg3' : {'LTDTurbineType': 'steam', 'Rloc' : 13, 'Dloc' : 13,}, # 2 deadbands listed
         'w2301' :  {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 19,}, #woodward..
+        'ieeeg3' : {'LTDTurbineType': 'steam', 'Rloc' : 13, 'Dloc' : 13,}, # 2 deadbands listed
+        'ieeeg1' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 'Not Listed',}, # uses reciprocal of droop, db1 = intential dedband (hysterisis deadband)
 
         'g2wscc' : {'LTDTurbineType': 'hydro', 'Rloc' : 9, 'Dloc' : 'Not Listed',}, 
         'hyg3' :   {'LTDTurbineType': 'hydro', 'Rloc' : 11, 'Dloc' : 26,}, # 2 deadbands listed
