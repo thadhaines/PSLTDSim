@@ -1,20 +1,15 @@
-class tgov1(object):
-    """Governor class for the pslf tgov1 model parameters
+class genericPrimeMover(object):
+    """Governor class for the pslf genericPrimeMover model parameters
     Class parameters populated by parsed line elements from a CLEAN dyd line
     NOTE: There may be a better way to do this. Hardcoded indexes feel like a bad idea
     """
-    def __init__(self, mirror, parts):
+    def __init__(self, mirror, parts, modelDict):
         #for later reference/debug if desired
-        self.isGeneric = False
+        
+        self.isGeneric = True
         self.mirror = mirror
         self.dydLine = parts
-        self.params = 13    # NOTE: length specific to model type
-
-        #for underdefined models, add zeros
-        if len(parts)<self.params:
-            short = self.params-len(parts)
-            for x in range(short):
-                parts.append(0.0)
+        self.modelDict = modelDict
 
         self.Type = parts[0]
         self.Busnum = parts[1]
@@ -23,7 +18,7 @@ class tgov1(object):
         self.Id = parts[4] # Is this ID or ZONE?
         self.Rlevel = parts[5]
 
-        self.Gen = ltd.find.findGenOnBus(self.mirror, self.Busnum, self.Id) # move away?
+        self.Gen = ltd.find.findGenOnBus(self.mirror, self.Busnum, self.Id) # move away? No - think it's required. 9/30/19
 
         #if isinstance(parts[6], basestring):
         if isinstance(parts[6], str):
@@ -33,18 +28,18 @@ class tgov1(object):
         else:
             # No mwcap info found - should use generator MVA base
             parts.insert(6, 'MBASE MVA')
+            self.dydLine = parts
             self.mwCap = self.Gen.Mbase # default PSDS behavior
         
-        self.R  = parts[7]
-        self.T1 = parts[8]
-        self.Vmax = parts[9]
-        self.Vmin = parts[10]
-        self.T2 = parts[11] # in sec
-        self.T3 = parts[12]
-        self.Dt = parts[13]
+        self.TurbineType = modelDict['TurbineType']
+
+        # R is droop, permanent droop, steady state droop, electric droop
+        # TODO: incorporate index numbers from modelDict.
+        self.R  = parts[7] #listed as first thing in params list ... ie. +6
+        self.Dt = 0
 
         if mirror.debug:
-            print("\t...'tgov' Model Created %d %s" % (self.Busnum,self.Busnam))
+            print("\t...'genericPrimeMover' Model Created %d %s" % (self.Busnum,self.Busnam))
 
     def __repr__(self):
         """Display more useful data for model"""

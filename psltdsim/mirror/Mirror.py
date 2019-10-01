@@ -173,7 +173,7 @@ class Mirror(object):
 
         init_end = time.time()
         self.InitTime = init_end-init_start
-        print("*** Python Mirror intialized.")
+        print("*** Python Mirror intialized.") # NOTE: this is done in IPY and then sent to PY3 for further dynamic agent init
 
     # Simulation Methods
     def initRunningVals(self):

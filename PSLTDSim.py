@@ -112,7 +112,7 @@ batchList =[
     #r".\testCases\miniWECC3Area\miniWECC3A2.py", # BA response, TLB type 0
 
     # Final Validations
-    #r".\testCases\sixMachine\sixMachineStep1.py",
+    r".\testCases\sixMachine\sixMachineStep1.py",
     #r".\testCases\sixMachine\sixMachineRamp1.py",
     #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
 
@@ -127,7 +127,7 @@ batchList =[
 
     # BA research with AGC
     #r".\testCases\BA_tests\miniWECC3A0.py", # BA response, TLB type 0, -1000 MW gen in area 3
-    r".\testCases\BA_tests\miniWECC3A1IACE.py", # BA response, TLB type 2, -1000 MW gen in area 3 with IACE
+    #r".\testCases\BA_tests\miniWECC3A1IACE.py", # BA response, TLB type 2, -1000 MW gen in area 3 with IACE
     #r".\testCases\BA_tests\miniWECC3A1.py", # BA response, TLB type 2, -1000 MW gen in area 3
 
     #r".\testCases\BA_tests\miniWECC3A2.py", # BA response, TLB type 2, + 400MW wind in area 1

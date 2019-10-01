@@ -27,6 +27,7 @@ class GeneratorAgent(object):
         self.Hpu = 0.0
         self.Pmax = ltd.data.single2float(newGen.Pmax)
         self.Qmax = ltd.data.single2float(newGen.Qmax)
+        self.TurbineType = newGen.TurbineType
 
         # Q: Should Vsched = self.Bus.Vsched? seems better utilized in PSLF
         self.Vsched = ltd.data.single2float(newGen.Vcsched) # This value seems unused in PSLF

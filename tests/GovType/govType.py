@@ -1,6 +1,7 @@
 """
 Script to investigate quantity of known turbine types assocaited to generators 
 in WECC base case (or any case).
+Input: location of .sav file
 """
 import pprint
 import os
