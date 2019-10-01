@@ -14,59 +14,66 @@ def parseDyd(mirror,dydLoc):
 
     # Creation of Model dictionaries Hlocation and Dloc for each gen type +6
     unModeledPSLFmachines = {
-        'genrou' :  {'Hloc' : 11, 'Dloc' : 12 },
         'gencc' :   {'Hloc' : 11, 'Dloc' : 12 },
         'gencls' :  {'Hloc' : 7, 'Dloc' : 8 },
-        'genind ' : {'Hloc' : 11, 'Dloc' : 12 },
+        'genrou' :  {'Hloc' : 11, 'Dloc' : 12 },
         'gensal' :  {'Hloc' : 10, 'Dloc' : 11 },
-        'gensdo' :  {'Hloc' : 9, 'Dloc' : 10 },
         'gentpf' :  {'Hloc' : 11, 'Dloc' : 12 },
         'gentpj' :  {'Hloc' : 11, 'Dloc' : 12 },
         'genwri' :  {'Hloc' : 12, 'Dloc' : 13 },
-        'gewtg' :   {'Hloc' : 1, 'Dloc' : 1 }, # has no inertia or damping - Wind turbine
+        'gewtg' :   {'Hloc' : 'Not Listed', 'Dloc' : 'Not Listed' }, # Wind turbine
         'motor1' :  {'Hloc' : 11, 'Dloc' : 12 },
-        'motorc' :  {'Hloc' : 1, 'Dloc' : 1 }, # eperimental model - not supported by GE....? no info given
-        'motorw' :  {'Hloc' : 12, 'Dloc' : 6 },
-        'motorx' :  {'Hloc' : 15, 'Dloc' : 16 },
-        'shaft5' :  {'Hloc' : 8, 'Dloc' : 12 }, # Call GE for details...
+        # Commented models not used in WECC
+        #'genind ' : {'Hloc' : 11, 'Dloc' : 12 },
+        #'gensdo' :  {'Hloc' : 9, 'Dloc' : 10 },
+        #'motorc' :  {'Hloc' : 1, 'Dloc' : 1 }, # eperimental model - not supported by GE....? no info given
+        #'motorw' :  {'Hloc' : 12, 'Dloc' : 6 },
+        #'motorx' :  {'Hloc' : 15, 'Dloc' : 16 },
+        #'shaft5' :  {'Hloc' : 8, 'Dloc' : 12 }, # Call GE for details...
        }
 
     unModeledPSLFprimeMovers = {
-        'model name': {'TurbineType': 'unknown', 'Rloc' : 6, 'Hloc' : 8, 'Mbase' : 2 , 'MWcap' : 0,}, # Generic Data Line for gov info, rloc +6
+        # Generic Data Line for gov info, parts +6
         'tgov1':   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, # droop as first param, damping as last (7th)
         'ccbt1' :  {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 'Not Listed',}, # rvalve 2
-        'ccst3' :  {'LTDTurbineType': 'steam', 'Rloc' : 15, 'Dloc' : 'Not Listed',},  # r 8
-        'crcmgv' : {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 14,}, #HP droop, has 2
-        'degov1' : {'LTDTurbineType': 'diesel', 'Rloc' : 17, 'Dloc' : 'Not Listed',}, 
-        'g2wscc' : {'LTDTurbineType': 'hydro', 'Rloc' : 9, 'Dloc' : 'Not Listed',}, 
         'gast' :   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 10,}, # damping not used, single shaft turbine
-        'gegt1' :  {'LTDTurbineType': 'gas', 'Rloc' : 8, 'Dloc' : 13,}, # Hz per MW droop..., has deadband listing in PU
-        'ggov1' :  {'LTDTurbineType': 'general', 'Rloc' : 7, 'Dloc' : 29,}, # GENERAL
-        'ggov2' :  {'LTDTurbineType': 'general', 'Rloc' : 7, 'Dloc' : 29,}, 
-        'ggov3' :  {'LTDTurbineType': 'general', 'Rloc' : 7, 'Dloc' : 29,}, 
-        'gpwscc' : {'LTDTurbineType': '_', 'Rloc' : 9, 'Dloc' : 'Not Listed',}, # 2 deadbands listed
-        'h6b' :    {'LTDTurbineType': 'hydro', 'Rloc' : 'Not Listed', 'Dloc' : 'Not Listed',}, # no droop listed?
+        'ieeeg1' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 'Not Listed',}, # uses reciprocal of droop, db1 = intential dedband (hysterisis deadband)
+        'ieeeg3' : {'LTDTurbineType': 'steam', 'Rloc' : 13, 'Dloc' : 13,}, # 2 deadbands listed
+        'w2301' :  {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 19,}, #woodward..
 
-        'h6bd' :   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'hyg3' :   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'hygov4' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'hygov8' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'hygov' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'hygovr' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'hypid' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'hyst1' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'ieeeg1' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'ieeeg3' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'lcfb1' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'lm2500' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'lm6000' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'pidgov' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'stag1' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'tgov1' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'tgov3' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'w2301' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'wndtge' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
-        'wndtrb' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
+        'g2wscc' : {'LTDTurbineType': 'hydro', 'Rloc' : 9, 'Dloc' : 'Not Listed',}, 
+        'hyg3' :   {'LTDTurbineType': 'hydro', 'Rloc' : 11, 'Dloc' : 26,}, # 2 deadbands listed
+        'hygov4' : {'LTDTurbineType': 'hydro', 'Rloc' : 13, 'Dloc' : 18,}, # 2 deadbands listed
+        'hygov' :  {'LTDTurbineType': 'hydro', 'Rloc' : 7, 'Dloc' : 17,}, # 2 deadbands listed
+        'hygovr' : {'LTDTurbineType': 'hydro', 'Rloc' : 9, 'Dloc' : 32,}, # 2 deadbands listed
+        'pidgov' : {'LTDTurbineType': 'hydro', 'Rloc' : 8, 'Dloc' : 21,}, 
+
+        'ggov1' :  {'LTDTurbineType': 'general', 'Rloc' : 7, 'Dloc' : 29,}, # GENERAL
+        'ggov3' :  {'LTDTurbineType': 'general', 'Rloc' : 7, 'Dloc' : 29,}, 
+        'gpwscc' : {'LTDTurbineType': 'general', 'Rloc' : 9, 'Dloc' : 'Not Listed',}, # 2 deadbands listed, has reccommended settings for steam,hydro, gas/deisel
+
+        'wndtge' : {'LTDTurbineType': 'wind', 'Rloc' : 'Not Listed', 'Dloc' : 'Not Listed',}, # wind
+        'wndtrb' : {'LTDTurbineType': 'wind', 'Rloc' : 'Not Listed', 'Dloc' : 'Not Listed',}, # wind
+
+        'lcfb1' :  {'LTDTurbineType': 'loadCTRL', 'Rloc' : 7, 'Dloc' : 13,}, # Load Controller....
+
+        # Commented models not used in WECC
+        # accidentally made
+        #'ccst3' :  {'LTDTurbineType': 'steam', 'Rloc' : 15, 'Dloc' : 'Not Listed',},  # r 8
+        #'crcmgv' : {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 14,}, #HP droop, has 2
+        #'degov1' : {'LTDTurbineType': 'diesel', 'Rloc' : 17, 'Dloc' : 'Not Listed',}, 
+        #'gegt1' :  {'LTDTurbineType': 'gas', 'Rloc' : 8, 'Dloc' : 13,}, # Hz per MW droop..., has deadband listing in PU
+        #'ggov2' :  {'LTDTurbineType': 'general', 'Rloc' : 7, 'Dloc' : 29,}, 
+        #'h6b' :    {'LTDTurbineType': 'hydro', 'Rloc' : 'Not Listed', 'Dloc' : 'Not Listed',}, # no droop listed?
+        # Not made
+        #'h6bd' :   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
+        #'hygov8' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
+        #'hypid' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
+        #'hyst1' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
+        #'lm2500' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
+        #'lm6000' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
+        #'stag1' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
+        #'tgov3' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
        }
 
 
