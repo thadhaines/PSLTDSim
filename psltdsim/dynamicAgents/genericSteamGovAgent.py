@@ -73,22 +73,16 @@ class genericSteamGovAgent():
         # Perform sum and first gain block
         self.uVector = (PrefVec+dwVec)
 
+        # limit input #NOTE: Untested
+        for ndx in range(len(self.uVector)):
+            if self.uVector[ndx] > self.y1HighLimit:
+                self.uVector[ndx] = self.y1HighLimit
+            elif self.uVector[ndx] <self.y1LowLimit:
+                self.uVector[ndx] = self.y1LowLimit
+
         # First dynamic Block
         _, y1, self.x1 = sig.lsim(self.sys1, U=self.uVector, T=self.t, 
                                    X0=self.r_x1[self.mirror.cv['dp']-1], interp=True)
-
-        # limit state and output valve position
-        for ndx in range(len(self.x1)):
-            if self.x1[ndx] > self.y1HighLimit:
-                self.x1[ndx] = self.y1HighLimit
-            elif self.x1[ndx] <self.y1LowLimit:
-                self.x1[ndx] = self.y1LowLimit
-
-        for ndx in range(len(y1)):
-            if y1[ndx] > self.y1HighLimit:
-                y1[ndx] = self.y1HighLimit
-            elif y1[ndx] <self.y1LowLimit:
-                y1[ndx] = self.y1LowLimit
 
         # Second block
         _, y2, self.x2 = sig.lsim(self.sys2, y1, T=self.t,
@@ -102,7 +96,7 @@ class genericSteamGovAgent():
         Pmech = y3[1] - delta_w*self.Dt*self.Mbase
 
         # Set Generator Mechanical Power
-        self.Gen.cv['Pm'] = float(Pmech) # float because y2 is numpy ....
+        self.Gen.cv['Pm'] = float(Pmech) # float because y is numpy ....
 
     def stepInitDynamics(self):
         """ set Pm = Pe, calculate MW limits of valve position"""
@@ -134,8 +128,9 @@ class genericSteamGovAgent():
             updated = True
 
         # Ensure correct limiting values
-        self.y1HighLimit = self.Vmax * self.mwCap
-        self.y1LowLimit = self.Vmin * self.mwCap
+        # assume no odd limits in generic govs
+        self.y1HighLimit =self.mwCap
+        self.y1LowLimit = 0.0
 
         # Ensure correct deadband from BA
         if self.Gen.AreaAgent.BA:
