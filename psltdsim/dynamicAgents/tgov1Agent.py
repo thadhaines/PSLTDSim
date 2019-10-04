@@ -51,7 +51,8 @@ class tgov1Agent():
 
         # Create system inputs
         delta_w = 1.0-self.mirror.cv['f']
-        # handle deadband
+
+        # handle deadband - step...
         if abs(delta_w) < self.deadband:
             delta_w = 0.0
 
