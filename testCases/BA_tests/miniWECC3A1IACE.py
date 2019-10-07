@@ -14,7 +14,7 @@ IACE included in SACE
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 660,    
+    'endTime': 900,    
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,

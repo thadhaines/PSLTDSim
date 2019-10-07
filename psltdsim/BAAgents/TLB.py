@@ -6,7 +6,7 @@ class TLB(BA):
         super(TLB, self).__init__(mirror,name,BAdict)
 
         # Handle different types of TLB
-        typeSTR = self.BAdict['Type'].split(":")
+        typeSTR = self.BAdict['AGCType'].split(":")
         if len(typeSTR)>1:
             self.AGCtype = int(typeSTR[1])
         else:
@@ -63,14 +63,15 @@ class TLB(BA):
             # If deltaw larger than deadband setting
             if (abs(deltaw) >= self.BAdict['IACEdeadband']/self.mirror.simParams['fBase']):
                 # Add to dispatch signal if same sign as freq deviation
-                if np.sign(deltaw) == np.sign(curIACE):
-                    self.cv['ACEdist'] += curIACE * float(self.BAdict['IACEscale'])
-
+                self.cv['ACEdist'] += curIACE * float(self.BAdict['IACEscale'])
+                #if np.sign(deltaw) == np.sign(curIACE):
+        """
         # attempts at resolving steady state ACE
         if abs(deltaw) <= self.BAdict['IACEdeadband']/self.mirror.simParams['fBase']*.8 :# deltaw 2x less than deadband
             # send IACE if less than arbitrary limit, and helpful to ACE
             if abs(self.cv['ACE']) <= 5.0 and np.sign(self.cv['ACEdist']) == np.sign(curIACE):
                 self.cv['ACEdist'] += curIACE / self.wIntAgent.windowSize
+        """
 
         # Put ACEdist through filter
         if self.filter != None:
@@ -97,12 +98,14 @@ class TLB(BA):
                     # Ramp value instead of step
                     if gen.gov_model == False:
                         # distribute Negative ACE to Pmech
+                        # NOTE: Don't forget this makese a ton of Agents!
                         AGCramp = ltd.perturbance.RampAgent(self.mirror, 
                                                             gen, ['Pm',self.mirror.cv['t'],
                                                                   self.actTime, -ACE2dist*gen.ACEpFactor, 'rel'])
                         self.mirror.AGCramp.append(AGCramp)
                     else:
                         # distribute Negative ACE % to Pref
+                        # NOTE: Don't forget this makese a ton of Agents!
                         AGCramp = ltd.perturbance.RampAgent(self.mirror, 
                                                             gen, ['Pref',self.mirror.cv['t'],
                                                                   self.actTime, -ACE2dist*gen.ACEpFactor, 'rel'])
