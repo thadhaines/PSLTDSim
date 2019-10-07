@@ -16,18 +16,18 @@ class deadBandAgent():
 
         self.dbType = 0
 
-        if self.BAdict['GovDeadbandType'] == 'step':
+        if self.BAdict['GovDeadbandType'].lower() == 'step':
             self.dbType = 1
             self.dbPu = self.BAdict['GovDeadband']/self.fBase
             self.wOffset = 0.0
 
-        elif self.BAdict['GovDeadbandType'] == 'ramp':
+        elif self.BAdict['GovDeadbandType'].lower() == 'ramp':
             self.dbType = 2
             self.dbPu =  self.BAdict['GovDeadband']/self.fBase
             self.R2 = self.R-self.dbPu # Calculate new R
             self.wOffset = self.dbPu
 
-        elif self.BAdict['GovDeadbandType'] == 'NLDroop':
+        elif self.BAdict['GovDeadbandType'].lower() == 'nldroop':
             # Non-linear droop i.e. Compound R
             self.dbType = 3
             self.alpha = self.BAdict['GovAlpha']/self.fBase

@@ -18,6 +18,15 @@ mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A1IACEF.mir')
 #mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A2IACEF.mir')
 #mirLoc = os.path.join(dirname, 'delme','sixMachineStep','SixMachineStep1F.mir')
 
+# Deadband data
+mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCnoDBF.mir')
+mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCstepDBF.mir')
+mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCNLdroopDBF.mir')
+
+# IEEE testing
+mirLoc = os.path.join(dirname, 'delme','IEEE','3areaTripF.mir')
+
+
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)

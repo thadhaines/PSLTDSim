@@ -6,15 +6,15 @@
 
 # Perturbances
 mirror.sysPerturbances = [
-    'gen 62 : step Pm 2 -1000 rel',
-    'gen 62 : step Pref 2 -1000 rel',
+    'gen 62 : step Pm 2 -1500 rel',
+    'gen 62 : step Pref 2 -1500 rel',
     ]
 # Balancing Authority Input
 mirror.sysBA = {
     'North':{
         'Area':1,
         'B':" 1.0 : p", # MW/0.1 Hz
-        'AGCActionTime': 5.00, # seconds    # changed 10/6/19
+        'AGCActionTime': 10.00, # seconds    # changed 10/6/19
         'AGCType':'TLB : 2', # Tie-Line Bias # changed 10/6/19
         'IncludeIACE' : False,
         'IACEwidow' : 60, # seconds - size of window
@@ -27,16 +27,14 @@ mirror.sysBA = {
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19
         'CtrlGens': [
-            'gen 1 : .25 : rampA',
-            'gen 17 : .25 : rampA',
-            'gen 23 : .25 : rampA',
-            'gen 118 : .25 : rampA',
+            'gen 17 : .5 : rampA',
+            'gen 23 : .5 : rampA',
                     ]
         },
     'East':{
         'Area':2,
         'B':" 1.0 : p", # MW/0.1 Hz
-        'AGCActionTime': 5.00, # seconds    # changed 10/6/19
+        'AGCActionTime': 10.00, # seconds    # changed 10/6/19
         'AGCType':'TLB : 2', # Tie-Line Bias # changed 10/6/19
         'IncludeIACE' : False,
         'IACEwidow' : 60, # seconds - size of window
@@ -56,7 +54,7 @@ mirror.sysBA = {
     'South':{
         'Area':3,
         'B':" 1.0 : p", # MW/0.1 Hz
-        'AGCActionTime': 5.00, # seconds    # changed 10/6/19
+        'AGCActionTime': 10.00, # seconds    # changed 10/6/19
         'AGCType':'TLB : 2', # Tie-Line Bias # changed 10/6/19
         'IncludeIACE' : False,
         'IACEwidow' : 60, # seconds - size of window
@@ -69,10 +67,8 @@ mirror.sysBA = {
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19
         'CtrlGens': [
-            'gen 41 : .25 : rampA',
-            'gen 48 : .25 : rampA',
-            'gen 59 : .25 : rampA',
-            'gen 65 : .25 : rampA',
+            'gen 48 : .5 : rampA',
+            'gen 65 : .5 : rampA',
                     ]
         },
     }

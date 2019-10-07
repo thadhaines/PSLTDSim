@@ -36,8 +36,8 @@ def parseDyd(mirror,dydLoc):
         # Generic Data Line for gov info, parts +6
         #'tgov1':   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, # droop as first param, damping as last (7th)
         'ccbt1' :  {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 'Not Listed',}, # rvalve 2
-        'gast' :   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 10,}, # damping not used, single shaft turbine
-        'w2301' :  {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 19,}, #woodward..
+        'gast' :   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 10,}, # damping 'not used', single shaft turbine
+        'w2301' :  {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 19,}, #woodward.
         'ieeeg3' : {'LTDTurbineType': 'steam', 'Rloc' : 13, 'Dloc' : 13,}, # 2 deadbands listed
         'ieeeg1' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 'Not Listed',}, # uses reciprocal of droop, db1 = intential dedband (hysterisis deadband)
 
@@ -58,14 +58,14 @@ def parseDyd(mirror,dydLoc):
         'lcfb1' :  {'LTDTurbineType': 'loadCTRL', 'Rloc' : 7, 'Dloc' : 13,}, # Load Controller....
 
         # Commented models not used in WECC
-        # accidentally made
+        # accidentally found type, Rloc, and Dloc
         #'ccst3' :  {'LTDTurbineType': 'steam', 'Rloc' : 15, 'Dloc' : 'Not Listed',},  # r 8
         #'crcmgv' : {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 14,}, #HP droop, has 2
         #'degov1' : {'LTDTurbineType': 'diesel', 'Rloc' : 17, 'Dloc' : 'Not Listed',}, 
         #'gegt1' :  {'LTDTurbineType': 'gas', 'Rloc' : 8, 'Dloc' : 13,}, # Hz per MW droop..., has deadband listing in PU
         #'ggov2' :  {'LTDTurbineType': 'general', 'Rloc' : 7, 'Dloc' : 29,}, 
         #'h6b' :    {'LTDTurbineType': 'hydro', 'Rloc' : 'Not Listed', 'Dloc' : 'Not Listed',}, # no droop listed?
-        # Not made
+        # No location or type researched
         #'h6bd' :   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
         #'hygov8' : {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
         #'hypid' :  {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, 
