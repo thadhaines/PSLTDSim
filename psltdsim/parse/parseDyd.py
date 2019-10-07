@@ -34,7 +34,7 @@ def parseDyd(mirror,dydLoc):
 
     unModeledPSLFprimeMovers = {
         # Generic Data Line for gov info, parts +6
-        'tgov1':   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, # droop as first param, damping as last (7th)
+        #'tgov1':   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 13,}, # droop as first param, damping as last (7th)
         'ccbt1' :  {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 'Not Listed',}, # rvalve 2
         'gast' :   {'LTDTurbineType': 'steam', 'Rloc' : 7, 'Dloc' : 10,}, # damping not used, single shaft turbine
         'w2301' :  {'LTDTurbineType': 'steam', 'Rloc' : 8, 'Dloc' : 19,}, #woodward..

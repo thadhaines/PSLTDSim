@@ -7,7 +7,7 @@ class BA(object):
         self.mirror = mirror
         self.name = name
         self.BAdict = BAdict
-        self.actTime = float(BAdict['ActionTime'])
+        self.actTime = float(BAdict['AGCActionTime'])
         self.ctrlMachines = []
 
         # Current Value Dictionary
@@ -33,6 +33,7 @@ class BA(object):
                 self.B = self.Area.beta * float(bStr[0])
             elif bType.lower() == 'p':
                 # use percent of load
+                # TODO: have area calculate max loading, include as option here
                 self.B = self.Area.cv['P']*(float(bStr[0])/100.00)
             elif bType.lower() == 'abs':
                 #use absolute entry as B
@@ -95,7 +96,7 @@ class BA(object):
                 print('*** Balacing Authority Error: Target Agent %s Not Found.' % parsed[0])
         #end for
 
-        # Calc participation factor sum
+        # Calc participation factor (pF) sum
         self.pFsum = 0.0
 
         for gen in self.ctrlMachines:
@@ -108,9 +109,9 @@ class BA(object):
         # TODO: Test for duplicate machines...
 
         # Handle filter settings
-        if self.BAdict['Filtering'] != None:
+        if self.BAdict['ACEFiltering'] != None:
 
-            filterInput = self.BAdict['Filtering'].split(":")
+            filterInput = self.BAdict['ACEFiltering'].split(":")
 
             if filterInput[0].lower().strip() == 'lowpass':
                 T1 = float(filterInput[1])

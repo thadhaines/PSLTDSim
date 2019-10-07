@@ -14,9 +14,9 @@ mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
 
 #mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A0F.mir')
 #mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A1F.mir')
-#mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A1IACEF.mir')
+mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A1IACEF.mir')
 #mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A2IACEF.mir')
-mirLoc = os.path.join(dirname, 'delme','sixMachineStep','SixMachineStep1F.mir')
+#mirLoc = os.path.join(dirname, 'delme','sixMachineStep','SixMachineStep1F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
@@ -36,9 +36,10 @@ printFigs = False # True
 
 # Plot ACE results
 ltd.plot.BAplots01(mir, False, printFigs)
-ltd.plot.BAgovU(mir, False, printFigs)
+#ltd.plot.BAgovU(mir, False, printFigs)
 
 ### Plot detailed SACE
+
 #Plot SACE from all areas on same plot
 mins = np.array(mir.r_t)/60.0;
 minEnd = max(mins)

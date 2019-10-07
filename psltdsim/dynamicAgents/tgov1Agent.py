@@ -31,7 +31,7 @@ class tgov1Agent():
         self.Dt = PSLFgov.Dt
         self.uVector = [0,0]
 
-        self.deadband = 0.0
+        self.dbAgent = None
 
         self.t = [0 , self.mirror.timeStep] # will have to be moved if ts = variable
 
@@ -51,12 +51,14 @@ class tgov1Agent():
 
         # Create system inputs
         delta_w = 1.0-self.mirror.cv['f']
-        # handle deadband
-        if abs(delta_w) < self.deadband:
-            delta_w = 0.0
+        usableR = self.R
+
+        # handle deadband - step...
+        if self.dbAgent is not None:
+            delta_w, usableR = self.dbAgent.step(delta_w)
 
         PrefVec = np.array([self.Pref,self.Pref])
-        dwVec = np.array([delta_w,delta_w])/(self.R)*self.Mbase 
+        dwVec = np.array([delta_w,delta_w])/(usableR)*self.Mbase 
 
         # Perform sum and first gain block
         self.uVector = (PrefVec+dwVec)
@@ -126,7 +128,8 @@ class tgov1Agent():
         if self.Gen.AreaAgent.BA:
             # Generator belongs to a BA, check if deadband set
             if 'GovDeadband' in self.Gen.AreaAgent.BA.BAdict:
-                self.deadband = self.Gen.AreaAgent.BA.BAdict['GovDeadband']/self.mirror.simParams['fBase']
+                self.dbAgent = ltd.filterAgents.deadBandAgent(self.mirror, self, self.Gen.AreaAgent.BA.BAdict)
+                #self.deadband = self.Gen.AreaAgent.BA.BAdict['GovDeadband']/self.mirror.simParams['fBase']
 
         if self.mirror.debug and not updated:
             print('... nothing updated.')
