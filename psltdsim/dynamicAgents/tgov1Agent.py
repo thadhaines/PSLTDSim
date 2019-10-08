@@ -32,6 +32,7 @@ class tgov1Agent():
         self.uVector = [0,0]
 
         self.dbAgent = None
+        self.totValveMovement = 0.0
 
         self.t = [0 , self.mirror.timeStep] # will have to be moved if ts = variable
 
@@ -151,9 +152,10 @@ class tgov1Agent():
         self.r_x1[self.mirror.cv['dp']] = float(self.x1[1])
         self.r_x2[self.mirror.cv['dp']] = float(self.x2[1])
         self.r_u[self.mirror.cv['dp']] = float(self.uVector[0])
+        self.totValveMovement += abs( self.r_x1[self.mirror.cv['dp']] - self.r_x1[self.mirror.cv['dp']-1])/self.mwCap
 
     def popUnsetData(self, N):
-        """Remove any appened init values from running values"""
+        """Remove any appended init values from running values"""
         self.r_x1 = self.r_x1[:N]
         self.r_x2 = self.r_x2[:N]
         self.r_u = self.r_u[:N]
