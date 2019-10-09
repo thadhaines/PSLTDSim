@@ -127,6 +127,8 @@ class tgov1Agent():
 
         # Ensure correct deadband from BA
         if self.Gen.AreaAgent.BA:
+            if self.Gen.AreaAgent.BA.BAdict['UseAreaDroop']:
+                self.R = self.Gen.AreaAgent.BA.BAdict['AreaDroop']
             # Generator belongs to a BA, check if deadband set
             if 'GovDeadband' in self.Gen.AreaAgent.BA.BAdict:
                 self.dbAgent = ltd.filterAgents.deadBandAgent(self.mirror, self, self.Gen.AreaAgent.BA.BAdict)

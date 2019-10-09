@@ -28,13 +28,15 @@ class BA(object):
             # Handle setting Bias B
             bStr = BAdict['B'].split(":")
             bType = bStr[1].strip()
-            if bType.lower() == 's':
+            if bType.lower() == 'scalebeta':
                 # Scale Area Beta for B
                 self.B = self.Area.beta * float(bStr[0])
-            elif bType.lower() == 'p':
+            elif bType.lower() == 'perload':
                 # use percent of load
-                # TODO: have area calculate max loading, include as option here
                 self.B = self.Area.cv['P']*(float(bStr[0])/100.00)
+            elif bType.lower() == 'permax':
+                # use percent of max load
+                self.B = self.Area.MaxCapacity*(float(bStr[0])/100.00)
             elif bType.lower() == 'abs':
                 #use absolute entry as B
                 self.B = float(bStr[0])

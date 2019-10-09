@@ -10,9 +10,11 @@ def runSimPY3(mirror, amqpAgent):
     ltd.mirror.sumLoad(mirror) 
     ltd.mirror.sumPe(mirror)
 
-    # calculate area f response characteristic (beta), and interchange ( IC )
     for area in mirror.Area:
+        # calculate area f response characteristic (beta), and interchange ( IC )
         area.calcBeta()
+        # calculate maximum generation capacity of area
+        area.calcMaxCapacity()
 
     # Place for user input 'code' to be run (timer defs, pp, BA, DTC, etc... )
     mirror.ppDict = {}

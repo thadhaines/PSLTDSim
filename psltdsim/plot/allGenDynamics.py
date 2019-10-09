@@ -1,4 +1,4 @@
-def allPmDynamics(mirror, blkFlag=True):
+def allGenDynamics(mirror, blkFlag=True):
     """Plot all dynamic responses from generators
     does not block by default - blkFlag ignored
     """
@@ -8,7 +8,6 @@ def allPmDynamics(mirror, blkFlag=True):
     mir = mirror
     xend = max(mir.r_t)
 
- 
     for c_dyn in mir.Dynamics:
         fig, ax = plt.subplots(nrows=2, ncols=1,)
         ax[0].set_title('Governed Generator on Bus %d %s Power Output' 

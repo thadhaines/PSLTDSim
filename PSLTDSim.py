@@ -241,11 +241,13 @@ for testCase in batchList:
         if case == len(batchList):
             wait_start = time.time()
             print('\n*** Waiting for plot to close...')
-            ltd.plot.sysPQVF(mir, False)
+            
+            ltd.plot.BAplots01(mir, False)
             ltd.plot.sysPePmFLoad(mir, True)
             waitTime += time.time() - wait_start
         else:
-            ltd.plot.sysPQVF(mir, False)
+            
+            ltd.plot.BAplots01(mir, False,)
             ltd.plot.sysPePmFLoad(mir ,False)
 
 # End of Batch Output

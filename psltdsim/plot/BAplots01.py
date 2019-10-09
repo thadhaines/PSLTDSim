@@ -18,7 +18,7 @@ def BAplots01(mirror, blkFlag=True, printFigs=False):
         for gen in BA.ctrlMachines:
             normVal = gen.r_Pm[0]
             ax.plot(mins, np.array(gen.r_Pm)/normVal, linestyle = '-',linewidth=1,
-                    label = r'$P_m$  '+str(gen.Busnum)+' '+gen.Id+' Norm: '+str(round(normVal,2))  )
+                    label = r'$P_m$  '+str(gen.Busnum)+' '+gen.Id+' Norm: '+str(round(normVal))  )
             ax.plot(mins, np.array(gen.r_Pref)/normVal, linestyle = '--',linewidth=1.5,
                     label = r'$P_{ref}$ '+str(gen.Busnum)+' '+gen.Id  )
         
@@ -78,14 +78,37 @@ def BAplots01(mirror, blkFlag=True, printFigs=False):
     if printFigs: plt.savefig(caseName+'ACE'+'.pdf', dpi=300)
     plt.pause(0.00001)
 
-    #Plot System Frequency
+    ## Plot System Frequency
+    # find smallest BA dead band
+    deadbands = ['step', 'ramp', 'nldroop']
+    dbLine = 1
+    plotDb= False
+    for BA in mir.BA:
+        if BA.BAdict['GovDeadbandType'].lower() in deadbands:
+            cDBline = BA.BAdict['GovDeadband']
+            if BA.BAdict['GovDeadbandType'].lower() == 'nldroop':
+                cDBline = BA.BAdict['GovAlpha']
+
+            if cDBline < dbLine:
+                dbLine = cDBline
+                plotDb= True
+        
+
     fig, ax = plt.subplots()
     fig.set_size_inches(6, 2)
-    ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1,)
+    ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1, label = 'Frequency')
+
+    if plotDb:
+        highDb = np.ones_like(mir.r_f)*mir.fBase+dbLine
+        lowDb = np.ones_like(mir.r_f)*mir.fBase-dbLine
+        ax.plot(mins, highDb,linewidth=1,linestyle=":",C='0.7')
+        ax.plot(mins,lowDb,linewidth=1,linestyle=":",C='0.7', label = 'Governor Deadband')
+
     ax.set_title('System Frequency\n Case: ' + caseName)
     ax.set_ylabel('Hz')
     ax.set_xlabel('Time [minutes]')
     ax.set_xlim(0,minEnd)
+    ax.legend()
     #ax.legend()
     ax.grid(True)
     fig.set_dpi(150)

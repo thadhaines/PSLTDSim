@@ -13,9 +13,14 @@ from .sysVmVa import sysVmVa
 from .sysLoad import sysLoad
 from .sysPQgen import sysPQgen
 
-from .allPmDynamics import allPmDynamics
+from .allGenDynamics import allGenDynamics
+from .oneGenDynamics import oneGenDynamics
 
 from .sysPemLQF import sysPemLQF
 
 from .BAplots01 import BAplots01
 from .BAgovU import BAgovU
+from .ValveTravel import ValveTravel
+from .AreaLosses import AreaLosses
+from .SACE import SACE
+from .ACEdist import ACEdist

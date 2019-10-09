@@ -20,6 +20,8 @@ class TLB(BA):
         else:
             self.windowInt = False
 
+        self.IACEweight = self.BAdict['IACEweight']
+
     def step(self):
         # Caclulate ACE
         deltaw = self.mirror.cv['f']-1.0
@@ -28,6 +30,7 @@ class TLB(BA):
         # B is handled as a positive, though it 'is' a negative number
         Face = 10*self.B*deltaw*self.mirror.fBase # 10 is standard since f in Hz
 
+        ## Calculate ACEdist based on conditionals
         # 'Fully' calculated ACE
         self.cv['ACE'] = Pace + Face
 
@@ -48,11 +51,20 @@ class TLB(BA):
             else:
                 self.cv['ACEdist'] = 0
 
+        elif self.AGCtype == 3:
+            self.cv['ACEdist'] = 0
+            # Separate Tieline ACE from Frequency bias
+            # only apply component if same sign as delta w
+            if np.sign(Pace) == np.sign(deltaw):
+                self.cv['ACEdist'] += Pace
+            if np.sign(Face) == np.sign(deltaw):
+                self.cv['ACEdist'] += Face
+
         # Handle computing integral of ACE using trapezoidal integration
         n = self.mirror.cv['dp']
         self.cv['ACEint'] += (self.cv['ACE']+self.r_ACE[n-1])/2.0*self.mirror.timeStep
 
-        # handle optional window integration agent
+        # optional window integration agent
         if self.windowInt:
             curIACE = self.wIntAgent.step(self.cv['ACE'], self.r_ACE[n-1])
         else:
@@ -63,8 +75,9 @@ class TLB(BA):
             # If deltaw larger than deadband setting
             if (abs(deltaw) >= self.BAdict['IACEdeadband']/self.mirror.simParams['fBase']):
                 # Add to dispatch signal if same sign as freq deviation
-                self.cv['ACEdist'] += curIACE * float(self.BAdict['IACEscale'])
-                #if np.sign(deltaw) == np.sign(curIACE):
+                if (np.sign(deltaw) == np.sign(curIACE)) and (np.sign(deltaw) == np.sign(self.cv['ACEdist'])):
+                    self.cv['ACEdist'] =  self.cv['ACEdist'] *(1.0-self.IACEweight) + curIACE * float(self.BAdict['IACEscale'])*self.IACEweight
+
         """
         # attempts at resolving steady state ACE
         if abs(deltaw) <= self.BAdict['IACEdeadband']/self.mirror.simParams['fBase']*.8 :# deltaw 2x less than deadband
@@ -83,9 +96,10 @@ class TLB(BA):
         # Check if current time step is an action step
         if (self.mirror.cv['t'] % self.actTime) == 0:
             self.cv['distStep'] = 1
-            # Distribute Ace
 
+            # Distribute Ace as a negative
             for gen in self.ctrlMachines:
+
                 if gen.distType.lower() == 'step':
                     if gen.gov_model == False:
                         # distribute Negative ACE to Pmech

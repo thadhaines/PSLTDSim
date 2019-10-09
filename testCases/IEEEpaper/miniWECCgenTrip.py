@@ -13,7 +13,7 @@ ensure all controlled machines have governors.
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 900,    
+    'endTime': 1800,    
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,

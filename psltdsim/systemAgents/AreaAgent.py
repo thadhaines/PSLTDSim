@@ -108,6 +108,12 @@ class AreaAgent(object):
                 #sum 1/droop
                 self.beta += 1.0/Rnew
 
+    def calcMaxCapacity(self):
+        """Caclulates area capacity based on machine ratings"""
+        self.MaxCapacity = 0.0
+        for gen in self.Machines:
+            self.MaxCapacity += gen.Mbase
+
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
         self.r_Pe = [0.0]*self.mirror.dataPoints
