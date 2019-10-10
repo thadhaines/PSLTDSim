@@ -26,7 +26,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\IEEE\\", # relative path from cwd
-    'fileName' : '3areaTrip',
+    'fileName' : 'genTripEqualRstepDB',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     #'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -35,4 +35,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\miniWECC\miniWECC3AreaLTD.sav"
 dydPath = [r"C:\LTD\pslf_systems\miniWECC\miniWECC_LTDgov.dyd"]
-ltdPath = r".\testCases\IEEEpaper\miniWECCgenTrip.ltd.py"
+ltdPath = r".\testCases\IEEEpaper\genTripEqualRstepDB.ltd.py"

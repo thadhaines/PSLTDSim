@@ -104,23 +104,37 @@ class TLB(BA):
                     if gen.gov_model == False:
                         # distribute Negative ACE to Pmech
                         gen.cv['Pm'] -= ACE2dist*gen.ACEpFactor
+                        if gen.cv['Pm'] > gen.Pmax:
+                            gen.cv['Pm'] = gen.Pmax
                     else:
                         # distribute Negative ACE % to Pref
                         gen.cv['Pref'] -= ACE2dist*gen.ACEpFactor
+                        if gen.cv['Pref'] > gen.Pmax:
+                            gen.cv['Pref'] = gen.Pmax
 
                 elif gen.distType.lower() == 'rampa':
                     # Ramp value instead of step
                     if gen.gov_model == False:
                         # distribute Negative ACE to Pmech
                         # NOTE: Don't forget this makese a ton of Agents!
-                        AGCramp = ltd.perturbance.RampAgent(self.mirror, 
+                        if gen.gov_model.mwCap < gen.gov_model.Pref -ACE2dist*gen.ACEpFactor:
+                            AGCramp = ltd.perturbance.RampAgent(self.mirror, 
+                                                            gen, ['Pm',self.mirror.cv['t'],
+                                                                  self.actTime, gen.gov_model.mwCap, 'abs'])
+                        else:
+                            AGCramp = ltd.perturbance.RampAgent(self.mirror, 
                                                             gen, ['Pm',self.mirror.cv['t'],
                                                                   self.actTime, -ACE2dist*gen.ACEpFactor, 'rel'])
                         self.mirror.AGCramp.append(AGCramp)
                     else:
                         # distribute Negative ACE % to Pref
                         # NOTE: Don't forget this makese a ton of Agents!
-                        AGCramp = ltd.perturbance.RampAgent(self.mirror, 
+                        if gen.gov_model.mwCap < gen.gov_model.Pref -ACE2dist*gen.ACEpFactor:
+                            AGCramp = ltd.perturbance.RampAgent(self.mirror, 
+                                                            gen, ['Pref',self.mirror.cv['t'],
+                                                                  self.actTime, gen.gov_model.mwCap, 'abs'])
+                        else:
+                            AGCramp = ltd.perturbance.RampAgent(self.mirror, 
                                                             gen, ['Pref',self.mirror.cv['t'],
                                                                   self.actTime, -ACE2dist*gen.ACEpFactor, 'rel'])
                         self.mirror.AGCramp.append(AGCramp)

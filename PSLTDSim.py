@@ -137,7 +137,11 @@ batchList =[
     #r".\testCases\BA_tests\miniWECC3A5.py", # BA response, TLB type 0, + 400MW wind in area 2
 
     # IEEE paper experiments
-    r".\testCases\IEEEpaper\miniWECCgenTrip.py", # 1500MW trip in area 3, no gov response in area 3 - AGC
+    #r".\testCases\IEEEpaper\miniWECCgenTrip.py", # 1500MW trip in area 3, no gov response in area 3 - AGC
+    r".\testCases\IEEEpaper\genTripHighRnoDB.py", # 1500MW trip in area 3
+    r".\testCases\IEEEpaper\genTripEqualRnoDB.py", # 1500MW trip in area 3
+    r".\testCases\IEEEpaper\genTripEqualRstepDB.py", # 1500MW trip in area 3
+    r".\testCases\IEEEpaper\genTripEqualRnonLinDB.py", # 1500MW trip in area 3
 
 
             ]
@@ -145,7 +149,7 @@ batchList =[
 # Batch Run Parameters
 dispResults = False
 dispTiming = True
-makePlot = True
+makePlot = False
 
 # Batch run counters
 case = 0
