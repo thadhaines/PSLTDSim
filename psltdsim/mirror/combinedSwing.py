@@ -19,10 +19,10 @@ def combinedSwing(mirror, Pacc):
     mirror.cv['fdot'] = fdot
 
     # Adams Bashforth
-    if mirror.simParams['integrationMethod'] == 'AB':
+    if mirror.simParams['integrationMethod'].lower() == 'ab':
         mirror.cv['f'] = f + 1.5*mirror.timeStep*fdot  -0.5*mirror.timeStep*mirror.r_fdot[mirror.cv['dp']-1]
 
-    elif mirror.simParams['integrationMethod'] == 'rk45':
+    elif mirror.simParams['integrationMethod'].lower() == 'rk45':
         # use scipy int.
         tic = time.time()
         c = [HsysPU, PaccPU, mirror.Dsys, f]
@@ -33,7 +33,7 @@ def combinedSwing(mirror, Pacc):
         mirror.IVPTime += time.time()-tic
 
     else:
-        # Euler Integration - chosen by default
+        # Forward Euler Integration - chosen by default
         mirror.cv['f'] = mirror.cv['f'] + (mirror.timeStep*fdot)
         # TODO: add statespace model of swing?
 
