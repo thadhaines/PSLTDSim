@@ -17,8 +17,8 @@ def ValveTravel(mirror, blkFlag=True, printFigs=False):
         for gen in area.Machines:
             if gen.gov_model:
                 normVal = gen.gov_model.mwCap
-                ax.plot(mins, np.array(gen.gov_model.r_x1)/normVal*100, linestyle = '-',linewidth=1,
-                        label = 'Gen ' + str(gen.Busnum)+r'. Travel$_{total}$: '+str(round(gen.gov_model.totValveMovement*100,1))+'%'  )
+                ax.plot(mins, np.array(gen.gov_model.r_x1)/normVal, linestyle = '-',linewidth=1,
+                        label = 'Gen ' + str(gen.Busnum)+r'. Travel$_{total}$: '+str(round(gen.gov_model.totValveMovement,1))+'%'  )
         
         if firstPlot:
             # Scale current axis.
@@ -33,7 +33,7 @@ def ValveTravel(mirror, blkFlag=True, printFigs=False):
 
         ax.set_title(r'Area '+str(gen.Area)+' Valve Travel \n Case: ' + caseName)
         ax.set_xlim(0,minEnd)
-        ax.set_ylabel('Valve Position [%]')
+        ax.set_ylabel('Valve Position [PU]')
         ax.set_xlabel('Time [minutes]')
         #ax.legend(loc=0)
         ax.grid(True)
