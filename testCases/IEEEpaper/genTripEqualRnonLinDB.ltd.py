@@ -26,7 +26,7 @@ mirror.sysBA = {
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
         'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
-        'GovDeadbandType' : 'none', # changed 10/6/19
+        'GovDeadbandType' : 'NLDroop', # changed 10/6/19
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19
@@ -49,7 +49,7 @@ mirror.sysBA = {
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
         'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
-        'GovDeadbandType' : 'none', # changed 10/6/19
+        'GovDeadbandType' : 'NLDroop', # changed 10/6/19
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19
@@ -64,7 +64,7 @@ mirror.sysBA = {
         'AGCActionTime': 5.00, # seconds    # changed 10/6/19
         'AGCType':'TLB : 0', # Tie-Line Bias # changed 10/6/19
         'UseAreaDroop' : True,
-        'AreaDroop' : .2, # this large R is meant to minimize gov action
+        'AreaDroop' : .05, # this large R is meant to minimize gov action
         'IncludeIACE' : False,
         'IACEwidow' : 60, # seconds - size of window
         'IACEscale' : 1/45,
@@ -72,7 +72,7 @@ mirror.sysBA = {
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
         'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
-        'GovDeadbandType' : 'none', # changed 10/6/19
+        'GovDeadbandType' : 'NLDroop', # changed 10/6/19
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19

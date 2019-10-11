@@ -41,5 +41,5 @@ def ValveTravel(mirror, blkFlag=True, printFigs=False):
         fig.set_size_inches(9/mini, 2.5)
         fig.tight_layout()
         plt.show(block=blkFlag)
-        if printFigs: plt.savefig(caseName+str(gen.Area)+'ValveTravel.pdf', dpi=300)
+        if printFigs: plt.savefig(caseName+'ValveTravel'+str(gen.Area)+'.pdf', dpi=300)
         plt.pause(0.00001) # required for true non-blocking print...

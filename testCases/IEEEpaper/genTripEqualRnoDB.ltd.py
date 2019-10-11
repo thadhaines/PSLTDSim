@@ -64,7 +64,7 @@ mirror.sysBA = {
         'AGCActionTime': 5.00, # seconds    # changed 10/6/19
         'AGCType':'TLB : 0', # Tie-Line Bias # changed 10/6/19
         'UseAreaDroop' : True,
-        'AreaDroop' : .2, # this large R is meant to minimize gov action
+        'AreaDroop' : .05, # this large R is meant to minimize gov action
         'IncludeIACE' : False,
         'IACEwidow' : 60, # seconds - size of window
         'IACEscale' : 1/45,
