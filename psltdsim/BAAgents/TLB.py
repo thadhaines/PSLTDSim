@@ -12,10 +12,10 @@ class TLB(BA):
         else:
             self.AGCtype = 0
 
-        if self.BAdict['IACEwidow'] > 0:
+        if self.BAdict['IACEwindow'] > 0:
             # create window integrator if window lengtht exists
             self.wIntAgent = ltd.systemAgents.WindowIntegratorAgent(
-                self.mirror, self.BAdict['IACEwidow'])
+                self.mirror, self.BAdict['IACEwindow'])
             self.windowInt = True
         else:
             self.windowInt = False
