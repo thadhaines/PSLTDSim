@@ -1,6 +1,9 @@
 def ValveTravel(mirror, blkFlag=True, printFigs=False):
     """Plot ValveTravel of given mirror areas"""
     import matplotlib.pyplot as plt
+    from matplotlib.offsetbox import AnchoredText # for text box
+
+
     import numpy as np
 
     mir = mirror
@@ -14,12 +17,24 @@ def ValveTravel(mirror, blkFlag=True, printFigs=False):
     mini = 1
     for area in mir.Area:
         fig, ax = plt.subplots()
+        govMachines = 0 # for average movement
+        aveTravel = 0
+
         for gen in area.Machines:
             if gen.gov_model:
+                govMachines += 1
+                totTravel = gen.gov_model.totValveMovement
+                aveTravel += totTravel
                 normVal = gen.gov_model.mwCap
                 ax.plot(mins, np.array(gen.gov_model.r_x1)/normVal, linestyle = '-',linewidth=1,
-                        label = 'Gen ' + str(gen.Busnum)+r'. Travel$_{total}$: '+str(round(gen.gov_model.totValveMovement,1))+'%'  )
+                        label = 'Gen ' + str(gen.Busnum)+r'. Travel$_{total}$: '+str(round(totTravel,2))+' PU'  )
         
+        if govMachines > 0:
+            # Annotate average valve movement
+            stringToPrint = "Average Area Travel "+str(round(aveTravel/govMachines,2))
+            anchoredText = AnchoredText(stringToPrint, loc='upper right')
+            ax.add_artist(anchoredText)
+
         if firstPlot:
             # Scale current axis.
             box = ax.get_position()

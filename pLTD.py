@@ -32,7 +32,8 @@ mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnoDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir'))
 
-mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir')
+#mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir')
+mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
@@ -49,8 +50,8 @@ printFigs =   False # True #
 #ltd.plot.allPmDynamics(mir, False)
 
 #ltd.plot.sysPLQF(mir, True)
-ltd.plot.ValveTravel(mir, False, printFigs)
-ltd.plot.BAplots01(mir, True, printFigs)
+#ltd.plot.ValveTravel(mir, False, printFigs)
+#ltd.plot.BAplots01(mir, True, printFigs)
 
 #ltd.plot.AreaLosses(mir,False, printFigs)
 #ltd.plot.BAgovU(mir, False, printFigs)
@@ -58,12 +59,13 @@ ltd.plot.BAplots01(mir, True, printFigs)
 #ltd.plot.ACEdist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
-"""
+
 # Plot loopy results
+printFigs = True
 for case in mirList:
     mir = ltd.data.readMirror(case)
     ltd.terminal.dispSimTandC(mir)
     ltd.plot.ValveTravel(mir, False, printFigs)
     ltd.plot.BAplots01(mir, False, printFigs)
-"""
+
 

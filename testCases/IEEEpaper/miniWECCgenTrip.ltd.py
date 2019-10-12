@@ -20,6 +20,7 @@ mirror.sysBA = {
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,
         'IncludeIACE' : False,
+        'IACEconditional': False,
         'IACEwidow' : 60, # seconds - size of window
         'IACEscale' : 1/45,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
@@ -43,7 +44,8 @@ mirror.sysBA = {
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,
         'IncludeIACE' : False,
-        'IACEwidow' : 60, # seconds - size of window
+        'IACEconditional': False,
+        'IACEwidow' : 60, # seconds - size of window - 0 for non window
         'IACEscale' : 1/45,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
@@ -66,6 +68,7 @@ mirror.sysBA = {
         'UseAreaDroop' : True,
         'AreaDroop' : .2, # this large R is meant to minimize gov action
         'IncludeIACE' : False,
+        'IACEconditional': False,
         'IACEwidow' : 60, # seconds - size of window
         'IACEscale' : 1/45,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace

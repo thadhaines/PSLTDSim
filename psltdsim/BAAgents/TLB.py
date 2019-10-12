@@ -75,8 +75,13 @@ class TLB(BA):
             # If deltaw larger than deadband setting
             if (abs(deltaw) >= self.BAdict['IACEdeadband']/self.mirror.simParams['fBase']):
                 # Add to dispatch signal if same sign as freq deviation
-                if (np.sign(deltaw) == np.sign(curIACE)) and (np.sign(deltaw) == np.sign(self.cv['ACEdist'])):
+                if self.BAdict['IACEconditional']: ## NOTE: UNTESTED
+                    if (np.sign(deltaw) == np.sign(curIACE)) and (np.sign(deltaw) == np.sign(self.cv['ACEdist'])):
+                        self.cv['ACEdist'] =  self.cv['ACEdist'] *(1.0-self.IACEweight) + curIACE * float(self.BAdict['IACEscale'])*self.IACEweight
+                else:
+                    #IACE not conditional add ACE
                     self.cv['ACEdist'] =  self.cv['ACEdist'] *(1.0-self.IACEweight) + curIACE * float(self.BAdict['IACEscale'])*self.IACEweight
+
 
         """
         # attempts at resolving steady state ACE
