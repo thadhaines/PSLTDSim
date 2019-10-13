@@ -42,7 +42,7 @@ class BA(object):
                 self.B = float(bStr[0])
             else:
                 # B type not recognized
-                print("*** Balancing Authority Error - B type not recoginzed - using 1% of Load.")
+                print("*** Balancing Authority Error - B type not recoginzed - using 1% of Current Load.")
                 self.B = self.Area.cv['P']*0.01
         else:
             print("*** Balacing Authority Error - Area Not Found")
