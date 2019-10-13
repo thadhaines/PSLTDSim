@@ -32,15 +32,17 @@ mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnoDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir'))
 
-#mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir')
-mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir')
+mirLoc = os.path.join(dirname, 'delme','IEEE','genTripHighRnoDBF.mir')
+mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRnoDBF.mir')
+mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir')
+#mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
 
-printFigs =   False # True #
+printFigs =   False # True # 
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -51,6 +53,7 @@ printFigs =   False # True #
 
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs)
+ltd.plot.ValveTravel01(mir, True, printFigs)
 #ltd.plot.BAplots01(mir, True, printFigs)
 
 #ltd.plot.AreaLosses(mir,False, printFigs)
@@ -61,11 +64,11 @@ printFigs =   False # True #
 
 
 # Plot loopy results
+"""
 printFigs = True
 for case in mirList:
     mir = ltd.data.readMirror(case)
     ltd.terminal.dispSimTandC(mir)
     ltd.plot.ValveTravel(mir, False, printFigs)
     ltd.plot.BAplots01(mir, False, printFigs)
-
-
+"""
