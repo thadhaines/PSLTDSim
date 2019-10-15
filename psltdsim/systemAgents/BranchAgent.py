@@ -21,6 +21,8 @@ class BranchAgent(object):
         self.cv= {
             'St': int(newBranch.St),
             'Amps' : float(col.FlowtabrDAO.FindByBranch(newBranch).Amps),
+            'Ifrom' : float(newBranch.Ifrom),
+            'Pul' : float(col.FlowtabrDAO.FindByBranch(newBranch).Pul),
             }
 
         # This may be unneccessary - but could be used for Ymatrix...
@@ -62,6 +64,7 @@ class BranchAgent(object):
         """Make current status reflect PSLF values"""
         pObj = self.getPref()
         self.cv['St'] = int(pObj.St)
+        self.cv['Pul'] = float(col.FlowtabrDAO.FindByBranch(pObj).Pul)
         self.cv['Amps'] = float(col.FlowtabrDAO.FindByBranch(pObj).Amps)
 
     def setPvals(self):
@@ -78,6 +81,7 @@ class BranchAgent(object):
                'Ck' : self.Ck,
                'St': int(self.cv['St']),
                'Amps': self.cv['Amps'],
+               'Pul': self.cv['Pul'], # per unit loading
                }
         return msg
 
@@ -85,6 +89,7 @@ class BranchAgent(object):
         """Set message values to agent values"""
         self.cv['St'] = msg['St']
         self.cv['Amps'] = msg['Amps']
+        self.cv['Pul'] = msg['Pul']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
 
@@ -92,17 +97,20 @@ class BranchAgent(object):
         """Initialize history values of mirror agent"""
         self.r_St = [0.0]*self.mirror.dataPoints
         self.r_Amps = [0.0]*self.mirror.dataPoints
+        self.r_Pul = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Step to record log history"""
         n = self.mirror.cv['dp']
         self.r_St[n] = self.cv['St']
         self.r_Amps[n] = self.cv['Amps']
+        self.r_Pul[n] = self.cv['Pul']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
         self.r_St = self.r_St[:N]
         self.r_Amps = self.r_Amps[:N]
+        self.r_Pul = self.r_Pul[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""

@@ -80,6 +80,9 @@ def distPacc(mirror, deltaPacc):
         # exit while loop if tolerance met
         if abs(error) <= tol:
             mirror.globalSlack.cv['Pe_error'] = error
+            # Upldate flow calcd table.... Doesn't seem to do the desired thing 10/14
+            #calcFlows = "flowcalcd(1)"
+            #PSLF.RunEpcl(calcFlows)
             tol_Flag = 0
             continue
 
