@@ -12,13 +12,19 @@ class TLB(BA):
         else:
             self.AGCtype = 0
 
-        if self.BAdict['IACEwidow'] > 0:
+        if self.BAdict['IACEwindow'] > 0:
             # create window integrator if window lengtht exists
             self.wIntAgent = ltd.systemAgents.WindowIntegratorAgent(
-                self.mirror, self.BAdict['IACEwidow'])
+                self.mirror, self.BAdict['IACEwindow'])
             self.windowInt = True
         else:
             self.windowInt = False
+
+        # Use ACEgain if applicable
+        if 'ACEgain' in self.BAdict:
+            self.ACEgain = self.BAdict['ACEgain']
+        else:
+            self.ACEgain = 1.0
 
         self.IACEweight = self.BAdict['IACEweight']
 
@@ -74,9 +80,16 @@ class TLB(BA):
         if self.BAdict['IncludeIACE']:
             # If deltaw larger than deadband setting
             if (abs(deltaw) >= self.BAdict['IACEdeadband']/self.mirror.simParams['fBase']):
-                # Add to dispatch signal if same sign as freq deviation
-                if (np.sign(deltaw) == np.sign(curIACE)) and (np.sign(deltaw) == np.sign(self.cv['ACEdist'])):
-                    self.cv['ACEdist'] =  self.cv['ACEdist'] *(1.0-self.IACEweight) + curIACE * float(self.BAdict['IACEscale'])*self.IACEweight
+                if self.BAdict['IACEuseWeight']:
+                    # Add to dispatch signal if same sign as freq deviation
+                    if self.BAdict['IACEconditional']: ## NOTE: UNTESTED
+                        if (np.sign(deltaw) == np.sign(curIACE)) and (np.sign(deltaw) == np.sign(self.cv['ACEdist'])):
+                            self.cv['ACEdist'] =  self.cv['ACEdist'] *(1.0-self.IACEweight) + curIACE * float(self.BAdict['IACEscale'])*self.IACEweight
+                    else:
+                        #IACE not conditional add ACE
+                        self.cv['ACEdist'] =  self.cv['ACEdist'] *(1.0-self.IACEweight) + curIACE * float(self.BAdict['IACEscale'])*self.IACEweight
+                else:
+                    self.cv['ACEdist'] =  self.cv['ACEdist'] + curIACE* float(self.BAdict['IACEscale'])
 
         """
         # attempts at resolving steady state ACE
@@ -85,6 +98,9 @@ class TLB(BA):
             if abs(self.cv['ACE']) <= 5.0 and np.sign(self.cv['ACEdist']) == np.sign(curIACE):
                 self.cv['ACEdist'] += curIACE / self.wIntAgent.windowSize
         """
+
+        # Gain ACE
+        self.cv['ACEdist'] = self.cv['ACEdist']*self.ACEgain
 
         # Put ACEdist through filter
         if self.filter != None:

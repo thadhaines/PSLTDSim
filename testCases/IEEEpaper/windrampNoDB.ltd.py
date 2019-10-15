@@ -1,14 +1,9 @@
-# LTD simulation models / perturbances
-# Attribute name case sensitive.
-# Commented and empty lines are ignored
-# Double quoted variable names in sysPert parameters ignored
-# IACE included
-
+#Ramping wind in area 2
 # Perturbances
 mirror.sysPerturbances = [
-    'gen 62 : step Pm 2 -1500 rel',
-    'gen 62 : step Pref 2 -1500 rel',
+    'gen 74 : ramp Pm 2 1200 400 rel',
     ]
+
 
 # Balancing Authority Input
 mirror.sysBA = {
@@ -26,7 +21,7 @@ mirror.sysBA = {
         'IACEscale' : 1/45,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
-        'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
+        'ACEFiltering': 'PI : 0.03 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
         'GovDeadbandType' : 'none', # changed 10/6/19
         'GovDeadband' : .036, # Hz
@@ -43,15 +38,15 @@ mirror.sysBA = {
         'AGCActionTime': 5.00, # seconds    # changed 10/6/19,
         'ACEgain' : 1.0,
         'AGCType':'TLB : 0', # Tie-Line Bias # changed 10/6/19
-        'UseAreaDroop' : False,
-        'AreaDroop' : 0.05,
+        'UseAreaDroop' : True,
+        'AreaDroop' : 0.2,
         'IncludeIACE' : False,
         'IACEconditional': False,
         'IACEwindow' : 60, # seconds - size of window - 0 for non window
         'IACEscale' : 1/45,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
-        'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
+        'ACEFiltering': 'PI : 0.03 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
         'GovDeadbandType' : 'none', # changed 10/6/19
         'GovDeadband' : .036, # Hz
@@ -68,7 +63,7 @@ mirror.sysBA = {
         'AGCActionTime': 5.00, # seconds    # changed 10/6/19
         'ACEgain' : 1.0,
         'AGCType':'TLB : 0', # Tie-Line Bias # changed 10/6/19
-        'UseAreaDroop' : True,
+        'UseAreaDroop' : False,
         'AreaDroop' : .2, # this large R is meant to minimize gov action
         'IncludeIACE' : False,
         'IACEconditional': False,
@@ -76,7 +71,7 @@ mirror.sysBA = {
         'IACEscale' : 1/45,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
-        'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
+        'ACEFiltering': 'PI : 0.03 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
         'GovDeadbandType' : 'none', # changed 10/6/19
         'GovDeadband' : .036, # Hz

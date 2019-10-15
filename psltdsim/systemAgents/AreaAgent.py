@@ -147,7 +147,7 @@ class AreaAgent(object):
         self.r_SCEsum = self.r_SCEsum[:N]
         self.r_IC = self.r_IC[:N]
         self.r_ICerror = self.r_ICerror[:N]
-        self.r_Losses[n] = self.r_Losses[:N]
+        self.r_Losses = self.r_Losses[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""

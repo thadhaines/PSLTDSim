@@ -101,8 +101,8 @@ def BAplots01(mirror, blkFlag=True, printFigs=False):
     if plotDb:
         highDb = np.ones_like(mir.r_f)*mir.fBase+dbLine
         lowDb = np.ones_like(mir.r_f)*mir.fBase-dbLine
-        ax.plot(mins, highDb,linewidth=1,linestyle=":",C='0.7')
-        ax.plot(mins,lowDb,linewidth=1,linestyle=":",C='0.7', label = str(dbLine)+' Hz Governor Deadband')
+        ax.plot(mins, highDb,linewidth=1,linestyle=":",C='0.3')
+        ax.plot(mins,lowDb,linewidth=1,linestyle=":",C='0.3', label = str(dbLine)+' Hz Governor Deadband')
 
     ax.set_title('System Frequency\n Case: ' + caseName)
     ax.set_ylabel('Hz')

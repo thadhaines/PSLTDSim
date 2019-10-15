@@ -21,6 +21,7 @@ from .sysPemLQF import sysPemLQF
 from .BAplots01 import BAplots01
 from .BAgovU import BAgovU
 from .ValveTravel import ValveTravel
+from .ValveTravel01 import ValveTravel01
 from .AreaLosses import AreaLosses
 from .SACE import SACE
 from .ACEdist import ACEdist
