@@ -37,6 +37,15 @@ mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRnoDBF.mir')
 mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir')
 
+mirLoc = os.path.join(dirname, 'delme','IEEE','windrampF.mir')
+mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBF.mir')
+mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastF.mir')
+#mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBSlowF.mir')
+#mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBSlowGainF.mir')
+mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainF.mir') # Fast gain...
+mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACEF.mir') # Fast gain...
+mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACENoBF.mir') # Fast gain...
+
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
@@ -53,10 +62,10 @@ printFigs =   False # True #
 
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs)
-ltd.plot.ValveTravel01(mir, True, printFigs)
-#ltd.plot.BAplots01(mir, True, printFigs)
+ltd.plot.ValveTravel01(mir, False, printFigs)
+ltd.plot.BAplots01(mir, False, printFigs)
 
-#ltd.plot.AreaLosses(mir,False, printFigs)
+ltd.plot.AreaLosses(mir,True, printFigs)
 #ltd.plot.BAgovU(mir, False, printFigs)
 #ltd.plot.SACE(mir,False, printFigs)
 #ltd.plot.ACEdist(mir, True, printFigs)
