@@ -52,7 +52,7 @@ def BAplots01(mirror, blkFlag=True, printFigs=False):
         ax.plot(mins, BA.r_ACE, linewidth=1,
                 label= BA.name+' ACE')
         if BA.filter != None:
-            ax.plot(mins, BA.r_ACEfilter, linewidth=1.25,linestyle=":",
+            ax.plot(mins, BA.r_SACE, linewidth=1.25,linestyle=":",
                     label= BA.name+' SACE')
         ax.plot(mins, BA.Area.r_ICerror, linewidth=1.5,
                 linestyle='--',

@@ -34,16 +34,17 @@ mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir'
 
 mirLoc = os.path.join(dirname, 'delme','IEEE','genTripHighRnoDBF.mir')
 mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRnoDBF.mir')
-mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir')
+#mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir')
 
-mirLoc = os.path.join(dirname, 'delme','IEEE','windrampF.mir')
-mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBF.mir')
-mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastF.mir')
+#mirLoc = os.path.join(dirname, 'delme','IEEE','windrampF.mir')
+#mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBF.mir')
+#mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBSlowF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBSlowGainF.mir')
-mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainF.mir') # Fast gain...
-mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACEF.mir') # Fast gain...
+#mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainF.mir') # Fast gain...
+#mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACEF.mir') # Fast gain...
+#mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACENoFilterF.mir') # Fast gain...
 mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACENoBF.mir') # Fast gain...
 
 mir = ltd.data.readMirror(mirLoc)
@@ -65,10 +66,10 @@ printFigs =   False # True #
 ltd.plot.ValveTravel01(mir, False, printFigs)
 ltd.plot.BAplots01(mir, False, printFigs)
 
-ltd.plot.AreaLosses(mir,True, printFigs)
+ltd.plot.AreaLosses(mir,False, printFigs)
 #ltd.plot.BAgovU(mir, False, printFigs)
-#ltd.plot.SACE(mir,False, printFigs)
-#ltd.plot.ACEdist(mir, True, printFigs)
+ltd.plot.SACE(mir,False, printFigs)
+ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
 

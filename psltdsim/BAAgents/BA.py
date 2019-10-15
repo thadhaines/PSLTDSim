@@ -13,9 +13,11 @@ class BA(object):
         # Current Value Dictionary
         self.cv = {
             'ACE' : 0.0,
-            'ACEint' :0.0,
-            'ACEfilter' : 0.0,
-            'ACEdist' : 0.0,
+            'IACE' :0.0,
+            'ACEFB' :0.0,
+            'ACETL' :0.0,
+            'SACE' :0.0,
+            'ACE2dist' : 0.0,
             'distStep' : 0,
             }
 
@@ -136,30 +138,33 @@ class BA(object):
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
         self.r_ACE = [0.0]*self.mirror.dataPoints
-        self.r_ACEint = [0.0]*self.mirror.dataPoints
-        self.r_ACEdist = [0.0]*self.mirror.dataPoints
+        self.r_ACEFB = [0.0]*self.mirror.dataPoints
+        self.r_ACETL = [0.0]*self.mirror.dataPoints
+        self.r_SACE = [0.0]*self.mirror.dataPoints
+        self.r_IACE = [0.0]*self.mirror.dataPoints
+        self.r_ACE2dist = [0.0]*self.mirror.dataPoints
         self.r_distStep = [0.0]*self.mirror.dataPoints
 
         if self.filter != None:
-            self.r_ACEfilter = [0.0]*self.mirror.dataPoints
+            self.r_SACE = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Step to record log history"""
         n = self.mirror.cv['dp']
         self.r_ACE[n] = self.cv['ACE']
-        self.r_ACEint[n] = self.cv['ACEint']
-        self.r_ACEdist[n] = self.cv['ACEdist']
+        self.r_ACEFB[n] = self.cv['ACEFB']
+        self.r_ACETL[n] = self.cv['ACETL']
+        self.r_IACE[n] = self.cv['IACE']
+        self.r_ACE2dist[n] = self.cv['ACE2dist']
         self.r_distStep[n] = self.cv['distStep']
-
-        if self.filter != None:
-            self.r_ACEfilter[n] = self.cv['ACEfilter']
+        self.r_SACE[n] = self.cv['SACE']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
         self.r_ACE = self.r_ACE[:N]
-        self.r_ACEint = self.r_ACEint[:N]
-        self.r_ACEdist = self.r_ACEdist[:N]
+        self.r_ACETL = self.r_ACETL[:N]
+        self.r_ACEFB = self.r_ACEFB[:N]
+        self.r_SACE = self.r_SACE[:N]
+        self.r_IACE = self.r_IACE[:N]
+        self.r_ACE2dist = self.r_ACE2dist[:N]
         self.r_distStep = self.r_distStep[:N]
-
-        if self.filter != None:
-            self.r_ACEfilter = self.r_ACEfilter[:N]

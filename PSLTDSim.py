@@ -137,20 +137,21 @@ batchList =[
     #r".\testCases\BA_tests\miniWECC3A5.py", # BA response, TLB type 0, + 400MW wind in area 2
 
     # IEEE paper experiments
-    #r".\testCases\IEEEpaper\miniWECCgenTrip.py", # 1500MW trip in area 3, no gov response in area 3 - AGC
-    #r".\testCases\IEEEpaper\genTripHighRnoDB.py", # 1500MW trip in area 3
-    #r".\testCases\IEEEpaper\genTripEqualRnoDB.py", # 1500MW trip in area 3
-    #r".\testCases\IEEEpaper\genTripEqualRstepDB.py", # 1500MW trip in area 3
-    #r".\testCases\IEEEpaper\genTripEqualRnonLinDB.py", # 1500MW trip in area 3
+    r".\testCases\IEEEpaper\miniWECCgenTrip.py", # 1500MW trip in area 3, no gov response in area 3 - AGC
+    r".\testCases\IEEEpaper\genTripHighRnoDB.py", # 1500MW trip in area 3
+    r".\testCases\IEEEpaper\genTripEqualRnoDB.py", # 1500MW trip in area 3
+    r".\testCases\IEEEpaper\genTripEqualRstepDB.py", # 1500MW trip in area 3
+    r".\testCases\IEEEpaper\genTripEqualRnonLinDB.py", # 1500MW trip in area 3
 
 
-    #r".\testCases\IEEEpaper\windramp.py", # 400MW trip in area 3 nldroop
-    #r".\testCases\IEEEpaper\windrampNoDB.py", # 400MW trip in area 3
-    #r".\testCases\IEEEpaper\windrampNoDBFast.py", # 400MW trip in area 3, 3 second AGC dispatch
-    #r".\testCases\IEEEpaper\windrampNoDBSlow.py", # 400MW trip in area 3, 15 second AGC dispatch
-    #r".\testCases\IEEEpaper\windrampNoDBSlowGain.py", # 400MW trip in area 3, 15 second AGC dispatch, ACE*3
-    #r".\testCases\IEEEpaper\windrampNoDBFastGain.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3
-    #r".\testCases\IEEEpaper\windrampNoDBFastGainIACE.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3, include IACE
+    r".\testCases\IEEEpaper\windramp.py", # 400MW trip in area 3 nldroop
+    r".\testCases\IEEEpaper\windrampNoDB.py", # 400MW trip in area 3
+    r".\testCases\IEEEpaper\windrampNoDBFast.py", # 400MW trip in area 3, 3 second AGC dispatch
+    r".\testCases\IEEEpaper\windrampNoDBSlow.py", # 400MW trip in area 3, 15 second AGC dispatch
+    r".\testCases\IEEEpaper\windrampNoDBSlowGain.py", # 400MW trip in area 3, 15 second AGC dispatch, ACE*3
+    r".\testCases\IEEEpaper\windrampNoDBFastGain.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3
+    r".\testCases\IEEEpaper\windrampNoDBFastGainIACE.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3, include IACE
+    r".\testCases\IEEEpaper\windrampNoDBFastGainIACENoFilter.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3, include IACE
     r".\testCases\IEEEpaper\windrampNoDBFastGainIACENoB.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3, include IACE no B
 
 

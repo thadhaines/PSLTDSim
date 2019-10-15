@@ -26,7 +26,7 @@ mirror.sysBA = {
         'IACEscale' : 1/45,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
-        'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
+        'ACEFiltering': 'PI : 1.0 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
         'GovDeadbandType' : 'none', # changed 10/6/19
         'GovDeadband' : .036, # Hz
@@ -51,7 +51,7 @@ mirror.sysBA = {
         'IACEscale' : 1/45,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
-        'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
+        'ACEFiltering': 'PI : 1.0 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
         'GovDeadbandType' : 'none', # changed 10/6/19
         'GovDeadband' : .036, # Hz
@@ -76,7 +76,7 @@ mirror.sysBA = {
         'IACEscale' : 1/45,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.036, # Hz # changed 10/6/19
-        'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
+        'ACEFiltering': 'PI : 1.0 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
         'GovDeadbandType' : 'none', # changed 10/6/19
         'GovDeadband' : .036, # Hz

@@ -1,4 +1,4 @@
-def ACEdist(mirror, blkFlag=True, printFigs=False):
+def ACE2dist(mirror, blkFlag=True, printFigs=False):
     """Plot SACE of given mirror areas"""
     import matplotlib.pyplot as plt
     import numpy as np
@@ -15,7 +15,7 @@ def ACEdist(mirror, blkFlag=True, printFigs=False):
     fig, ax = plt.subplots()
     for BA in mir.BA:
         if BA.filter != None:
-            ax.plot(mins, BA.r_ACEdist, linewidth=1.25,#linestyle=":",
+            ax.plot(mins, BA.r_ACE2dist, linewidth=1.25,#linestyle=":",
                     label= BA.name+' ACE dist')
 
     # Scale current axis.

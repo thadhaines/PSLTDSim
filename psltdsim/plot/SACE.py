@@ -15,7 +15,7 @@ def SACE(mirror, blkFlag=True, printFigs=False):
     fig, ax = plt.subplots()
     for BA in mir.BA:
         if BA.filter != None:
-            ax.plot(mins, BA.r_ACEfilter, linewidth=1.25,#linestyle=":",
+            ax.plot(mins, BA.r_SACE, linewidth=1.25,#linestyle=":",
                     label= BA.name+' SACE')
 
     # Scale current axis.
