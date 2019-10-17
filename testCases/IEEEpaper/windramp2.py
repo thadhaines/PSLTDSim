@@ -4,9 +4,10 @@ AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
-MiniWECC Multi Area gen trip to simulate loss of gen in south
-gen on bus 62 drops 1500 MW
+MiniWECC Multi Area windramp
+gen on bus 62 drops 1500 MW over 10 minutes
 3 BAs using standard ACE parameters for B 
+'Bad Actor' Has a wind ramp fade out - Using NonLinear Droops
 
 *Ensure all controlled machines have governors!
 """
@@ -14,7 +15,7 @@ gen on bus 62 drops 1500 MW
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 600,    
+    'endTime': 1200,    
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -26,7 +27,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\IEEE\\", # relative path from cwd
-    'fileName' : 'miniWECCgenTrip',
+    'fileName' : 'windramp2',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     #'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -35,4 +36,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\miniWECC\miniWECC3AreaLTD.sav"
 dydPath = [r"C:\LTD\pslf_systems\miniWECC\miniWECC_LTDgov.dyd"]
-ltdPath = r".\testCases\IEEEpaper\miniWECCgenTrip.ltd.py"
+ltdPath = r".\testCases\IEEEpaper\windramp2.ltd.py"

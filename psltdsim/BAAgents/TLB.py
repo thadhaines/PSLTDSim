@@ -30,11 +30,12 @@ class TLB(BA):
 
     def step(self):
         # Caclulate ACE
-        deltaw = self.mirror.cv['f']-1.0
+        deltaw = 1.0 - self.mirror.cv['f']
+
         self.cv['ACETL'] = self.Area.cv['IC'] - self.Area.cv['IC0']
 
-        # B is handled as a positive, though it 'is' a negative number
-        self.cv['ACEFB'] = 10*self.B*deltaw*self.mirror.fBase # 10 is standard since f in Hz
+        # B is handled as a positive, though it 'is' a negative number #NOTE: removal of fbase scaling
+        self.cv['ACEFB'] = -10*self.B*deltaw*self.mirror.fBase # 10 is standard since f in Hz
 
         ## Calculate ACEdist based on conditionals
         # 'Fully' calculated ACE - Type 0
@@ -67,6 +68,7 @@ class TLB(BA):
         else:
             self.cv['IACE'] += (self.cv['ACE']+self.r_ACE[n-1])/2.0*self.mirror.timeStep
 
+        IACE2add = 0.0
         # Include Integral of ACE
         if self.BAdict['IncludeIACE']:
             # IACE deadband setting
@@ -76,21 +78,21 @@ class TLB(BA):
                     # Add to dispatch signal if same sign as freq deviation
                     if self.BAdict['IACEconditional']: ## NOTE: UNTESTED
                         if (np.sign(deltaw) == np.sign(self.cv['IACE'])) and (np.sign(deltaw) == np.sign(self.cv['ACE'])):
-                            self.cv['ACE'] =  self.cv['ACE'] *(1.0-self.IACEweight) + self.cv['IACE'] * float(self.BAdict['IACEscale'])*self.IACEweight
+                            IACE2add =  self.cv['ACE'] *(1.0-self.IACEweight) + self.cv['IACE'] * float(self.BAdict['IACEscale'])*self.IACEweight
                     else:
                         #IACE not conditional add weighted ACE
-                        self.cv['ACE'] =  self.cv['ACE'] *(1.0-self.IACEweight) + self.cv['IACE'] * float(self.BAdict['IACEscale'])*self.IACEweight
+                        IACE2add =  self.cv['ACE'] *(1.0-self.IACEweight) + self.cv['IACE'] * float(self.BAdict['IACEscale'])*self.IACEweight
                 else:
                 """
                 # add non weighted, non conditional ACE
-                self.cv['ACE'] =  self.cv['ACE'] + self.cv['IACE']* float(self.BAdict['IACEscale'])
+                IACE2add =  self.cv['ACE'] + self.cv['IACE']* float(self.BAdict['IACEscale'])
 
 
         # Put ACEdist through filter
         if self.filter != None:
-            self.cv['SACE'] = self.filter.stepFilter(self.cv['ACE'])
+            self.cv['SACE'] = self.filter.stepFilter(self.cv['ACE']+IACE2add)
         else:
-            self.cv['SACE'] = self.cv['ACE']
+            self.cv['SACE'] = self.cv['ACE']+IACE2add
 
         # Gain ACE
         self.cv['ACE2dist'] = self.cv['SACE']*self.ACEgain

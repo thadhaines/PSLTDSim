@@ -94,3 +94,8 @@ def distPacc(mirror, deltaPacc):
         Pacc = error
         iteration +=1
 
+        if iteration > 20:
+            '''Solution did not converge'''
+            raise ValueError('*** PSLF power flow solution exceeded Max iterations... 20')
+            return
+
