@@ -13,6 +13,7 @@ class LoadAgent(object):
 
         # Current Status
         self.cv = {
+            'Psched' : ltd.data.single2float(newLoad.P),
             'P' : ltd.data.single2float(newLoad.P),
             'Q' : ltd.data.single2float(newLoad.Q),
             'St' : int(newLoad.St),

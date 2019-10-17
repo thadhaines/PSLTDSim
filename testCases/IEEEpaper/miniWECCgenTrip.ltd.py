@@ -15,7 +15,7 @@ mirror.sysBA = {
     'North':{
         'Area':1,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 10.00, # seconds  
+        'AGCActionTime': 20.00, # seconds  
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
@@ -34,7 +34,7 @@ mirror.sysBA = {
         'GovBeta' : 0.036, # changed 10/6/19
         'CtrlGens': [
             'gen 17 : .25 : rampA',
-            'gen 76 : .75 : rampA',
+            'gen 23 : .75 : rampA',
                     ]
         },
     'East':{

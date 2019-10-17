@@ -31,8 +31,10 @@ def ValveTravel01(mirror, blkFlag=True, printFigs=False):
                 totTravel = gen.gov_model.totValveMovement
                 aveTravel[curArea] += totTravel
                 normVal = gen.gov_model.mwCap
+                travelString = (r'Gen %3d Travel$_{total}$: %.2f PU' % (gen.Busnum,totTravel) )
                 ax.plot(mins, np.array(gen.gov_model.r_x1)/normVal, linestyle = '-',linewidth=1,
-                        label = 'Gen ' + str(gen.Busnum)+r' Travel$_{total}$: '+str(round(totTravel,2))+' PU'  )
+                        label = travelString)
+                        #'Gen ' + str(gen.Busnum)+r' Travel$_{total}$: '+str(round(totTravel,2))+' PU'  )
         
         if govMachines > 0:
             # Annotate average valve movement
