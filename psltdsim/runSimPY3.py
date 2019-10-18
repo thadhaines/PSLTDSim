@@ -157,7 +157,7 @@ def runSimPY3(mirror, amqpAgent):
 
         # Step Noise Agent
         if mirror.HasNoiseAgent:
-            print("** Stepping Noise Agent")
+            if mirror.debug: print("*** Stepping Noise Agent")
             mirror.NoiseAgent.step()
 
         # Sum system loads to Account for any load changes from Perturbances

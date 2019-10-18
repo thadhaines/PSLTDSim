@@ -13,7 +13,7 @@ both have step deadband
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 3600.0,
+    'endTime': 600.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -34,4 +34,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachine.sav"
 dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd"]
-ltdPath = r".\testCases\sixMachine\sixMachineNoise.ltd.py"
+ltdPath = r".\testCases\noiseTest\sixMachineNoise.ltd.py"

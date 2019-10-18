@@ -8,6 +8,8 @@
 # Perturbances
 mirror.sysPerturbances = [
     #'load 9 : step P 5 75 rel',
+    #'gen 5 : step Pm 5 -75 rel',
+    #'gen 5 : step Pref 5 -75 rel',
     ]
 
 # Power Plants
@@ -21,11 +23,11 @@ mirror.NoiseAgent = ltd.perturbance.LoadNoiseAgent(mirror, 0.3, True)
 mirror.sysBA = {
     'BA1':{
         'Area':1,
-        'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 15.00, # seconds  
+        'B': "2.0 : perload", # MW/0.1 Hz
+        'AGCActionTime': 5.00, # seconds  
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
-        'UseAreaDroop' : False,
+        'UseAreaDroop' : True,
         'AreaDroop' : 0.05,
         'IncludeIACE' : True,
         'IACEconditional': False,
@@ -35,7 +37,7 @@ mirror.sysBA = {
         'IACEdeadband' : 0.0, # Hz # changed 10/6/19
         'ACEFiltering': 'PI : 0.04 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
-        'GovDeadbandType' : 'step', # changed 10/6/19
+        'GovDeadbandType' : 'none', # changed 10/6/19
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19
@@ -44,11 +46,11 @@ mirror.sysBA = {
         },
     'BA2':{
         'Area':2,
-        'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 20.00, # seconds  
+        'B': "2.0 : perload", # MW/0.1 Hz
+        'AGCActionTime': 5.00, # seconds  
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
-        'UseAreaDroop' : False,
+        'UseAreaDroop' : True,
         'AreaDroop' : 0.05,
         'IncludeIACE' : True,
         'IACEconditional': False,
@@ -58,7 +60,7 @@ mirror.sysBA = {
         'IACEdeadband' : 0.0, # Hz # changed 10/6/19
         'ACEFiltering': 'PI : 0.04 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
-        'GovDeadbandType' : 'step', # changed 10/6/19
+        'GovDeadbandType' : 'none', # changed 10/6/19
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19

@@ -156,8 +156,8 @@ batchList =[
     #r".\testCases\IEEEpaper\windrampNoDBFastGainIACENoB.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3, include IACE no B
 
     # Noise Agent Testing
-    r".\testCases\noiseTest\miniWECCnoise.py", # testing of noise agent
-    #r".\testCases\sixMachine\sixMachineNoise.py", # testing of noise agent
+    #r".\testCases\noiseTest\miniWECCnoise.py", # testing of noise agent
+    r".\testCases\noiseTest\sixMachineNoise.py", # testing of noise agent
             ]
 
 # Batch Run Parameters
