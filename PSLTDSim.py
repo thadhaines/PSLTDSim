@@ -137,7 +137,7 @@ batchList =[
     #r".\testCases\BA_tests\miniWECC3A5.py", # BA response, TLB type 0, + 400MW wind in area 2
 
     # IEEE paper experiments
-    r".\testCases\IEEEpaper\miniWECCgenTrip.py", # 1500MW trip in area 3, no gov response in area 3 - AGC
+    #r".\testCases\IEEEpaper\miniWECCgenTrip.py", # 1500MW trip in area 3, no gov response in area 3 - AGC
     #r".\testCases\IEEEpaper\genTripHighRnoDB.py", # 1500MW trip in area 3
     #r".\testCases\IEEEpaper\genTripEqualRnoDB.py", # 1500MW trip in area 3
     #r".\testCases\IEEEpaper\genTripEqualRstepDB.py", # 1500MW trip in area 3
@@ -155,13 +155,15 @@ batchList =[
     #r".\testCases\IEEEpaper\windrampNoDBFastGainIACENoFilter.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3, include IACE
     #r".\testCases\IEEEpaper\windrampNoDBFastGainIACENoB.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3, include IACE no B
 
-
+    # Noise Agent Testing
+    r".\testCases\noiseTest\miniWECCnoise.py", # testing of noise agent
+    #r".\testCases\sixMachine\sixMachineNoise.py", # testing of noise agent
             ]
 
 # Batch Run Parameters
 dispResults = False
 dispTiming = True
-makePlot = False
+makePlot = True
 
 # Batch run counters
 case = 0

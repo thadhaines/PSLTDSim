@@ -52,7 +52,7 @@ def ValveTravel01(mirror, blkFlag=True, printFigs=False):
     for areaSTR in stringsToPrint:
         combSTR = combSTR + areaSTR +'\n'
 
-    combSTR = combSTR[:-2] # remove extra \n
+    combSTR = combSTR[:-1] # remove extra \n
 
     anchoredText = AnchoredText(combSTR, loc='upper right',
                                 prop=dict(fontsize="large"),

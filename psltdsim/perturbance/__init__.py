@@ -3,3 +3,4 @@ from .addPerturbance import addPerturbance
 from .getCurrentVal import getCurrentVal
 from .StepAgent import StepAgent
 from .RampAgent import RampAgent
+from .LoadNoiseAgent import LoadNoiseAgent

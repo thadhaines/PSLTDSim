@@ -2,6 +2,7 @@ def runSimPY3(mirror, amqpAgent):
     """Python 3 side of LTD simulation"""
     print("*** runSimPY3 start")
     PY3 = amqpAgent
+    mirror.PY3 = PY3 # for universal AMQP access...
 
     # Create PY3 specific Dynamic agents (i.e. govs)
     ltd.mirror.createPY3DynamicAgents(mirror)
@@ -66,6 +67,12 @@ def runSimPY3(mirror, amqpAgent):
     mirror.r_ss_Pacc.append(0.0)
     mirror.r_f.append(1.0)
     mirror.r_fdot.append(0.0)
+
+    # Check for Noise Agent and set flag
+    if hasattr(mirror, 'NoiseAgent'):
+        mirror.HasNoiseAgent = True
+    else:
+        mirror.HasNoiseAgent = False
 
     # Start Simulation loop
     while (mirror.cv['t'] <= mirror.endTime) and mirror.simRun:
@@ -147,6 +154,11 @@ def runSimPY3(mirror, amqpAgent):
                 PY3.send('toIPY', pertX.mObj.makeAMQPmsg())
                 mirror.PY3SendTime += time.time() -send_start
                 mirror.PY3msgs+=1
+
+        # Step Noise Agent
+        if mirror.HasNoiseAgent:
+            print("** Stepping Noise Agent")
+            mirror.NoiseAgent.step()
 
         # Sum system loads to Account for any load changes from Perturbances
         mirror.ss_Pload, mirror.ss_Qload = ltd.mirror.sumLoad(mirror)

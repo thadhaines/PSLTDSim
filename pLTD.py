@@ -49,6 +49,9 @@ mirLoc = os.path.join(dirname, 'delme','IEEE','miniWECCgenTripF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACENoFilterF.mir') # Fast gain...
 #mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACENoBF.mir') # Fast gain...
 
+mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoiseF.mir') # 10 minutes of noise
+mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseF.mir') # 10 minutes of noise
+
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
