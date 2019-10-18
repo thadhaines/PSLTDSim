@@ -24,7 +24,7 @@ mirror.sysBA = {
     'BA1':{
         'Area':1,
         'B': "2.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 5.00, # seconds  
+        'AGCActionTime': 15.00, # seconds  
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
@@ -47,7 +47,7 @@ mirror.sysBA = {
     'BA2':{
         'Area':2,
         'B': "2.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 5.00, # seconds  
+        'AGCActionTime': 15.00, # seconds  
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,

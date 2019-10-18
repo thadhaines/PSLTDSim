@@ -1,4 +1,4 @@
-def sysLoad(mirror, blkFlag=True):
+def sysLoad(mirror, blkFlag=True, printFigs=False):
     """Plot system P and Q of active loading"""
     import matplotlib.pyplot as plt
     import numpy as np

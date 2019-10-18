@@ -157,7 +157,11 @@ batchList =[
 
     # Noise Agent Testing
     #r".\testCases\noiseTest\miniWECCnoise.py", # testing of noise agent
-    r".\testCases\noiseTest\sixMachineNoise.py", # testing of noise agent
+    #r".\testCases\noiseTest\sixMachineNoise.py", # testing of noise agent
+    #r".\testCases\noiseTest\sixMachineNoise2.py", # testing of noise agent
+    #r".\testCases\noiseTest\sixMachineNoise3.py", # testing of noise agent
+    #r".\testCases\noiseTest\sixMachineNoise4.py", # testing of noise agent
+    r".\testCases\noiseTest\sixMachineNoise5.py", # testing of noise agent
             ]
 
 # Batch Run Parameters

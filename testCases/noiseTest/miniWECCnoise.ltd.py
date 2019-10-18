@@ -10,14 +10,14 @@ mirror.sysPerturbances = [
     #'gen 62 : step Pref 2 -1500 rel',
     ]
 
-mirror.NoiseAgent = ltd.perturbance.LoadNoiseAgent(mirror, 0.003)
+mirror.NoiseAgent = ltd.perturbance.LoadNoiseAgent(mirror, 0.003, True)
 
 # Balancing Authority Input
 mirror.sysBA = {
     'North':{
         'Area':1,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 20.00, # seconds  
+        'AGCActionTime': 5.00, # seconds  
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
@@ -42,7 +42,7 @@ mirror.sysBA = {
     'East':{
         'Area':2,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 20.00, # seconds    # changed 10/6/19,
+        'AGCActionTime': 5.00, # seconds    # changed 10/6/19,
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias # changed 10/6/19
         'UseAreaDroop' : False,
@@ -67,7 +67,7 @@ mirror.sysBA = {
     'South':{
         'Area':3,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 20.00, # seconds    # changed 10/6/19
+        'AGCActionTime': 5.00, # seconds    # changed 10/6/19
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias # changed 10/6/19
         'UseAreaDroop' : False,

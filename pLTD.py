@@ -50,6 +50,10 @@ mirLoc = os.path.join(dirname, 'delme','IEEE','miniWECCgenTripF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACENoBF.mir') # Fast gain...
 
 mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoiseF.mir') # 10 minutes of noise
+mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise2F.mir') # 10 minutes of noise
+mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise3F.mir') # 10 minutes of noise
+#mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise4F.mir') # 10 minutes of noise
+mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise5F.mir') # 10 minutes of noise
 #mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseF.mir') # 10 minutes of noise
 
 mir = ltd.data.readMirror(mirLoc)
@@ -57,8 +61,8 @@ ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
 
-printFigs =   False # True # 
-ltd.plot.sysLoad(mir, False)
+printFigs =  True #  False # 
+#ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
@@ -69,13 +73,14 @@ ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs)
 ltd.plot.ValveTravel01(mir, False, printFigs)
-#ltd.plot.BAplots01(mir, False, printFigs)
-ltd.plot.sysF(mir, False, printFigs)
+ltd.plot.BAplots01(mir, False, printFigs)
+#ltd.plot.sysF(mir, False, printFigs)
 
 #ltd.plot.AreaLosses(mir,False, printFigs)
 #ltd.plot.BAgovU(mir, False, printFigs)
-ltd.plot.SACE(mir,False, printFigs)
-ltd.plot.ACE2dist(mir, True, printFigs)
+#ltd.plot.SACE(mir,False, printFigs)
+ltd.plot.Pload(mir,True, printFigs)
+#ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
 

@@ -25,7 +25,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\sixMachineNoise\\", # relative path from cwd
-    'fileName' : 'SixMachineNoise',
+    'fileName' : 'SixMachineNoise2',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -34,4 +34,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachine.sav"
 dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine2.dyd"]
-ltdPath = r".\testCases\noiseTest\sixMachineNoise.ltd.py"
+ltdPath = r".\testCases\noiseTest\sixMachineNoise2.ltd.py"

@@ -10,7 +10,7 @@ MiniWECC Multi Area gen trip to test noise agent
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 1200,    
+    'endTime': 1800,    
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,

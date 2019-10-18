@@ -54,7 +54,7 @@ def ValveTravel01(mirror, blkFlag=True, printFigs=False):
 
     combSTR = combSTR[:-1] # remove extra \n
 
-    anchoredText = AnchoredText(combSTR, loc='upper right',
+    anchoredText = AnchoredText(combSTR, loc='upper left',
                                 prop=dict(fontsize="large"),
                                 )
     ax.add_artist(anchoredText)
@@ -72,8 +72,9 @@ def ValveTravel01(mirror, blkFlag=True, printFigs=False):
     #ax.legend(loc=0)
     ax.grid(True)
     fig.set_dpi(150)
-    #fig.set_size_inches(9/2, 2.5)
-    fig.set_size_inches(5.5, 4.5)
+    fig.set_size_inches(9, 2.5)
+    #fig.set_size_inches(5.5, 4.5)
+    #fig.set_size_inches(9, 4.5)
     fig.tight_layout()
     if printFigs: plt.savefig(caseName+'ValveTravel01.pdf', dpi=300)
     plt.show(block=blkFlag)
