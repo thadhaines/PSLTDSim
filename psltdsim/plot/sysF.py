@@ -41,7 +41,7 @@ def sysF(mirror, blkFlag=True, printFigs=False):
     ax.set_ylabel('Hz')
     ax.set_xlabel('Time [minutes]')
     ax.set_xlim(0,minEnd)
-    ax.legend()
+    ax.legend(loc='center right')
     #ax.legend()
     ax.grid(True)
     fig.set_dpi(150)

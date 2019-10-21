@@ -108,7 +108,7 @@ figure('position',ppos)
 subplot(1,3,1)
 plot(t, pData,'k','linewidth',.85)
 hold on
-stairs(mir.t, ltdData ,'m','linewidth',1.1)
+stairs(mir.t, ltdData ,'om-','linewidth',1.1)
 set(gca,'fontsize',bfz)
 grid on
 xlim(x_lim)
@@ -118,17 +118,19 @@ xlabel('Time [sec]')
 
 cData = calcDeviation( t, mir, pData, ltdData );
 subplot(1, 3, 2) 
-plot(t,cData,'color',grey,'linewidth',.85)
+%plot(t,cData,'color',grey,'linewidth',.85)
+plot(t,cData,'m','linewidth',.85)
 grid on
 xlim(x_lim)
-ylabel('Power Deviation [MW]')
+ylabel('Power Difference [MW]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
 title('Examples of Comparison Plots')
 
 subplot(1,3,3) 
 cData = calcPdiff( t, mir, pData, ltdData );
-plot(t,cData,'color',grey,'linewidth',.85)
+%plot(t,cData,'color',grey,'linewidth',.85)
+plot(t,cData,'m','linewidth',.85)
 grid on
 xlim(x_lim)
 ylabel('Percent Difference [%]')

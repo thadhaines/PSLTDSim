@@ -156,12 +156,14 @@ batchList =[
     #r".\testCases\IEEEpaper\windrampNoDBFastGainIACENoB.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3, include IACE no B
 
     # Noise Agent Testing
-    #r".\testCases\noiseTest\miniWECCnoise.py", # testing of noise agent
+    r".\testCases\noiseTest\miniWECCnoise.py", # testing of noise agent
     #r".\testCases\noiseTest\sixMachineNoise.py", # testing of noise agent
     #r".\testCases\noiseTest\sixMachineNoise2.py", # testing of noise agent
     #r".\testCases\noiseTest\sixMachineNoise3.py", # testing of noise agent
     #r".\testCases\noiseTest\sixMachineNoise4.py", # testing of noise agent
-    r".\testCases\noiseTest\sixMachineNoise5.py", # testing of noise agent
+    #r".\testCases\noiseTest\sixMachineNoise5.py", # testing of noise agent
+
+    #r".\testCases\noiseTest\sixMachineNoiseX.py", # testing of noise agent
             ]
 
 # Batch Run Parameters
@@ -265,11 +267,15 @@ for testCase in batchList:
             print('\n*** Waiting for plot to close...')
             
             ltd.plot.BAplots01(mir, False)
+            ltd.plot.ValveTravel01(mir, False)
+
             ltd.plot.sysPePmFLoad(mir, True)
             waitTime += time.time() - wait_start
         else:
             
             ltd.plot.BAplots01(mir, False,)
+            ltd.plot.ValveTravel01(mir, False)
+
             ltd.plot.sysPePmFLoad(mir ,False)
 
 # End of Batch Output

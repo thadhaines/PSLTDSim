@@ -203,16 +203,16 @@ end
         grid on
     else % make only general legend
         dataName = [int2str(linesPltd),' Comparisons'];
-        legend([datas,rPlot],dataName,'Average Absolute Deviation','location','best')
+        legend([datas,rPlot],dataName,'Average Absolute Difference','location','best')
     end
     grid on
     if noCase ==1
-        title('Deviation of LTD Bus Voltage from PSDS')
+        title('Difference of LTD Bus Voltage from PSDS')
     else
-        title({'Deviation of LTD Bus Voltage from PSDS'; ['Case: ', LTDCaseName]})
+        title({'Difference of LTD Bus Voltage from PSDS'; ['Case: ', LTDCaseName]})
     end
     xlabel('Time [sec]')
-    ylabel('Voltage Deviation [pu]')
+    ylabel('Voltage Difference [pu]')
     set(gca,'fontsize',bfz)
     xlim(x_lim)
     

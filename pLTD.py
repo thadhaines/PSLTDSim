@@ -54,14 +54,18 @@ mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise2F.mir'
 mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise3F.mir') # 10 minutes of noise
 #mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise4F.mir') # 10 minutes of noise
 mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise5F.mir') # 10 minutes of noise
-#mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseF.mir') # 10 minutes of noise
+mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoiseXF.mir') # 10 minutes of noise
+
+mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseNoDBF.mir') # 10 minutes of noise
+#mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseNLDBF.mir') # 10 minutes of noise
+#mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseStepDBF.mir') # 10 minutes of noise
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
 
-printFigs =  True #  False # 
+printFigs =  False # True #  
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -73,8 +77,8 @@ printFigs =  True #  False #
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs)
 ltd.plot.ValveTravel01(mir, False, printFigs)
-ltd.plot.BAplots01(mir, False, printFigs)
-#ltd.plot.sysF(mir, False, printFigs)
+#ltd.plot.BAplots01(mir, False, printFigs)
+ltd.plot.sysF(mir, False, printFigs)
 
 #ltd.plot.AreaLosses(mir,False, printFigs)
 #ltd.plot.BAgovU(mir, False, printFigs)

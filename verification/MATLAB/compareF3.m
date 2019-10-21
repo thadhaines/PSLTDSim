@@ -194,9 +194,9 @@ plot(mir.t, abs(mir.f -mirA(1).PSDSf)*60, 'm','linewidth',.5)
 xlim(x_lim)
 grid on
 if noCase ==1
-    title('Comparison of Absolute Frequency Deviation from PSDS')
+    title('Comparison of Absolute Frequency Difference from PSDS')
 else
-    title({'Comparison of Absolute Frequency Deviation from PSDS'; ['Case: ', LTDCaseName]})
+    title({'Comparison of Absolute Frequency Difference from PSDS'; ['Case: ', LTDCaseName]})
 end
 ylabel('Frequency [Hz]')
 xlabel('Time [sec]')

@@ -131,17 +131,17 @@ if makeLegend
     legend(legNames)
 else % make only general legend
     dataName = [int2str(linesPltd),' Comparisons'];
-    legend([datas,rPlot],dataName,'Average Absolute Deviation','location','best')
+    legend([datas,rPlot],dataName,'Average Absolute Difference','location','best')
 end
 grid on
 if noCase ==1
-    title('Deviation of LTD Mechanical Power Output from PSDS')
+    title('Difference of LTD Mechanical Power Output from PSDS')
 else
-    title({'Deviation of LTD Mechanical Power Output from PSDS'; ['Case: ', LTDCaseName]})
+    title({'Difference of LTD Mechanical Power Output from PSDS'; ['Case: ', LTDCaseName]})
 end
 
 xlabel('Time [sec]')
-ylabel('Power Deviation [MW]')
+ylabel('Power Difference [MW]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
 

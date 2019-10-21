@@ -3,6 +3,7 @@ function [  ] = compareAngle2( mir, psds_data, varargin )
 %   optional inputs: case name, print figs, figure size
 %   PSDS angles need to have the reference subtracted from them to be centered
 %   around 0
+%   Deviation changed to Difference in plot output
 
 % Handle optional inputs
 if nargin == 2
@@ -148,16 +149,16 @@ if makeLegend
     legend(legNames)
 else % make only general legend
     dataName = [int2str(linesPltd),' Comparisons'];
-    legend([datas,rPlot],dataName,'Average Absolute Deviation','location','best')
+    legend([datas,rPlot],dataName,'Average Absolute Difference','location','best')
 end
 grid on
 if noCase ==1
-    title('Deviation of LTD Generator Voltage Angle from PSDS')
+    title('Difference of LTD Generator Voltage Angle from PSDS')
 else
-    title({'Deviation of LTD Generator Voltage Angle from PSDS'; ['Case: ', LTDCaseName]})
+    title({'Difference of LTD Generator Voltage Angle from PSDS'; ['Case: ', LTDCaseName]})
 end
 xlabel('Time [sec]')
-ylabel('Angle Deviation [degrees]')
+ylabel('Angle Difference [degrees]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
 

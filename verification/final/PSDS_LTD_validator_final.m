@@ -13,7 +13,7 @@ clear; format compact; clc; close all;
 format long;
 
 % Plot params
-printFigs = false;
+printFigs = true; % false; % 
 miniFlag = 1; % decrease plot width by half
 ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
@@ -22,7 +22,7 @@ ds = 30; % number of samples to skip in PSDS data plots
 % PSDSfileName = 'sixMachineGenTrip0.chf'; 
 % LTDCaseName = 'SixMachineTrip0';
 % genChange = -90;
-% 
+
 % PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
 % LTDCaseName = 'SixMachineRamp1';
 % genChange = 0;
@@ -37,9 +37,9 @@ ds = 30; % number of samples to skip in PSDS data plots
 % LTDCaseName = 'miniWECC3ALTDstep'; %
 % genChange = 0;
 
-% PSDSfileName = 'miniWECC_loadRamp.chf'; % 
-% LTDCaseName = 'miniWECC3ALTDramp'; % 
-% genChange = -0; % 
+PSDSfileName = 'miniWECC_loadRamp.chf'; % 
+LTDCaseName = 'miniWECC3ALTDramp'; % 
+genChange = -0; % 
 
 % PSDSfileName = 'miniWECC_genTrip027.chf'; % 
 % LTDCaseName = 'miniWECCgenTrip027';
@@ -67,15 +67,15 @@ psds_data = udread(PSDSfileName,[]);
 %compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj, genChange) % doesn't handle changes in inertia, fAdj used for this
 compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 %% Deviation plots
-compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% percent difference plots
-compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

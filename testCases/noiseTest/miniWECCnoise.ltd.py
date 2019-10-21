@@ -10,14 +10,14 @@ mirror.sysPerturbances = [
     #'gen 62 : step Pref 2 -1500 rel',
     ]
 
-mirror.NoiseAgent = ltd.perturbance.LoadNoiseAgent(mirror, 0.003, True)
+mirror.NoiseAgent = ltd.perturbance.LoadNoiseAgent(mirror, 0.05, True)
 
 # Balancing Authority Input
 mirror.sysBA = {
     'North':{
         'Area':1,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 5.00, # seconds  
+        'AGCActionTime': 15.00, # seconds  
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
@@ -28,9 +28,9 @@ mirror.sysBA = {
         'IACEscale' : 1/15,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.0, # Hz # changed 10/6/19
-        'ACEFiltering': 'PI : 0.04 0.0001', # changed 10/6/19
+        'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
-        'GovDeadbandType' : 'NLDroop', # changed 10/6/19
+        'GovDeadbandType' : 'step', # changed 10/6/19
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19
@@ -42,7 +42,7 @@ mirror.sysBA = {
     'East':{
         'Area':2,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 5.00, # seconds    # changed 10/6/19,
+        'AGCActionTime': 15.00, # seconds    # changed 10/6/19,
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias # changed 10/6/19
         'UseAreaDroop' : False,
@@ -53,9 +53,9 @@ mirror.sysBA = {
         'IACEscale' : 1/15,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.0, # Hz # changed 10/6/19
-        'ACEFiltering': 'PI : 0.04 0.0001', # changed 10/6/19
+        'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
-        'GovDeadbandType' : 'NLDroop', # changed 10/6/19
+        'GovDeadbandType' : 'step', # changed 10/6/19
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19
@@ -67,7 +67,7 @@ mirror.sysBA = {
     'South':{
         'Area':3,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 5.00, # seconds    # changed 10/6/19
+        'AGCActionTime': 15.00, # seconds    # changed 10/6/19
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias # changed 10/6/19
         'UseAreaDroop' : False,
@@ -78,16 +78,16 @@ mirror.sysBA = {
         'IACEscale' : 1/15,
         'IACEweight' : .3, # out of one - percent to mix with calculated ace
         'IACEdeadband' : 0.0, # Hz # changed 10/6/19
-        'ACEFiltering': 'PI : 0.04 0.0001', # changed 10/6/19
+        'ACEFiltering': 'PI : 0.025 0.0001', # changed 10/6/19
         'AGCDeadband' : None, # MW? -> not implemented
-        'GovDeadbandType' : 'NLDroop', # changed 10/6/19
+        'GovDeadbandType' : 'step', # changed 10/6/19
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # changed 10/6/19
         'GovBeta' : 0.036, # changed 10/6/19
         'CtrlGens': [
-            'gen 45 : .333 : rampA',
-            'gen 53 : .333 : rampA',
-            'gen 59 : .333 : rampA',
+            'gen 45 : .33333 : rampA',
+            'gen 53 : .33333 : rampA',
+            'gen 59 : .33333 : rampA',
                     ]
         },
     }

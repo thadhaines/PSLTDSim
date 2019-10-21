@@ -4,13 +4,13 @@ AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
-MiniWECC Multi Area gen trip to test noise agent
+MiniWECC Multi Area noise agent
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 1800,    
+    'endTime': 1200,    
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -22,7 +22,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\noiseTest\\", # relative path from cwd
-    'fileName' : 'miniWECCnoise',
+    'fileName' : 'miniWECCnoiseStepDB',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1,
     }
