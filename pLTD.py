@@ -14,14 +14,14 @@ mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
 
 #mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A0F.mir')
 #mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A1F.mir')
-mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A1IACEF.mir')
+#mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A1IACEF.mir')
 #mirLoc = os.path.join(dirname, 'delme','BA2','miniWECC3A2IACEF.mir')
 #mirLoc = os.path.join(dirname, 'delme','sixMachineStep','SixMachineStep1F.mir')
 
 # Deadband data
 mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCnoDBF.mir')
-mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCstepDBF.mir')
-mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCNLdroopDBF.mir')
+#mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCstepDBF.mir')
+#mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCNLdroopDBF.mir')
 
 # IEEE testing
 #mirLoc = os.path.join(dirname, 'delme','IEEE','3areaTripF.mir')
@@ -32,7 +32,7 @@ mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnoDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir'))
 
-mirLoc = os.path.join(dirname, 'delme','IEEE','miniWECCgenTripF.mir')
+#mirLoc = os.path.join(dirname, 'delme','IEEE','miniWECCgenTripF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','genTripHighRnoDBF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRnoDBF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir')
@@ -49,23 +49,50 @@ mirLoc = os.path.join(dirname, 'delme','IEEE','miniWECCgenTripF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACENoFilterF.mir') # Fast gain...
 #mirLoc = os.path.join(dirname, 'delme','IEEE','windrampNoDBFastGainIACENoBF.mir') # Fast gain...
 
-mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoiseF.mir') # 10 minutes of noise
-mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise2F.mir') # 10 minutes of noise
-mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise3F.mir') # 10 minutes of noise
+#mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoiseF.mir') # 10 minutes of noise
+#mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise2F.mir') # 10 minutes of noise
+#mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise3F.mir') # 10 minutes of noise
 #mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise4F.mir') # 10 minutes of noise
-mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise5F.mir') # 10 minutes of noise
-mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoiseXF.mir') # 10 minutes of noise
+#mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoise5F.mir') # 10 minutes of noise
+#mirLoc = os.path.join(dirname, 'delme','sixMachineNoise','SixMachineNoiseXF.mir') # 10 minutes of noise
 
-mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseNoDBF.mir') # 10 minutes of noise
+#mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseNoDBF.mir') # 10 minutes of noise
 #mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseNLDBF.mir') # 10 minutes of noise
 #mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseStepDBF.mir') # 10 minutes of noise
+
+
+mirLoc = os.path.join(dirname, 'delme','191023-db','mwBASEF.mir') # base case for AGC testing
+mirLoc = os.path.join(dirname, 'delme','191023-db','mw10NoDBAGCF.mir') # base case for AGC testing
+mirLoc = os.path.join(dirname, 'delme','191023-db','mw05NoDBAGCF.mir') # base case for AGC testing
+
+mirList = []
+# Second time step
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NLdroopDBAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoDBAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw10StepDBAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoStepDBAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NLdroopDBNoAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoDBNoAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw10StepDBNoAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoStepDBNoAGCF.mir'))
+
+mirList = []
+# Half Second time step
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NLdroopDBAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoDBAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw05StepDBAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoStepDBAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NLdroopDBNoAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoDBNoAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw05StepDBNoAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoStepDBNoAGCF.mir'))
 
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
 
-printFigs =  False # True #  
+printFigs =  True #  False # 
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -76,24 +103,23 @@ printFigs =  False # True #
 
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs)
-ltd.plot.ValveTravel01(mir, False, printFigs)
+#ltd.plot.ValveTravel01(mir, False, printFigs)
 #ltd.plot.BAplots01(mir, False, printFigs)
-ltd.plot.sysF(mir, False, printFigs)
+#ltd.plot.sysF(mir, False, printFigs)
 
 #ltd.plot.AreaLosses(mir,False, printFigs)
 #ltd.plot.BAgovU(mir, False, printFigs)
 #ltd.plot.SACE(mir,False, printFigs)
-ltd.plot.Pload(mir,True, printFigs)
+ltd.plot.Pload(mir,False, printFigs)
 #ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
 
 # Plot loopy results
-"""
+
 printFigs = True
 for case in mirList:
     mir = ltd.data.readMirror(case)
     ltd.terminal.dispSimTandC(mir)
-    ltd.plot.ValveTravel(mir, False, printFigs)
-    ltd.plot.BAplots01(mir, False, printFigs)
-"""
+    ltd.plot.ValveTravel01(mir, False, printFigs)
+    ltd.plot.sysF(mir, False, printFigs)

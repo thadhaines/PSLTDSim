@@ -7,7 +7,7 @@ class WindowIntegratorAgent(object):
         self.mirror = mirror
         self.length = length # length of window in seconds
 
-        self.windowSize = int(self.length * self.mirror.timeStep)
+        self.windowSize = int(self.length / self.mirror.timeStep)
 
         self.window = [0.0]*self.windowSize
 

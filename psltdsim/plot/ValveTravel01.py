@@ -54,7 +54,7 @@ def ValveTravel01(mirror, blkFlag=True, printFigs=False):
 
     combSTR = combSTR[:-1] # remove extra \n
 
-    anchoredText = AnchoredText(combSTR, loc='upper left',
+    anchoredText = AnchoredText(combSTR, loc='upper center',
                                 prop=dict(fontsize="large"),
                                 )
     ax.add_artist(anchoredText)

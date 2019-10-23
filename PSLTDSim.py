@@ -156,7 +156,7 @@ batchList =[
     #r".\testCases\IEEEpaper\windrampNoDBFastGainIACENoB.py", # 400MW trip in area 3, 3 second AGC dispatch, ACE*3, include IACE no B
 
     # Noise Agent Testing
-    r".\testCases\noiseTest\miniWECCnoise.py", # testing of noise agent
+    #r".\testCases\noiseTest\miniWECCnoise.py", # testing of noise agent
     #r".\testCases\noiseTest\sixMachineNoise.py", # testing of noise agent
     #r".\testCases\noiseTest\sixMachineNoise2.py", # testing of noise agent
     #r".\testCases\noiseTest\sixMachineNoise3.py", # testing of noise agent
@@ -164,12 +164,37 @@ batchList =[
     #r".\testCases\noiseTest\sixMachineNoise5.py", # testing of noise agent
 
     #r".\testCases\noiseTest\sixMachineNoiseX.py", # testing of noise agent
+
+    # MiniWECC noise testing 10/23/19
+    #r".\testCases\191023_db\miniWECCBASE.py", # base case
+    # 1 second timestep With AGC
+    #r".\testCases\191023_db\mw10StepDBAGC.py", # 
+    #r".\testCases\191023_db\mw10NoStepDBAGC.py", # 
+    #r".\testCases\191023_db\mw10NLdroopDBAGC.py", # 
+    #r".\testCases\191023_db\mw10NoDBAGC.py", # 
+    # No AGC
+    #r".\testCases\191023_db\mw10StepDBNoAGC.py", # 
+    #r".\testCases\191023_db\mw10NoStepDBNoAGC.py", # 
+    #r".\testCases\191023_db\mw10NLdroopDBNoAGC.py", # 
+    #r".\testCases\191023_db\mw10NoDBNoAGC.py", # 
+
+    # 0.5 second timestep With AGC
+    r".\testCases\191023_db\mw05StepDBAGC.py", # 
+    r".\testCases\191023_db\mw05NoStepDBAGC.py", # 
+    r".\testCases\191023_db\mw05NLdroopDBAGC.py", # 
+    r".\testCases\191023_db\mw05NoDBAGC.py", # 
+    # No AGC
+    r".\testCases\191023_db\mw05StepDBNoAGC.py", # 
+    r".\testCases\191023_db\mw05NoStepDBNoAGC.py", # 
+    r".\testCases\191023_db\mw05NLdroopDBNoAGC.py", # 
+    r".\testCases\191023_db\mw05NoDBNoAGC.py", # 
+
             ]
 
 # Batch Run Parameters
 dispResults = False
 dispTiming = True
-makePlot = True
+makePlot = False
 
 # Batch run counters
 case = 0
