@@ -94,22 +94,22 @@ for f in fRange:
 #print(u)
 
 # Testing of output (i.e input to gain of Mbase and sum pref)
-plt.plot(fRange*fBase, u0/R,ls='--', label =r'No Deadband')
-plt.plot(fRange*fBase, u/R, ls='-', label =r'Step Deadband ($db_1$)')
-plt.plot(fRange*fBase, u1/R2,ls=':', label =r'No Step Deadband ($db_1$)')
-plt.plot(fRange*fBase, u2/r, ls='-.', label =r'Non-Linear Droop Deadband ($\alpha, \beta$)')
+plt.plot(fRange*fBase, u0/R,ls='-', label =r'No Deadband', color =[0, 0, 0])
+plt.plot(fRange*fBase, u/R, ls='--', label =r'Step Deadband ($db_1$)', color =[.7,.7,.7])
+plt.plot(fRange*fBase, u1/R2,ls=':', label =r'No Step Deadband ($db_1$)', color =[0,1,0])
+plt.plot(fRange*fBase, u2/r, ls='-.', label =r'Non-Linear Droop Deadband ($\alpha, \beta$)', color =[1,0,1])
 
 #plt.plot(fRange*fBase, u1/R2,ls=':', label =r'Ramp Deadband ($db_2$)')
 plt.annotate(r'$\alpha$', xy=((1+alpha)*fBase, 0.005), xytext=((1+alpha)*fBase, -.025),
-             arrowprops=dict(facecolor='black', arrowstyle='-'),
+             arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
 plt.annotate(r'$\beta$', xy=((1+beta)*fBase, 0.005), xytext=((1+beta)*fBase, -.025),
-             arrowprops=dict(facecolor='black', arrowstyle='-'),
+             arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
 plt.annotate(r'$db_1$', xy=((60-db), -0.005 ), xytext=((60-db), .025),
-             arrowprops=dict(facecolor='black', arrowstyle='-'),
+             arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
 
