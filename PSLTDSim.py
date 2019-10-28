@@ -179,15 +179,21 @@ batchList =[
     #r".\testCases\191023_db\mw10NoDBNoAGC.py", # 
 
     # 0.5 second timestep With AGC
-    r".\testCases\191023_db\mw05StepDBAGC.py", # 
-    r".\testCases\191023_db\mw05NoStepDBAGC.py", # 
-    r".\testCases\191023_db\mw05NLdroopDBAGC.py", # 
-    r".\testCases\191023_db\mw05NoDBAGC.py", # 
+    #r".\testCases\191023_db\mw05StepDBAGC.py", # 
+    #r".\testCases\191023_db\mw05NoStepDBAGC.py", # 
+    #r".\testCases\191023_db\mw05NLdroopDBAGC.py", # 
+    #r".\testCases\191023_db\mw05NoDBAGC.py", # 
     # No AGC
-    r".\testCases\191023_db\mw05StepDBNoAGC.py", # 
-    r".\testCases\191023_db\mw05NoStepDBNoAGC.py", # 
-    r".\testCases\191023_db\mw05NLdroopDBNoAGC.py", # 
-    r".\testCases\191023_db\mw05NoDBNoAGC.py", # 
+    #r".\testCases\191023_db\mw05StepDBNoAGC.py", # 
+    #r".\testCases\191023_db\mw05NoStepDBNoAGC.py", # 
+    #r".\testCases\191023_db\mw05NLdroopDBNoAGC.py", # 
+    #r".\testCases\191023_db\mw05NoDBNoAGC.py", # 
+
+    # IEEE paper noise tests
+    r".\testCases\191028-paperSims\miniWECCnoiseNoDB.py", # 
+    r".\testCases\191028-paperSims\miniWECCnoiseStepDB.py", # 
+    r".\testCases\191028-paperSims\miniWECCnoiseNoStepDB.py", # 
+    r".\testCases\191028-paperSims\miniWECCnoiseNLdroopDB.py", # 
 
             ]
 

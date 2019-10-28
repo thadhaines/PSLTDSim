@@ -100,15 +100,15 @@ plt.plot(fRange*fBase, u1/R2,ls=':', label =r'No Step Deadband ($db_1$)', color 
 plt.plot(fRange*fBase, u2/r, ls='-.', label =r'Non-Linear Droop Deadband ($\alpha, \beta$)', color =[1,0,1])
 
 #plt.plot(fRange*fBase, u1/R2,ls=':', label =r'Ramp Deadband ($db_2$)')
-plt.annotate(r'$\alpha$', xy=((1+alpha)*fBase, 0.005), xytext=((1+alpha)*fBase, -.025),
+plt.annotate(r'$\alpha$', xy=((1+alpha)*fBase, 0.005), xytext=((1+alpha)*fBase, -.02),
              arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
-plt.annotate(r'$\beta$', xy=((1+beta)*fBase, 0.005), xytext=((1+beta)*fBase, -.025),
+plt.annotate(r'$\beta$', xy=((1+beta)*fBase, 0.005), xytext=((1+beta)*fBase, -.02),
              arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
-plt.annotate(r'$db_1$', xy=((60-db), -0.005 ), xytext=((60-db), .025),
+plt.annotate(r'$db_1$', xy=((60-db), -0.005 ), xytext=((60-db), .02),
              arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
@@ -116,10 +116,11 @@ plt.annotate(r'$db_1$', xy=((60-db), -0.005 ), xytext=((60-db), .025),
 x1 = fBase-2*db
 x2 = fBase+2*db
 plt.xlim(x1, x2)
-plt.ylim(-.04,.04)
+plt.ylim(-.025,.025)
 plt.grid(True)
 plt.title('Comparison of Deadband Options')
 plt.xlabel('Frequency [Hz]')
 plt.ylabel(r'PU MW Change [$M_{Base}]$')
 plt.legend()
+plt.tight_layout()
 plt.show(block = True)

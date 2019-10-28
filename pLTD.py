@@ -87,6 +87,14 @@ mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoDBNoAGCF.mir'))
 mirList.append(os.path.join(dirname, 'delme','191023-db','mw05StepDBNoAGCF.mir'))
 mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoStepDBNoAGCF.mir'))
 
+#IEEE results
+mirList = []
+mirLoc = os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoDBF.mir') # base case for AGC testing
+mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoDBF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseStepDBF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoStepDBF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNLdroopDBF.mir'))
+
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)

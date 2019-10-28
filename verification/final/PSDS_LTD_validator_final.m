@@ -8,6 +8,8 @@
 
 %   History:
 %   07/11/19    10:47   init - regen data with current code and files
+%   10/28/19    11:52   addition of IEEE plots used for paper
+
 %% init
 clear; format compact; clc; close all;
 format long;
@@ -33,13 +35,13 @@ ds = 30; % number of samples to skip in PSDS data plots
 
 %%
 % Mini WECC
-% PSDSfileName = 'miniWECC_loadStep.chf'; % 
-% LTDCaseName = 'miniWECC3ALTDstep'; %
-% genChange = 0;
+PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
+LTDCaseName = 'miniWECC3ALTDstep'; %
+genChange = 0;
 
-PSDSfileName = 'miniWECC_loadRamp.chf'; % 
-LTDCaseName = 'miniWECC3ALTDramp'; % 
-genChange = -0; % 
+% PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
+% LTDCaseName = 'miniWECC3ALTDramp'; % 
+% genChange = -0; % 
 
 % PSDSfileName = 'miniWECC_genTrip027.chf'; % 
 % LTDCaseName = 'miniWECCgenTrip027';
@@ -79,3 +81,8 @@ comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+
+%% IEEE simplified plots
+compareF3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+comparePm2IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
