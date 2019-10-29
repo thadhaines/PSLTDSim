@@ -8,9 +8,10 @@ import psltdsim as ltd
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 
 dirname = os.path.dirname(__file__)
+
 #mirLoc = os.path.join(dirname, 'verification','microWecc','microWECC_loadStep01F.mir')
-mirLoc = os.path.join(dirname, 'delme','kundurGenTrip2','kundurGenTrip22F.mir')
-mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
+#mirLoc = os.path.join(dirname, 'delme','kundurGenTrip2','kundurGenTrip22F.mir')
+#mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
 
 #mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A0F.mir')
 #mirLoc = os.path.join(dirname, 'delme','miniWECC3A','miniWECC3A1F.mir')
@@ -19,18 +20,18 @@ mirLoc = os.path.join(dirname, 'delme','kundurStep','kundurStep2F.mir')
 #mirLoc = os.path.join(dirname, 'delme','sixMachineStep','SixMachineStep1F.mir')
 
 # Deadband data
-mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCnoDBF.mir')
+#mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCnoDBF.mir')
 #mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCstepDBF.mir')
 #mirLoc = os.path.join(dirname, 'delme','BA3','miniWECCNLdroopDBF.mir')
 
 # IEEE testing
 #mirLoc = os.path.join(dirname, 'delme','IEEE','3areaTripF.mir')
-mirList = []
+#mirList = []
 
-mirList.append(os.path.join(dirname, 'delme','IEEE','genTripHighRnoDBF.mir'))
-mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnoDBF.mir'))
-mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir'))
-mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','IEEE','genTripHighRnoDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnoDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRstepDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir'))
 
 #mirLoc = os.path.join(dirname, 'delme','IEEE','miniWECCgenTripF.mir')
 #mirLoc = os.path.join(dirname, 'delme','IEEE','genTripHighRnoDBF.mir')
@@ -61,24 +62,24 @@ mirList.append(os.path.join(dirname, 'delme','IEEE','genTripEqualRnonLinDBF.mir'
 #mirLoc = os.path.join(dirname, 'delme','noiseTest','miniWECCnoiseStepDBF.mir') # 10 minutes of noise
 
 
-mirLoc = os.path.join(dirname, 'delme','191023-db','mwBASEF.mir') # base case for AGC testing
-mirLoc = os.path.join(dirname, 'delme','191023-db','mw10NoDBAGCF.mir') # base case for AGC testing
-mirLoc = os.path.join(dirname, 'delme','191023-db','mw05NoDBAGCF.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','191023-db','mwBASEF.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','191023-db','mw10NoDBAGCF.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','191023-db','mw05NoDBAGCF.mir') # base case for AGC testing
 
-mirList = []
+#mirList = []
 # Second time step
 #mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoDBAGCF.mir'))
 #mirList.append(os.path.join(dirname, 'delme','191023-db','mw10StepDBAGCF.mir'))
 #mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoStepDBAGCF.mir'))
 #mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NLdroopDBAGCF.mir'))
-#ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
+#ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=False) # multiple mir comp
 
-mirList = []
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoDBNoAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw10StepDBNoAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoStepDBNoAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NLdroopDBNoAGCF.mir'))
-ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=False) # multiple mir comp
+#mirList = []
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoDBNoAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw10StepDBNoAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoStepDBNoAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NLdroopDBNoAGCF.mir'))
+#ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=False) # multiple mir comp
 
 #mirList = []
 # Half Second time step
@@ -92,21 +93,33 @@ ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=False) # multiple mir comp
 #mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoStepDBNoAGCF.mir'))
 
 #IEEE results
-mirList = []
-mirLoc = os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoDBF.mir') # base case for AGC testing
-mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoDBF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseStepDBF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoStepDBF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNLdroopDBF.mir'))
-ltd.plot.sysFcomp(mirList,blkFlag=True, printFigs=False) # multiple mir comp
+#mirList = []
+#mirLoc = os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoDBF.mir') # base case for AGC testing
+#mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseStepDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoStepDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNLdroopDBF.mir'))
+#ltd.plot.sysFcomp(mirList,blkFlag=True, printFigs=False) # multiple mir comp
 
+printFigs =  True #  False # 
+
+
+#IEEE results 2 - non AGC 10/29/19
+mirList = []
+folderName = '191029-paperSimsNoAGC'
+mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoDBF.mir') # base case for AGC testing
+mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoDBF.mir'))
+mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseStepDBF.mir'))
+mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoStepDBF.mir'))
+mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF.mir'))
+ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=True) # multiple mir comp
+ltd.plot.genDynamicsComp(mirList, blkFlag=False, printFigs = True, genNum = 32)
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
 
-printFigs =  False # True #  
-#ltd.plot.sysLoad(mir, False)
+#ltd.plot.sysLoad(mir, True)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
@@ -123,7 +136,6 @@ printFigs =  False # True #
 #ltd.plot.AreaLosses(mir,False, printFigs)
 #ltd.plot.BAgovU(mir, False, printFigs)
 #ltd.plot.SACE(mir,False, printFigs)
-#ltd.plot.Pload(mir,False, printFigs)
 #ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
@@ -135,5 +147,6 @@ printFigs =  False # True #
 #for case in mirList:
 #    mir = ltd.data.readMirror(case)
 #    ltd.terminal.dispSimTandC(mir)
-#    ltd.plot.ValveTravel01(mir, False, printFigs)
+#    ltd.plot.ValveTravel01(mir, False, printFigs, miniFlag = True)
 #    ltd.plot.sysF(mir, False, printFigs)
+ltd.plot.PloadIEEE(mir,True, printFigs, miniFlag = True)

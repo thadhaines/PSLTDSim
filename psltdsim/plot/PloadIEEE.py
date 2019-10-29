@@ -1,4 +1,4 @@
-def Pload(mirror, blkFlag=True, printFigs=False, miniFlag = False):
+def PloadIEEE(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     """Plot SACE of given mirror areas"""
     import matplotlib.pyplot as plt
     import numpy as np
@@ -28,7 +28,7 @@ def Pload(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     # Put a legend to the right of the current axis
     #ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
-    ax.set_title('System Loading\n Case: ' + caseName)
+    ax.set_title('System Loading')
     ax.set_xlim(0,minEnd)
     ax.set_ylabel('MW')
     ax.set_xlabel('Time [minutes]')
@@ -36,7 +36,7 @@ def Pload(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     #ax.legend(loc=0)
     ax.grid(True)
     fig.set_dpi(150)
-    fig.set_size_inches(9/lengDiv, 4.5)
+    fig.set_size_inches(9/lengDiv, 4.5*.65)
     fig.tight_layout()
     if printFigs: plt.savefig(caseName+'Pload'+'.pdf', dpi=300)
     plt.show(block = blkFlag)
