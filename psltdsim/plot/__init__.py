@@ -27,3 +27,5 @@ from .SACE import SACE
 from .ACE2dist import ACE2dist
 from .sysF import sysF
 from .Pload import Pload
+
+from .sysFcomp import sysFcomp

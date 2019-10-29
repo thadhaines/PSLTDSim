@@ -67,25 +67,29 @@ mirLoc = os.path.join(dirname, 'delme','191023-db','mw05NoDBAGCF.mir') # base ca
 
 mirList = []
 # Second time step
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NLdroopDBAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoDBAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw10StepDBAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoStepDBAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NLdroopDBNoAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoDBAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw10StepDBAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoStepDBAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NLdroopDBAGCF.mir'))
+#ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
+
+mirList = []
 mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoDBNoAGCF.mir'))
 mirList.append(os.path.join(dirname, 'delme','191023-db','mw10StepDBNoAGCF.mir'))
 mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NoStepDBNoAGCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','191023-db','mw10NLdroopDBNoAGCF.mir'))
+ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=False) # multiple mir comp
 
-mirList = []
+#mirList = []
 # Half Second time step
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NLdroopDBAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoDBAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw05StepDBAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoStepDBAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NLdroopDBNoAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoDBNoAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw05StepDBNoAGCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoStepDBNoAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NLdroopDBAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoDBAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw05StepDBAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoStepDBAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NLdroopDBNoAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoDBNoAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw05StepDBNoAGCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','191023-db','mw05NoStepDBNoAGCF.mir'))
 
 #IEEE results
 mirList = []
@@ -94,13 +98,14 @@ mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNo
 mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseStepDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNoStepDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNLdroopDBF.mir'))
+ltd.plot.sysFcomp(mirList,blkFlag=True, printFigs=False) # multiple mir comp
 
 mir = ltd.data.readMirror(mirLoc)
-ltd.terminal.dispSimTandC(mir)
+#ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
 
-printFigs =  True #  False # 
+printFigs =  False # True #  
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -118,16 +123,17 @@ printFigs =  True #  False #
 #ltd.plot.AreaLosses(mir,False, printFigs)
 #ltd.plot.BAgovU(mir, False, printFigs)
 #ltd.plot.SACE(mir,False, printFigs)
-ltd.plot.Pload(mir,False, printFigs)
+#ltd.plot.Pload(mir,False, printFigs)
 #ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
+#ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
 
 # Plot loopy results
 
-printFigs = True
-for case in mirList:
-    mir = ltd.data.readMirror(case)
-    ltd.terminal.dispSimTandC(mir)
-    ltd.plot.ValveTravel01(mir, False, printFigs)
-    ltd.plot.sysF(mir, False, printFigs)
+#printFigs = True
+#for case in mirList:
+#    mir = ltd.data.readMirror(case)
+#    ltd.terminal.dispSimTandC(mir)
+#    ltd.plot.ValveTravel01(mir, False, printFigs)
+#    ltd.plot.sysF(mir, False, printFigs)
