@@ -19,7 +19,7 @@ def PloadIEEE(mirror, blkFlag=True, printFigs=False, miniFlag = False):
 
     fig, ax = plt.subplots()
 
-    ax.plot(mins, mir.r_ss_Pload, linewidth=1.25, color='black')
+    ax.plot(mins, np.array(mir.r_ss_Pload)-mir.r_ss_Pload[0], linewidth=.85, color='black')
 
     # Scale current axis.
     box = ax.get_position()
@@ -28,7 +28,7 @@ def PloadIEEE(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     # Put a legend to the right of the current axis
     #ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
-    ax.set_title('System Loading')
+    ax.set_title('Changes in System Loading')
     ax.set_xlim(0,minEnd)
     ax.set_ylabel('MW')
     ax.set_xlabel('Time [minutes]')
@@ -38,6 +38,6 @@ def PloadIEEE(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     fig.set_dpi(150)
     fig.set_size_inches(9/lengDiv, 2.5*.75)
     fig.tight_layout()
-    if printFigs: plt.savefig(caseName+'Pload'+'.pdf', dpi=300)
+    if printFigs: plt.savefig(caseName+'PloadChange'+'.pdf', dpi=300)
     plt.show(block = blkFlag)
     plt.pause(0.00001)

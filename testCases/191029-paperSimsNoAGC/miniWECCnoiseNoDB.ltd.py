@@ -27,7 +27,7 @@ mirror.sysBA = {
         'IACEscale' : 1/15,
         'IACEdeadband' : 0.0, # Hz 
         'ACEFiltering': 'PI : 0.025 0.0001', 
-        'AGCDeadband' : None, # MW? -> not implemented
+        'AGCDeadband' : 0.0, # MW? -> not implemented
         'GovDeadbandType' : deadBandType, # step, none, ramp, nldroop
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
@@ -50,7 +50,7 @@ mirror.sysBA = {
         'IACEscale' : 1/15,
         'IACEdeadband' : 0.0, # Hz 
         'ACEFiltering': 'PI : 0.025 0.0001', 
-        'AGCDeadband' : None, # MW? -> not implemented
+        'AGCDeadband' : 0, # MW? -> not implemented
         'GovDeadbandType' : deadBandType, # step, none, ramp, nldroop
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
@@ -73,7 +73,7 @@ mirror.sysBA = {
         'IACEscale' : 1/15,
         'IACEdeadband' : 0.0, # Hz 
         'ACEFiltering': 'PI : 0.025 0.0001', 
-        'AGCDeadband' : None, # MW? -> not implemented
+        'AGCDeadband' : 0, # MW? -> not implemented
         'GovDeadbandType' : deadBandType, # step, none, ramp, nldroop
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
