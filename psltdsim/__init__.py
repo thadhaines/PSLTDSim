@@ -13,6 +13,7 @@ from . import parse
 from . import plot
 from . import filterAgents
 from . import math
+from . import agc
 
 from .init_PSLF import init_PSLF
 

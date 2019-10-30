@@ -8,6 +8,13 @@ class BA(object):
         self.name = name
         self.BAdict = BAdict
         self.actTime = float(BAdict['AGCActionTime'])
+
+        # Handle optional agc ramp time param
+        if hasattr(BAdict, 'AGCRampTime'):
+            self.rampTime = float(BAdict['AGCRampTime'])
+        else:
+            self.rampTime = float(BAdict['AGCActionTime'])
+
         self.ctrlMachines = []
 
         # Current Value Dictionary

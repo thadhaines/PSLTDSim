@@ -26,11 +26,11 @@ def distACE(BA):
                 if gen.gov_model.mwCap < gen.gov_model.Pref -ACE2dist*gen.ACEpFactor:
                     AGCramp = ltd.perturbance.RampAgent(BA.mirror, 
                                                     gen, ['Pm',BA.mirror.cv['t'],
-                                                            BA.actTime, gen.gov_model.mwCap, 'abs'])
+                                                            BA.rampTime, gen.gov_model.mwCap, 'abs'])
                 else:
                     AGCramp = ltd.perturbance.RampAgent(BA.mirror, 
                                                     gen, ['Pm',BA.mirror.cv['t'],
-                                                            BA.actTime, -ACE2dist*gen.ACEpFactor, 'rel'])
+                                                            BA.rampTime, -ACE2dist*gen.ACEpFactor, 'rel'])
                 BA.mirror.AGCramp.append(AGCramp)
             else:
                 # distribute Negative ACE % to Pref
@@ -38,9 +38,9 @@ def distACE(BA):
                 if gen.gov_model.mwCap < gen.gov_model.Pref -ACE2dist*gen.ACEpFactor:
                     AGCramp = ltd.perturbance.RampAgent(BA.mirror, 
                                                     gen, ['Pref',BA.mirror.cv['t'],
-                                                            BA.actTime, gen.gov_model.mwCap, 'abs'])
+                                                            BA.rampTime, gen.gov_model.mwCap, 'abs'])
                 else:
                     AGCramp = ltd.perturbance.RampAgent(BA.mirror, 
                                                     gen, ['Pref',BA.mirror.cv['t'],
-                                                            BA.actTime, -ACE2dist*gen.ACEpFactor, 'rel'])
+                                                            BA.rampTime, -ACE2dist*gen.ACEpFactor, 'rel'])
                 BA.mirror.AGCramp.append(AGCramp)

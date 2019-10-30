@@ -95,9 +95,13 @@ class TLB(BA):
 
         # Gain ACE
         self.cv['ACE2dist'] = self.cv['SACE']*self.ACEgain
-
+        self.cv['distStep'] = 0
         # Check if current time step is an action step
         if (self.mirror.cv['t'] % self.actTime) == 0:
-            ltd.BAAgents.distACE(self)
-        else:
-            self.cv['distStep'] = 0
+
+            if self.BAdict['AGCDeadband'] > 0:
+                # check deadband qualifications if set
+                if abs(self.cv['ACE']) >= self.BAdict['AGCDeadband']:
+                    ltd.agc.distACE(self)
+            else:
+                ltd.agc.distACE(self)

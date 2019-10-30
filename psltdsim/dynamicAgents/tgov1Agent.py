@@ -144,6 +144,7 @@ class tgov1Agent():
         self.r_x1 = [0.0]*self.mirror.dataPoints
         self.r_x2 = [0.0]*self.mirror.dataPoints
         self.r_u = [0.0]*self.mirror.dataPoints
+        self.r_valveTravel = [0.0]*self.mirror.dataPoints
 
         # Append init values to running state data
         self.r_x1.append(self.Gen.cv['Pm'])
@@ -155,6 +156,7 @@ class tgov1Agent():
         self.r_x2[self.mirror.cv['dp']] = float(self.x2[1])
         self.r_u[self.mirror.cv['dp']] = float(self.uVector[0])
         self.totValveMovement += abs( self.r_x1[self.mirror.cv['dp']] - self.r_x1[self.mirror.cv['dp']-1])/self.mwCap
+        self.r_valveTravel[self.mirror.cv['dp']] = self.totValveMovement
 
     def popUnsetData(self, N):
         """Remove any appended init values from running values"""

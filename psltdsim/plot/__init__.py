@@ -31,3 +31,4 @@ from .PloadIEEE import PloadIEEE
 
 from .sysFcomp import sysFcomp
 from .genDynamicsComp import genDynamicsComp
+from .AreaRunningValveTravel import AreaRunningValveTravel

@@ -107,13 +107,14 @@ printFigs =  True #  False #
 #IEEE results 2 - non AGC 10/29/19
 mirList = []
 folderName = '191029-paperSimsNoAGC'
-mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoDBF.mir') # base case for AGC testing
+mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCuniAccF.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCatlAGCF.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoStepDBF.mir') # base case for AGC testing
 mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseStepDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoStepDBF.mir'))
 mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF.mir'))
-ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=True) # multiple mir comp
-ltd.plot.genDynamicsComp(mirList, blkFlag=False, printFigs = True, genNum = 32)
+#ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=True) # multiple mir comp
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
@@ -133,7 +134,10 @@ print(mir)
 #ltd.plot.BAplots01(mir, False, printFigs)
 #ltd.plot.sysF(mir, False, printFigs)
 
-#ltd.plot.AreaLosses(mir,False, printFigs)
+#ltd.plot.PloadIEEE(mir,True, printFigs=True, miniFlag = True)
+#ltd.plot.AreaRunningValveTravel(mir,True, True)
+
+#ltd.plot.AreaLosses(mir,True, printFigs)
 #ltd.plot.BAgovU(mir, False, printFigs)
 #ltd.plot.SACE(mir,False, printFigs)
 #ltd.plot.ACE2dist(mir, True, printFigs)
@@ -144,9 +148,10 @@ print(mir)
 # Plot loopy results
 
 #printFigs = True
-#for case in mirList:
-#    mir = ltd.data.readMirror(case)
+for case in mirList:
+    mir = ltd.data.readMirror(case)
 #    ltd.terminal.dispSimTandC(mir)
-#    ltd.plot.ValveTravel01(mir, False, printFigs, miniFlag = True)
+    ltd.plot.ValveTravel01(mir, False, printFigs, miniFlag = True)
 #    ltd.plot.sysF(mir, False, printFigs)
-ltd.plot.PloadIEEE(mir,True, printFigs, miniFlag = True)
+
+ltd.plot.genDynamicsComp(mirList, blkFlag=True, printFigs = True, genNum = 32)

@@ -1,6 +1,7 @@
 # mw ACE base case
-deadBandType = 'ramp'
 aceGain = 0.0
+#step deadband in area 3, 
+# adjusted deadbands in other regions
 
 # Perturbances
 mirror.sysPerturbances = [
@@ -27,8 +28,8 @@ mirror.sysBA = {
         'IACEscale' : 1/15,
         'IACEdeadband' : 0.0, # Hz 
         'ACEFiltering': 'PI : 0.025 0.0001', 
-        'AGCDeadband' : 0.0, # MW? -> not implemented
-        'GovDeadbandType' : deadBandType, # step, none, ramp, nldroop
+        'AGCDeadband' : 0, # ACE MW
+        'GovDeadbandType' : 'ramp', # step, none, ramp, nldroop
         'GovDeadband' : .0166, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
         'GovBeta' : 0.036, # Hz - for nldroop
@@ -50,8 +51,8 @@ mirror.sysBA = {
         'IACEscale' : 1/15,
         'IACEdeadband' : 0.0, # Hz 
         'ACEFiltering': 'PI : 0.025 0.0001', 
-        'AGCDeadband' : 0.0, # MW? -> not implemented
-        'GovDeadbandType' : deadBandType, # step, none, ramp, nldroop
+        'AGCDeadband' : 0, # ACE MW
+        'GovDeadbandType' : 'ramp', # step, none, ramp, nldroop
         'GovDeadband' : .0166, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
         'GovBeta' : 0.036, # Hz - for nldroop
@@ -73,9 +74,9 @@ mirror.sysBA = {
         'IACEscale' : 1/15,
         'IACEdeadband' : 0.0, # Hz 
         'ACEFiltering': 'PI : 0.025 0.0001', 
-        'AGCDeadband' : 0.0, # MW? -> not implemented
-        'GovDeadbandType' : deadBandType, # step, none, ramp, nldroop
-        'GovDeadband' : .0166, # Hz
+        'AGCDeadband' : 0, # ACE MW
+        'GovDeadbandType' : 'ramp', # step, none, ramp, nldroop
+        'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
         'GovBeta' : 0.036, # Hz - for nldroop
         'CtrlGens': [

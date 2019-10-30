@@ -4,11 +4,23 @@ def sysFcomp(mirrorList, blkFlag=True, printFigs=False):
     import numpy as np
     import psltdsim as ltd
 
+    plt.rcParams.update({'font.size': 9}) # used to scale text
+
+
     fig, ax = plt.subplots()
     fig.set_size_inches(6, 2)
     plotDb= False
     dbDict = {} # blank dictionary for collecting deadbands
     deadbands = ['step', 'ramp', 'nldroop']
+
+    colors=[ [0,0,0],
+            [.7,.7,.7],
+            [0,1,0],
+            [1,0,1],
+        ]
+    styles =["-","--",':','-.'
+        ]
+    sNDX = 0
 
     for mirror in mirrorList:
         mir = ltd.data.readMirror(mirror)
@@ -41,7 +53,11 @@ def sysFcomp(mirrorList, blkFlag=True, printFigs=False):
                     dbDict[str(cDBline)] = cDBline
                     plotDb= True
         # plot freq
-        ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1, label = 'Deadband: '+ dbTypeSTR)
+        ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1,  
+                        #linestyle=styles[sNDX],
+                        color=colors[sNDX],
+                        label = 'Deadband: '+ dbTypeSTR)
+        sNDX+=1
 
     if plotDb:
         for foundDB in dbDict:
@@ -49,17 +65,17 @@ def sysFcomp(mirrorList, blkFlag=True, printFigs=False):
             highDb = np.ones_like(mir.r_f)*mir.fBase+dbLine
             lowDb = np.ones_like(mir.r_f)*mir.fBase-dbLine
             ax.plot(mins, highDb,linewidth=1,linestyle=":",C='0.3')
-            ax.plot(mins,lowDb,linewidth=1,linestyle=":",C='0.3', label = str(dbLine)+' Hz Governor Deadband')
+            ax.plot(mins,lowDb,linewidth=1,linestyle=":",C='0.3')#, label = str(dbLine)+' Hz Governor Deadband')
 
     ax.set_title('System Frequency')
     ax.set_ylabel('Hz')
     ax.set_xlabel('Time [minutes]')
     ax.set_xlim(0,minEnd)
-    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.2))
+    ax.legend(loc='upper right')#, bbox_to_anchor=(0.5, -0.2))
     #ax.legend()
     ax.grid(True)
     fig.set_dpi(150)
-    fig.set_size_inches(9/2, 2.5*1.75) # single column, double height for legend below
+    fig.set_size_inches(9/2, 2.5) # single column, double height for legend below
     fig.tight_layout()
     if printFigs: plt.savefig(caseName+'Freq'+'.pdf', dpi=300)
     plt.show(block = blkFlag)

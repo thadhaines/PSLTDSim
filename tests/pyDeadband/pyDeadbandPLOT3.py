@@ -17,8 +17,8 @@ R = 0.05
 db = 0.036    # deadband [Hz]
 fBase = 60.0
 dbPu = db/fBase
-dbPu2 = db/fBase # Reduced deadband
-alpha = dbPu*.5   # Start of deadband
+dbPu2 = .0166/fBase # Reduced deadband
+alpha = dbPu2   # Start of deadband
 beta = dbPu # return to original R
 
 # Shifted deadband calc
@@ -96,7 +96,7 @@ for f in fRange:
 # Testing of output (i.e input to gain of Mbase and sum pref)
 plt.plot(fRange*fBase, u0/R,ls='-', label =r'No Deadband', color =[0, 0, 0])
 plt.plot(fRange*fBase, u/R, ls='--', label =r'Step Deadband ($db_1$)', color =[.7,.7,.7])
-plt.plot(fRange*fBase, u1/R2,ls=':', label =r'No Step Deadband ($db_1$)', color =[0,1,0])
+plt.plot(fRange*fBase, u1/R2,ls=':', label =r'No Step Deadband ($db_2$)', color =[0,1,0])
 plt.plot(fRange*fBase, u2/r, ls='-.', label =r'Non-Linear Droop Deadband ($\alpha, \beta$)', color =[1,0,1])
 
 #plt.plot(fRange*fBase, u1/R2,ls=':', label =r'Ramp Deadband ($db_2$)')
@@ -109,6 +109,10 @@ plt.annotate(r'$\beta$', xy=((1+beta)*fBase, 0.005), xytext=((1+beta)*fBase, -.0
              horizontalalignment='center'
              )
 plt.annotate(r'$db_1$', xy=((60-db), -0.005 ), xytext=((60-db), .02),
+             arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
+             horizontalalignment='center'
+             )
+plt.annotate(r'$db_2$', xy=((1-alpha)*fBase, -0.005 ), xytext=((1-alpha)*fBase, .02),
              arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )

@@ -19,11 +19,11 @@ def PloadIEEE(mirror, blkFlag=True, printFigs=False, miniFlag = False):
 
     fig, ax = plt.subplots()
 
-    ax.plot(mins, mir.r_ss_Pload, linewidth=1.25,)
+    ax.plot(mins, mir.r_ss_Pload, linewidth=1.25, color='black')
 
     # Scale current axis.
     box = ax.get_position()
-    ax.set_position([box.x0, box.y0, box.width * 1.05, box.height])
+    #ax.set_position([box.x0, box.y0, box.width * 1.05, box.height])
 
     # Put a legend to the right of the current axis
     #ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
@@ -36,7 +36,7 @@ def PloadIEEE(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     #ax.legend(loc=0)
     ax.grid(True)
     fig.set_dpi(150)
-    fig.set_size_inches(9/lengDiv, 4.5*.65)
+    fig.set_size_inches(9/lengDiv, 2.5*.75)
     fig.tight_layout()
     if printFigs: plt.savefig(caseName+'Pload'+'.pdf', dpi=300)
     plt.show(block = blkFlag)
