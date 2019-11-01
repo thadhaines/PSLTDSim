@@ -132,7 +132,7 @@ print(mir)
 
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs)
-#ltd.plot.ValveTravel01(mir, False, printFigs)
+#ltd.plot.ValveTravel01(mir, True, printFigs)
 #ltd.plot.BAplots01(mir, False, printFigs)
 #ltd.plot.sysF(mir, True, printFigs)
 
