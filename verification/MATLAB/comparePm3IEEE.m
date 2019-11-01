@@ -134,7 +134,7 @@ else % make only general legend
 end
 grid on
 %if noCase ==1
-        title('Percent Difference of Mechanical Power Output')
+        title('Percent Difference of Mechanical Power')
 %    else
 %        title({'Percent Difference of LTD and PSDS Mechanical Power Outputs'; ['Case: ', LTDCaseName]})
 %    end
