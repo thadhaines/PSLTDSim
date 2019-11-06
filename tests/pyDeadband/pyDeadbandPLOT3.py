@@ -92,27 +92,27 @@ for f in fRange:
 
 #print(fRange)
 #print(u)
-
+fig, ax = plt.subplots()
 # Testing of output (i.e input to gain of Mbase and sum pref)
-plt.plot(fRange*fBase, u0/R,ls='-', label =r'No Deadband', color =[0, 0, 0])
-plt.plot(fRange*fBase, u/R, ls='--', label =r'Step Deadband ($db_1$)', color =[.7,.7,.7])
-plt.plot(fRange*fBase, u1/R2,ls=':', label =r'No-Step Deadband ($db_2$)', color =[0,1,0])
-plt.plot(fRange*fBase, u2/r, ls='-.', label =r'Non-Linear Droop Deadband ($\alpha, \beta$)', color =[1,0,1])
+ax.plot(fRange*fBase, u0/R,ls='-', label =r'No Deadband', color =[0, 0, 0])
+ax.plot(fRange*fBase, u/R, ls='--', label =r'Step Deadband ($db_1$)', color =[.7,.7,.7])
+ax.plot(fRange*fBase, u1/R2,ls=':', label =r'No-Step Deadband ($db_2$)', color =[0,1,0])
+ax.plot(fRange*fBase, u2/r, ls='-.', label =r'Non-Linear Droop Deadband ($\alpha, \beta$)', color =[1,0,1])
 
 #plt.plot(fRange*fBase, u1/R2,ls=':', label =r'Ramp Deadband ($db_2$)')
-plt.annotate(r'$\alpha$', xy=((1+alpha)*fBase, 0.005), xytext=((1+alpha)*fBase, -.018),
+ax.annotate(r'$\alpha$', xy=((1+alpha)*fBase, 0.005), xytext=((1+alpha)*fBase, -.018),
              arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
-plt.annotate(r'$\beta$', xy=((1+beta)*fBase, 0.005), xytext=((1+beta)*fBase, -.018),
+ax.annotate(r'$\beta$', xy=((1+beta)*fBase, 0.005), xytext=((1+beta)*fBase, -.018),
              arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
-plt.annotate(r'$db_1$', xy=((60-db), -0.005 ), xytext=((60-db), .018),
+ax.annotate(r'$db_1$', xy=((60-db), -0.005 ), xytext=((60-db), .018),
              arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
-plt.annotate(r'$db_2$', xy=((1-alpha)*fBase, -0.005 ), xytext=((1-alpha)*fBase, .018),
+ax.annotate(r'$db_2$', xy=((1-alpha)*fBase, -0.005 ), xytext=((1-alpha)*fBase, .018),
              arrowprops=dict(color=[0, 0, 0, 0.25], arrowstyle='-'),
              horizontalalignment='center'
              )
@@ -126,5 +126,12 @@ plt.title('Comparison of Deadband Options')
 plt.xlabel('Frequency [Hz]')
 plt.ylabel(r'PU MW Change [$M_{Base}]$')
 plt.legend()
-plt.tight_layout()
+
+fig.set_dpi(150)
+fig.set_size_inches(9*.7, 4.5*.85)
+fig.tight_layout()
+printFigs = True
+if printFigs: plt.savefig('db.pdf', dpi=300)
 plt.show(block = True)
+plt.pause(0.00001)
+
