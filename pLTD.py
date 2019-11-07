@@ -116,7 +116,7 @@ mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCuniAccF.mir'))
 #mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseStepDBF.mir'))
 #mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoStepDBF.mir'))
 #mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF.mir'))
-ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=True) # multiple mir comp
+#ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=True) # multiple mir comp
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
@@ -136,7 +136,7 @@ print(mir)
 #ltd.plot.BAplots01(mir, False, printFigs)
 #ltd.plot.sysF(mir, True, printFigs)
 
-#ltd.plot.PloadIEEE(mir,True, printFigs=True, miniFlag = True)
+ltd.plot.PloadIEEE(mir,True, printFigs=True, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
 
 #ltd.plot.AreaLosses(mir,True, printFigs)

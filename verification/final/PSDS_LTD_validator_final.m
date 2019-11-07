@@ -35,13 +35,13 @@ ds = 30; % number of samples to skip in PSDS data plots
 
 %%
 % Mini WECC
-% PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
-% LTDCaseName = 'miniWECC3ALTDstep'; %
-% genChange = 0;
+PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
+LTDCaseName = 'miniWECC3ALTDstep'; %
+genChange = 0;
 
-PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
-LTDCaseName = 'miniWECC3ALTDramp'; % 
-genChange = -0; % 
+% PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
+% LTDCaseName = 'miniWECC3ALTDramp'; % 
+% genChange = -0; % 
 
 % PSDSfileName = 'miniWECC_genTrip027.chf'; % 
 % LTDCaseName = 'miniWECCgenTrip027';
@@ -83,6 +83,6 @@ psds_data = udread(PSDSfileName,[]);
 %compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% IEEE simplified plots
-%compareF3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
-comparePm2IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePm3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareF3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+%comparePm2IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%comparePm3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

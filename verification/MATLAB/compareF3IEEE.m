@@ -126,7 +126,7 @@ numFstr = [int2str(numF),' PSDS'];
 
 
 % weighted psds
-plot(dsmple(t,ds), dsmple(weightedF*60,ds) ,'k','linewidth',1.75)
+plot(dsmple(t,ds), dsmple(weightedF*60,ds) ,'k','linewidth',2)
 
 % LTD
 plot(mir.t, mir.f*60 , 'm','linewidth',1.5)

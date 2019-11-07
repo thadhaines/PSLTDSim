@@ -28,7 +28,7 @@ def PloadIEEE(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     # Put a legend to the right of the current axis
     #ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
-    ax.set_title('Changes in System Loading')
+    ax.set_title('Change in System Loading')
     ax.set_xlim(0,minEnd)
     ax.set_ylabel('MW')
     ax.set_xlabel('Time [minutes]')
