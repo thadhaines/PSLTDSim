@@ -205,9 +205,9 @@ end
     end
     grid on
     if noCase ==1
-        title('Percent Difference of LTD and PSDS Bus Voltages')
+        title('Bus Voltage Percent Difference')
     else
-        title({'Percent Difference of LTD and PSDS Bus Voltages'; ['Case: ', LTDCaseName]})
+        title({'Bus Voltage Percent Difference'; ['Case: ', LTDCaseName]})
     end
     xlabel('Time [sec]')
     ylabel('Percent Difference [%]')

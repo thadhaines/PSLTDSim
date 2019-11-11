@@ -21,9 +21,9 @@ ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
 
 % Six Machine
-% PSDSfileName = 'sixMachineGenTrip0.chf'; 
-% LTDCaseName = 'SixMachineTrip0';
-% genChange = -90;
+PSDSfileName = 'sixMachineGenTrip0.chf'; 
+LTDCaseName = 'SixMachineTrip0';
+genChange = -90;
 
 % PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
 % LTDCaseName = 'SixMachineRamp1';
@@ -35,9 +35,9 @@ ds = 30; % number of samples to skip in PSDS data plots
 
 %%
 % Mini WECC
-PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
-LTDCaseName = 'miniWECC3ALTDstep'; %
-genChange = 0;
+% PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
+% LTDCaseName = 'miniWECC3ALTDstep'; %
+% genChange = 0;
 
 % PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
 % LTDCaseName = 'miniWECC3ALTDramp'; % 
@@ -60,29 +60,31 @@ psds_data = udread(PSDSfileName,[]);
 %% Initial not super useful plots
 % compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
-%% Frequency plots
 %compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 %compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj, genChange) % doesn't handle changes in inertia, fAdj used for this
-%compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
-%% Deviation plots
-%compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+
+%% Frequency plots
+compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+
+%% Difference plots
+compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% percent difference plots
-%compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% IEEE simplified plots
-compareF3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+%compareF3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 %comparePm2IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePm3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

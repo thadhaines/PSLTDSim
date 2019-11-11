@@ -134,9 +134,9 @@ else % make only general legend
 end
 grid on
 if noCase ==1
-        title('Percent Difference of LTD and PSDS Mechanical Power Outputs')
+        title('Mechanical Power Percent Difference')
     else
-        title({'Percent Difference of LTD and PSDS Mechanical Power Outputs'; ['Case: ', LTDCaseName]})
+        title({'Mechanical Power Percent Difference'; ['Case: ', LTDCaseName]})
     end
     
     xlabel('Time [sec]')

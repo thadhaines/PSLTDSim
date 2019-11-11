@@ -154,9 +154,9 @@ else % make only general legend
 end
 grid on
 if noCase ==1
-    title('Percent Difference of LTD and PSDS Generator Voltage Angles')
+    title('Generator Voltage Angle Percent Difference')
 else
-    title({'Percent Difference of LTD and PSDS Generator Voltage Angles'; ['Case: ', LTDCaseName]})
+    title({'Generator Voltage Angle Percent Difference'; ['Case: ', LTDCaseName]})
 end
 xlabel('Time [sec]')
 ylabel('Percent Difference [%]')

@@ -134,16 +134,16 @@ else % make only general legend
 end
 grid on
 if noCase ==1
-        title('Percent Difference of LTD and PSDS Reactive Power Outputs')
+        title('Reactive Power Percent Difference')
     else
-        title({'Percent Difference of LTD and PSDS Reactive Power Outputs'; ['Case: ', LTDCaseName]})
+        title({'Reactive Power Percent Difference'; ['Case: ', LTDCaseName]})
     end
     
     xlabel('Time [sec]')
     ylabel('Percent Difference [%]')
     set(gca,'fontsize',bfz)
-    set(gca,'GridLineStyle','--')
-    set(gca, 'GridAlpha', .07)
+    %set(gca,'GridLineStyle','--')
+    %set(gca, 'GridAlpha', .07)
     xlim(x_lim)
     
     % pdf output code

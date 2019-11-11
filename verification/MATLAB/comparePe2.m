@@ -126,13 +126,13 @@ else % make only general legend
 end
 grid on
 if noCase ==1
-    title('Difference of LTD Real Power Output from PSDS')
+    title('Real Power Difference')
 else
-    title({'Difference of LTD Real Power Output from PSDS'; ['Case: ', LTDCaseName]})
+    title({'Real Power Difference'; ['Case: ', LTDCaseName]})
 end
 
 xlabel('Time [sec]')
-ylabel('Power Difference [MW]')
+ylabel('Power [MW]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
 

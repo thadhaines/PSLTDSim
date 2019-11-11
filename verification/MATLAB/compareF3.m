@@ -133,13 +133,13 @@ plot(mir.t, mir.f*60 , 'm','linewidth',1.5)
 % Theoretical SS
 line([mir.t(1) mir.t(end)],[ssF,ssF],'linestyle','--')%,'color',[0,1,1],'linewidth',1) %[.3 0 .7]
 
-legend({numFstr,'Weighted PSDS','LTD','Theoretical SS'},'location','best')
+legend({numFstr,'Weighted PSDS','PSLTDSim','Theoretical SS'},'location','best')
 xlim(x_lim)
 grid on
 if noCase ==1
-    title('Comparison of Average System Frequency')
+    title('System Frequency')
 else
-    title({'Comparison of Average System Frequency'; ['Case: ', LTDCaseName]})
+    title({'System Frequency'; ['Case: ', LTDCaseName]})
 end
 ylabel('Frequency [Hz]')
 xlabel('Time [sec]')
@@ -194,9 +194,9 @@ plot(mir.t, abs(mir.f -mirA(1).PSDSf)*60, 'm','linewidth',.5)
 xlim(x_lim)
 grid on
 if noCase ==1
-    title('Comparison of Absolute Frequency Difference from PSDS')
+    title('Absolute Frequency Difference')
 else
-    title({'Comparison of Absolute Frequency Difference from PSDS'; ['Case: ', LTDCaseName]})
+    title({'Absolute Frequency Difference'; ['Case: ', LTDCaseName]})
 end
 ylabel('Frequency [Hz]')
 xlabel('Time [sec]')

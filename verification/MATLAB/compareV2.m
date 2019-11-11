@@ -207,12 +207,12 @@ end
     end
     grid on
     if noCase ==1
-        title('Difference of LTD Bus Voltage from PSDS')
+        title('Bus Voltage Difference')
     else
-        title({'Difference of LTD Bus Voltage from PSDS'; ['Case: ', LTDCaseName]})
+        title({'Bus Voltage Difference'; ['Case: ', LTDCaseName]})
     end
     xlabel('Time [sec]')
-    ylabel('Voltage Difference [pu]')
+    ylabel('Voltage [pu]')
     set(gca,'fontsize',bfz)
     xlim(x_lim)
     

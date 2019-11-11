@@ -153,12 +153,12 @@ else % make only general legend
 end
 grid on
 if noCase ==1
-    title('Difference of LTD Generator Voltage Angle from PSDS')
+    title('Generator Voltage Angle Difference')
 else
-    title({'Difference of LTD Generator Voltage Angle from PSDS'; ['Case: ', LTDCaseName]})
+    title({'Generator Voltage Angle Difference'; ['Case: ', LTDCaseName]})
 end
 xlabel('Time [sec]')
-ylabel('Angle Difference [degrees]')
+ylabel('Angle [degrees]')
 set(gca,'fontsize',bfz)
 xlim(x_lim)
 
