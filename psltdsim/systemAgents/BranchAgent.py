@@ -21,6 +21,9 @@ class BranchAgent(object):
         self.cv= {
             'St': int(newBranch.St),
             'Amps' : float(col.FlowtabrDAO.FindByBranch(newBranch).Amps),
+            'Pbr' : 0.0, # Power flow of Branch
+            'Qbr' : 0.0, # Reqctive Power flow of Branch
+            'PbrDC' : 0.0, # DC Power flow of Branch
             'Ifrom' : float(newBranch.Ifrom),
             'Pul' : float(col.FlowtabrDAO.FindByBranch(newBranch).Pul),
             }
@@ -45,6 +48,32 @@ class BranchAgent(object):
 
         return(tag1+' From '+tag2+' to '+tag3)
     
+    def calcFlow(self):
+        """Calculate Power flow in MW and AMP flow from self to TBus"""
+        # added 11/13/19
+        Vs = self.Bus.cv['Vm']*self.Bus.Basekv
+        delta_s = self.Bus.cv['Va'] # radians
+        Vr = self.TBus.cv['Vm']*self.TBus.Basekv
+        delta_r = self.TBus.cv['Va'] # radians
+        deltaV = Vs-Vr
+
+        zBase = self.Bus.Basekv*self.Bus.Basekv/self.mirror.Sbase
+
+        Pr = (Vs*Vr)/(self.X*zBase)*np.sin(delta_s-delta_r) # Seems close
+        Qr = (Vs*deltaV)/(self.X*zBase)*np.cos(delta_s-delta_r) # seems wrong...
+
+        PrDC = np.sin(delta_s-delta_r)/self.X*self.mirror.Sbase # seems not close
+
+        self.cv['Pbr'] = Pr
+        self.cv['Qbr'] = Qr
+
+        S = (Pr + 1j*Qr)*1E6
+        Amp = np.absolute(S/(Vs*1E3))
+
+        self.cv['PbrDC'] = PrDC # DC power flow...
+
+        self.cv['Amps'] = Amp # 
+
 
     def createLTDlinks(self):
         """Create links to LTD system"""
@@ -98,18 +127,28 @@ class BranchAgent(object):
         self.r_St = [0.0]*self.mirror.dataPoints
         self.r_Amps = [0.0]*self.mirror.dataPoints
         self.r_Pul = [0.0]*self.mirror.dataPoints
+        self.r_Pbr = [0.0]*self.mirror.dataPoints
+        self.r_Qbr = [0.0]*self.mirror.dataPoints
+        self.r_PbrDC = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Step to record log history"""
+        self.calcFlow()
         n = self.mirror.cv['dp']
         self.r_St[n] = self.cv['St']
         self.r_Amps[n] = self.cv['Amps']
+        self.r_Pbr[n] = self.cv['Pbr']
+        self.r_Qbr[n] = self.cv['Qbr']
+        self.r_PbrDC[n] = self.cv['PbrDC']
         self.r_Pul[n] = self.cv['Pul']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
         self.r_St = self.r_St[:N]
         self.r_Amps = self.r_Amps[:N]
+        self.r_Pbr = self.r_Pbr[:N]
+        self.r_Qbr = self.r_Qbr[:N]
+        self.r_PbrDC = self.r_PbrDC[:N]
         self.r_Pul = self.r_Pul[:N]
 
     def getDataDict(self):
@@ -117,5 +156,8 @@ class BranchAgent(object):
         d = {
              'St': self.r_St,
              'Amps': self.r_Amps,
+             'Pbr': self.r_Pbr,
+             'Qbr': self.r_Qbr,
+             'PbrDC': self.r_PbrDC,
              }
         return d

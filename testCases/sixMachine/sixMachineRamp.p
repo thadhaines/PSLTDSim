@@ -3,7 +3,7 @@
 @tend = 90.0
 
 /* Open .sav file */
-@ret = getf("C:\LTD\pslf_systems\sixMachine\sixMachineTrips.sav")
+@ret = getf("C:\LTD\pslf_systems\sixMachine\sixMachine.sav")
 
 /* MAKE SURE BASE CASE IS SOLVED. */
 @ret = soln()

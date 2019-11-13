@@ -21,13 +21,13 @@ ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
 
 % Six Machine
-PSDSfileName = 'sixMachineGenTrip0.chf'; 
-LTDCaseName = 'SixMachineTrip0';
-genChange = -90;
+% PSDSfileName = 'sixMachineGenTrip0.chf'; 
+% LTDCaseName = 'SixMachineTrip0';
+% genChange = -90;
 
-% PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
-% LTDCaseName = 'SixMachineRamp1';
-% genChange = 0;
+PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
+LTDCaseName = 'SixMachineRamp1';
+genChange = 0;
 % 
 % PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
 % LTDCaseName = 'SixMachineStep1';
