@@ -4,13 +4,13 @@ AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
-Ramp of load up 10% over 40 seconds.
+Step of load up 10%. Test of Generic govs...
 """
 
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 120.0,
+    'endTime': 90.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -21,8 +21,8 @@ simParams = {
     # Mathematical Options
     'integrationMethod' : 'rk45',
     # Data Export Parameters
-    'fileDirectory' : "\\delme\\sixMachineRamp\\", # relative path from cwd
-    'fileName' : 'SixMachineRamp1',
+    'fileDirectory' : "\\delme\\191114-genericsTest\\", # relative path from cwd
+    'fileName' : 'sixMachineStepGenMach1',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -30,5 +30,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachineTrips.sav"
-dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachine.dyd"]
-ltdPath = r".\testCases\sixMachine\sixMachineRamp.ltd.py"
+dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachineGenMach01.dyd"]
+ltdPath = r".\testCases\191114-genericsTest\sixMachineStep.ltd.py"

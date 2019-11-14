@@ -5,7 +5,7 @@ class genericPrimeMover(object):
     """
     def __init__(self, mirror, parts, modelDict):
         #for later reference/debug if desired
-        
+        self.isMachine = False
         self.isGeneric = True
         self.mirror = mirror
         self.dydLine = parts
@@ -31,12 +31,15 @@ class genericPrimeMover(object):
             self.dydLine = parts
             self.mwCap = self.Gen.Mbase # default PSDS behavior
         
-        self.TurbineType = modelDict['TurbineType']
+        self.TurbineType = modelDict['LTDTurbineType']
 
         # R is droop, permanent droop, steady state droop, electric droop
-        # TODO: incorporate index numbers from modelDict.
-        self.R  = parts[7] #listed as first thing in params list ... ie. +6
-        self.Dt = 0
+        self.R  = parts[modelDict['Rloc']] #listed as first thing in params list ... ie. +6
+        if modelDict['Dloc'] == 'Not Listed':
+            self.Dt = 0
+        else:
+            #self.Dt = parts[modelDict['Dloc']] # To include damping from dyd -> Ignored for now
+            self.Dt = 0
 
         if mirror.debug:
             print("\t...'genericPrimeMover' Model Created %d %s" % (self.Busnum,self.Busnam))

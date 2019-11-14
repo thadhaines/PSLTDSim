@@ -103,7 +103,7 @@ for area = 1:max(size(mir.areaN))
 end
 
 sbase = mir.Sbase;
-deltaP = genChange + mir.Pe(1)-mir.Pe(end); % load change
+deltaP = genChange + mir.Pe(1)-mir.Pe(end); % load change 
 %deltaP = -212.5 + deltaP % specific to miniWECC gen trip 0
 deltaFpu = deltaP/sbase*(1/beta);
 ssPu = 1 + deltaFpu;
@@ -130,10 +130,10 @@ plot(dsmple(t,ds), dsmple(weightedF*60,ds) ,'k','linewidth',1.75)
 
 % LTD
 plot(mir.t, mir.f*60 , 'm','linewidth',1.5)
-% Theoretical SS
-line([mir.t(1) mir.t(end)],[ssF,ssF],'linestyle','--')%,'color',[0,1,1],'linewidth',1) %[.3 0 .7]
+% Theoretical SS % taken out because it stopped working... 11/14/19
+%line([mir.t(1) mir.t(end)],[ssF,ssF],'linestyle','--')%,'color',[0,1,1],'linewidth',1) %[.3 0 .7]
 
-legend({numFstr,'Weighted PSDS','PSLTDSim','Theoretical SS'},'location','best')
+legend({numFstr,'Weighted PSDS','PSLTDSim'},'location','best')
 xlim(x_lim)
 grid on
 if noCase ==1

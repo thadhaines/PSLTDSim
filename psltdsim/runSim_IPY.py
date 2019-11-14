@@ -5,12 +5,13 @@ def runSim_IPY(mirror, amqpAgent):
     IPY = amqpAgent
     mirror.simRun = True
     mirror.ss_Pe = ltd.mirror.sumPe(mirror)
-    mirror.ss_Pload = ltd.mirror.sumLoad(mirror)[0]
+    mirror.ss_Pload = ltd.mirror.sumLoad(mirror)[0] # function returns P and Q
     IPYSendTime = 0.0
     sentMsgs = 0
     sysCrash = False
+
+    # block pslf output for normal (non-debug) runs
     if not mirror.debug:
-        # block pslf output for normal (non-debug) runs
         noPrintStr = "dispar[0].noprint = 1"
         PSLF.RunEpcl(noPrintStr)
 

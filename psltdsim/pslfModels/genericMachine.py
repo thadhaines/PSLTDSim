@@ -12,6 +12,7 @@ class genericMachine(object):
         #for later reference/debug if desired
         self.dydLine = parts
 
+        self.isMachine = True
         self.isGeneric = True
         self.Type = parts[0]
         self.Busnum = parts[1]

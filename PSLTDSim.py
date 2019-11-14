@@ -113,7 +113,7 @@ batchList =[
 
     # Final Validations
     #r".\testCases\sixMachine\sixMachineStep1.py",
-    r".\testCases\sixMachine\sixMachineRamp1.py",
+    #r".\testCases\sixMachine\sixMachineRamp1.py",
     #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
 
     #r".\testCases\miniWECCLTD\miniWECC3Astep.py",
@@ -203,12 +203,19 @@ batchList =[
     #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNoStepDB.py", # 
     #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNLdroopDB.py", # 
 
+    # Testing of generic H and R locations...
+    #r".\testCases\191114-genericsTest\sixMachineStepGenMach1.py",
+    #r".\testCases\191114-genericsTest\sixMachineStepGenMach2.py",
+    #r".\testCases\191114-genericsTest\sixMachineStepGenGov1.py",
+    #r".\testCases\191114-genericsTest\sixMachineStepGenGov2.py",
+    r".\testCases\191114-genericsTest\sixMachineStepGenGov3.py",
+
             ]
 
 # Batch Run Parameters
 dispResults = False
 dispTiming = True
-makePlot = False
+makePlot = True
 
 # Batch run counters
 case = 0
@@ -305,15 +312,15 @@ for testCase in batchList:
             wait_start = time.time()
             print('\n*** Waiting for plot to close...')
             
-            ltd.plot.BAplots01(mir, False)
-            ltd.plot.ValveTravel01(mir, False)
+            #ltd.plot.BAplots01(mir, False)
+            #ltd.plot.ValveTravel01(mir, False)
 
             ltd.plot.sysPePmFLoad(mir, True)
             waitTime += time.time() - wait_start
         else:
             
-            ltd.plot.BAplots01(mir, False,)
-            ltd.plot.ValveTravel01(mir, False)
+            #ltd.plot.BAplots01(mir, False,)
+            #ltd.plot.ValveTravel01(mir, False)
 
             ltd.plot.sysPePmFLoad(mir ,False)
 

@@ -2,7 +2,7 @@
 from .getTimeStr import getTimeStr
 from .getDateStr import getDateStr
 
-from .makeMirrorDictionary2 import makeMirrorDictionary
+from .makeMirrorDictionary import makeMirrorDictionary
 from .saveMirrorDictionary import saveMirrorDictionary
 from .loadMirrorDictionary import loadMirrorDictionary
 from .exportDict import exportDict

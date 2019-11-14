@@ -1,6 +1,6 @@
 """ Dynamic Agent Class created from generic PSLF prime mover data"""
 
-class genericSteamGovAgent():
+class genericHydroGovAgent():
     """Agent to perform governor action
     Outputs Pmech - accounts for limiting valve and mwcap action
     """
@@ -32,12 +32,12 @@ class genericSteamGovAgent():
         self.Vmin = 0.0
         self.Dt = 0.0
 
-        # Generic Steam Values 
-        self.Ts = 0.04 # Ts
-        self.Tc = 0.20 # Tc
-        self.T3 = 0.00 # T3
-        self.T4 = 1.5 # T4
-        self.T5 = 5.0 # T5
+        # Generic Hydro Values 
+        self.Ts = 0.4 # Ts
+        self.Tc = 45.0 # Tc
+        self.T3 = 5.00 # T3
+        self.T4 = -1.0 # T4
+        self.T5 = 0.5 # T5
 
         self.uVector = [0,0]
 
@@ -56,7 +56,7 @@ class genericSteamGovAgent():
                                    [1.0-self.T4/self.T5],[self.T4/self.T5])
 
         if mirror.debug:
-            print("*** Added Generic Steam Gov to gen on bus %d '%s'" 
+            print("*** Added Generic Hydro Gov to gen on bus %d '%s'" 
                   % (self.Busnum,self.Busnam))
 
     def stepDynamics(self):

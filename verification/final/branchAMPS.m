@@ -30,7 +30,7 @@ for index = psdsData_col
 end
 for br = uniBranch
     brID = ['br',int2str(br)];
-    plot(mir.t, mir.branch.(brID).Amps*.575,'--o') % some kind of scaling makes this wrong...
+    plot(mir.t, mir.branch.(brID).Amps/sqrt(3),'--o') % some kind of scaling makes this wrong...
     legNames{end+1} =  brID;
 end
 legend(legNames)
