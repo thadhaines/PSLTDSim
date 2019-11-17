@@ -23,9 +23,6 @@ class BranchAgent(object):
             'Amps' : float(col.FlowtabrDAO.FindByBranch(newBranch).Amps),
             'Pbr' : 0.0, # Power flow of Branch
             'Qbr' : 0.0, # Reqctive Power flow of Branch
-            'PbrDC' : 0.0, # DC Power flow of Branch
-            'Ifrom' : float(newBranch.Ifrom),
-            'Pul' : float(col.FlowtabrDAO.FindByBranch(newBranch).Pul),
             }
 
         # This may be unneccessary - but could be used for Ymatrix...
@@ -55,22 +52,19 @@ class BranchAgent(object):
         delta_s = self.Bus.cv['Va'] # radians
         Vr = self.TBus.cv['Vm']*self.TBus.Basekv
         delta_r = self.TBus.cv['Va'] # radians
-        deltaV = Vs-Vr
 
         zBase = self.Bus.Basekv*self.Bus.Basekv/self.mirror.Sbase
 
         Pr = (Vs*Vr)/(self.X*zBase)*np.sin(delta_s-delta_r) # Seems close
-        Qr = (Vs*deltaV)/(self.X*zBase)*np.cos(delta_s-delta_r) # seems wrong...
+        Qr = Vr/(self.X*zBase)*(Vs*np.cos(delta_s-delta_r)-Vr) # from Glover
 
-        PrDC = np.sin(delta_s-delta_r)/self.X*self.mirror.Sbase # seems not close
+        #Qr = (Vs*deltaV)/(self.X*zBase)*np.cos(delta_s-delta_r) # seems wrong... from PJM
 
         self.cv['Pbr'] = Pr
         self.cv['Qbr'] = Qr
 
         S = (Pr + 1j*Qr)*1E6
-        Amp = np.absolute(S/(Vs*1E3))
-
-        self.cv['PbrDC'] = PrDC # DC power flow...
+        Amp = np.absolute(S/(Vr*1E3))
 
         self.cv['Amps'] = Amp # 
 
@@ -93,8 +87,6 @@ class BranchAgent(object):
         """Make current status reflect PSLF values"""
         pObj = self.getPref()
         self.cv['St'] = int(pObj.St)
-        self.cv['Pul'] = float(col.FlowtabrDAO.FindByBranch(pObj).Pul)
-        self.cv['Amps'] = float(col.FlowtabrDAO.FindByBranch(pObj).Amps)
 
     def setPvals(self):
         """Set PSLF values"""
@@ -109,16 +101,12 @@ class BranchAgent(object):
                'ScanBus':self.ScanBus,
                'Ck' : self.Ck,
                'St': int(self.cv['St']),
-               'Amps': self.cv['Amps'],
-               'Pul': self.cv['Pul'], # per unit loading
                }
         return msg
 
     def recAMQPmsg(self,msg):
         """Set message values to agent values"""
         self.cv['St'] = msg['St']
-        self.cv['Amps'] = msg['Amps']
-        self.cv['Pul'] = msg['Pul']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
 
@@ -126,10 +114,8 @@ class BranchAgent(object):
         """Initialize history values of mirror agent"""
         self.r_St = [0.0]*self.mirror.dataPoints
         self.r_Amps = [0.0]*self.mirror.dataPoints
-        self.r_Pul = [0.0]*self.mirror.dataPoints
         self.r_Pbr = [0.0]*self.mirror.dataPoints
         self.r_Qbr = [0.0]*self.mirror.dataPoints
-        self.r_PbrDC = [0.0]*self.mirror.dataPoints
 
     def logStep(self):
         """Step to record log history"""
@@ -139,8 +125,6 @@ class BranchAgent(object):
         self.r_Amps[n] = self.cv['Amps']
         self.r_Pbr[n] = self.cv['Pbr']
         self.r_Qbr[n] = self.cv['Qbr']
-        self.r_PbrDC[n] = self.cv['PbrDC']
-        self.r_Pul[n] = self.cv['Pul']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
@@ -148,8 +132,6 @@ class BranchAgent(object):
         self.r_Amps = self.r_Amps[:N]
         self.r_Pbr = self.r_Pbr[:N]
         self.r_Qbr = self.r_Qbr[:N]
-        self.r_PbrDC = self.r_PbrDC[:N]
-        self.r_Pul = self.r_Pul[:N]
 
     def getDataDict(self):
         """Return collected data in dictionary form"""
@@ -158,6 +140,5 @@ class BranchAgent(object):
              'Amps': self.r_Amps,
              'Pbr': self.r_Pbr,
              'Qbr': self.r_Qbr,
-             'PbrDC': self.r_PbrDC,
              }
         return d
