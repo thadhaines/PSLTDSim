@@ -112,8 +112,8 @@ batchList =[
     #r".\testCases\miniWECC3Area\miniWECC3A2.py", # BA response, TLB type 0
 
     # Final Validations
-    r".\testCases\sixMachine\sixMachineStep1.py",
-    #r".\testCases\sixMachine\sixMachineRamp1.py",
+    #r".\testCases\sixMachine\sixMachineStep1.py",
+    r".\testCases\sixMachine\sixMachineRamp1.py",
     #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
 
     #r".\testCases\miniWECCLTD\miniWECC3Astep.py",

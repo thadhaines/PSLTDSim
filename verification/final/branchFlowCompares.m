@@ -1,6 +1,6 @@
 % First attempts at calculating branch difference and % difference plots
 
-%close all
+close all
 clc
 clear
 
@@ -19,7 +19,7 @@ uniBranch = unique(mir.branch.branchN);
 psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 
-%%
+%% Start of function
 
 % get data cols from psds
 psdsData_col = jfind(psds_data, 'pbr'); % pbr, qbr, amps
@@ -50,7 +50,7 @@ for dataCol = psdsData_col
     LTDdata =  mir.branch.(ltdDataName).Pbr; % Qbr Amps/sqrt(3);
     %   compare data
     pData = psds_data.Data(:,dataCol);
-    cData = dsmple(calcDeviation( t, mir, pData, LTDdata ),ds); %calcPdiff or calcDeviation
+    cData = dsmple(calcPdiff( t, mir, pData, LTDdata ),ds); %calcPdiff or calcDeviation
     %   plot
     plot(tds, cData,'color',grey,'linewidth',.5)
     

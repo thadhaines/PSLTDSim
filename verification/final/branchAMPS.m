@@ -18,64 +18,92 @@ uniBranch = unique(mir.branch.branchN);
 psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 
+x_lim = [mir.t(1), mir.t(end)];
+bfz = 13;
+t = psds_data.Data(:,1); % PSDS time
+
 %% amps
 psdsData_col = jfind(psds_data, 'amps');
-t = psds_data.Data(:,1);
 figure()
 hold on
 legNames={};
 for index = psdsData_col
     plot(t, psds_data.Data(:,index), 'linewidth',3)
-    legNames{end+1} =  psds_data.Description{index};
+    fullDesc = psds_data.Description{index};
+    splitStr = split(fullDesc,':')
+    legNames{end+1} =  ['PSDS ',splitStr{1} ,' to ',splitStr{4} ];
 end
 for br = uniBranch
     brID = ['br',int2str(br)];
-    plot(mir.t, mir.branch.(brID).Amps/sqrt(3),'--o') % some kind of scaling makes this wrong...
-    legNames{end+1} =  brID;
+    plot(mir.t, mir.branch.(brID).Amps,'--o') 
+    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
 end
-legend(legNames)
+
 title('Branch Current [AMPS]')
+
+legend(legNames,'location','east')
+grid on
+xlabel('Time [sec]')
+ylabel('Current [A]')
+set(gca,'fontsize',bfz)
+xlim(x_lim)
 
 %% power in MW
 psdsData_col = jfind(psds_data, 'pbr');
-t = psds_data.Data(:,1);
 figure()
 hold on
 legNames={};
 for index = psdsData_col
     plot(t, psds_data.Data(:,index),'linewidth',3)
-    legNames{end+1} =  psds_data.Description{index};
+    fullDesc = psds_data.Description{index};
+    splitStr = split(fullDesc,':')
+    legNames{end+1} =  ['PSDS ',splitStr{1} ,' to ',splitStr{4} ];
 end
-title('Real Power Flow [MW]')
 
 % Plot PSLTD mw flows...
 hold on
 for br = uniBranch
     brID = ['br',int2str(br)];
-    plot(mir.t, mir.branch.(brID).Pbr,'--o')
-    legNames{end+1} =  brID;
+    plot(mir.t, mir.branch.(brID).Pbr,'--o')    
+    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
 end
-legend(legNames)
+
+title('Real Power Flow [MW]')
+
+legend(legNames,'location','east')
+grid on
+xlabel('Time [sec]')
+ylabel('Power [MW]')
+set(gca,'fontsize',bfz)
+xlim(x_lim)
 
 %% power in MVAR
 psdsData_col = jfind(psds_data, 'qbr');
-t = psds_data.Data(:,1);
 figure()
 hold on
 legNames={};
 for index = psdsData_col
     plot(t, psds_data.Data(:,index),'linewidth',3)
-    legNames{end+1} =  psds_data.Description{index};
+    fullDesc = psds_data.Description{index};
+    splitStr = split(fullDesc,':')
+    legNames{end+1} =  ['PSDS ',splitStr{1} ,' to ',splitStr{4} ];
 end
-title('Reactive Power Flow [MVAR]')
 
 % Plot PSLTD flows
 hold on
 for br = uniBranch
     brID = ['br',int2str(br)];
     plot(mir.t, mir.branch.(brID).Qbr,'--o')
-    legNames{end+1} =  brID;
+    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
 end
-legend(legNames)
+
+title('Reactive Power Flow [MVAR]')
+
+legend(legNames,'location','east')
+grid on
+xlabel('Time [sec]')
+ylabel('Power [MVA]')
+set(gca,'fontsize',bfz)
+xlim(x_lim)
 
 % %

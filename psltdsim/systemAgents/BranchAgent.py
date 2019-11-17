@@ -64,7 +64,7 @@ class BranchAgent(object):
         self.cv['Qbr'] = Qr
 
         S = (Pr + 1j*Qr)*1E6
-        Amp = np.absolute(S/(Vr*1E3))
+        Amp = np.absolute(S/(Vr*1E3))/np.sqrt(3) #division for line to phase
 
         self.cv['Amps'] = Amp # 
 
@@ -140,5 +140,6 @@ class BranchAgent(object):
              'Amps': self.r_Amps,
              'Pbr': self.r_Pbr,
              'Qbr': self.r_Qbr,
+             'Tbus' : self.TBus.Extnum,
              }
         return d
