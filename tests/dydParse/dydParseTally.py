@@ -1,13 +1,14 @@
 """Test script to parse dyd file, and tally models found"""
 # 11/15/19    Addition of MW capacity and %s of models and capacity
+# 11/17/19    Addition of LaTex style sorted table output
 
 import pprint
 import os
 
 print(os.getcwd())
 # workaround for interactive mode runs (Use as required)
-os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
+#os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 print(os.getcwd())
 
 import psltdsim as ltd
@@ -215,3 +216,22 @@ print('\nMachines Found:')
 pprint.pprint(machineDict)
 print('\nWind Turbines Found:')
 pprint.pprint(windTurbineDict)
+
+print("")
+for y in listDicts:
+
+    # sort results by capacity percent
+    sorted_x = sorted(y.items(), key=lambda x: x[1][3]) # sorts dictionary by capacity
+    sorted_x.reverse()
+    # sorted_x is a lis of tuples that contain the dictionary key, and dictionary list values
+    # Print dictionary as a LaTeX table
+    print("Model Name & \t Occurrences & \t MW MV Cap & \t \% of Models & \t \% of Capcacity \\\\")
+    for x in sorted_x:
+
+        # skip totally blank entires
+        if (x[1][3] == 0) and (x[1][2] == 0):
+            continue
+
+        print("%s & \t%2.3f & \t%2.3f & \t%2.3f & \t%2.3f \\\\" % (x[0],x[1][0],x[1][1],x[1][2],x[1][3]))
+
+    print("")
