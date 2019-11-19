@@ -101,13 +101,13 @@ end
         grid on
     else % make only general legend
         dataName = [int2str(linesPltd),' Comparisons'];
-        legend([datas,rPlot],dataName,'Average Absolute Difference','location','best')
+        legend([datas,rPlot],dataName,'Average Absolute Difference','location','east')
     end
     grid on
     if noCase ==1
-        title('Branch Amp Flow Difference')
+        title('Branch Current Flow Difference')
     else
-        title({'Branch Amp Flow Difference'; ['Case: ', LTDCaseName]})
+        title({'Branch Current Flow Difference'; ['Case: ', LTDCaseName]})
     end
     xlabel('Time [sec]')
     ylabel('Current [A]')

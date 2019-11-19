@@ -124,6 +124,7 @@ mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenM
 mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov1F.mir') # base case for AGC testing
 mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov2F.mir') # base case for AGC testing
 mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov3F.mir') # base case for AGC testing
+mirLoc = os.path.join(dirname, 'delme','genMW','genMWstepF.mir') # base case for AGC testing
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)

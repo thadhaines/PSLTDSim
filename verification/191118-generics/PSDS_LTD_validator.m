@@ -15,7 +15,7 @@ clear; format compact; clc; close all;
 format long;
 
 %% Plot params
-printFigs =  false; % true; %
+printFigs = false; % true; % 
 miniFlag = 1; % decrease plot width by half
 ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
@@ -25,13 +25,13 @@ ds = 30; % number of samples to skip in PSDS data plots
 % LTDCaseName = 'SixMachineTrip0';
 % genChange = -90;
 
-PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
-LTDCaseName = 'SixMachineRamp1';
+PSDSfileName = 'genMW_loadStep.chf'; % 75 MW
+LTDCaseName = 'genMWstep';
 genChange = 0;
 % 
-% PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
-% LTDCaseName = 'SixMachineStep1';
-% genChange = 0;
+PSDSfileName = 'genMW_loadRamp.chf'; % 75 MW
+LTDCaseName = 'genMWramp';
+genChange = 0;
 
 %%
 % Mini WECC
@@ -68,13 +68,13 @@ psds_data = udread(PSDSfileName,[]);
 %compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj, genChange) % doesn't handle changes in inertia, fAdj used for this
 
 %% Frequency plots
-%compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 
 % %% Difference plots
 % compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+ comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+ compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % 
 % %% percent difference plots
@@ -85,17 +85,12 @@ psds_data = udread(PSDSfileName,[]);
 % compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% Branch comparisons
-comparePbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-
-compareQbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-
-compareAmp1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAmp2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAmp3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareQbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareQbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareAmp2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareAmp3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% IEEE simplified plots
 %compareF3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)

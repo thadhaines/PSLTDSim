@@ -60,11 +60,11 @@ class BranchAgent(object):
 
         #Qr = (Vs*deltaV)/(self.X*zBase)*np.cos(delta_s-delta_r) # seems wrong... from PJM
 
-        self.cv['Pbr'] = Pr
-        self.cv['Qbr'] = Qr
+        self.cv['Pbr'] = Pr #MW
+        self.cv['Qbr'] = Qr #MVAR
 
         S = (Pr + 1j*Qr)*1E6
-        Amp = np.absolute(S/(Vr*1E3))/np.sqrt(3) #division for line to phase
+        Amp = np.absolute(S)/(Vr*1E3*np.sqrt(3)) #division for line to phase
 
         self.cv['Amps'] = Amp # 
 

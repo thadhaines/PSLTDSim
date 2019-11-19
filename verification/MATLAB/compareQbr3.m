@@ -101,7 +101,7 @@ end
         grid on
     else % make only general legend
         dataName = [int2str(linesPltd),' Comparisons'];
-        legend([datas,rPlot],dataName,'Average Absolute Percent Difference','location','best')
+        legend([datas,rPlot],dataName,'Average Absolute Percent Difference','location','east')
     end
     grid on
     if noCase ==1
@@ -117,7 +117,7 @@ end
     % pdf output code
     if printFigs
         set(gcf,'color','w'); % to remove border of figure
-        export_fig([LTDCaseName,'Pbr3'],'-pdf'); % to print fig
+        export_fig([LTDCaseName,'Qbr3'],'-pdf'); % to print fig
     end
     %% end of function
 end

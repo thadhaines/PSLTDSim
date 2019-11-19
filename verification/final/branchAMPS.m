@@ -27,17 +27,18 @@ psdsData_col = jfind(psds_data, 'amps');
 figure()
 hold on
 legNames={};
+for br = uniBranch
+    brID = ['br',int2str(br)];
+    plot(mir.t, mir.branch.(brID).Amps,'s') 
+    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
+end
 for index = psdsData_col
-    plot(t, psds_data.Data(:,index), 'linewidth',3)
+    plot(t, psds_data.Data(:,index), 'linewidth',2)
     fullDesc = psds_data.Description{index};
     splitStr = split(fullDesc,':')
     legNames{end+1} =  ['PSDS ',splitStr{1} ,' to ',splitStr{4} ];
 end
-for br = uniBranch
-    brID = ['br',int2str(br)];
-    plot(mir.t, mir.branch.(brID).Amps,'--o') 
-    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
-end
+
 
 title('Branch Current [AMPS]')
 
@@ -53,19 +54,17 @@ psdsData_col = jfind(psds_data, 'pbr');
 figure()
 hold on
 legNames={};
+% Plot PSLTD mw flows...
+for br = uniBranch
+    brID = ['br',int2str(br)];
+    plot(mir.t, mir.branch.(brID).Pbr,'s')    
+    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
+end
 for index = psdsData_col
     plot(t, psds_data.Data(:,index),'linewidth',3)
     fullDesc = psds_data.Description{index};
     splitStr = split(fullDesc,':')
     legNames{end+1} =  ['PSDS ',splitStr{1} ,' to ',splitStr{4} ];
-end
-
-% Plot PSLTD mw flows...
-hold on
-for br = uniBranch
-    brID = ['br',int2str(br)];
-    plot(mir.t, mir.branch.(brID).Pbr,'--o')    
-    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
 end
 
 title('Real Power Flow [MW]')
@@ -82,6 +81,12 @@ psdsData_col = jfind(psds_data, 'qbr');
 figure()
 hold on
 legNames={};
+% Plot PSLTD flows
+for br = uniBranch
+    brID = ['br',int2str(br)];
+    plot(mir.t, mir.branch.(brID).Qbr,'s')
+    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
+end
 for index = psdsData_col
     plot(t, psds_data.Data(:,index),'linewidth',3)
     fullDesc = psds_data.Description{index};
@@ -89,13 +94,7 @@ for index = psdsData_col
     legNames{end+1} =  ['PSDS ',splitStr{1} ,' to ',splitStr{4} ];
 end
 
-% Plot PSLTD flows
-hold on
-for br = uniBranch
-    brID = ['br',int2str(br)];
-    plot(mir.t, mir.branch.(brID).Qbr,'--o')
-    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
-end
+
 
 title('Reactive Power Flow [MVAR]')
 

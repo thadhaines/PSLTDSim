@@ -7,8 +7,8 @@ import os
 
 print(os.getcwd())
 # workaround for interactive mode runs (Use as required)
-#os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
+os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
 print(os.getcwd())
 
 import psltdsim as ltd
@@ -17,6 +17,8 @@ import psltdsim as ltd
 #dydLoc = '14ls11e_21P1a_dg.dyd' # light summer 2014
 #dydLoc = '16HS31_dg.dyd' # heavy summer 2016
 dydLoc = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1.dyd"
+dydLoc = r"C:\LTD\pslf_systems\miniWECC\miniWECC_LTD.dyd"
+dydLoc = r"C:\LTD\pslf_systems\miniWECC\miniWECC_LTDgenerics.dyd"
 
 #dydLoc = r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim\tests\dydParse\sixMachineGENERICmodels.dyd"
 #dydLoc = '18HSP2a1_dg.dyd' # heavy spring 2018
@@ -196,7 +198,7 @@ file.close()
 print('Finished Processing %d Lines.' % procLine)
 
 # calculate percentages
-listDicts = [primeMoverDict, machineDict, windTurbineDict]
+listDicts = [primeMoverDict, machineDict,]# windTurbineDict]
 for y in listDicts:
     for x in y:
         if x == 'TOTAL':
@@ -235,3 +237,4 @@ for y in listDicts:
         print("%s & \t%2.3f & \t%2.3f & \t%2.3f & \t%2.3f \\\\" % (x[0],x[1][0],x[1][1],x[1][2],x[1][3]))
 
     print("")
+
