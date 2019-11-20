@@ -9,13 +9,14 @@
 %   History:
 %   07/11/19    10:47   init - regen data with current code and files
 %   10/28/19    11:52   addition of IEEE plots used for paper
+%   11/19/19    09:09   used as a test for generics
 
 %% init
 clear; format compact; clc; close all;
 format long;
 
 %% Plot params
-printFigs = false; % true; % 
+printFigs =  false; % true; % 
 miniFlag = 1; % decrease plot width by half
 ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
@@ -29,9 +30,9 @@ PSDSfileName = 'genMW_loadStep.chf'; % 75 MW
 LTDCaseName = 'genMWstep';
 genChange = 0;
 % 
-PSDSfileName = 'genMW_loadRamp.chf'; % 75 MW
-LTDCaseName = 'genMWramp';
-genChange = 0;
+% PSDSfileName = 'genMW_loadRamp.chf'; % 75 MW
+% LTDCaseName = 'genMWramp';
+% genChange = 0;
 
 %%
 % Mini WECC
@@ -72,9 +73,9 @@ compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 
 % %% Difference plots
 % compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
- comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
- compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % 
 % %% percent difference plots

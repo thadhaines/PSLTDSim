@@ -66,7 +66,7 @@ class BranchAgent(object):
         S = (Pr + 1j*Qr)*1E6
         Amp = np.absolute(S)/(Vr*1E3*np.sqrt(3)) #division for line to phase
 
-        self.cv['Amps'] = Amp # 
+        self.cv['Amps'] = Amp #
 
 
     def createLTDlinks(self):

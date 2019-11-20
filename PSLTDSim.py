@@ -113,8 +113,8 @@ batchList =[
 
     # Final Validations
     r".\testCases\sixMachine\sixMachineStep1.py",
-    r".\testCases\sixMachine\sixMachineRamp1.py",
-    r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
+    #r".\testCases\sixMachine\sixMachineRamp1.py",
+    #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
 
     #r".\testCases\miniWECCLTD\miniWECC3Astep.py",
     #r".\testCases\miniWECCLTD\miniWECC3Aramp.py",

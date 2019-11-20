@@ -15,7 +15,7 @@ clear; format compact; clc; close all;
 format long;
 
 %% Plot params
-printFigs =  false; % true; %
+printFigs =   true; % false; %
 miniFlag = 1; % decrease plot width by half
 ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names

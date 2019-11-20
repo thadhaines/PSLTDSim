@@ -62,13 +62,13 @@ for br = uniBranch
     legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
 end
 for index = psdsData_col
-    plot(t, psds_data.Data(:,index),'linewidth',3)
+    plot(t, psds_data.Data(:,index),'--','linewidth',2)
     fullDesc = psds_data.Description{index};
     splitStr = split(fullDesc,':');
     legNames{end+1} =  ['PSDS ',splitStr{1} ,' to ',splitStr{4} ];
 end
 
-title('Branch Real Power Flow')
+title({'Branch Real Power Flow'; ['Case: ', LTDCaseName]})
 
 legend(legNames,'location','east')
 grid on
