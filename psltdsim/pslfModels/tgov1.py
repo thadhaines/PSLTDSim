@@ -25,26 +25,29 @@ class tgov1(object):
 
         self.Gen = ltd.find.findGenOnBus(self.mirror, self.Busnum, self.Id) # move away?
 
-        #if isinstance(parts[6], basestring):
-        if isinstance(parts[6], str):
-            #if '=' in parts[6]:
-            mwInfo = parts[6].split('=')
-            self.mwCap = float(mwInfo[1]) # in MW
+        if self.Gen == None:
+            print("*** Gen %s on Bus %s with ID %s not found. Can't add prime mover." %(self.Busnam, self.Busnum, self.Id))
         else:
-            # No mwcap info found - should use generator MVA base
-            parts.insert(6, 'MBASE MVA')
-            self.mwCap = self.Gen.Mbase # default PSDS behavior
+            #if isinstance(parts[6], basestring):
+            if isinstance(parts[6], str):
+                #if '=' in parts[6]:
+                mwInfo = parts[6].split('=')
+                self.mwCap = float(mwInfo[1]) # in MW
+            else:
+                # No mwcap info found - should use generator MVA base
+                parts.insert(6, 'MBASE MVA')
+                self.mwCap = self.Gen.Mbase # default PSDS behavior
         
-        self.R  = parts[7]
-        self.T1 = parts[8]
-        self.Vmax = parts[9]
-        self.Vmin = parts[10]
-        self.T2 = parts[11] # in sec
-        self.T3 = parts[12]
-        self.Dt = parts[13]
+            self.R  = parts[7]
+            self.T1 = parts[8]
+            self.Vmax = parts[9]
+            self.Vmin = parts[10]
+            self.T2 = parts[11] # in sec
+            self.T3 = parts[12]
+            self.Dt = parts[13]
 
-        if mirror.debug:
-            print("\t...'tgov' Model Created %d %s" % (self.Busnum,self.Busnam))
+            if mirror.debug:
+                print("\t...'tgov' Model Created %d %s" % (self.Busnum,self.Busnam))
 
     def __repr__(self):
         """Display more useful data for model"""

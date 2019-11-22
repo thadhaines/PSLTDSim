@@ -13,6 +13,8 @@ class BranchAgent(object):
         self.FbusIndex = int(newBranch.Ifrom)
         self.TbusIndex = int(newBranch.Ito)
 
+        
+
         # LTD references <- have to initialize after all buses are in LTD.
         self.Bus = None # also known as the from bus - simplified to follow other agents info
         self.TBus = None
@@ -20,7 +22,7 @@ class BranchAgent(object):
         # Current Values
         self.cv= {
             'St': int(newBranch.St),
-            'Amps' : float(col.FlowtabrDAO.FindByBranch(newBranch).Amps),
+            'Amps' : 0.0,
             'Pbr' : 0.0, # Power flow of Branch
             'Qbr' : 0.0, # Reqctive Power flow of Branch
             }
@@ -75,6 +77,8 @@ class BranchAgent(object):
             self.mirror, col.BusDAO.FindByIndex(self.FbusIndex).Extnum)
         self.TBus = ltd.find.findBus(
             self.mirror, col.BusDAO.FindByIndex(self.TbusIndex).Extnum)
+        if self.mirror.debug:
+            print("*** Created branch link from %d to %d..." %(self.Bus.Extnum , self.TBus.Extnum))
 
     def getPref(self):
         """Return reference to PSLF object"""

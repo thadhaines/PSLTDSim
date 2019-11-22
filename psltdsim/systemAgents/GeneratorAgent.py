@@ -6,7 +6,7 @@ class GeneratorAgent(object):
         self.Bus = parentBus
 
         # Identification 
-        self.Id = newGen.Id
+        self.Id = str(newGen.Id)
         self.Lid = newGen.Lid
         self.Area = newGen.Area
         self.AreaAgent = areaAgent
@@ -22,24 +22,24 @@ class GeneratorAgent(object):
         self.ACEpFactor = None
 
         # Characteristic Data
-        self.Mbase = ltd.data.single2float(newGen.Mbase)
+        self.Mbase = float(newGen.Mbase) #* removed singled to float function
         self.H = 0.0
         self.Hpu = 0.0
-        self.Pmax = ltd.data.single2float(newGen.Pmax)
-        self.Qmax = ltd.data.single2float(newGen.Qmax)
+        self.Pmax = float(newGen.Pmax)#*
+        self.Qmax = float(newGen.Qmax)#*
         self.TurbineType = newGen.TurbineType
 
         # Q: Should Vsched = self.Bus.Vsched? seems better utilized in PSLF
-        self.Vsched = ltd.data.single2float(newGen.Vcsched) # This value seems unused in PSLF
+        self.Vsched = float(newGen.Vcsched) #* This value seems unused in PSLF
 
         # Current Status
         self.cv={
             'IRPflag': False,      # Inertia response participant flag...
-            'P0' : ltd.data.single2float(newGen.Pgen),
-            'Pe' : ltd.data.single2float(newGen.Pgen),   # Generated Power
-            'Pm' : ltd.data.single2float(newGen.Pgen),   # Initialize as equal
-            'Pref' : ltd.data.single2float(newGen.Pgen), # Steady state init
-            'Q' : ltd.data.single2float(newGen.Qgen),    # Q generatred
+            'P0' : float(newGen.Pgen),
+            'Pe' : float(newGen.Pgen),   # Generated Power
+            'Pm' : float(newGen.Pgen),   # Initialize as equal
+            'Pref' : float(newGen.Pgen), # Steady state init
+            'Q' : float(newGen.Qgen),    # Q generatred
             'SCE' : 0.0,
             'St' : int(newGen.St),
             }
@@ -75,8 +75,8 @@ class GeneratorAgent(object):
         """Make current status reflect PSLF values"""
         pObj = self.getPref()
         
-        self.cv['Pe'] = ltd.data.single2float(pObj.Pgen)
-        self.cv['Q'] = ltd.data.single2float(pObj.Qgen)
+        self.cv['Pe'] = float(pObj.Pgen)
+        self.cv['Q'] = float(pObj.Qgen)
         self.cv['St'] = int(pObj.St)
 
     def setPvals(self):

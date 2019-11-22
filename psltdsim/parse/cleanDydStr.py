@@ -4,6 +4,7 @@ def cleanDydStr(str):
     Assumes busnum is int, all parameters after #X or mXX= are floats
     """
     clean = []
+    # really attempting to remove commas
     a = str.split(":")
     b = a[0].split('"')
     c = str.split()
@@ -36,7 +37,7 @@ def cleanDydStr(str):
 
         # not cast # identifier
         if '#' in d[n]:
-            clean.append(d[n])
+            clean.append(d[n].replace(",",''))
             continue
 
         # ignore inline comments
@@ -48,10 +49,10 @@ def cleanDydStr(str):
         if '=' in d[n]:
             #e = d[n].split('=')
             #clean.append(float(e[1]))
-            clean.append(d[n])
+            clean.append(d[n].replace(",",''))
             continue
         
-        clean.append(float(d[n]))
+        clean.append(float(d[n].replace(",",''))) # remove commas
 
     """ 
     # debug

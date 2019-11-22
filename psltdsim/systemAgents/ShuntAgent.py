@@ -13,18 +13,18 @@ class ShuntAgent(object):
         self.Id = str(newShunt.Id)
         
         # Properties
-        self.B = ltd.data.single2float(newShunt.B) # PU Capacitance
-        self.G = ltd.data.single2float(newShunt.G) # PU Inductance
+        self.B = float(newShunt.B) # PU Capacitance # was single2float....
+        self.G = float(newShunt.G) # PU Inductance # was single2float....
         
         # From Bus information
         self.FBusnam = str(newShunt.GetBusName())
         self.FBusnum = int(newShunt.GetBusNumber())
-        self.Fkv = ltd.data.single2float(newShunt.GetBusBasekv())
+        self.Fkv = float(newShunt.GetBusBasekv()) # was single2float....
 
         # To Bus Information
         self.TBusnam = str(newShunt.GetToBusName())
         self.TBusnum = int(newShunt.GetToBusNumber())
-        self.Tkv = ltd.data.single2float(newShunt.GetToBusBasekv())
+        self.Tkv = float(newShunt.GetToBusBasekv())#ltd.data.single2float(newShunt.GetToBusBasekv())
 
         # Current Status
         self.cv={

@@ -15,34 +15,38 @@ class genericPrimeMover(object):
         self.Busnum = parts[1]
         self.Busnam = parts[2]
         self.Base_kV = parts[3]
-        self.Id = parts[4] # Is this ID or ZONE?
+        self.Id = parts[4].replace('"','') # ID - remove double quotes
         self.Rlevel = parts[5]
 
+        # removing from init...
         self.Gen = ltd.find.findGenOnBus(self.mirror, self.Busnum, self.Id) # move away? No - think it's required. 9/30/19
 
-        #if isinstance(parts[6], basestring):
-        if isinstance(parts[6], str):
-            #if '=' in parts[6]:
-            mwInfo = parts[6].split('=')
-            self.mwCap = float(mwInfo[1]) # in MW
+        if self.Gen == None:
+            print("*** Gen %s on Bus %s with ID %s not found. Can't add prime mover." %(self.Busnam, self.Busnum, self.Id))
         else:
-            # No mwcap info found - should use generator MVA base
-            parts.insert(6, 'MBASE MVA')
-            self.dydLine = parts
-            self.mwCap = self.Gen.Mbase # default PSDS behavior
+            #if isinstance(parts[6], basestring):
+            if isinstance(parts[6], str):
+                #if '=' in parts[6]:
+                mwInfo = parts[6].split('=')
+                self.mwCap = float(mwInfo[1]) # in MW
+            else:
+                # No mwcap info found - should use generator MVA base
+                parts.insert(6, 'MBASE MVA')
+                self.dydLine = parts
+                self.mwCap = self.Gen.Mbase # default PSDS behavior
         
-        self.TurbineType = modelDict['LTDTurbineType']
+            self.TurbineType = modelDict['LTDTurbineType']
 
-        # R is droop, permanent droop, steady state droop, electric droop
-        self.R  = parts[modelDict['Rloc']] #listed as first thing in params list ... ie. +6
-        if modelDict['Dloc'] == 'Not Listed':
-            self.Dt = 0
-        else:
-            #self.Dt = parts[modelDict['Dloc']] # To include damping from dyd -> Ignored for now
-            self.Dt = 0
+            # R is droop, permanent droop, steady state droop, electric droop
+            self.R  = parts[modelDict['Rloc']] #listed as first thing in params list ... ie. +6
+            if modelDict['Dloc'] == 'Not Listed':
+                self.Dt = 0
+            else:
+                #self.Dt = parts[modelDict['Dloc']] # To include damping from dyd -> Ignored for now
+                self.Dt = 0
 
-        if mirror.debug:
-            print("\t...'genericPrimeMover' Model Created %d %s" % (self.Busnum,self.Busnam))
+            if mirror.debug:
+                print("\t...'genericPrimeMover' Model Created %d %s ID %s" % (self.Busnum,self.Busnam, self.Id))
 
     def __repr__(self):
         """Display more useful data for model"""

@@ -142,7 +142,8 @@ class Mirror(object):
 
         # ensure dyd changes reflected in mirror (i.e. mbase, mwcap)
         for gov in self.PSLFgov:
-            gov.Gen.Pmax = gov.mwCap
+            if gov.Gen != None:
+                gov.Gen.Pmax = gov.mwCap
 
         # link H and mbase to mirror
         ltd.mirror.initInertiaH(self)
@@ -166,10 +167,6 @@ class Mirror(object):
         # Link slacks to mirror
         ltd.mirror.find_Global_Slack(self)
         ltd.mirror.find_Area_Slack(self) # may have no point
-
-        # Link branches to mirror
-        for branch in self.Branch:
-            branch.createLTDlinks()
 
         init_end = time.time()
         self.InitTime = init_end-init_start

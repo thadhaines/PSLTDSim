@@ -18,7 +18,7 @@ class genericMachine(object):
         self.Busnum = parts[1]
         self.Busnam = parts[2]
         self.Base_kV = parts[3]
-        self.Id = parts[4]
+        self.Id = parts[4].replace('"','')
         self.Rlevel = parts[5]
 
         #if isinstance(parts[6], basestring):
@@ -35,7 +35,7 @@ class genericMachine(object):
         self.D = parts[modelDict['Dloc']] # listed as 6th thing in list (12th part. in dyd clean line)
 
         if mirror.debug:
-            print("\t...'genericMachine' Model Created %d %s" % (self.Busnum,self.Busnam))
+            print("\t...'genericMachine' Model Created %d %s ID %s" % (self.Busnum,self.Busnam , self.Id) )
 
     def __repr__(self):
         """Display more useful data for model"""

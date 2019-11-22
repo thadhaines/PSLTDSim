@@ -2,11 +2,16 @@ def findGenOnBus(mirror, Busnum, Id=None, timing = True):
     """Find first generator on bus unless Id specified
     Note that Ids are typically a strings i.e. '2' 
     """
+
     if timing: tic = time.time()
+    if mirror.debug:
+        print('***Searching Bus %d for gen with ID %s...' %(Busnum, Id))
     if not mirror.searchDict:
         for x in range(len(mirror.Machines)):
             if mirror.Machines[x].Busnum == Busnum:
                 # Return first gen on bus if no Id
+                if mirror.debug:
+                    print('***Found gen on Bus %d with ID %s...' %(mirror.Machines[x].Busnum, mirror.Machines[x].Id))
                 if Id == None:
                     if timing: mirror.FindTime += time.time() - tic
                     return mirror.Machines[x]

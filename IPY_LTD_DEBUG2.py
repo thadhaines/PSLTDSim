@@ -30,6 +30,8 @@ DEBUG
 """
 
 testCase = r".\testCases\BA_tests\miniWECC3A2IACE.py"
+testCase = r".\testCases\191122-fullWECC\fWECCstep1.py"
+#testCase = r".\testCases\sixMachine\sixMachineStep2.py"
 exec(open(testCase).read());
 ltd.terminal.dispCodeTitle()
 
@@ -48,5 +50,22 @@ del savPath, dydPath
 
 ### Start Simulation functions calls
 ltd.init_PSLF(locations)
+
+import time # required for timings...
+__builtin__.time = time
+
+# Create system mirror
+#mir = ltd.mirror.Mirror(locations, simParams, simNotes, debug, AMQPdebug, debugTimer)
+
+zBus = col.BusDAO.FindByType(0)
+if len(zBus) == 1:
+    # If only 1 slack, obvious choice
+    gSlackB = zBus[0]
+else:
+    for bus in zBus:
+        print(bus.Islnum)
+        if bus.Islnum == 1:
+            # otherwise, find slack in island 1
+            gSlackB = bus
 
 print('debug Stop')

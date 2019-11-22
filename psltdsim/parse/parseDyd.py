@@ -113,7 +113,7 @@ def parseDyd(mirror,dydLoc):
             # Handle machines in dyd
             if parts[0] in unModeledPSLFmachines:
                 if mirror.debug:
-                        print("*** Creating Generic Machine info for bus %s..." % parts[1])
+                        print("*** Creating Generic Machine info for bus %s id %s..." % (parts[1], parts[4]))
                 cleanLine = ltd.parse.cleanDydStr(line)
                 newPmod = ltd.pslfModels.genericMachine(mirror, cleanLine, unModeledPSLFmachines[parts[0]])
                 mirror.PSLFmach.append(newPmod)
@@ -125,16 +125,20 @@ def parseDyd(mirror,dydLoc):
                         print("*** Creating Generic Prime Mover info for bus %s..." % parts[1])
                 cleanLine = ltd.parse.cleanDydStr(line)
                 newPmod = ltd.pslfModels.genericPrimeMover(mirror, cleanLine, unModeledPSLFprimeMovers[parts[0]])
-                mirror.PSLFgov.append(newPmod)
-                foundPModels += 1
+                if newPmod.Gen != None:
+                    mirror.PSLFgov.append(newPmod)
+                    foundPModels += 1
+
 
             elif parts[0] == "tgov1":
                 if mirror.debug:
                     print("*** Creating tgov1 info for bus %s..." % parts[1])
                 cleanLine = ltd.parse.cleanDydStr(line)
                 newPmod = ltd.pslfModels.tgov1(mirror, cleanLine)
-                mirror.PSLFgov.append(newPmod)
-                foundPModels += 1
+                if newPmod != None:
+                    mirror.PSLFgov.append(newPmod)
+                    foundPModels += 1
+                    
             
 
             # LTD Models (proof of concept) - Will probably be removed
