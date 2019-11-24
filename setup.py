@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
 	name='PSLTDSim',
-    version='0.0.1',
+    version='0.0.2',
     description='Power System Long-Term Dynamic Simulation',
     long_description=long_description,
     long_description_content_type="text/markdown",
