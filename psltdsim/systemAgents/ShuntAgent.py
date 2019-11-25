@@ -34,6 +34,14 @@ class ShuntAgent(object):
         # Children
         self.Timer ={}
 
+        self.existsInPSLF = self.getPref()
+
+        if self.existsInPSLF != None:
+            self.existsInPSLF = 1
+        else:
+            self.existsInPSLF = 0
+
+
     def __repr__(self):
         #Display more useful data for mirror
         # mimic default __repr__

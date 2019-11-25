@@ -1,9 +1,16 @@
 def createPY3DynamicAgents(mirror):
     """Initialize PY3 specific Dynamics"""
+    mirror.zeroRmodels = []
     for gov in mirror.PSLFgov:
+
 
         if gov.Gen == None:
             # for governor models that aren't associated to a known generator
+            continue
+
+        if gov.R == 0.0:
+            # ignor models with a zero R
+            mirror.zeroRmodels.append(gov.dydLine)
             continue
 
         # PSLF model information stored in mirror, each gov has a ref to mirror generator

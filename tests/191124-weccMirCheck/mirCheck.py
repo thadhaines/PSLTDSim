@@ -6,7 +6,8 @@ import psltdsim as ltd
 import time
 global time
 
-os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
+#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
+os.chdir(r"D:\Users\jhaines\source\repos\thadhaines\PSLTDSim")
 #os.chdir(r"C:\Users\thad\source\repos\thadhaines\PSLTDSim")
 
 dirname = os.path.dirname(__file__)
@@ -84,3 +85,10 @@ gpwscc is werid, but maybe is being parsed wrong?- no, models actually have zero
 for key in blankRdict:
     for listedDydLine in blankRdict[key][1]:
         print(listedDydLine)
+
+
+mirLoc = os.path.join( 'delme','fullWECC','fWECCstepF.mir') # base case for AGC testing
+
+print(mirLoc)
+mir = ltd.data.readMirror(mirLoc)
+ltd.terminal.dispSimTandC(mir)

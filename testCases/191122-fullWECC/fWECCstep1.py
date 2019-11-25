@@ -24,13 +24,13 @@ simParams = {
     'fileDirectory' : "\\delme\\fullWECC\\", # relative path from cwd
     'fileName' : 'fWECCstep',
     'exportFinalMirror': 1, # Export mirror with all data
-    'exportMat': 1, # if IPY: requies exportDict == 1 to work
+    'exportMat': 0, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'deleteInit' : 0, # Delete initialized mirror
     }
 
 #savPath = r"C:\LTD\pslf_systems\fullWecc\mysteryWECC\fullWecc.sav"
 #dydPath = [r"C:\LTD\pslf_systems\fullWecc\mysteryWECC\fullWeccFixed.dyd"]
-savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a.sav"
+savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a_init.sav"
 dydPath = [r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1Fixed.dyd"]
 ltdPath = r".\testCases\191122-fullWECC\fWECCStep.ltd.py"

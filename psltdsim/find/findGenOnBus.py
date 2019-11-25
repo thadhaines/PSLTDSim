@@ -6,8 +6,8 @@ def findGenOnBus(mirror, Busnum, Id=None, timing = True):
     import time
 
     if timing: tic = time.time()
-    if mirror.debug:
-        print('***Searching Bus %d for gen with ID %s...' %(Busnum, Id))
+    #if mirror.debug: # prints a lot
+    #    print('***Searching Bus %d for gen with ID %s...' %(Busnum, Id))
     if not mirror.searchDict:
         for x in range(len(mirror.Machines)):
             if mirror.Machines[x].Busnum == Busnum:

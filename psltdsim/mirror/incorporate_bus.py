@@ -44,9 +44,11 @@ def incorporate_bus(mirror, newBus, areaAgent):
         for c_shunt in b_shunts:
             newShuntAgent = ltd.systemAgents.ShuntAgent(mir, newBusAgent, c_shunt)
             # add references to shunt in bus, mirror and area 
-            newBusAgent.Shunt.append(newShuntAgent)
-            mirror.Shunt.append(newShuntAgent)
-            areaAgent.Shunt.append(newShuntAgent)
+            if newShuntAgent.existsInPSLF == 1:
+                newBusAgent.Shunt.append(newShuntAgent)
+                mirror.Shunt.append(newShuntAgent)
+                areaAgent.Shunt.append(newShuntAgent)
+
 
     mirror.Bus.append(newBusAgent)
     areaAgent.Bus.append(newBusAgent)

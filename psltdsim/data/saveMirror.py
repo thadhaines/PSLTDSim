@@ -35,6 +35,9 @@ def saveMirror(mir, simParams):
     #import dbm # not on windows
     #dbm._defaultmod = dbm.ndbm
 
+    # remove ampq things that can't shelve?
+    mir.PY3 = None
+
     with contextlib.closing(shelve.open(savName, 'c')) as shelf:
         shelf['mir'] = mir
     #pickle.dump(mir, f)

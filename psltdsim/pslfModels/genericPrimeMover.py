@@ -35,6 +35,11 @@ class genericPrimeMover(object):
                 self.dydLine = parts
                 self.mwCap = self.Gen.Mbase # default PSDS behavior
         
+
+            if self.mwCap == 0.0:
+                # handle case where mwcap = 0 
+                self.mwCap = self.Gen.Mbase
+
             self.TurbineType = modelDict['LTDTurbineType']
 
             # R is droop, permanent droop, steady state droop, electric droop
@@ -44,6 +49,7 @@ class genericPrimeMover(object):
                 posR2 = parts[modelDict['Rloc']+1] # R elec
 
                 # handle case of zeros
+                # assumes one of the two R is not zero
                 if posR1 == 0.0:
                     self.R = posR2
 

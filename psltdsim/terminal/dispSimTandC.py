@@ -26,10 +26,12 @@ def dispSimTandC(mir):
     print('{:>28}'.format("Power-Flow Solutions:") , '{:12d}'.format(mir.PFSolns))
 
     print('{:<28}'.format("Simulation Summary"))
-    print('{:>28}'.format("Real time Speedup:") , '{:12f}'.format(mir.r_t[-1]/mir.SimTime))
+    if len(mir.r_t) > 0:
+        print('{:>28}'.format("Real time Speedup:") , '{:12f}'.format(mir.r_t[len(mir.r_t)-1]/mir.SimTime))
     print('{:>28}'.format("Ave. PY3 msg send:") , '{:12f}'.format(mir.PY3SendTime/mir.PY3msgs))
     print('{:>28}'.format("PY3 Message Group Size:") , '{:12d}'.format(mir.PY3msgGroup))
-    print('{:>28}'.format("Ave. IPY msg send:") , '{:12f}'.format(mir.IPYSendTime/mir.IPYmsgs))
+    if mir.IPYmsgs>0:
+        print('{:>28}'.format("Ave. IPY msg send:") , '{:12f}'.format(mir.IPYSendTime/mir.IPYmsgs))
     print('{:>28}'.format("IPY Message Group Size:") , '{:12d}'.format(mir.IPYmsgGroup))
 
     if mir.DynamicSolns >0: # handle cases with no dynamics
@@ -38,7 +40,9 @@ def dispSimTandC(mir):
         print('{:>28}'.format("Ave. Dynamic Soln. Time:") , '{:12f}'.format(0.0))
 
     print('{:>28}'.format("Ave Power-Flow Time:") , '{:12f}'.format(mir.PFTime/mir.PFSolns))
-    print('{:>28}'.format("Ave. P-F / Time Step:") , '{:12f}'.format(mir.PFSolns/mir.cv['dp']))
+    if mir.cv['dp']>0:
+        print('{:>28}'.format("Ave. P-F / Time Step:") , '{:12f}'.format(mir.PFSolns/mir.cv['dp']))
     print('{:>28}'.format("Mirror Creation Time:") , '{:12f}'.format(mir.InitTime))
-    print('{:>28}'.format("Simulated Time:") , '{:12f}'.format(mir.r_t[-1]))
+    if len(mir.r_t) > 0:
+        print('{:>28}'.format("Simulated Time:") , '{:12f}'.format(mir.r_t[len(mir.r_t)-1]))
     print('{:>28}'.format("Simulation Time Step:") , '{:12f}'.format(mir.timeStep))
