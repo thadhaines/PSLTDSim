@@ -38,7 +38,23 @@ class genericPrimeMover(object):
             self.TurbineType = modelDict['LTDTurbineType']
 
             # R is droop, permanent droop, steady state droop, electric droop
-            self.R  = parts[modelDict['Rloc']] #listed as first thing in params list ... ie. +6
+            if self.Type.lower() == 'hyg3':
+                # account for 2 droop settings
+                posR1 = parts[modelDict['Rloc']]  # Rgate
+                posR2 = parts[modelDict['Rloc']+1] # R elec
+
+                # handle case of zeros
+                if posR1 == 0.0:
+                    self.R = posR2
+
+                if posR2 == 0.0:
+                    self.R = posR1
+
+                
+            else:
+                self.R  = parts[modelDict['Rloc']] #listed as first thing in params list ... ie. +6
+
+
             if modelDict['Dloc'] == 'Not Listed':
                 self.Dt = 0
             else:

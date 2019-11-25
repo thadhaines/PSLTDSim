@@ -2,6 +2,8 @@ def findGenOnBus(mirror, Busnum, Id=None, timing = True):
     """Find first generator on bus unless Id specified
     Note that Ids are typically a strings i.e. '2' 
     """
+    # TODO: remove this import 
+    import time
 
     if timing: tic = time.time()
     if mirror.debug:
