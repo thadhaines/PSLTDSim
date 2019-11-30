@@ -97,14 +97,24 @@ ltd.terminal.dispSimTandC(mir)
 
 # Find global slack island (or assume it to be one)
 gblIsland = 1
-ignores = 0
+ignores = []
+isolated = []
 
 for gen in mir.Machines:
     if gen.Bus.Islnum != gblIsland:
-        ignores +=1
+        ignores.append(gen.Bus.Extnum)
         gen.cv['IRPflag'] = False
 
+    if gen.Bus.Stisol == 1:
+        isolated.append(gen.Bus.Extnum)
+
+
+print("outside island 1: %d" % len(ignores))
+print("isolation stauts 1: %d" % len(isolated))
+print("lists == eachother? %d" % (ignores == isolated))
 # over 100 generators should be ignored / not in main island
+# additionally, nearly 100 shunts, loands and branches can also ignored... 
+# in newest wecc, # of isolated objects == number of Stisol objects
 """
 IRPflag can be used  to handle required changes to:
 global H calculation
@@ -120,3 +130,18 @@ change one value,
 attempt to solve again.
 All via python - just to see if GE software can actually do it.
 """
+
+## isolated Shunts and loads?
+ignores = []
+isolated = []
+
+for ojb in mir.Branch:
+    if ojb.Bus.Islnum != gblIsland:
+        ignores.append(ojb.Bus.Extnum)
+
+    if ojb.Bus.Stisol == 1:
+        isolated.append(ojb.Bus.Extnum)
+
+print("outside island 1: %d" % len(ignores))
+print("isolation stauts 1: %d" % len(isolated))
+print("lists == eachother? %d" % (ignores == isolated))

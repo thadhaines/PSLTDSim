@@ -224,7 +224,7 @@ batchList =[
 # Batch Run Parameters
 dispResults = False
 dispTiming = True
-makePlot = True
+makePlot = Flase
 
 # Batch run counters
 case = 0
