@@ -7,8 +7,8 @@ import time
 global time
 
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
-os.chdir(r"D:\Users\jhaines\source\repos\thadhaines\PSLTDSim")
-#os.chdir(r"C:\Users\thad\source\repos\thadhaines\PSLTDSim")
+#os.chdir(r"D:\Users\jhaines\source\repos\thadhaines\PSLTDSim")
+os.chdir(r"C:\Users\thad\source\repos\thadhaines\PSLTDSim")
 
 dirname = os.path.dirname(__file__)
 
@@ -92,3 +92,31 @@ mirLoc = os.path.join( 'delme','fullWECC','fWECCstepF.mir') # base case for AGC 
 print(mirLoc)
 mir = ltd.data.readMirror(mirLoc)
 ltd.terminal.dispSimTandC(mir)
+
+# do something with generator island information...
+
+# Find global slack island (or assume it to be one)
+gblIsland = 1
+ignores = 0
+
+for gen in mir.Machines:
+    if gen.Bus.Islnum != gblIsland:
+        ignores +=1
+        gen.cv['IRPflag'] = False
+
+# over 100 generators should be ignored / not in main island
+"""
+IRPflag can be used  to handle required changes to:
+global H calculation
+area Beta calculation
+pacc dist
+"""
+
+"""
+Other thought:
+manualy load wecc case,
+solve,
+change one value,
+attempt to solve again.
+All via python - just to see if GE software can actually do it.
+"""

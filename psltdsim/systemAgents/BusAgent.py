@@ -11,6 +11,7 @@ class BusAgent(object):
         self.Extnum = newBus.Extnum
         self.Scanbus = newBus.GetScanBusIndex()
         self.Type = newBus.Type
+        self.Islnum = int(newBus.Islnum)
 
         # Case Parameters
         self.Nload = len(col.LoadDAO.FindByBus(self.Scanbus))

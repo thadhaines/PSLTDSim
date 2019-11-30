@@ -1,5 +1,5 @@
 import datetime
 
-def getDatestr():
+def getDateStr():
     """Return Time String"""
     return datetime.datetime.now().strftime('%Y/%m/%d')

@@ -31,6 +31,6 @@ simParams = {
 
 #savPath = r"C:\LTD\pslf_systems\fullWecc\mysteryWECC\fullWecc.sav"
 #dydPath = [r"C:\LTD\pslf_systems\fullWecc\mysteryWECC\fullWeccFixed.dyd"]
-savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a_init.sav"
+savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a.sav"
 dydPath = [r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1Fixed.dyd"]
 ltdPath = r".\testCases\191122-fullWECC\fWECCStep.ltd.py"
