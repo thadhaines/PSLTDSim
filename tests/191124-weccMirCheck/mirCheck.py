@@ -120,6 +120,7 @@ IRPflag can be used  to handle required changes to:
 global H calculation
 area Beta calculation
 pacc dist
+Agent update stuff...
 """
 
 """
@@ -145,3 +146,6 @@ for ojb in mir.Branch:
 print("outside island 1: %d" % len(ignores))
 print("isolation stauts 1: %d" % len(isolated))
 print("lists == eachother? %d" % (ignores == isolated))
+
+# Lots of generators are off... like 1500/4230
+
