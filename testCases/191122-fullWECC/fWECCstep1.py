@@ -1,6 +1,6 @@
 # Format of required info for batch runs.
 debug = 1
-AMQPdebug = 0
+AMQPdebug = 1
 debugTimer = 0
 
 simNotes = """
@@ -18,6 +18,7 @@ simParams = {
     'Dsys' : 0.0, # Untested 
     'fBase' : 60.0, # System F base in Hertz
     'freqEffects' : True, # w in swing equation will not be assumed 1 if true
+    'mainIsland' : 1, # if >0, ignore all objects not in main island
     # Mathematical Options
     'integrationMethod' : 'rk45',
     # Data Export Parameters

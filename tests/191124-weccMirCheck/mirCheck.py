@@ -7,8 +7,8 @@ import time
 global time
 
 #os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
-#os.chdir(r"D:\Users\jhaines\source\repos\thadhaines\PSLTDSim")
-os.chdir(r"C:\Users\thad\source\repos\thadhaines\PSLTDSim")
+os.chdir(r"D:\Users\jhaines\source\repos\thadhaines\PSLTDSim")
+#os.chdir(r"C:\Users\thad\source\repos\thadhaines\PSLTDSim")
 
 dirname = os.path.dirname(__file__)
 

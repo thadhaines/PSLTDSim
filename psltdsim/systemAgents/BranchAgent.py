@@ -13,11 +13,11 @@ class BranchAgent(object):
         self.FbusIndex = int(newBranch.Ifrom)
         self.TbusIndex = int(newBranch.Ito)
 
-        
-
         # LTD references <- have to initialize after all buses are in LTD.
         self.Bus = None # also known as the from bus - simplified to follow other agents info
         self.TBus = None
+
+        self.Islanded = False
 
         # Current Values
         self.cv= {
@@ -73,12 +73,36 @@ class BranchAgent(object):
 
     def createLTDlinks(self):
         """Create links to LTD system"""
-        self.Bus = ltd.find.findBus(
-            self.mirror, col.BusDAO.FindByIndex(self.FbusIndex).Extnum)
-        self.TBus = ltd.find.findBus(
-            self.mirror, col.BusDAO.FindByIndex(self.TbusIndex).Extnum)
+        # run from IPY only
         if self.mirror.debug:
-            print("*** Created branch link from %d to %d..." %(self.Bus.Extnum , self.TBus.Extnum))
+            print("*** Creating branch link from index %d to %d..." %
+                  (self.FbusIndex , self.TbusIndex))
+        fBus = col.BusDAO.FindByIndex(self.FbusIndex)
+        tBus = col.BusDAO.FindByIndex(self.TbusIndex)
+
+        # debug prints
+        #print(fBus)
+        #print(tBus)
+
+        # check if found bus is valid from PSLF
+        validBusType = (type(fBus) != type(None)) and (type(tBus) != type(None))
+        if validBusType == True:
+            # check if busses are created in LTD
+            nonIslandFBus = (str(fBus.Extnum) not in self.mirror.ignoredBus)
+            nonIslandTBus = (str(tBus.Extnum) not in self.mirror.ignoredBus)
+
+            if all([validBusType, nonIslandFBus,nonIslandTBus, True]):
+                self.Bus = ltd.find.findBus(
+                    self.mirror, fBus.Extnum)
+                self.TBus = ltd.find.findBus(
+                    self.mirror, tBus.Extnum)
+                if self.mirror.debug:
+                    print("*** Created branch link between bus %d to %d." %
+                        (self.Bus.Extnum , self.TBus.Extnum))
+        else:
+            self.Islanded = True
+            print("*** Bus error in %d or %d..." %
+                  (self.fBus.Extnum , self.tBus.Extnum))
 
     def getPref(self):
         """Return reference to PSLF object"""

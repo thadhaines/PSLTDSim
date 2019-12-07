@@ -10,6 +10,16 @@ def incorporate_bus(mirror, newBus, areaAgent):
 
     newBusAgent = ltd.systemAgents.BusAgent(mir, newBus)
 
+    # check if mainIsland defined in simparams
+    if 'mainIsland' in mirror.simParams:
+        # check if action needs to be taken due to islanding
+        if mirror.simParams['mainIsland'] > 0:
+            mainIsland = mirror.simParams['mainIsland']
+            currentBusIsland = newBusAgent.Islnum
+            # skip incorporating bus if not in main island
+            if mainIsland != currentBusIsland:
+                return 1
+
     # locate and create generators on bus
     if (newBusAgent.Ngen > 0):
         b_gen = col.GeneratorDAO.FindByBus(newBusAgent.Scanbus)
@@ -52,3 +62,4 @@ def incorporate_bus(mirror, newBus, areaAgent):
 
     mirror.Bus.append(newBusAgent)
     areaAgent.Bus.append(newBusAgent)
+    return 0

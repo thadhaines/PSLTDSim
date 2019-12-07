@@ -171,6 +171,7 @@ class AreaAgent(object):
         Returns 0 if all valid
         """
         # Q: check for SVD ?
+        returnCode = 0
         self.Machines = self.Slack + self.Gens
 
         if self.Ngen == (len(self.Machines)):
@@ -179,7 +180,7 @@ class AreaAgent(object):
         else:
             print("*** Gen Error: %d/%d found. Area:\t%d" % 
                   (len(self.Machines), self.Ngen, self.Area))
-            return -1
+            returnCode -= 1
 
         if self.Nload == len(self.Load):
             if self.mirror.debug: 
@@ -187,7 +188,7 @@ class AreaAgent(object):
         else:
             print("*** Load Error: %d/%d found. Area:\t%d" % 
                   (len(self.Load), self.Nload, self.Area))
-            return -2
+            returnCode -= 1
 
         if self.Nshunt == len(self.Shunt):
             if self.mirror.debug: 
@@ -195,7 +196,7 @@ class AreaAgent(object):
         else:
             print("*** Shunt Error: %d/%d found. Area:\t%d" % 
                   (len(self.Shunt), self.Nshunt, self.Area))
-            return -3
+            returnCode -= 1
 
         if self.Nbranch== len(self.Branch):
             if self.mirror.debug: 
@@ -203,8 +204,8 @@ class AreaAgent(object):
         else:
             print("*** Branch Error: %d/%d found. Area:\t%d" % 
                   (len(self.Branch), self.Nbranch, self.Area))
-            return -4
+            returnCode -= 1
 
-        return 0
+        return returnCode
 
 
