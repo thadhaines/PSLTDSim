@@ -14,9 +14,9 @@ def LTD_SolveCase(mirror=None):
         25, # maxIterations, Solpar.Itnrmx
         0, 	# iterationsBeforeVarLimits, Solpar.Itnrvl
         0,	# flatStart, 
-        1,	# tapAdjustment, Solpar.Tapadj
-        1,	# switchedShuntAdjustment, Solpar.Swsadj
-        1,	# phaseShifterAdjustment, Solpar.Psadj
+        0,#1,	# tapAdjustment, Solpar.Tapadj
+        0,#1,	# switchedShuntAdjustment, Solpar.Swsadj
+        0,#1,	# phaseShifterAdjustment, Solpar.Psadj
         0,	# gcdAdjustment, probably Solpar.GcdFlag
         0,	# areaInterchangeAdjustment, 
         1,	# solnType, 1 == full, 2 == DC, 3 == decoupled 

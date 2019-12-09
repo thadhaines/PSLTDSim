@@ -2,16 +2,26 @@ def find_Global_Slack(mirror):
     """Locates and sets the global slack generator"""
     # Collect all slack bus in system
     zBus = col.BusDAO.FindByType(0)
+    gSlackB = None
+
     if len(zBus) == 1:
         # If only 1 slack, obvious choice
         gSlackB = zBus[0]
     else:
         for bus in zBus:
+            #print("** slack bus debug:  %s  -isl: %d  -stIsol %d" %(bus, bus.Islnum, bus.Stisol))
             if bus.Islnum == 1:
                 # otherwise, find slack in island 1
                 gSlackB = bus
 
-    print('Global Slack bus %d %s' % (gSlackB.Extnum, gSlackB.Busnam))
+    if gSlackB == None:
+        # island number doesn't result with unique slack...
+        for bus in zBus:
+            if bus.Stisol == 0:
+                # work around for mysteryWECC case
+                gSlackB = bus
+
+    print('*** Global Slack bus: %d %s' % (gSlackB.Extnum, gSlackB.Busnam))
 
     countAtBus = col.GeneratorDAO.CountAtBus(gSlackB)
     if countAtBus == 1:

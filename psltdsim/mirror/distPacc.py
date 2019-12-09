@@ -34,6 +34,10 @@ def distPacc(mirror, deltaPacc):
                 #c_gen.setPvals()
                 continue
 
+            # Assume gens with default Pe = 0.0 do not supply real power
+            if c_gen.cv['Pe'] == 0.0:
+                continue
+
             if c_gen.globalSlack:
                 if iteration == 1:
                     #distribute to slack on First pass 

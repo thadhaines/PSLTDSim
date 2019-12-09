@@ -217,6 +217,7 @@ batchList =[
 
     # full wecc because why not?
     r".\testCases\191122-fullWECC\fWECCstep1.py",
+    #r".\testCases\191209-mysteryWECC\fWECCstep1.py",
 
 
             ]
