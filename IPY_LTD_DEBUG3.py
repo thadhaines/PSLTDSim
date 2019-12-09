@@ -16,8 +16,8 @@ ltd.terminal.dispCodeTitle()
 print(os.getcwd())
 
 # workaround for interactive mode runs (Use as required)
-#os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
-os.chdir(r"C:\Users\thad\source\repos\thadhaines\PSLTDSim")
+os.chdir(r"C:\Users\heyth\source\repos\thadhaines\PSLTDSim")
+#os.chdir(r"C:\Users\thad\source\repos\thadhaines\PSLTDSim")
 #os.chdir(r"D:\Users\jhaines\source\Repos\thadhaines\PSLTDSim")
 
 print(os.getcwd())
@@ -68,9 +68,21 @@ print("*** Current P = %.2f" % load[0].P)
 load[0].P = 580.00
 load[0].Save()
 del load
+## Change load on bus 24133 to 515 MW
+# get load on external bus num 24133
+load = col.LoadDAO.FindByBus(col.BusDAO.FindFirstBusByNumber(24133))
+print("*** Current P = %.2f" % load[0].P)
+
+# change P
+load[0].P = 515.00
+load[0].Save()
+del load
 
 # Ensure load actually changed in PSLF
 load = col.LoadDAO.FindByBus(col.BusDAO.FindFirstBusByNumber(24160))
+print("*** Updated P = %.2f" % load[0].P)
+# Ensure load actually changed in PSLF
+load = col.LoadDAO.FindByBus(col.BusDAO.FindFirstBusByNumber(24133))
 print("*** Updated P = %.2f" % load[0].P)
 
 # solve case again
@@ -104,5 +116,8 @@ check the rdydtemp.log file for detailed Error messages
 
 Unable to find elements (gen,load)
 check the rdydtemp.log file for detailed Error messages
+
+Single change requires 11 iterations - doesn't account for slack error target...
+double change requires 13 iterations - doesn't account for slack error target...
 
 """

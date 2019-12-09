@@ -198,7 +198,7 @@ batchList =[
     # IEEE paper noise tests no AGC
     #r".\testCases\191029-paperSimsNoAGC\miniWECCuniAcc.py", # Universal acceptance sim
     #r".\testCases\191029-paperSimsNoAGC\miniWECCatlAGC.py", # AGC ramp time test
-    r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNoDB.py", # 
+    #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNoDB.py", # 
     #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseStepDB.py", # 
     #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNoStepDB.py", # 
     #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNLdroopDB.py", # 
@@ -216,7 +216,7 @@ batchList =[
     #r".\testCases\191118-miniWECCgeneric\genMWgenTrip0.py",
 
     # full wecc because why not?
-    #r".\testCases\191122-fullWECC\fWECCstep1.py",
+    r".\testCases\191122-fullWECC\fWECCstep1.py",
 
 
             ]

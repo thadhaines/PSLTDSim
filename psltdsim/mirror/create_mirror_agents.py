@@ -94,8 +94,12 @@ def create_mirror_agents(mirror):
     if mirror.debug:
         print("***Creating %d branch links..." % len(mirror.Branch))
 
-    for branch in range(len(mirror.Branch)):
-       mirror.Branch[branch].createLTDlinks()
+    for branch in mirror.Branch:
+        branch.createLTDlinks()
+        if branch.Islanded:
+            mirror.Branch.remove(branch)
+            print("*** Removed %s" % branch)
+       
 
     if mirror.debug:
         print("Found %d Areas" % len(mirror.Area))

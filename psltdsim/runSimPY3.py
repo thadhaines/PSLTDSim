@@ -123,6 +123,12 @@ def runSimPY3(mirror, amqpAgent):
         msg = []
         # set pe = pm (dynamic action)
         for machineX in mirror.Machines:
+
+            # ignore machines that are off
+            if machineX.cv['St'] == 0:
+                print("*** Not sending update message for %s" % machineX)
+                continue
+
             machineX.cv['Pe'] = machineX.cv['Pm']            
             msg.append(machineX.makeAMQPmsg())
             msgcounter+=1

@@ -48,12 +48,17 @@ def distPacc(mirror, deltaPacc):
                 # Update PSLF values
                 c_gen.setPvals()
                 c_gen.Bus.setPvals()
+                
 
             #Distribute delta Pacc to non slack other gens
             else:
                 c_gen.cv['Pe'] = c_gen.cv['Pe'] - Pacc * (c_gen.H/Hss) 
                 c_gen.setPvals()
                 c_gen.Bus.setPvals()
+
+            if mirror.debug:
+                    print("*** Set %s Pe to %.2f" % (c_gen, c_gen.cv['Pe']))
+                    print("*** Set %s V to %.2f" % (c_gen.Bus, c_gen.Bus.cv['Vm']))
 
         toc1 = time.time()
         # Pe is distributed to all generators in all areas, solve Power flow
