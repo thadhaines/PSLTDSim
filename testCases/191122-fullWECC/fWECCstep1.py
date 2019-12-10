@@ -1,5 +1,5 @@
 # Format of required info for batch runs.
-debug = 0
+debug = 1
 AMQPdebug = 0
 debugTimer = 0
 

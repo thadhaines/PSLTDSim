@@ -35,8 +35,8 @@ def distPacc(mirror, deltaPacc):
                 continue
 
             # Assume gens with default Pe = 0.0 do not supply real power
-            if c_gen.cv['Pe'] == 0.0:
-                continue
+            #if c_gen.cv['Pe'] == 0.0:
+            #    continue
 
             if c_gen.globalSlack:
                 if iteration == 1:

@@ -101,7 +101,7 @@ dirname = os.path.dirname(__file__)
 #mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNLdroopDBF.mir'))
 #ltd.plot.sysFcomp(mirList,blkFlag=True, printFigs=False) # multiple mir comp
 
-printFigs =  True #  False # 
+printFigs =    False # True #
 
 
 #IEEE results 2 - non AGC 10/29/19
@@ -125,6 +125,11 @@ mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenG
 mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov2F.mir') # base case for AGC testing
 mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov3F.mir') # base case for AGC testing
 mirLoc = os.path.join(dirname, 'delme','genMW','genMWstepF.mir') # base case for AGC testing
+
+# WECC data plot
+mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') # base case for AGC testing
+
+
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
