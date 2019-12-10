@@ -172,6 +172,14 @@ def runSimPY3(mirror, amqpAgent):
         # Sum current system Pm 
         mirror.ss_Pm = ltd.mirror.sumPm(mirror)
             
+        # debug outputs
+        print("** PY3 power sums:")
+        print("** ss_Pload: %.4f" % mirror.ss_Pload)
+        print("** ss_Qload: %.4f" % mirror.ss_Qload)
+        print("** ss_Pm: %.4f" % mirror.ss_Pm)
+        print("** ss_Pe: %.4f" % mirror.r_ss_Pe[mirror.cv['dp']-1])
+        print("** ss_PertDelta: %.4f" % mirror.ss_Pert_Pdelta)
+
         # Calculate current system Pacc
         mirror.ss_Pacc = (
             mirror.ss_Pm 
@@ -211,6 +219,7 @@ def runSimPY3(mirror, amqpAgent):
         mirror.r_t[mirror.cv['dp']] = mirror.cv['t']
         mirror.cv['dp'] += 1
         mirror.cv['t'] += mirror.timeStep
+
 
     print("_______________________")
     print("    Simulation Complete\n")

@@ -1,5 +1,5 @@
 # Format of required info for batch runs.
-debug = 1
+debug = 0
 AMQPdebug = 0
 debugTimer = 0
 
@@ -10,7 +10,7 @@ Full wecc, step load on bus 24902 up 10% at t=2 (~60 MW increase)
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 90,    
+    'endTime': 10,    
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,

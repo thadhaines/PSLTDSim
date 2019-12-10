@@ -74,9 +74,9 @@ class BusAgent(object):
     def setPvals(self):
         """Set PSLF values"""
         pObj = self.getPref()
-        # update of voltage magnitude output
-        if self.mirror.debug:
-            print("* %d %s \tVm changed from \t %.5f \t to %.5f" %(self.Extnum, self.Busnam, pObj.Vm, self.Vsched))
+        # DEBUG update of voltage magnitude output
+        #if self.mirror.debug:
+        #    print("* %d %s \tVm changed from \t %.5f \t to %.5f" %(self.Extnum, self.Busnam, pObj.Vm, self.Vsched))
         pObj.Vm = self.Vsched
         pObj.Save()
 

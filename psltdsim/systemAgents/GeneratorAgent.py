@@ -82,9 +82,9 @@ class GeneratorAgent(object):
     def setPvals(self):
         """Send current mirror values to PSLF"""
         pObj = self.getPref()
-        # update of voltage magnitude
-        if self.mirror.debug:
-            print("* %d %s \tPe changed from \t %.5f \t to %.5f" %(self.Busnum, self.Busnam, pObj.Pgen, self.cv['Pe']*self.cv['St']))
+        # DEBUG update of voltage magnitude
+        #if self.mirror.debug:
+        #    print("* %d %s \tPe changed from \t %.5f \t to %.5f" %(self.Busnum, self.Busnam, pObj.Pgen, self.cv['Pe']*self.cv['St']))
 
         pObj.Pgen = self.cv['Pe']*self.cv['St']
 
