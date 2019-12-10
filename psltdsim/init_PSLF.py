@@ -25,6 +25,9 @@ def init_PSLF(locations, loadDyd = True):
     if load_test == 0:
         print("*** " + locations['savPath'] + " Successfully loaded.")
 
+        # Stop loading of dyd...
+        #loadDyd = False
+
         # load dynamics into pslf
         if loadDyd:
             for dyd in locations['dydPath']:

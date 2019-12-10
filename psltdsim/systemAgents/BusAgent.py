@@ -42,6 +42,8 @@ class BusAgent(object):
         self.Basekv = ltd.data.single2float(newBus.Basekv)
         self.Vsched = ltd.data.single2float(newBus.Vsched)
 
+        self.Vsched = self.cv['Vm'] # assuming initial voltage is scheduled voltage...
+
 
 
     def __repr__(self):
@@ -72,6 +74,9 @@ class BusAgent(object):
     def setPvals(self):
         """Set PSLF values"""
         pObj = self.getPref()
+        # update of voltage magnitude output
+        if self.mirror.debug:
+            print("* %d %s \tVm changed from \t %.5f \t to %.5f" %(self.Extnum, self.Busnam, pObj.Vm, self.Vsched))
         pObj.Vm = self.Vsched
         pObj.Save()
 

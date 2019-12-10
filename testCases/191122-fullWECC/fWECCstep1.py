@@ -1,6 +1,6 @@
 # Format of required info for batch runs.
 debug = 1
-AMQPdebug = 1
+AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
