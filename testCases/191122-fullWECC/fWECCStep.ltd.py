@@ -5,8 +5,8 @@
 
 # Perturbances
 mirror.sysPerturbances = [
-    'load 24160 : step P 2 400 rel',
-    'load 24133 : step P 2 400 rel',
-    'load 24135 : step P 2 400 rel',
+    'load 24160 : step P 2 10 rel',
+    'load 24133 : step P 2 10 rel',
+    'load 24135 : step P 2 10 rel',
     ]
 

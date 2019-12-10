@@ -18,6 +18,7 @@ class BranchAgent(object):
         self.TBus = None
 
         self.Islanded = False
+        self.ValidBus = False
 
         # Current Values
         self.cv= {
@@ -38,38 +39,58 @@ class BranchAgent(object):
         # mimic default __repr__
         T = type(self)
         module = T.__name__
+
         tag1 =  "<%s object at %s> " % (module,hex(id(self)))
 
-        # additional outputs
-        tag2 = "%s %s" %(str(self.Bus.Extnum), self.Bus.Busnam)
-        # additional outputs
-        tag3 = "%s %s" %(str(self.TBus.Extnum), self.TBus.Busnam)
+        if self.Bus != None:
+            # additional outputs
+            tag2 = "%s %s" %(str(self.Bus.Extnum), self.Bus.Busnam)
+        else:
+            tag2 = "None"
+
+        if self.TBus != None:
+            # additional outputs
+            tag3 = "%s %s" %(str(self.TBus.Extnum), self.TBus.Busnam)
+        else:
+            tag3 = "None"
 
         return(tag1+' From '+tag2+' to '+tag3)
     
     def calcFlow(self):
         """Calculate Power flow in MW and AMP flow from self to TBus"""
         # added 11/13/19
-        Vs = self.Bus.cv['Vm']*self.Bus.Basekv
-        delta_s = self.Bus.cv['Va'] # radians
-        Vr = self.TBus.cv['Vm']*self.TBus.Basekv
-        delta_r = self.TBus.cv['Va'] # radians
+        if (self.Islanded == False) and self.ValidBus:
+            Vs = self.Bus.cv['Vm']*self.Bus.Basekv
+            delta_s = self.Bus.cv['Va'] # radians
+            Vr = self.TBus.cv['Vm']*self.TBus.Basekv
+            delta_r = self.TBus.cv['Va'] # radians
 
-        zBase = self.Bus.Basekv*self.Bus.Basekv/self.mirror.Sbase
+            zBase = self.Bus.Basekv*self.Bus.Basekv/self.mirror.Sbase
 
-        Pr = (Vs*Vr)/(self.X*zBase)*np.sin(delta_s-delta_r) # Seems close
-        Qr = Vr/(self.X*zBase)*(Vs*np.cos(delta_s-delta_r)-Vr) # from Glover
+            # Try excepts to handle zero X (unset)
+            try:
+                Pr = (Vs*Vr)/(self.X*zBase)*np.sin(delta_s-delta_r) # Seems close
+            except ZeroDivisionError:
+                Pr = 0.0 
 
-        #Qr = (Vs*deltaV)/(self.X*zBase)*np.cos(delta_s-delta_r) # seems wrong... from PJM
+            try:
+                Qr = Vr/(self.X*zBase)*(Vs*np.cos(delta_s-delta_r)-Vr) # from Glover
+            except ZeroDivisionError:
+                Qr = 0.0 
 
-        self.cv['Pbr'] = Pr #MW
-        self.cv['Qbr'] = Qr #MVAR
+            #Qr = (Vs*deltaV)/(self.X*zBase)*np.cos(delta_s-delta_r) # seems wrong... from PJM
 
-        S = (Pr + 1j*Qr)*1E6
-        Amp = np.absolute(S)/(Vr*1E3*np.sqrt(3)) #division for line to phase
+            self.cv['Pbr'] = Pr #MW
+            self.cv['Qbr'] = Qr #MVAR
 
-        self.cv['Amps'] = Amp #
+            S = (Pr + 1j*Qr)*1E6
+            Amp = np.absolute(S)/(Vr*1E3*np.sqrt(3)) #division for line to phase
 
+            self.cv['Amps'] = Amp #
+        else:
+            self.cv['Pbr'] = 0.0
+            self.cv['Qbr'] = 0.0
+            self.cv['Amps'] = 0.0
 
     def createLTDlinks(self):
         """Create links to LTD system"""
@@ -86,6 +107,8 @@ class BranchAgent(object):
 
         # check if found bus is valid from PSLF
         validBusType = (type(fBus) != type(None)) and (type(tBus) != type(None))
+        self.ValidBus = validBusType
+
         if validBusType == True:
             # check if busses are created in LTD
             nonIslandFBus = (str(fBus.Extnum) not in self.mirror.ignoredBus)
@@ -99,6 +122,10 @@ class BranchAgent(object):
                 if self.mirror.debug:
                     print("*** Created branch link between bus %d to %d." %
                         (self.Bus.Extnum , self.TBus.Extnum))
+            else:
+                self.Islanded = True
+                print("*** Bus error in %d or %d..." %
+                  (fBus.Extnum , tBus.Extnum))
         else:
             self.Islanded = True
             print("*** Bus error in %d or %d..." %
