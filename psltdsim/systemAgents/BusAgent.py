@@ -40,8 +40,11 @@ class BusAgent(object):
         #self.Vmax = newBus.Vmax # These values don't seem to be always set
         #self.Vmin = newBus.Vmin
         self.Basekv = ltd.data.single2float(newBus.Basekv)
+
+        # original way of selecting Vsched
         self.Vsched = ltd.data.single2float(newBus.Vsched)
 
+        # work around for WECC
         self.Vsched = self.cv['Vm'] # assuming initial voltage is scheduled voltage...
 
 

@@ -116,7 +116,7 @@ batchList =[
     #r".\testCases\sixMachine\sixMachineRamp1.py",
     #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
 
-    #r".\testCases\miniWECCLTD\miniWECC3Astep.py",
+    r".\testCases\miniWECCLTD\miniWECC3Astep.py",
     #r".\testCases\miniWECCLTD\miniWECC3Aramp.py",
     #r".\testCases\miniWECCLTD\miniWECCgenTrip0.py",
 
@@ -215,8 +215,8 @@ batchList =[
     #r".\testCases\191118-miniWECCgeneric\genMWramp.py",
     #r".\testCases\191118-miniWECCgeneric\genMWgenTrip0.py",
 
-    # full wecc because why not?
-    r".\testCases\191122-fullWECC\fWECCstep1.py",
+    # full wecc
+    #r".\testCases\191122-fullWECC\fWECCstep1.py", # tested as working
     #r".\testCases\191209-mysteryWECC\fWECCstep1.py",
 
 

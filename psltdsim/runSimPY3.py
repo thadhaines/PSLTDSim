@@ -81,7 +81,7 @@ def runSimPY3(mirror, amqpAgent):
             print("*** Simulation time: %.2f" % (mirror.cv['t']))
         else:
             #print("Simulation Time: %7.2f   " % mirror.cv['t']), # to print dots each step
-            print("Simulation Time:%4d Minutes %3.1f Seconds   " % (mirror.cv['t']//60, mirror.cv['t']%60 ) ), # to print dots each step
+            print("*** Simulation Time:%4d Minutes %3.1f Seconds   " % (mirror.cv['t']//60, mirror.cv['t']%60 ) ), # to print dots each step
 
         # Step System Wide dynamics
         ltd.mirror.combinedSwing(mirror, mirror.ss_Pacc)
@@ -150,6 +150,12 @@ def runSimPY3(mirror, amqpAgent):
 
         # Initialize Pertrubance delta
         mirror.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
+        if mirror.prevPload != None:
+            mirror.ss_Pert_Pdelta =   mirror.prevPload - mirror.ss_Pload # Work Around for PSLF exponential loads
+
+        if mirror.ss_Pert_Pdelta != 0.0:
+            if mirror.debug: print("*** PSLF exponential P load changes: %.2f" % mirror.ss_Pert_Pdelta)
+
         mirror.ss_Pert_Qdelta = 0.0 # intended for system loss calculations
 
         # Step Perturbance Agents and AGC ramps
@@ -173,12 +179,13 @@ def runSimPY3(mirror, amqpAgent):
         mirror.ss_Pm = ltd.mirror.sumPm(mirror)
             
         # debug outputs
-        print("** PY3 power sums:")
-        print("** ss_Pload: %.4f" % mirror.ss_Pload)
-        print("** ss_Qload: %.4f" % mirror.ss_Qload)
-        print("** ss_Pm: %.4f" % mirror.ss_Pm)
-        print("** ss_Pe: %.4f" % mirror.r_ss_Pe[mirror.cv['dp']-1])
-        print("** ss_PertDelta: %.4f" % mirror.ss_Pert_Pdelta)
+        if mirror.debug:
+            print("** PY3 power sums:")
+            print("** ss_Pload: %.4f" % mirror.ss_Pload)
+            print("** ss_Qload: %.4f" % mirror.ss_Qload)
+            print("** ss_Pm: %.4f" % mirror.ss_Pm)
+            print("** ss_Pe: %.4f" % mirror.r_ss_Pe[mirror.cv['dp']-1])
+            print("** ss_PertDelta: %.4f" % mirror.ss_Pert_Pdelta)
 
         # Calculate current system Pacc
         mirror.ss_Pacc = (

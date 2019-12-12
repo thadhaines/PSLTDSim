@@ -78,6 +78,7 @@ class Mirror(object):
 
         self.ss_Pert_Pdelta = 0.0
         self.ss_Pert_Qdelta = 0.0
+        self.prevPload = None
 
         # Agent Collections
         self.Area = []
