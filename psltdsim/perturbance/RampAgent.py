@@ -118,6 +118,7 @@ class RampAgent(object):
                             self.RAslope = (self.RAVal - curVal)/self.RAtime*self.mirror.timeStep
 
                     self.increment = self.RAslope
+
                 elif self.mirror.cv['t'] > (self.startTime + self.RAtime + self.holdTime):
                     # process ramp B
                     if not self.RBslope and self.RBVal == 0:
