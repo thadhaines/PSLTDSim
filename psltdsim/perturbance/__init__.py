@@ -5,3 +5,4 @@ from .StepAgent import StepAgent
 from .RampAgent import RampAgent
 from .LoadNoiseAgent import LoadNoiseAgent
 from .LoadControlAgent import LoadControlAgent
+from .GenerationControlAgent import GenerationControlAgent

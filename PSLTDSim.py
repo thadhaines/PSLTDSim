@@ -222,7 +222,12 @@ batchList =[
     # Load Controller Test
     #r".\testCases\191214-loadCTRL\sixMachineLoadCTRL.py",
     #r".\testCases\191214-loadCTRL\sixMachineLoadCTRL2.py",
-    r".\testCases\191214-loadCTRL\sixMachineLoadCTRL3.py",
+    #r".\testCases\191214-loadCTRL\sixMachineGenCTRL3.py",
+
+    # Generation Controller Test
+    #r".\testCases\191215-genCTRL\sixMachineGenCTRL.py",
+    #r".\testCases\191215-genCTRL\sixMachineGenCTRL2.py",
+    r".\testCases\191215-genCTRL\sixMachineGenCTRL3.py",
     
 
             ]

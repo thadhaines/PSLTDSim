@@ -44,6 +44,11 @@ def runSimPY3(mirror, amqpAgent):
     if hasattr(mirror, 'sysLoadControl'):
         for name in mirror.sysLoadControl:
             mirror.LoadCTRL.append(ltd.perturbance.LoadControlAgent(mirror, name, mirror.sysLoadControl[name] ))
+    
+    # Create generation controllers
+    if hasattr(mirror, 'sysGenerationControl'):
+        for name in mirror.sysGenerationControl:
+            mirror.GenCTRL.append(ltd.perturbance.GenerationControlAgent(mirror, name, mirror.sysGenerationControl[name] ))
 
     # Create Timers # NOTE: more of a debug than a useful thing -> Timers will be created by DTC
     """
@@ -152,6 +157,10 @@ def runSimPY3(mirror, amqpAgent):
             PY3.send('toIPY', msg)
             mirror.PY3SendTime += time.time()-send_start
             mirror.PY3msgs +=1
+
+        # Step generation control Agents...
+        for dispatch in mirror.GenCTRL:
+            dispatch.step()
 
         # Initialize Pertrubance delta
         mirror.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
