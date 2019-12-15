@@ -68,9 +68,10 @@ class RampAgent(object):
 
         # additional outputs
         if self.RBVal == 0 or None:
-            tag2 = "Ramping %s on Bus %d at time %.2f by %.2f %s" %(
+            tag2 = "Ramping %s on Bus %d ID %s at time %.2f by %.2f %s" %(
                 self.attr,
                 self.mObj.Bus.Extnum,
+                self.mObj.Id,
                 self.startTime,
                 self.RAVal,
                 self.RAtype,

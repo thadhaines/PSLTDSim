@@ -40,6 +40,11 @@ def runSimPY3(mirror, amqpAgent):
         # Add BAs to Log
         mirror.Log += mirror.BA
 
+    # Create load controllers
+    if hasattr(mirror, 'sysLoadControl'):
+        for name in mirror.sysLoadControl:
+            mirror.LoadCTRL.append(ltd.perturbance.LoadControlAgent(mirror, name, mirror.sysLoadControl[name] ))
+
     # Create Timers # NOTE: more of a debug than a useful thing -> Timers will be created by DTC
     """
     if hasattr(mirror, 'TimerInput'):
@@ -150,11 +155,14 @@ def runSimPY3(mirror, amqpAgent):
 
         # Initialize Pertrubance delta
         mirror.ss_Pert_Pdelta = 0.0 # required for Pacc calculation
+
+        # workaround for WECC messes up other cases...
         if mirror.prevPload != None:
             mirror.ss_Pert_Pdelta =   mirror.prevPload - mirror.ss_Pload # Work Around for PSLF exponential loads
 
         if mirror.ss_Pert_Pdelta != 0.0:
-            if mirror.debug: print("*** PSLF exponential P load changes: %.2f" % mirror.ss_Pert_Pdelta)
+            print("*** PSLF exponential P load changes: %.2f" % mirror.ss_Pert_Pdelta)
+
 
         mirror.ss_Pert_Qdelta = 0.0 # intended for system loss calculations
 

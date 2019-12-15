@@ -112,7 +112,7 @@ for name in outputTuples:
         else:
             curVal = float(outputD[entry][name])
             
-        print("\t(%s, %.3f)," %(entry, (curVal-prevVal)/prevVal*100 ) )
+        print("\t(%d, %.3f)," %(int(entry), (curVal-prevVal)/prevVal*100 ) )
         prevVal = curVal
         
     print("\t]")

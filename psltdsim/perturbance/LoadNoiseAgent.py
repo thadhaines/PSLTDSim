@@ -14,6 +14,7 @@ class LoadNoiseAgent(object):
 
         # Seed random number generator
         np.random.seed(seed)
+        print("*** Load Noise Agent Created.")
 
     def __repr__(self):
         """Display more useful data for mirror"""

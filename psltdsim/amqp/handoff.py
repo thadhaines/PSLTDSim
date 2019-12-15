@@ -1,7 +1,10 @@
 def handoff(mirror,msg):
     """Handle PY3<->IPY handoff messages"""
     # TODO: Figure out a better tolerance that scales with system size.
-    compTol = ltd.mirror.sumLoad(mirror)[0] * 1E-4 # comparison tolerance to compare floats - scales with system load
+    compTol1 = ltd.mirror.sumLoad(mirror)[0] * 1E-4 # comparison tolerance to compare floats - scales with system load
+    compTol2 = .25
+    compTol = max(compTol1, compTol2)
+
     hType = msg['HandoffType']
 
     if hType == 'PY3toIPY':

@@ -129,6 +129,10 @@ mirLoc = os.path.join(dirname, 'delme','genMW','genMWstepF.mir') # base case for
 # WECC data plot
 mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') # base case for AGC testing
 
+# load control
+mirLoc = os.path.join(dirname, 'delme','sixMachineLoadCTRL','sixMachineLoadCTRLF.mir') # load ctrl testing...
+mirLoc = os.path.join(dirname, 'delme','sixMachineLoadCTRL','sixMachineLoadCTRL2F.mir') # load ctrl testing...
+mirLoc = os.path.join(dirname, 'delme','sixMachineLoadCTRL','sixMachineLoadCTRL3F.mir') # load ctrl testing...
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
@@ -139,7 +143,7 @@ print(mir)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
-#ltd.plot.sysPLQF(mir, False)
+ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.allPmDynamics(mir, False)
 
@@ -149,7 +153,7 @@ print(mir)
 #ltd.plot.BAplots01(mir, True, printFigs=False)
 ltd.plot.sysF(mir, True, printFigs)
 
-#ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
+ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
 
 #ltd.plot.AreaLosses(mir,True, printFigs)
