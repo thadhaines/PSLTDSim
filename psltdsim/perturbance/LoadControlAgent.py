@@ -29,8 +29,10 @@ class LoadControlAgent(object):
         # get perturbance data from inputs
         firstEntry = True
         for entry in self.demand:
+            rampDur = self.timeScale
             if firstEntry:
                 prevTime = entry[0]*self.timeScale+self.startTime
+                rampDur = self.timeScale-self.startTime # handle ramp offset
                 firstEntry = False
                 continue
             curTime = entry[0]*self.timeScale
@@ -38,7 +40,7 @@ class LoadControlAgent(object):
             
             # create perturbances for each load
             for load in self.Area.Load:
-                pertParams = ['P', prevTime, self.timeScale, pertDelta, self.rampType]
+                pertParams = ['P', prevTime, rampDur, pertDelta, self.rampType]
                 newRampAgent = ltd.perturbance.RampAgent(self.mirror, load, pertParams )
                 if newRampAgent.ProcessFlag and (load.cv['St'] ==1):
                     self.mirror.Perturbance.append(newRampAgent)

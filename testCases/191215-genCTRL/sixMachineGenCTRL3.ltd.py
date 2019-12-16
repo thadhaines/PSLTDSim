@@ -68,7 +68,7 @@ mirror.sysLoadControl = {
     'testSystem' : {
         'Area': 2,
         'startTime' : 2,
-        'timeScale' : 10,
+        'timeScale' : 100,
         'rampType' : 'per', # relative percent change
         # Data from: 12/11/2019 PACE
         'demand' : [ 
