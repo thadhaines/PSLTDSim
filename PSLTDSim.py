@@ -220,13 +220,13 @@ batchList =[
     #r".\testCases\191209-mysteryWECC\fWECCstep1.py",
 
     # Load Controller Test
-    #r".\testCases\191214-loadCTRL\sixMachineLoadCTRL.py",
-    #r".\testCases\191214-loadCTRL\sixMachineLoadCTRL2.py",
-    #r".\testCases\191214-loadCTRL\sixMachineGenCTRL3.py",
+    r".\testCases\191214-loadCTRL\sixMachineLoadCTRL.py",
+    r".\testCases\191214-loadCTRL\sixMachineLoadCTRL2.py",
+    r".\testCases\191214-loadCTRL\sixMachineLoadCTRL3.py",
 
     # Generation Controller Test
-    #r".\testCases\191215-genCTRL\sixMachineGenCTRL.py",
-    #r".\testCases\191215-genCTRL\sixMachineGenCTRL2.py",
+    r".\testCases\191215-genCTRL\sixMachineGenCTRL.py",
+    r".\testCases\191215-genCTRL\sixMachineGenCTRL2.py",
     r".\testCases\191215-genCTRL\sixMachineGenCTRL3.py",
     
 
@@ -235,7 +235,7 @@ batchList =[
 # Batch Run Parameters
 dispResults = False
 dispTiming = True
-makePlot = False
+makePlot = True
 
 # Batch run counters
 case = 0
