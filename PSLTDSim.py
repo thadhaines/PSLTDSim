@@ -111,19 +111,6 @@ batchList =[
     #r".\testCases\miniWECC3Area\miniWECC3A1.py", # BA response, TLB type 2
     #r".\testCases\miniWECC3Area\miniWECC3A2.py", # BA response, TLB type 0
 
-    # Final Validations
-    #r".\testCases\sixMachine\sixMachineStep1.py",
-    #r".\testCases\sixMachine\sixMachineRamp1.py",
-    #r".\testCases\sixMachine\sixMachineTrip0.py", # Gen trip off
-
-    #r".\testCases\miniWECCLTD\miniWECC3Astep.py",
-    #r".\testCases\miniWECCLTD\miniWECC3Aramp.py",
-    #r".\testCases\miniWECCLTD\miniWECCgenTrip0.py",
-
-    # Same as above miniWECC tests, but with PSS
-    #r".\testCases\miniWECCLTDPSS\miniWECC3Astep.py",
-    #r".\testCases\miniWECCLTDPSS\miniWECC3Aramp.py",
-    #r".\testCases\miniWECCLTDPSS\miniWECCgenTrip0.py",
 
     # BA research with AGC
     #r".\testCases\BA_tests\miniWECC3A0.py", # BA response, TLB type 0, -1000 MW gen in area 3
@@ -220,15 +207,27 @@ batchList =[
     #r".\testCases\191209-mysteryWECC\fWECCstep1.py",
 
     # Load Controller Test
-    r".\testCases\191214-loadCTRL\sixMachineLoadCTRL.py",
-    r".\testCases\191214-loadCTRL\sixMachineLoadCTRL2.py",
-    r".\testCases\191214-loadCTRL\sixMachineLoadCTRL3.py",
+    #r".\testCases\191214-loadCTRL\sixMachineLoadCTRL.py",
+    #r".\testCases\191214-loadCTRL\sixMachineLoadCTRL2.py",
+    #r".\testCases\191214-loadCTRL\sixMachineLoadCTRL3.py",
 
     # Generation Controller Test
-    r".\testCases\191215-genCTRL\sixMachineGenCTRL.py",
-    r".\testCases\191215-genCTRL\sixMachineGenCTRL2.py",
-    r".\testCases\191215-genCTRL\sixMachineGenCTRL3.py",
+    #r".\testCases\191215-genCTRL\sixMachineGenCTRL.py",
+    #r".\testCases\191215-genCTRL\sixMachineGenCTRL2.py",
+    #r".\testCases\191215-genCTRL\sixMachineGenCTRL3.py",
     
+    # Thesis Validations
+    #r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
+    #r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
+    #r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
+
+    #r".\testCases\191217-thesisValidation\miniW\miniWECC3Astep.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECC3Aramp.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0.py",
+
+    #r".\testCases\191217-thesisValidation\miniW\miniWECC3AstepPSS.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECC3ArampPSS.py",
+    r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
 
             ]
 

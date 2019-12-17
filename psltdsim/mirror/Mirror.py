@@ -124,7 +124,12 @@ class Mirror(object):
         self.Machines = self.Slack + self.Gens
 
         # TODO: As logging capability added to agents, add to Log collection
-        self.Log = [self] + self.Load + self.Bus + self.Machines + self.Area + self.Shunt + self.Branch
+        self.Log = [self] + self.Load + self.Bus + self.Machines + self.Area + self.Shunt
+        # handle optional branch data collection
+        if 'logBranch' in self.simParams:
+            if self.simParams['logBranch'] == True:
+                print("** Logging Branches")
+                self.Log = self.Log + self.Branch
 
         # Check mirror accuracy in each Area, create machines list for each area
         for c_area in range(self.Narea):

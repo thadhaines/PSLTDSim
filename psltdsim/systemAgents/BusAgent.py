@@ -41,12 +41,17 @@ class BusAgent(object):
         #self.Vmin = newBus.Vmin
         self.Basekv = ltd.data.single2float(newBus.Basekv)
 
-        # original way of selecting Vsched
-        self.Vsched = ltd.data.single2float(newBus.Vsched)
-
-        # work around for WECC
-        self.Vsched = self.cv['Vm'] # assuming initial voltage is scheduled voltage...
-
+        # Handle optional V setting
+        if 'assumedV' in self.mirror.simParams:
+            # check setting
+            if self.mirror.simParams['assumedV'] == 'Vsched':
+                # original way of selecting Vsched
+                self.Vsched = ltd.data.single2float(newBus.Vsched)
+            else:
+                # work around for WECC
+                self.Vsched = self.cv['Vm'] # assuming initial voltage is scheduled voltage...
+        else:
+            self.Vsched = ltd.data.single2float(newBus.Vsched)
 
 
     def __repr__(self):
