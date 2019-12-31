@@ -1,4 +1,6 @@
 def BAgovU(mirror, blkFlag=True, printFigs=False):
+    # u vector is the input to the governor model
+
     """Plot Pe, Pm, and F of given mirror"""
     import matplotlib.pyplot as plt
     import numpy as np

@@ -138,6 +138,10 @@ mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRLF.m
 mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL2F.mir') # load ctrl testing...
 mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL3F.mir') # load ctrl testing...
 
+# Retesting of ACE polts post RACE introduction
+mirLoc = os.path.join(dirname, 'delme','191029-paperSimsNoAGC','miniWECCnoiseNoDBF.mir')
+
+
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
@@ -147,7 +151,7 @@ print(mir)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
-ltd.plot.sysPLQF(mir, False)
+#ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.allPmDynamics(mir, False)
 
@@ -155,13 +159,14 @@ ltd.plot.sysPLQF(mir, False)
 #ltd.plot.ValveTravel(mir, False, printFigs)
 #ltd.plot.ValveTravel01(mir, True, printFigs)
 #ltd.plot.BAplots01(mir, True, printFigs=False)
-ltd.plot.sysF(mir, True, printFigs)
+#ltd.plot.sysF(mir, True, printFigs)
 
-ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
+#ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
 
 #ltd.plot.AreaLosses(mir,True, printFigs)
-#ltd.plot.BAgovU(mir, False, printFigs)
+#ltd.plot.BAgovU(mir, True, printFigs)
+ltd.plot.BAALtest(mir, True, printFigs)
 #ltd.plot.SACE(mir,False, printFigs)
 #ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen

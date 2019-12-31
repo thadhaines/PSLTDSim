@@ -19,11 +19,12 @@ class BA(object):
 
         # Current Value Dictionary
         self.cv = {
-            'ACE' : 0.0,
-            'IACE' :0.0,
-            'ACEFB' :0.0,
-            'ACETL' :0.0,
-            'SACE' :0.0,
+            'RACE' : 0.0, # reported
+            'IACE' :0.0, # integral
+            'ACEFB' :0.0, # frequency bias
+            'ACETL' :0.0, # tie-line bias
+            'SACE' :0.0, # smoothed
+            'condACE' :0.0, # conditional
             'ACE2dist' : 0.0,
             'distStep' : 0,
             }
@@ -34,7 +35,7 @@ class BA(object):
             self.Area = testArea
             testArea.BA = self
 
-            # Handle setting Bias B
+            # Handle setting frequency Bias B
             bStr = BAdict['B'].split(":")
             bType = bStr[1].strip()
             if bType.lower() == 'scalebeta':
@@ -44,7 +45,7 @@ class BA(object):
                 # use percent of load
                 self.B = self.Area.cv['P']*(float(bStr[0])/100.00)
             elif bType.lower() == 'permax':
-                # use percent of max load
+                # use percent of max capacity
                 self.B = self.Area.MaxCapacity*(float(bStr[0])/100.00)
             elif bType.lower() == 'abs':
                 #use absolute entry as B
@@ -117,7 +118,7 @@ class BA(object):
             print("*** Balacing Authority %s has a total Participation Factor of %.2f"
                   % (self.name, self.pFsum))
 
-        # TODO: Test for duplicate machines...
+        # NOTE: Duplicate machines note checked.
 
         # Handle filter settings
         if self.BAdict['ACEFiltering'] != None:
@@ -144,13 +145,14 @@ class BA(object):
 
     def initRunningVals(self):
         """Initialize history values of mirror agent"""
-        self.r_ACE = [0.0]*self.mirror.dataPoints
+        self.r_RACE = [0.0]*self.mirror.dataPoints
         self.r_ACEFB = [0.0]*self.mirror.dataPoints
         self.r_ACETL = [0.0]*self.mirror.dataPoints
         self.r_SACE = [0.0]*self.mirror.dataPoints
         self.r_IACE = [0.0]*self.mirror.dataPoints
         self.r_ACE2dist = [0.0]*self.mirror.dataPoints
         self.r_distStep = [0.0]*self.mirror.dataPoints
+        self.r_condACE = [0.0]*self.mirror.dataPoints
 
         if self.filter != None:
             self.r_SACE = [0.0]*self.mirror.dataPoints
@@ -158,20 +160,22 @@ class BA(object):
     def logStep(self):
         """Step to record log history"""
         n = self.mirror.cv['dp']
-        self.r_ACE[n] = self.cv['ACE']
+        self.r_RACE[n] = self.cv['RACE']
         self.r_ACEFB[n] = self.cv['ACEFB']
         self.r_ACETL[n] = self.cv['ACETL']
+        self.r_SACE[n] = self.cv['SACE']
         self.r_IACE[n] = self.cv['IACE']
         self.r_ACE2dist[n] = self.cv['ACE2dist']
         self.r_distStep[n] = self.cv['distStep']
-        self.r_SACE[n] = self.cv['SACE']
+        self.r_condACE[n] = self.cv['condACE']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
-        self.r_ACE = self.r_ACE[:N]
+        self.r_RACE = self.r_RACE[:N]
         self.r_ACETL = self.r_ACETL[:N]
         self.r_ACEFB = self.r_ACEFB[:N]
         self.r_SACE = self.r_SACE[:N]
         self.r_IACE = self.r_IACE[:N]
         self.r_ACE2dist = self.r_ACE2dist[:N]
         self.r_distStep = self.r_distStep[:N]
+        self.r_condACE = self.r_condACE[:N]

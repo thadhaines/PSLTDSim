@@ -49,8 +49,8 @@ def BAplots01(mirror, blkFlag=True, printFigs=False):
     #Plot Interchange Error and ACE on same plot
     fig, ax = plt.subplots()
     for BA in mir.BA:
-        ax.plot(mins, BA.r_ACE, linewidth=1,
-                label= BA.name+' ACE')
+        ax.plot(mins, BA.r_RACE, linewidth=1,
+                label= BA.name+' RACE')
         if BA.filter != None:
             ax.plot(mins, BA.r_SACE, linewidth=1.25,linestyle=":",
                     label= BA.name+' SACE')
@@ -75,7 +75,7 @@ def BAplots01(mirror, blkFlag=True, printFigs=False):
     fig.set_size_inches(9/mini, 2.5)
     fig.tight_layout()
     plt.show(block=False)
-    if printFigs: plt.savefig(caseName+'ACE'+'.pdf', dpi=300)
+    if printFigs: plt.savefig(caseName+'RACE'+'.pdf', dpi=300)
     plt.pause(0.00001)
 
     ## Plot System Frequency

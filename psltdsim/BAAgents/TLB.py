@@ -38,34 +38,36 @@ class TLB(BA):
 
         ## Calculate ACEdist based on conditionals
         # 'Fully' calculated ACE - Type 0
-        self.cv['ACE'] = self.cv['ACETL'] + self.cv['ACEFB']
+        self.cv['RACE'] = self.cv['ACETL'] + self.cv['ACEFB']
+
+        condACE = self.cv['RACE'] # variable meant to replace cv['ACE']
 
         if self.AGCtype ==1:
             # only apply Tie Line interchange if same sign as delta w; always send frequency bias
             if np.sign(self.cv['ACETL']) != np.sign(deltaw):
-                self.cv['ACE'] = self.cv['ACEFB']
+                condACE = self.cv['ACEFB']
 
         elif self.AGCtype == 2:
             # only apply ACE if same sign as delta w
-            if np.sign(self.cv['ACE']) != np.sign(deltaw):
-                self.cv['ACEdist'] = 0
+            if np.sign(self.cv['RACE']) != np.sign(deltaw):
+                condACE = 0
 
         elif self.AGCtype == 3:
-            self.cv['ACE'] = 0
+            condACE = 0
             # Separate Tieline ACE from Frequency bias
             # only apply component if same sign as delta w
             if np.sign(self.cv['ACETL']) == np.sign(deltaw):
-                self.cv['ACE'] += self.cv['ACETL']
+                condACE += self.cv['ACETL']
             if np.sign(self.cv['ACEFB']) == np.sign(deltaw):
-                self.cv['ACE'] += self.cv['ACEFB']
+                condACE += self.cv['ACEFB']
 
         # Handle computing integral of ACE using trapezoidal integration
         # optional window integration agent
         n = self.mirror.cv['dp']
         if self.windowInt:
-            self.cv['IACE'] = self.wIntAgent.step(self.cv['ACE'], self.r_ACE[n-1])
+            self.cv['IACE'] = self.wIntAgent.step(self.cv['RACE'], self.r_RACE[n-1])
         else:
-            self.cv['IACE'] += (self.cv['ACE']+self.r_ACE[n-1])/2.0*self.mirror.timeStep
+            self.cv['IACE'] += (self.cv['RACE']+self.r_RACE[n-1])/2.0*self.mirror.timeStep
 
         IACE2add = 0.0
         # Include Integral of ACE
@@ -84,16 +86,17 @@ class TLB(BA):
                 else:
                 """
                 # add non weighted, non conditional ACE
-                IACE2add =  self.cv['ACE'] + self.cv['IACE']* float(self.BAdict['IACEscale'])
+                IACE2add =  self.cv['IACE']* float(self.BAdict['IACEscale'])
 
 
         # Put ACEdist through filter
         if self.filter != None:
-            self.cv['SACE'] = self.filter.stepFilter(self.cv['ACE']+IACE2add)
+            self.cv['SACE'] = self.filter.stepFilter(condACE+IACE2add)
         else:
-            self.cv['SACE'] = self.cv['ACE']+IACE2add
+            self.cv['SACE'] = condACE+IACE2add
 
         # Gain ACE
+        self.cv['condACE'] = condACE # for logical logging purposes
         self.cv['ACE2dist'] = self.cv['SACE']*self.ACEgain
         self.cv['distStep'] = 0
         # Check if current time step is an action step
@@ -101,7 +104,8 @@ class TLB(BA):
 
             if self.BAdict['AGCDeadband'] > 0:
                 # check deadband qualifications if set
-                if abs(self.cv['ACE']) >= self.BAdict['AGCDeadband']:
+                # NOTE: could be set to BAAL...
+                if abs(self.cv['RACE']) >= self.BAdict['AGCDeadband']:
                     ltd.agc.distACE(self)
             else:
                 ltd.agc.distACE(self)
