@@ -26,6 +26,10 @@ class TLB(BA):
         else:
             self.ACEgain = 1.0
 
+        # handle none and 0 equivalence
+        if type(self.BAdict['AGCDeadband']) == type(None):
+            self.BAdict['AGCDeadband'] = 0.0
+
 
     def step(self):
         # Caclulate ACE

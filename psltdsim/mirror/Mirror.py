@@ -125,6 +125,7 @@ class Mirror(object):
 
         # TODO: As logging capability added to agents, add to Log collection
         self.Log = [self] + self.Load + self.Bus + self.Machines + self.Area + self.Shunt
+
         # handle optional branch data collection
         if 'logBranch' in self.simParams:
             if self.simParams['logBranch'] == True:
