@@ -60,10 +60,18 @@ class BranchAgent(object):
         """Calculate Power flow in MW and AMP flow from self to TBus"""
         # added 11/13/19
         if (self.Islanded == False) and self.ValidBus:
-            Vs = self.Bus.cv['Vm']*self.Bus.Basekv
+            Vs = self.Bus.cv['Vm']*self.Bus.Basekv # sending
             delta_s = self.Bus.cv['Va'] # radians
-            Vr = self.TBus.cv['Vm']*self.TBus.Basekv
+            Vr = self.TBus.cv['Vm']*self.TBus.Basekv # recieving
             delta_r = self.TBus.cv['Va'] # radians
+
+            """
+            # reversal of sending and recieving ends (solve Q issue?)
+            Vr = self.Bus.cv['Vm']*self.Bus.Basekv # sending
+            delta_r = self.Bus.cv['Va'] # radians
+            Vs = self.TBus.cv['Vm']*self.TBus.Basekv # recieving
+            delta_s = self.TBus.cv['Va'] # radians
+            """
 
             zBase = self.Bus.Basekv*self.Bus.Basekv/self.mirror.Sbase
 
