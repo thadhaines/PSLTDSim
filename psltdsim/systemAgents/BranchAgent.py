@@ -60,6 +60,7 @@ class BranchAgent(object):
         """Calculate Power flow in MW and AMP flow from self to TBus"""
         # added 11/13/19
         if (self.Islanded == False) and self.ValidBus:
+            
             Vs = self.Bus.cv['Vm']*self.Bus.Basekv # sending
             delta_s = self.Bus.cv['Va'] # radians
             Vr = self.TBus.cv['Vm']*self.TBus.Basekv # recieving
@@ -94,7 +95,13 @@ class BranchAgent(object):
             S = (Pr + 1j*Qr)*1E6
             Amp = np.absolute(S)/(Vr*1E3*np.sqrt(3)) #division for line to phase
 
-            self.cv['Amps'] = Amp #
+            # alt Amp Calc
+            
+            j = 1j
+            ds = delta_s
+            dr = delta_r
+            Amp = (Vs*1e3*np.exp(j*ds)-Vr*1e3*np.exp(j*dr))/((self.R+j*self.X)*zBase)/np.sqrt(3)
+            self.cv['Amps'] = abs(Amp) #
         else:
             self.cv['Pbr'] = 0.0
             self.cv['Qbr'] = 0.0

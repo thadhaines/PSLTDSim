@@ -204,7 +204,7 @@ batchList =[
 
     # full wecc
     #r".\testCases\191122-fullWECC\fWECCstep1.py", # tested as working
-    r".\testCases\191209-mysteryWECC\fWECCstep1.py", # Includes islanded things - seems to work... HVDC mismatches... mtTap.p is run alot - provides classic F responnse...
+    #r".\testCases\191209-mysteryWECC\fWECCstep1.py", # Includes islanded things - seems to work... HVDC mismatches... mtTap.p is run alot - provides classic F responnse...
 
     # Load Controller Test
     #r".\testCases\191214-loadCTRL\sixMachineLoadCTRL.py",
@@ -218,7 +218,7 @@ batchList =[
     
     # Thesis Validations
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
-    #r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
+    r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
 
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3Astep.py",
