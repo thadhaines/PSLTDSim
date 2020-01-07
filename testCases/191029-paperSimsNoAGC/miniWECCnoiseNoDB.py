@@ -13,7 +13,7 @@ ltdPath = r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNoDB.ltd.py"
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': timeStep,
-    'endTime': 1800,    
+    'endTime': 1800,   # from 1800 
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -21,6 +21,7 @@ simParams = {
     'Dsys' : 0.0, # Untested 
     'fBase' : 60.0, # System F base in Hertz
     'freqEffects' : True, # w in swing equation will not be assumed 1 if true
+    'logBranch' : True,
     # Mathematical Options
     'integrationMethod' : 'rk45',
     # Data Export Parameters

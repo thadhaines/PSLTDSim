@@ -185,7 +185,7 @@ batchList =[
     # IEEE paper noise tests no AGC
     #r".\testCases\191029-paperSimsNoAGC\miniWECCuniAcc.py", # Universal acceptance sim
     #r".\testCases\191029-paperSimsNoAGC\miniWECCatlAGC.py", # AGC ramp time test
-    r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNoDB.py", # 
+    #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNoDB.py", # 
     #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseStepDB.py", # 
     #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNoStepDB.py", # 
     #r".\testCases\191029-paperSimsNoAGC\miniWECCnoiseNLdroopDB.py", # 
@@ -204,7 +204,7 @@ batchList =[
 
     # full wecc
     #r".\testCases\191122-fullWECC\fWECCstep1.py", # tested as working
-    #r".\testCases\191209-mysteryWECC\fWECCstep1.py",
+    r".\testCases\191209-mysteryWECC\fWECCstep1.py", # Includes islanded things - seems to work... HVDC mismatches... mtTap.p is run alot - provides classic F responnse...
 
     # Load Controller Test
     #r".\testCases\191214-loadCTRL\sixMachineLoadCTRL.py",

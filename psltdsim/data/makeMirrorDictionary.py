@@ -94,22 +94,25 @@ def makeMirrorDictionary(mir):
         # combine area dictionary into root area dictionary
         rootAreaD[strAreaName] = areaD
 
-    # handle branches
-    Nbranch = len(mir.Branch)
-    branchN = []
-    branchDict = {}
-    for c_branch in mir.Branch:
-        extNum = c_branch.Bus.Extnum
-        branchN.append(extNum)
-        branchDict['br'+str(extNum)] = c_branch.getDataDict()
 
-    # combine collected bus ditionary into area dictionary
-    branch = {}
-    branchDD = {}
-    branch['branchN'] = branchN
-    branch = ltd.data.mergeDicts(branch, branchDict)
-    branchDD['branch'] = branch
-    rootD = ltd.data.mergeDicts(rootD, branchDD)
+    # handle branches if specified
+    if 'logBranch' in mir.simParams:
+        if mir.simParams['logBranch'] == True:
+            Nbranch = len(mir.Branch)
+            branchN = []
+            branchDict = {}
+            for c_branch in mir.Branch:
+                extNum = c_branch.Bus.Extnum
+                branchN.append(extNum)
+                branchDict['br'+str(extNum)] = c_branch.getDataDict()
+
+                # combine collected bus ditionary into area dictionary
+                branch = {}
+                branchDD = {}
+                branch['branchN'] = branchN
+                branch = ltd.data.mergeDicts(branch, branchDict)
+                branchDD['branch'] = branch
+                rootD = ltd.data.mergeDicts(rootD, branchDD)
 
     # combine all areas to root D
     rootD = ltd.data.mergeDicts(rootD, rootAreaD)
