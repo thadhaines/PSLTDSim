@@ -62,46 +62,30 @@ class BranchAgent(object):
         if (self.Islanded == False) and self.ValidBus:
             
             Vs = self.Bus.cv['Vm']*self.Bus.Basekv # sending
-            delta_s = self.Bus.cv['Va'] # radians
+            ds = self.Bus.cv['Va'] # radians
             Vr = self.TBus.cv['Vm']*self.TBus.Basekv # recieving
-            delta_r = self.TBus.cv['Va'] # radians
-
-            """
-            # reversal of sending and recieving ends (solve Q issue?)
-            Vr = self.Bus.cv['Vm']*self.Bus.Basekv # sending
-            delta_r = self.Bus.cv['Va'] # radians
-            Vs = self.TBus.cv['Vm']*self.TBus.Basekv # recieving
-            delta_s = self.TBus.cv['Va'] # radians
-            """
+            dr = self.TBus.cv['Va'] # radians
+            j = 1j
 
             zBase = self.Bus.Basekv*self.Bus.Basekv/self.mirror.Sbase
 
-            # Try excepts to handle zero X (unset)
+            # alt Flow calcs using Amps
+            # 1E3 for kV, 1E6 conversion for MW
             try:
-                Pr = (Vs*Vr)/(self.X*zBase)*np.sin(delta_s-delta_r) # Seems close
+                # calculate branch amps, assumes X and R are set in pu and not 0
+                Amp = (Vs*1e3*np.exp(j*ds)-Vr*1e3*np.exp(j*dr))/((self.R+j*self.X)*zBase)/np.sqrt(3)
             except ZeroDivisionError:
-                Pr = 0.0 
+                Amp = 0.0 
 
-            try:
-                Qr = Vr/(self.X*zBase)*(Vs*np.cos(delta_s-delta_r)-Vr) # from Glover
-            except ZeroDivisionError:
-                Qr = 0.0 
+            self.cv['Amps'] = abs(Amp) 
 
-            #Qr = (Vs*deltaV)/(self.X*zBase)*np.cos(delta_s-delta_r) # seems wrong... from PJM
-
+            Pr = Vs*1e3*abs(Amp)*np.cos(ds-np.angle(Amp))*np.sqrt(3)/1E6
             self.cv['Pbr'] = Pr #MW
-            self.cv['Qbr'] = Qr #MVAR
-
-            S = (Pr + 1j*Qr)*1E6
-            Amp = np.absolute(S)/(Vr*1E3*np.sqrt(3)) #division for line to phase
-
-            # alt Amp Calc
             
-            j = 1j
-            ds = delta_s
-            dr = delta_r
-            Amp = (Vs*1e3*np.exp(j*ds)-Vr*1e3*np.exp(j*dr))/((self.R+j*self.X)*zBase)/np.sqrt(3)
-            self.cv['Amps'] = abs(Amp) #
+            Qr = Vs*1e3*abs(Amp)*np.sin(ds-np.angle(Amp))*np.sqrt(3)/1E6
+            self.cv['Qbr'] = Qr #MW
+
+
         else:
             self.cv['Pbr'] = 0.0
             self.cv['Qbr'] = 0.0
