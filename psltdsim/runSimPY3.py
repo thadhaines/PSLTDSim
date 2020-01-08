@@ -50,6 +50,12 @@ def runSimPY3(mirror, amqpAgent):
         for name in mirror.sysGenerationControl:
             mirror.GenCTRL.append(ltd.perturbance.GenerationControlAgent(mirror, name, mirror.sysGenerationControl[name] ))
 
+
+    # add Delays to specific governors
+    if hasattr(mirror, 'govDelay'):
+        print('found delays!')
+
+
     # Create Timers # NOTE: more of a debug than a useful thing -> Timers will be created by DTC
     """
     if hasattr(mirror, 'TimerInput'):

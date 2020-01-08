@@ -14,7 +14,7 @@ clear; format compact; clc; close all;
 format long;
 
 %% Plot params
-printFigs =     false; % true; % 
+printFigs =     true; %  false; % 
 miniFlag = 1; % decrease plot width by half
 ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
@@ -100,13 +100,13 @@ psds_data = udread(PSDSfileName,[]);
 % compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% Branch comparisons
-%comparePbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%comparePbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%comparePbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
-%compareQbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareQbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareQbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 compareAmp1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareAmp2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

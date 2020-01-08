@@ -49,9 +49,14 @@ class tgov1Agent():
     def stepDynamics(self):
         """ Perform governor control"""
         self.Pref = self.Gen.cv['Pref'] # get newest set value.
+        # logical Pref delay block placement
+
 
         # Create system inputs
         delta_w = 1.0-self.mirror.cv['f']
+        # delta_w delay plot placement
+
+
         usableR = self.R
 
         # handle deadband - step...
