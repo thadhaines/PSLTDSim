@@ -14,7 +14,7 @@ mirror.govDelay ={
         'genBus' : 3,
         'genId' : None, # optional
         'wDelay' : (0,0),
-        'PrefDelay' : (2, 0),
+        'PrefDelay' : (2, 1),
         },
     #end of defined governor delays
     }

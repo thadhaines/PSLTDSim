@@ -29,7 +29,7 @@ class delayAgent(object):
             self.Enable = False
 
         if t1 != 0.0:
-            self.filter = None # use lowPassAgent
+            self.filter = ltd.filterAgents.lowPassAgent( self.mirror, self, t1, initVal = self.initVal)
         else:
             self.filter = None
             
@@ -49,7 +49,7 @@ class delayAgent(object):
             if self.filter != None:
                 outVal = self.filter.stepFilter(outVal)
 
-            #print(inputVal, outVal)
+            #print(inputVal, outVal) # debug
             return outVal
         else:
             # if delay is not enabled, act as a through

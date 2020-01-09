@@ -230,9 +230,9 @@ batchList =[
     #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
 
     # Delay Tests
-    #r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step and delay
+    r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step and delay
     #r".\testCases\200108-delayTest\sixMachineDelayStep2.py", # load step, w delay
-    r".\testCases\200108-delayTest\sixMachineDelayStep3.py", # both delays
+    #r".\testCases\200108-delayTest\sixMachineDelayStep3.py", # both delays
 
             ]
 
