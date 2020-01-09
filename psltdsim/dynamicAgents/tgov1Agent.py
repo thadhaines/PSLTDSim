@@ -32,6 +32,10 @@ class tgov1Agent():
         self.uVector = [0,0]
 
         self.dbAgent = None
+        self.delayDict = None
+        self.wDelay = None
+        self.PrefDelay = None
+
         self.totValveMovement = 0.0
 
         self.t = [0 , self.mirror.timeStep] # will have to be moved if ts = variable
@@ -50,12 +54,16 @@ class tgov1Agent():
         """ Perform governor control"""
         self.Pref = self.Gen.cv['Pref'] # get newest set value.
         # logical Pref delay block placement
-
+        if self.PrefDelay != None:
+            self.Pref = self.PrefDelay.step(self.Gen.cv['Pref'])
 
         # Create system inputs
-        delta_w = 1.0-self.mirror.cv['f']
+        self.w = self.mirror.cv['f']
         # delta_w delay plot placement
+        if self.wDelay != None:
+            self.w = self.wDelay.step(self.w)
 
+        delta_w = 1.0-self.w
 
         usableR = self.R
 
@@ -139,6 +147,30 @@ class tgov1Agent():
                 self.dbAgent = ltd.filterAgents.deadBandAgent(self.mirror, self, self.Gen.AreaAgent.BA.BAdict)
                 #self.deadband = self.Gen.AreaAgent.BA.BAdict['GovDeadband']/self.mirror.simParams['fBase']
 
+        # Init delays if available
+        if self.delayDict != None:
+            # check for wdelay
+            if sum(self.delayDict['wDelay']) > 0:
+                initVal = 1.0
+                newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal,
+                                                       self.delayDict['wDelay'][0],
+                                                       self.delayDict['wDelay'][1])
+                # place delay link into mirror delay list
+                newDelay.offSet = 0
+                self.mirror.Delay.append(newDelay)
+                self.wDelay = newDelay
+
+            # check for PrefDelay
+            if sum(self.delayDict['PrefDelay']) > 0:
+                initVal = self.Pref
+                newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal,
+                                                       self.delayDict['PrefDelay'][0],
+                                                       self.delayDict['PrefDelay'][1])
+                # place delay link into mirror delay list
+                newDelay.offSet = 1
+                self.mirror.Delay.append(newDelay)
+                self.PrefDelay = newDelay
+
         if self.mirror.debug and not updated:
             print('... nothing updated.')
             return
@@ -149,6 +181,8 @@ class tgov1Agent():
         self.r_x1 = [0.0]*self.mirror.dataPoints
         self.r_x2 = [0.0]*self.mirror.dataPoints
         self.r_u = [0.0]*self.mirror.dataPoints
+        self.r_w = [0.0]*self.mirror.dataPoints
+        self.r_Pref = [0.0]*self.mirror.dataPoints
         self.r_valveTravel = [0.0]*self.mirror.dataPoints
 
         # Append init values to running state data
@@ -160,6 +194,8 @@ class tgov1Agent():
         self.r_x1[self.mirror.cv['dp']] = float(self.x1[1])
         self.r_x2[self.mirror.cv['dp']] = float(self.x2[1])
         self.r_u[self.mirror.cv['dp']] = float(self.uVector[0])
+        self.r_w[self.mirror.cv['dp']] = self.w
+        self.r_Pref[self.mirror.cv['dp']] = self.Pref
         self.totValveMovement += abs( self.r_x1[self.mirror.cv['dp']] - self.r_x1[self.mirror.cv['dp']-1])/self.mwCap
         self.r_valveTravel[self.mirror.cv['dp']] = self.totValveMovement
 
@@ -168,6 +204,9 @@ class tgov1Agent():
         self.r_x1 = self.r_x1[:N]
         self.r_x2 = self.r_x2[:N]
         self.r_u = self.r_u[:N]
+        self.r_w = self.r_w[:N]
+        self.r_Pref = self.r_Pref[:N]
+
 
     def setState(self, newState):
         """ When stepping Pm, states must be reset"""

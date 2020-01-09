@@ -218,7 +218,7 @@ batchList =[
     
     # Thesis Validations
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
-    r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
+    #r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
 
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3Astep.py",
@@ -228,6 +228,11 @@ batchList =[
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3AstepPSS.py",
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3ArampPSS.py",
     #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
+
+    # Delay Tests
+    #r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step and delay
+    #r".\testCases\200108-delayTest\sixMachineDelayStep2.py", # load step, w delay
+    r".\testCases\200108-delayTest\sixMachineDelayStep3.py", # both delays
 
             ]
 

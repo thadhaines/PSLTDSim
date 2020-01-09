@@ -140,6 +140,10 @@ mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL3F.
 
 # Retesting of ACE polts post RACE introduction
 mirLoc = os.path.join(dirname, 'delme','191029-paperSimsNoAGC','miniWECCnoiseNoDBF.mir')
+# delay inspection
+mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep1F.mir')
+mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep2F.mir')
+mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep3F.mir')
 
 
 mir = ltd.data.readMirror(mirLoc)

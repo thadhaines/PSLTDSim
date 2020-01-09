@@ -53,7 +53,21 @@ def runSimPY3(mirror, amqpAgent):
 
     # add Delays to specific governors
     if hasattr(mirror, 'govDelay'):
-        print('found delays!')
+        for name in mirror.govDelay:
+            # locate specified generator
+            gen = ltd.find.findGenOnBus(mirror, 
+                               mirror.govDelay[name]['genBus'], 
+                               mirror.govDelay[name]['genId']
+                               )
+            if gen != None:
+                # check for governor
+                if gen.gov_model: 
+                    # add name to delay Dictionary
+                    mirror.govDelay[name]['name'] = name
+                    # add delay information to governor Agent
+                    gen.gov_model.delayDict = mirror.govDelay[name]
+                    print("*** Added Delay information to governor on bus %d"
+                          % mirror.govDelay[name]['genBus'])
 
 
     # Create Timers # NOTE: more of a debug than a useful thing -> Timers will be created by DTC

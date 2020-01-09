@@ -89,6 +89,7 @@ class Mirror(object):
         self.Branch = []
         self.Bus = []
         self.Dynamics = []
+        self.Delay = []
         self.Gens = []
         self.Load = []
         self.Perturbance = []
