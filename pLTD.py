@@ -146,12 +146,14 @@ mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep1F.mir')
 #mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep2F.mir')
 #mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep3F.mir')
 
+#delay scenario inspection
+mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep3F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
-
+printFigs = False
 #ltd.plot.sysLoad(mir, True)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -161,9 +163,9 @@ print(mir)
 #ltd.plot.allPmDynamics(mir, False)
 
 #ltd.plot.sysPLQF(mir, True)
-#ltd.plot.ValveTravel(mir, False, printFigs)
+ltd.plot.ValveTravel(mir, False, printFigs)
 #ltd.plot.ValveTravel01(mir, True, printFigs)
-#ltd.plot.BAplots01(mir, True, printFigs=False)
+ltd.plot.BAplots01(mir, True, printFigs)
 #ltd.plot.sysF(mir, True, printFigs)
 
 #ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
@@ -171,7 +173,7 @@ print(mir)
 
 #ltd.plot.AreaLosses(mir,True, printFigs)
 #ltd.plot.BAgovU(mir, True, printFigs)
-ltd.plot.BAALtest(mir, True, printFigs)
+#ltd.plot.BAALtest(mir, True, printFigs)
 #ltd.plot.SACE(mir,False, printFigs)
 #ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen

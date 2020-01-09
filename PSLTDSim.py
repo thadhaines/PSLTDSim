@@ -230,9 +230,14 @@ batchList =[
     #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
 
     # Delay Tests
-    r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step and delay
+    #r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step and delay
     #r".\testCases\200108-delayTest\sixMachineDelayStep2.py", # load step, w delay
     #r".\testCases\200108-delayTest\sixMachineDelayStep3.py", # both delays
+
+    # Delay Scenario
+    r".\testCases\200109-delayScenario1\sixMachineDelayStep1.py", # AGC tuning no delay
+    #r".\testCases\200109-delayScenario1\sixMachineDelayStep2.py", # 40 w delay, 10 Pref - goes unstable/oscillates
+    #r".\testCases\200109-delayScenario1\sixMachineDelayStep3.py", # 40 w delay 10 pref
 
             ]
 
