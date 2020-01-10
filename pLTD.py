@@ -148,13 +148,13 @@ mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep1F.mir')
 
 #delay scenario inspection
 mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep1F.mir')
-mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep3F.mir')
+mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep5F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
-printFigs = True # 
+printFigs = False # 
 #ltd.plot.sysLoad(mir, True)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)

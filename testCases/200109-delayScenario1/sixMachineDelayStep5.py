@@ -8,7 +8,7 @@ Delay over response test
 Loss of generation in area 1 at t=2
 Delayed action by area 2
 AGC in both areas
-Testing of Delay Gain.
+removal of dealy - filtering only
 """
 
 # Simulation Parameters Dictionary

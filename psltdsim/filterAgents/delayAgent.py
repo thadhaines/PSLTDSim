@@ -17,7 +17,7 @@ class delayAgent(object):
         self.d1 = paramTuple[0] # delay time constant
         self.t1 = paramTuple[1] # filter time constant
 
-        self.operate = True
+        self.operate = True # used for optional hold (debug)
         if len(paramTuple)>=3:
             self.operate = paramTuple[2] # operate bool
         
@@ -28,11 +28,11 @@ class delayAgent(object):
         self.buffer = [self.initVal]*self.bufferSize
         self.offSet = 0.0
 
-        self.Enable = True
-        if self.bufferSize == 0:
-            print("*** Delay Error in %s. bufferSize == 0."
+        self.EnableDelay = True
+        if (self.bufferSize == 0) and (self.d1 == 0.0):
+            print("*** Delay Not enabled in %s. bufferSize == 0."
                   % self.name)
-            self.Enable = False
+            self.EnableDelay = False
 
         if self.t1 != 0.0:
             self.filter = ltd.filterAgents.lowPassAgent( self.mirror, self, self.t1, initVal = self.initVal)
@@ -44,9 +44,8 @@ class delayAgent(object):
         Handle buffer output/input, 
         filtering if required
         """
-        if self.Enable and self.operate:
+        if self.EnableDelay and self.operate:
             t = self.mirror.cv['t']
-
             buffNDX = int(t/self.ts % self.bufferSize)
             outVal = self.buffer[buffNDX- self.offSet] # minus 1 for... Pref tested... Not -1 for w delay... why?
 
@@ -59,8 +58,8 @@ class delayAgent(object):
             return outVal
         else:
             # if delay is not enabled, act as a hold (i.e. ignore input) (act as constant)
-            print('*** Delay %s not Enabled...' % self.name)
-            outVal = self.buffer[0]
+            #print('*** Delay %s not Enabled...' % self.name)
+            outVal = inputVal
             if self.filter != None:
                 outVal = self.filter.stepFilter(outVal)
             # add options to act as through?

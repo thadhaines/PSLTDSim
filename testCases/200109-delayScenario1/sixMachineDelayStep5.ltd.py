@@ -13,11 +13,12 @@ mirror.govDelay ={
         'genBus' : 3,
         'genId' : None, # optional
         # (delay param, filter param, gain)
-        'wDelay' : (40,30,  True),
-        'PrefDelay' : (40, 10, True),
+        'wDelay' : (0,10),
+        'PrefDelay' : (0, 10),
         },
     #end of defined governor delays
     }
+
 mirror.sysBA = {
     'BA1':{
         'Area':1,
