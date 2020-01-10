@@ -150,22 +150,18 @@ class tgov1Agent():
         # Init delays if available
         if self.delayDict != None:
             # check for wdelay
-            if sum(self.delayDict['wDelay']) > 0:
+            if sum(self.delayDict['wDelay'][0:2]) > 0:
                 initVal = 1.0
-                newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal,
-                                                       self.delayDict['wDelay'][0],
-                                                       self.delayDict['wDelay'][1])
+                newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal, self.delayDict['wDelay'],)
                 # place delay link into mirror delay list
                 newDelay.offSet = 0
                 self.mirror.Delay.append(newDelay)
                 self.wDelay = newDelay
 
             # check for PrefDelay
-            if sum(self.delayDict['PrefDelay']) > 0:
+            if sum(self.delayDict['PrefDelay'][0:2]) > 0:
                 initVal = self.Pref
-                newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal,
-                                                       self.delayDict['PrefDelay'][0],
-                                                       self.delayDict['PrefDelay'][1])
+                newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal, self.delayDict['PrefDelay'],)
                 # place delay link into mirror delay list
                 newDelay.offSet = 1
                 self.mirror.Delay.append(newDelay)

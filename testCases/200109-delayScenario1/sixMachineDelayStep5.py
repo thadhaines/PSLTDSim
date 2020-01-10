@@ -8,6 +8,7 @@ Delay over response test
 Loss of generation in area 1 at t=2
 Delayed action by area 2
 AGC in both areas
+Testing of Delay Gain.
 """
 
 # Simulation Parameters Dictionary
@@ -25,7 +26,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\200109-delayScenario1\\", # relative path from cwd
-    'fileName' : 'SixMachineDelayStep3',
+    'fileName' : 'SixMachineDelayStep5',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -36,4 +37,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachineTrips.sav"
 dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachineDelay.dyd"]
-ltdPath = r".\testCases\200109-delayScenario1\sixMachineDelayStep3.ltd.py"
+ltdPath = r".\testCases\200109-delayScenario1\sixMachineDelayStep5.ltd.py"

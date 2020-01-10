@@ -19,8 +19,10 @@ from .oneGenDynamics import oneGenDynamics
 from .sysPemLQF import sysPemLQF
 
 from .BAplots01 import BAplots01
+from .BAplots02 import BAplots02
 from .BAgovU import BAgovU
 from .ValveTravel import ValveTravel
+from .ValveTravel00 import ValveTravel00
 from .ValveTravel01 import ValveTravel01
 from .AreaLosses import AreaLosses
 from .SACE import SACE

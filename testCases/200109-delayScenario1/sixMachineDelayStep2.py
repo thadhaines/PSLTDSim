@@ -13,7 +13,7 @@ AGC in both areas
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 60.0*15,
+    'endTime': 60.0*40,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -36,4 +36,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachineTrips.sav"
 dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachineDelay.dyd"]
-ltdPath = r".\testCases\200109-delayScenario1\sixMachineDelayStep2.ltd.py"
+ltdPath = r".\testCases\200109-delayScenario1\sixMachineDelayStep1.ltd.py"

@@ -236,8 +236,10 @@ batchList =[
 
     # Delay Scenario
     r".\testCases\200109-delayScenario1\sixMachineDelayStep1.py", # AGC tuning no delay
-    #r".\testCases\200109-delayScenario1\sixMachineDelayStep2.py", # 40 w delay, 10 Pref - goes unstable/oscillates
-    #r".\testCases\200109-delayScenario1\sixMachineDelayStep3.py", # 40 w delay 10 pref
+    #r".\testCases\200109-delayScenario1\sixMachineDelayStep2.py", # longer agc tuning to ensure return to 60
+    r".\testCases\200109-delayScenario1\sixMachineDelayStep3.py", # 40 w delay 10 pref
+    r".\testCases\200109-delayScenario1\sixMachineDelayStep4.py", # 40 w delay 10 pref with filtering
+    #r".\testCases\200109-delayScenario1\sixMachineDelayStep5.py", # 40 w delay 10 pref
 
             ]
 

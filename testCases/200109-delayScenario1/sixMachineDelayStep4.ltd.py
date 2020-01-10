@@ -5,16 +5,16 @@
 
 # Perturbances
 mirror.sysPerturbances = [
-    'gen 2 2 : step Pm 2 -10 per',
-    'gen 2 1 : step Pm 2 -10 per',
+    'gen 2 2 : step Pm 2 -20 per',
     ]
 
 mirror.govDelay ={
     'delaygen3' : {
         'genBus' : 3,
         'genId' : None, # optional
-        'wDelay' : (40,0),
-        'PrefDelay' : (10, 0),
+        # (delay param, filter param, gain)
+        'wDelay' : (40,30,  True),
+        'PrefDelay' : (10, 0, True),
         },
     #end of defined governor delays
     }
@@ -28,11 +28,11 @@ mirror.sysBA = {
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,
-        'IncludeIACE' : False,
+        'IncludeIACE' : True,
         'IACEconditional': False,
         'IACEwindow' : 15, # seconds - size of window - 0 for non window
-        'IACEscale' : 1/15,
-        'IACEdeadband' : 0.0, # Hz 
+        'IACEscale' : 1/5,
+        'IACEdeadband' : 0, # Hz 
         'ACEFiltering': 'PI : 0.04 0.0001', 
         'AGCDeadband' : None, # MW? -> not implemented
         'GovDeadbandType' : 'none', # step, None, ramp, nldroop
@@ -49,11 +49,11 @@ mirror.sysBA = {
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,
-        'IncludeIACE' : False,
+        'IncludeIACE' : True,
         'IACEconditional': False,
         'IACEwindow' : 15, # seconds - size of window - 0 for non window
-        'IACEscale' : 1/15,
-        'IACEdeadband' : 0.0, # Hz 
+        'IACEscale' : 1/5,
+        'IACEdeadband' : 0, # Hz 
         'ACEFiltering': 'PI : 0.04 0.0001', 
         'AGCDeadband' : None, # MW? -> not implemented
         'GovDeadbandType' : 'none', # step, None, ramp, nldroop

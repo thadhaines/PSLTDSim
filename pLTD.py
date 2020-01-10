@@ -147,13 +147,14 @@ mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep1F.mir')
 #mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep3F.mir')
 
 #delay scenario inspection
+mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep1F.mir')
 mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep3F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
-printFigs = False
+printFigs = True # 
 #ltd.plot.sysLoad(mir, True)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -163,9 +164,11 @@ printFigs = False
 #ltd.plot.allPmDynamics(mir, False)
 
 #ltd.plot.sysPLQF(mir, True)
-ltd.plot.ValveTravel(mir, False, printFigs)
+#ltd.plot.ValveTravel(mir, False, printFigs)
+ltd.plot.ValveTravel00(mir, False, printFigs)
 #ltd.plot.ValveTravel01(mir, True, printFigs)
-ltd.plot.BAplots01(mir, True, printFigs)
+#ltd.plot.BAplots01(mir, True, printFigs)
+ltd.plot.BAplots02(mir, True, printFigs)
 #ltd.plot.sysF(mir, True, printFigs)
 
 #ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
