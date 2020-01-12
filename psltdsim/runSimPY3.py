@@ -50,6 +50,23 @@ def runSimPY3(mirror, amqpAgent):
         for name in mirror.sysGenerationControl:
             mirror.GenCTRL.append(ltd.perturbance.GenerationControlAgent(mirror, name, mirror.sysGenerationControl[name] ))
 
+    # add individual deadbands
+    if hasattr(mirror, 'govDeadBand'):
+        for name in mirror.govDeadBand:
+            # locate specified generator
+            gen = ltd.find.findGenOnBus(mirror, 
+                               mirror.govDeadBand[name]['genBus'], 
+                               mirror.govDeadBand[name]['genId']
+                               )
+            if gen != None:
+                # check for governor
+                if gen.gov_model: 
+                    # add name to delay Dictionary
+                    mirror.govDeadBand[name]['name'] = name
+                    # attach dbDict to gov
+                    gen.gov_model.dbDict = mirror.govDeadBand[name]
+                    print("*** Added Deadband information to governor on bus %d"
+                          % mirror.govDeadBand[name]['genBus'])
 
     # add Delays to specific governors
     if hasattr(mirror, 'govDelay'):

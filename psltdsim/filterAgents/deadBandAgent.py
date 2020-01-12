@@ -1,37 +1,37 @@
 class deadBandAgent():
     """Agent to be used as a customizable governor deadband."""
 
-    def __init__(self, mirror, parentAgent, BAdict):
-    #def __init__(self, fBase, R, BAdict): # for debug
+    def __init__(self, mirror, parentAgent, paramDict):
+    #def __init__(self, fBase, R, paramDict): # for debug
         #self.fBase = fBase
         #self.R = R
         # parentAgent a governor with an R value
 
         self.mirror = mirror
         self.parentAgent = parentAgent
-        self.BAdict = BAdict
+        self.paramDict = paramDict
         self.fBase = mirror.fBase
 
         self.R = parentAgent.R
 
         self.dbType = 0
 
-        if self.BAdict['GovDeadbandType'].lower() == 'step':
+        if self.paramDict['GovDeadbandType'].lower() == 'step':
             self.dbType = 1
-            self.dbPu = self.BAdict['GovDeadband']/self.fBase
+            self.dbPu = self.paramDict['GovDeadband']/self.fBase
             self.wOffset = 0.0
 
-        elif self.BAdict['GovDeadbandType'].lower() == 'ramp':
+        elif self.paramDict['GovDeadbandType'].lower() == 'ramp':
             self.dbType = 2
-            self.dbPu =  self.BAdict['GovDeadband']/self.fBase
+            self.dbPu =  self.paramDict['GovDeadband']/self.fBase
             self.R2 = self.R-self.dbPu # Calculate new R
             self.wOffset = self.dbPu
 
-        elif self.BAdict['GovDeadbandType'].lower() == 'nldroop':
+        elif self.paramDict['GovDeadbandType'].lower() == 'nldroop':
             # Non-linear droop i.e. Compound R
             self.dbType = 3
-            self.alpha = self.BAdict['GovAlpha']/self.fBase
-            self.beta  = self.BAdict['GovBeta']/self.fBase
+            self.alpha = self.paramDict['GovAlpha']/self.fBase
+            self.beta  = self.paramDict['GovBeta']/self.fBase
 
             # ensure alpha < beta
             if self.alpha > self.beta:

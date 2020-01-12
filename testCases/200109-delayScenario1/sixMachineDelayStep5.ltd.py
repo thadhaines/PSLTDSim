@@ -19,6 +19,35 @@ mirror.govDelay ={
     #end of defined governor delays
     }
 
+# untested deadband options....
+mirror.govDeadBand ={
+    'gen3DB' : {
+        'genBus' : 3,
+        'genId' : None, # optional
+        'GovDeadbandType' : 'ramp', # step, ramp, nldroop
+        'GovDeadband' : 0.036, # Hz
+        'GovAlpha' : 0.016, # Hz, used for nldroop
+        'GovBeta' : 0.036, # Hz, used for nldroop
+        },
+    'gen1DB' : {
+        'genBus' : 1,
+        'genId' : None, # optional
+        'GovDeadbandType' : 'nldroop', # step, ramp, nldroop
+        'GovDeadband' : 0.036, # Hz
+        'GovAlpha' : 0.016, # Hz, used for nldroop
+        'GovBeta' : 0.036, # Hz, used for nldroop
+        },
+    'gen4DB' : {
+        'genBus' : 4,
+        'genId' : None, # optional
+        'GovDeadbandType' : 'step', # step, ramp, nldroop
+        'GovDeadband' : 0.036, # Hz
+        'GovAlpha' : 0.016, # Hz, used for nldroop
+        'GovBeta' : 0.036, # Hz, used for nldroop
+        },
+    #end of defined governor deadbands
+    }
+
 mirror.sysBA = {
     'BA1':{
         'Area':1,

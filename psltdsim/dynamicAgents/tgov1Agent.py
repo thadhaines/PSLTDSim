@@ -31,8 +31,10 @@ class tgov1Agent():
         self.Dt = PSLFgov.Dt
         self.uVector = [0,0]
 
-        self.dbAgent = None
+        # placeholders for optional agents and dictionaries
+        self.dbDict = None
         self.delayDict = None
+        self.dbAgent = None
         self.wDelay = None
         self.PrefDelay = None
 
@@ -138,19 +140,23 @@ class tgov1Agent():
         self.y1HighLimit = self.Vmax * self.mwCap
         self.y1LowLimit = self.Vmin * self.mwCap
 
-        # Ensure correct deadband from BA
+        # Ensure correct BA settings
         if self.Gen.AreaAgent.BA:
             if self.Gen.AreaAgent.BA.BAdict['UseAreaDroop']:
                 self.R = self.Gen.AreaAgent.BA.BAdict['AreaDroop']
             # Generator belongs to a BA, check if deadband set
             if 'GovDeadband' in self.Gen.AreaAgent.BA.BAdict:
                 self.dbAgent = ltd.filterAgents.deadBandAgent(self.mirror, self, self.Gen.AreaAgent.BA.BAdict)
-                #self.deadband = self.Gen.AreaAgent.BA.BAdict['GovDeadband']/self.mirror.simParams['fBase']
+
+        # Create Overwriting individual deadband (if applicable)
+        if self.dbDict != None:
+            # dbDict present, overwrite BA defined deadband
+            self.dbAgent = ltd.filterAgents.deadBandAgent(self.mirror, self, self.dbDict)
 
         # Init delays if available
         if self.delayDict != None:
             # check for wdelay
-            if sum(self.delayDict['wDelay'][0:2]) > 0:
+            if any(self.delayDict['wDelay'][0:2]) > 0:
                 initVal = 1.0
                 newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal, self.delayDict['wDelay'],)
                 # place delay link into mirror delay list
@@ -159,7 +165,7 @@ class tgov1Agent():
                 self.wDelay = newDelay
 
             # check for PrefDelay
-            if sum(self.delayDict['PrefDelay'][0:2]) > 0:
+            if any(self.delayDict['PrefDelay'][0:2]) > 0:
                 initVal = self.Pref
                 newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal, self.delayDict['PrefDelay'],)
                 # place delay link into mirror delay list
