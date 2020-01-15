@@ -94,15 +94,15 @@ end
 if dLeg
     if dColLeg
         if max(size(legNames)) > 15
-            loc = 'eastoutside'
+            loc = 'east'
         else
-            loc = 'best'
+            loc = 'east'
         end
         leg = columnlegend(2, cellstr(legNames), 'location',loc);
         set(leg,'FontSize',bfz)
     end
 else
-        legend(legNames)
+        legend(legNames, 'location', 'east')
 end
 grid on
 if noCase ==1

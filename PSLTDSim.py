@@ -217,9 +217,9 @@ batchList =[
     #r".\testCases\191215-genCTRL\sixMachineGenCTRL3.py",
     
     # Thesis Validations
-    #r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
-    #r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
-    #r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
+    r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
+    r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
+    r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
 
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3Astep.py",
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3Aramp.py",
@@ -239,7 +239,7 @@ batchList =[
     #r".\testCases\200109-delayScenario1\sixMachineDelayStep2.py", # longer agc tuning to ensure return to 60
     #r".\testCases\200109-delayScenario1\sixMachineDelayStep3.py", # 40 w delay 10 pref
     #r".\testCases\200109-delayScenario1\sixMachineDelayStep4.py", # 40 w delay 10 pref with filtering
-    r".\testCases\200109-delayScenario1\sixMachineDelayStep5.py", # no delay, filtering only
+    #r".\testCases\200109-delayScenario1\sixMachineDelayStep5.py", # no delay, filtering only
 
             ]
 

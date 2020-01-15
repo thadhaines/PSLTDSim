@@ -116,7 +116,7 @@ for area = 1:max(size(mir.areaN)) % for each area
     
 end
 if makeLegend
-    legend(legNames)
+    legend(legNames, 'location','east')
 end
 grid on
 if noCase ==1

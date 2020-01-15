@@ -14,7 +14,7 @@ clear; format compact; clc; close all;
 format long;
 
 %% Plot params
-printFigs =     true; %  false; % 
+printFigs =       false; % true; %
 miniFlag = 1; % decrease plot width by half
 ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
@@ -73,41 +73,41 @@ psds_data = udread(PSDSfileName,[]);
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 
 %% Initial not super useful plots (kind of ... useful in six machine case)
-%  compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%  compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%  compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%  comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%  comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 %compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj, genChange) % doesn't handle changes in inertia, fAdj used for this
 
 %% Frequency plots
-%compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 
-% %% Difference plots
-% compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%% Difference plots
+compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % 
-% %% percent difference plots
-% compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-% compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%% percent difference plots
+compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% Branch comparisons
 comparePbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 comparePbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-
+%% branch difs
 compareQbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareQbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareQbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-
+%% branch % difs
 compareAmp1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareAmp2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareAmp3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

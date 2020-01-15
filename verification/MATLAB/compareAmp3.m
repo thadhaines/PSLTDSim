@@ -101,7 +101,7 @@ end
         grid on
     else % make only general legend
         dataName = [int2str(linesPltd),' Comparisons'];
-        legend([datas,rPlot],dataName,'Average Absolute Percent Difference','location','east')
+        legend([datas,rPlot],dataName,'Average Absolute Percent Difference','location','best')
     end
     grid on
     if noCase ==1
