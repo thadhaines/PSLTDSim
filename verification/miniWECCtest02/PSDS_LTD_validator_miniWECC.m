@@ -59,7 +59,8 @@ psds_data = udread(PSDSfileName,[]);
 % compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 
 %compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj) % doesn't handle changes in inertia
-
+%% Frequency plots
+compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 %% Deviation plots
 compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

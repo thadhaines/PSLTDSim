@@ -21,14 +21,13 @@ ds = 30; % number of samples to skip in PSDS data plots
 
 % Six Machine -> works with git .p etc.
 
-% PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
-% LTDCaseName = 'SixMachineStep1';
-% genChange = 0;
-
-PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
-%LTDCaseName = 'SixMachineRamp1rev';
-LTDCaseName = 'SixMachineRamp1';
+PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
+LTDCaseName = 'SixMachineStep1';
 genChange = 0;
+
+% PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
+% LTDCaseName = 'SixMachineRamp1';
+% genChange = 0;
 % 
 % PSDSfileName = 'sixMachineGenTrip0.chf'; 
 % LTDCaseName = 'SixMachineTrip0';
