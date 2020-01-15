@@ -116,6 +116,8 @@ legend({'PSDS','LTD'},'location','best')
 ylabel('Mechanical Power [MW]')
 xlabel('Time [sec]')
 
+title('Comparison Plot')
+
 cData = calcDeviation( t, mir, pData, ltdData );
 subplot(1, 3, 2) 
 %plot(t,cData,'color',grey,'linewidth',.85)
@@ -125,7 +127,7 @@ xlim(x_lim)
 ylabel('Power Difference [MW]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
-title('Examples of Comparison Plots')
+title('Difference Plot')
 
 subplot(1,3,3) 
 cData = calcPdiff( t, mir, pData, ltdData );
@@ -133,6 +135,7 @@ cData = calcPdiff( t, mir, pData, ltdData );
 plot(t,cData,'m','linewidth',.85)
 grid on
 xlim(x_lim)
+title('Precent Difference Plot')
 ylabel('Percent Difference [%]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)
