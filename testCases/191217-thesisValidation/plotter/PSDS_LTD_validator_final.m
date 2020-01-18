@@ -14,7 +14,7 @@ clear; format compact; clc; close all;
 format long;
 
 %% Plot params
-printFigs =         true; % false; %
+printFigs =         true; % false; % 
 miniFlag = 1; % decrease plot width by half
 ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
@@ -29,37 +29,37 @@ ds = 30; % number of samples to skip in PSDS data plots
 % LTDCaseName = 'SixMachineRamp1';
 % genChange = 0;
 % 
-PSDSfileName = 'sixMachineGenTrip0.chf'; 
-LTDCaseName = 'SixMachineTrip0';
-genChange = -0;
+% PSDSfileName = 'sixMachineGenTrip0.chf'; 
+% LTDCaseName = 'SixMachineTrip0';
+% genChange = -0;
 
 %%
 % Mini WECC - No PSS
-% PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
-% LTDCaseName = 'miniWECCstep'; %
-% genChange = 0;
-% 
-% PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
-% LTDCaseName = 'miniWECCramp'; % 
-% genChange = -0; % 
-% 
-% PSDSfileName = 'miniWECC_genTrip027.chf'; % 
-% LTDCaseName = 'miniWECCgenTrip027';
-% genChange = -0; 
+PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
+LTDCaseName = 'miniWECCstep'; %
+genChange = 0;
+
+PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
+LTDCaseName = 'miniWECCramp'; % 
+genChange = -0; % 
+
+PSDSfileName = 'miniWECC_genTrip027.chf'; % 
+LTDCaseName = 'miniWECCgenTrip027';
+genChange = -0; 
 
 %%
 % Mini WECC - PSS
-% PSDSfileName = 'miniWECC_loadStepPSS.chf'; % case used in IEEE paper
-% LTDCaseName = 'miniWECCstepPSS'; %
-% genChange = 0;
-% 
-% PSDSfileName = 'miniWECC_loadRampPSS.chf'; % case used in IEEE paper
-% LTDCaseName = 'miniWECCrampPSS'; % 
-% genChange = -0; % 
-% 
-% PSDSfileName = 'miniWECC_genTrip027PSS.chf'; % 
-% LTDCaseName = 'miniWECCgenTrip027PSS';
-% genChange = -0; 
+PSDSfileName = 'miniWECC_loadStepPSS.chf'; % case used in IEEE paper
+LTDCaseName = 'miniWECCstepPSS'; %
+genChange = 0;
+
+PSDSfileName = 'miniWECC_loadRampPSS.chf'; % case used in IEEE paper
+LTDCaseName = 'miniWECCrampPSS'; % 
+genChange = -0; % 
+
+PSDSfileName = 'miniWECC_genTrip027PSS.chf'; % 
+LTDCaseName = 'miniWECCgenTrip027PSS';
+genChange = -0; 
 
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'F']};
@@ -98,18 +98,18 @@ comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
-%% Branch comparisons
-%comparePbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%% branch difs
-%compareQbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareQbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%% branch % difs
-%compareAmp1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAmp2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAmp3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% %% Branch comparisons
+% %comparePbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% %% branch difs
+% %compareQbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareQbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareQbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% %% branch % difs
+% %compareAmp1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareAmp2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareAmp3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% IEEE simplified plots
 %compareF3IEEE(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
