@@ -4,22 +4,22 @@ AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
+No AGC but with delay
 Delay over response test
-Loss of generation in area 1 at t=2
-Delayed action by area 2
-AGC in both areas
-removal of dealy - filtering only
+Loss of generation in area 2 at t=2
+Delayed action by area 1
+Equal amount of generation delayed as non-delayed
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1.0,
-    'endTime': 60.0*8,
-    'slackTol': 1,
-    'PY3msgGroup' : 3,
-    'IPYmsgGroup' : 60,
+    'timeStep': 1.0, # seconds
+    'endTime': 60.0*8, # seconds
+    'slackTol': 1, # MW
+    'PY3msgGroup' : 3, # number of Agent msgs per AMQP msg
+    'IPYmsgGroup' : 60, # number of Agent msgs per AMQP msg
     'Hinput' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
-    'Dsys' : 0.0, # Untested 
+    'Dsys' : 0.0, # Damping
     'fBase' : 60.0, # System F base in Hertz
     'freqEffects' : True, # w in swing equation will not be assumed 1 if true
     # Mathematical Options
@@ -36,5 +36,5 @@ simParams = {
     }
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachineTrips.sav"
-dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachineDelay.dyd"]
-ltdPath = r".\testCases\200109-delayScenario1\sixMachineDelayStep5.ltd.py"
+dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachineDelay2.dyd"]
+ltdPath = r".\testCases\200109-delayScenario1\sixMachineDelayStep4.ltd.py"

@@ -4,21 +4,22 @@ AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
+AGC TUNING 
 Delay over response test
-Loss of generation in area 1 at t=2
-Delayed action by area 2
+Loss of generation in area 2 at t=2
+Delayed action by area 1
 AGC in both areas
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1.0,
-    'endTime': 60.0*8,
-    'slackTol': 1,
-    'PY3msgGroup' : 3,
-    'IPYmsgGroup' : 60,
+    'timeStep': 1.0, # seconds
+    'endTime': 60.0*8, # seconds
+    'slackTol': 1, # MW
+    'PY3msgGroup' : 3, # number of Agent msgs per AMQP msg
+    'IPYmsgGroup' : 60, # number of Agent msgs per AMQP msg
     'Hinput' : 0.0, # MW*sec of entire system, if !> 0.0, will be calculated in code
-    'Dsys' : 0.0, # Untested 
+    'Dsys' : 0.0, # Damping
     'fBase' : 60.0, # System F base in Hertz
     'freqEffects' : True, # w in swing equation will not be assumed 1 if true
     # Mathematical Options

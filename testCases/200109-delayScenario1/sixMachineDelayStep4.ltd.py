@@ -5,16 +5,15 @@
 
 # Perturbances
 mirror.sysPerturbances = [
-    'gen 2 2 : step Pm 2 -20 per',
+    'gen 5 : step Pm 2 -50 rel',
     ]
 
 mirror.govDelay ={
-    'delaygen3' : {
-        'genBus' : 3,
+    'delaygen1' : {
+        'genBus' : 1,
         'genId' : None, # optional
-        # (delay param, filter param, gain)
-        'wDelay' : (40,30,  True),
-        'PrefDelay' : (10, 0, True),
+        'wDelay' : (40,0),
+        'PrefDelay' : (10, 0),
         },
     #end of defined governor delays
     }
@@ -24,7 +23,7 @@ mirror.sysBA = {
         'Area':1,
         'B': "1.0 : perload", # MW/0.1 Hz
         'AGCActionTime': 5.00, # seconds 
-        'ACEgain' : 2.0,
+        'ACEgain' : 0.0, #2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,
@@ -45,7 +44,7 @@ mirror.sysBA = {
         'Area':2,
         'B': "1.0 : perload", # MW/0.1 Hz
         'AGCActionTime': 5.00, # seconds 
-        'ACEgain' : 2.0,
+        'ACEgain' : 0.0, #2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,

@@ -12,8 +12,8 @@ mirror.govDelay ={
     'delaygen1' : {
         'genBus' : 1,
         'genId' : None, # optional
-        'wDelay' : (40,0),
-        'PrefDelay' : (10, 0),
+        'wDelay' : (0,0),
+        'PrefDelay' : (0, 0),
         },
     #end of defined governor delays
     }
@@ -23,7 +23,7 @@ mirror.sysBA = {
         'Area':1,
         'B': "1.0 : perload", # MW/0.1 Hz
         'AGCActionTime': 5.00, # seconds 
-        'ACEgain' : 2.0,
+        'ACEgain' : 0.0,#2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,
@@ -44,7 +44,7 @@ mirror.sysBA = {
         'Area':2,
         'B': "1.0 : perload", # MW/0.1 Hz
         'AGCActionTime': 5.00, # seconds 
-        'ACEgain' : 2.0,
+        'ACEgain' : 0.0,#2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,
@@ -59,6 +59,6 @@ mirror.sysBA = {
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
         'GovBeta' : 0.036, # Hz - for nldroop
-        'CtrlGens': ['gen 3 : 1.0 : rampA']
+        'CtrlGens': ['gen 3 : 1.0 : rampA',]
         },
     }

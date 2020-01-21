@@ -5,12 +5,12 @@
 
 # Perturbances
 mirror.sysPerturbances = [
-    'gen 2 2 : step Pm 2 -20 per',
+    'gen 5 : step Pm 2 -50 rel',
     ]
 
 mirror.govDelay ={
-    'delaygen3' : {
-        'genBus' : 3,
+    'delaygen1' : {
+        'genBus' : 1,
         'genId' : None, # optional
         'wDelay' : (0,0),
         'PrefDelay' : (0, 0),
@@ -59,6 +59,6 @@ mirror.sysBA = {
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
         'GovBeta' : 0.036, # Hz - for nldroop
-        'CtrlGens': ['gen 3 : 1.0 : rampA']
+        'CtrlGens': ['gen 3 : 1.0 : rampA',]
         },
     }

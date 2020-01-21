@@ -80,7 +80,7 @@ def ValveTravel01(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     fig.set_dpi(150)
     #fig.set_size_inches(9, 2.5)
     #fig.set_size_inches(5.5, 4.5)
-    fig.set_size_inches(9/lengDiv, 4.5)
+    fig.set_size_inches(9/lengDiv, 2.5)#4.5)
     fig.tight_layout()
     if printFigs: plt.savefig(caseName+'ValveTravel01.pdf', dpi=300)
     plt.show(block=blkFlag)

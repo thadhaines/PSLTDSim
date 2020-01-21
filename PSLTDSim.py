@@ -221,25 +221,25 @@ batchList =[
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
 
-    r".\testCases\191217-thesisValidation\miniW\miniWECC3Astep.py",
-    r".\testCases\191217-thesisValidation\miniW\miniWECC3Aramp.py",
-    r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECC3Astep.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECC3Aramp.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0.py",
 
-    r".\testCases\191217-thesisValidation\miniW\miniWECC3AstepPSS.py",
-    r".\testCases\191217-thesisValidation\miniW\miniWECC3ArampPSS.py",
-    r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECC3AstepPSS.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECC3ArampPSS.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
 
     # Delay Tests
-    #r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step and delay
+    #r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step - AGC tune
     #r".\testCases\200108-delayTest\sixMachineDelayStep2.py", # load step, w delay
     #r".\testCases\200108-delayTest\sixMachineDelayStep3.py", # both delays
 
     # Delay Scenario
     #r".\testCases\200109-delayScenario1\sixMachineDelayStep1.py", # AGC tuning no delay
-    #r".\testCases\200109-delayScenario1\sixMachineDelayStep2.py", # longer agc tuning to ensure return to 60
+    #r".\testCases\200109-delayScenario1\sixMachineDelayStep2.py", # Step - no AGC
     #r".\testCases\200109-delayScenario1\sixMachineDelayStep3.py", # 40 w delay 10 pref
-    #r".\testCases\200109-delayScenario1\sixMachineDelayStep4.py", # 40 w delay 10 pref with filtering
-    #r".\testCases\200109-delayScenario1\sixMachineDelayStep5.py", # no delay, filtering only
+    #r".\testCases\200109-delayScenario1\sixMachineDelayStep4.py", # 40 w delay 10 pref no AGC
+    r".\testCases\200109-delayScenario1\sixMachineDelayStep5.py", # delay,equal amount of delayed gen
 
             ]
 

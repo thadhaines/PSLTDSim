@@ -139,22 +139,25 @@ mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL2F.
 mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL3F.mir') # load ctrl testing...
 
 # Retesting of ACE polts post RACE introduction
-mirLoc = os.path.join(dirname, 'delme','191029-paperSimsNoAGC','miniWECCnoiseNoDBF.mir')
+#mirLoc = os.path.join(dirname, 'delme','191029-paperSimsNoAGC','miniWECCnoiseNoDBF.mir')
 
 # delay inspection
-mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep1F.mir')
+#mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep1F.mir')
 #mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep2F.mir')
 #mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep3F.mir')
 
 #delay scenario inspection
-mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep1F.mir')
-mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep5F.mir')
+mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep1F.mir') #AGC Tuning
+#mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep2F.mir') # No AGC
+#mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep3F.mir') # Delay, with AGC
+#mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep4F.mir') # Delay No AGC
+#mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep5F.mir') # Equal delay and non-delay gov response
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
-printFigs = False # 
+printFigs = True #False # 
 #ltd.plot.sysLoad(mir, True)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -165,11 +168,12 @@ printFigs = False #
 
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs)
-ltd.plot.ValveTravel00(mir, False, printFigs)
 #ltd.plot.ValveTravel01(mir, True, printFigs)
 #ltd.plot.BAplots01(mir, True, printFigs)
-ltd.plot.BAplots02(mir, True, printFigs)
 #ltd.plot.sysF(mir, True, printFigs)
+
+#ltd.plot.BAplots02(mir, False, printFigs)
+#ltd.plot.ValveTravel00(mir, False, printFigs)
 
 #ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
@@ -182,6 +186,9 @@ ltd.plot.BAplots02(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
 #ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
+
+# Branch MW Flow
+ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
 
 # Plot loopy results
 

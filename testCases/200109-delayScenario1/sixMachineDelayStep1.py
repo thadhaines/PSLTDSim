@@ -6,8 +6,8 @@ debugTimer = 0
 simNotes = """
 AGC TUNING (no delay)
 Delay over response test
-Loss of generation in area 1 at t=2
-Delayed action by area 2
+Loss of generation in area 2 at t=2
+Delayed action by area 1
 AGC in both areas
 """
 

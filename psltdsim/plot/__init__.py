@@ -36,3 +36,5 @@ from .genDynamicsComp import genDynamicsComp
 from .AreaRunningValveTravel import AreaRunningValveTravel
 
 from .BAALtest import BAALtest
+
+from .branchMW import branchMW
