@@ -3,6 +3,8 @@
 # Commented and empty lines are ignored
 # Double quoted variable names in sysPert parameters ignored
 
+# -50 mw step, delayed gov 1, no AGC
+
 # Perturbances
 mirror.sysPerturbances = [
     'gen 5 : step Pm 2 -50 rel',

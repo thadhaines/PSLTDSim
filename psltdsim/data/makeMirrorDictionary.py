@@ -103,8 +103,10 @@ def makeMirrorDictionary(mir):
             branchDict = {}
             for c_branch in mir.Branch:
                 extNum = c_branch.Bus.Extnum
-                branchN.append(extNum)
-                branchDict['br'+str(extNum)] = c_branch.getDataDict()
+                toNum = c_branch.TBus.Extnum
+                ck = c_branch.Ck
+                branchN.append(str(extNum)+'_'+str(toNum)+'_c'+ck)
+                branchDict['br'+str(extNum)+'_'+str(toNum)+'_c'+ck] = c_branch.getDataDict()
 
                 # combine collected bus ditionary into area dictionary
                 branch = {}

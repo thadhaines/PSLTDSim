@@ -29,7 +29,7 @@ def branchMW(mirror, FromBus , ToBus, blkFlag=True, printFigs=False):
     ax.plot(mins, mwFlow, linestyle = '-',linewidth=1,  )
     #ax.legend(loc='lower right', )
 
-    ax.set_title(r'MW Branch Flow Between Bus '+str(FromBus)+' to ' + str(ToBus)
+    ax.set_title(r'MW Branch Flow From Bus '+str(FromBus)+' to ' + str(ToBus)
                  +' \n Case: ' + caseName)
 
     ax.set_xlim(0,minEnd)

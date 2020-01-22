@@ -57,12 +57,22 @@ hold on
 
 % for each col
 for dataCol = psdsData_col
-    %   get bus num from description
+     %   get bus num from description
     splitSTR = split(psds_data.Description{dataCol},':');
-    busSTR = splitSTR{1};
+    FbusSTR = splitSTR{1};
+    TbusSTR = splitSTR{4};    
+    ck = strtrim(splitSTR{8});
     %   get ltd data with bus num
-    ltdDataName = ['br',busSTR];
-    LTDdata =  mir.branch.(ltdDataName).Qbr; % Qbr Amps;
+    ltdDataName = ['br',FbusSTR,'_',TbusSTR,'_',ck];
+    
+    try
+        LTDdata =  mir.branch.(ltdDataName).Qbr; % Qbr Amps;
+    catch ME
+        if (strcmp(ME.identifier,'MATLAB:nonExistentField'))
+            fprintf("Branch %s to %s not found in Mirror.\n", FbusSTR, TbusSTR);
+            continue
+        end
+    end
     %   compare data
     pData = psds_data.Data(:,dataCol);
     cData = dsmple(calcDeviation( t, mir, pData, LTDdata ),ds); %calcPdiff or calcDeviation

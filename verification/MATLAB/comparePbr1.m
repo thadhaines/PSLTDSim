@@ -45,7 +45,16 @@ linesPltd = 0;
 rSum = tds.*0;
 grey = [.75,.75,.75];
 
-uniBranch = unique(mir.branch.branchN);
+% create string array from char
+numBranch = size(mir.branch.branchN,1);
+branchSTR = strings(numBranch,1);
+for n = 1: numBranch
+    charVec = mir.branch.branchN(n,:);
+    branchSTR(n) = strtrim(string(charVec));
+end
+
+uniBranch = unique(branchSTR);
+
 legNames = {};
 hold on
 
@@ -55,11 +64,11 @@ psdsData_col = jfind(psds_data, 'pbr');
 figure('position',ppos)
 legNames={};
 % Plot PSLTD mw flows...
-for br = uniBranch
-    brID = ['br',int2str(br)];
-    plot(mir.t, mir.branch.(brID).Pbr,'s') 
+for br = 1:size(uniBranch,1)
+    brID = strcat('br',uniBranch(br));
+    plot(mir.t, mir.branch.(char(brID)).Pbr,'s') 
     hold on
-    legNames{end+1} =  ['LTD ', int2str(br), ' to ', int2str( mir.branch.(brID).Tbus)];
+    legNames{end+1} =  ['LTD ', char(strrep(uniBranch(br),"_"," "))];
 end
 for index = psdsData_col
     plot(t, psds_data.Data(:,index),'--','linewidth',2)

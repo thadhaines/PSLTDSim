@@ -73,8 +73,9 @@ class BranchAgent(object):
             # 1E3 for kV, 1E6 conversion for MW
             try:
                 # calculate branch amps, assumes X and R are set in pu and not 0
-                Amp = (Vs*1e3*np.exp(j*ds)-Vr*1e3*np.exp(j*dr))/((self.R+j*self.X)*zBase)/np.sqrt(3)
+                Amp = (Vs*1e3*np.exp(j*ds)-Vr*1e3*np.exp(j*dr)) / ((self.R+j*self.X)*zBase)/np.sqrt(3)
             except ZeroDivisionError:
+                print("Zero div %s", self)
                 Amp = 0.0 
 
             self.cv['Amps'] = abs(Amp) 

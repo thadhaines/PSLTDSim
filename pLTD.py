@@ -147,11 +147,15 @@ mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL3F.
 #mirLoc = os.path.join(dirname, 'delme','delayTest','SixMachineDelayStep3F.mir')
 
 #delay scenario inspection
-mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep1F.mir') #AGC Tuning
+#mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep1F.mir') #AGC Tuning
 #mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep2F.mir') # No AGC
 #mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep3F.mir') # Delay, with AGC
 #mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep4F.mir') # Delay No AGC
 #mirLoc = os.path.join(dirname, 'delme','200109-delayScenario1','SixMachineDelayStep5F.mir') # Equal delay and non-delay gov response
+
+#Thesis Validation mirrors...
+mirLoc = os.path.join(dirname, 'delme','thesisV','miniWECCrampF.mir') # load ctrl testing...
+
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
