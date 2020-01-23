@@ -102,20 +102,20 @@ for area = 1:max(size(mir.areaN)) % for each area
             cData = dsmple(calcPdiff( t, mir, pData, LTDdata),ds);
             plot(tds, cData,'color',grey,'linewidth',.5)
             
-                % Handle checking for large values and collecting min/max vals 
-    if max(abs(cData)) > largeValLim
-        largeVal = true;
-        
-        tempLargeVal = max(cData);
-        tempMinVal = min(cData);
-        
-        if tempLargeVal > maxVal
-            maxVal = tempLargeVal;
-        end
-        if tempMinVal < minVal
-            minVal = tempMinVal;
-        end
-    end
+            % Handle checking for large values and collecting min/max vals
+            if max(abs(cData)) > largeValLim
+                largeVal = true;
+                
+                tempLargeVal = max(cData);
+                tempMinVal = min(cData);
+                
+                if tempLargeVal > maxVal
+                    maxVal = tempLargeVal;
+                end
+                if tempMinVal < minVal
+                    minVal = tempMinVal;
+                end
+            end
             
             legNames{end+1} = name;
             linesPltd = linesPltd+1;
@@ -147,20 +147,20 @@ for area = 1:max(size(mir.areaN)) % for each area
             cData = dsmple(calcPdiff( t, mir, pData, LTDdata),ds);
             plot(tds, cData,'color',grey,'linewidth',.5)
             
-                % Handle checking for large values and collecting min/max vals 
-    if max(abs(cData)) > largeValLim
-        largeVal = true;
-        
-        tempLargeVal = max(cData);
-        tempMinVal = min(cData);
-        
-        if tempLargeVal > maxVal
-            maxVal = tempLargeVal;
-        end
-        if tempMinVal < minVal
-            minVal = tempMinVal;
-        end
-    end
+            % Handle checking for large values and collecting min/max vals
+            if max(abs(cData)) > largeValLim
+                largeVal = true;
+                
+                tempLargeVal = max(cData);
+                tempMinVal = min(cData);
+                
+                if tempLargeVal > maxVal
+                    maxVal = tempLargeVal;
+                end
+                if tempMinVal < minVal
+                    minVal = tempMinVal;
+                end
+            end
             
             legNames{end+1} = name;
             linesPltd = linesPltd+1;
@@ -178,32 +178,35 @@ for area = 1:max(size(mir.areaN)) % for each area
 end
 
 
-    
+
 % calculate and plot RMS
 RMS = sqrt(rSum./lineSumd);
-    absDevMean = absSum ./ linesPltd;
+absDevMean = absSum ./ linesPltd;
 datas = plot(tds, absDevMean,'color',grey,'linewidth',1.5);
 rPlot = plot(tds, absDevMean,'k','linewidth',1.5);
 
-    % Handle large values
-    if largeVal
-        % adjust y lim to fit absDevMean Data
-        newY = max(absDevMean)*1.5;
-        ylim([-newY, newY])
+% Handle large values
+if largeVal
+    % adjust y lim to fit absDevMean Data
+    newY = max(absDevMean)*1.5;
+    if newY > 100
+        newY = 100;
     end
-    
+    ylim([-newY, newY])
+end
+
 if makeLegend
     legend(legNames)
 else % make only general legend
     dataName = [int2str(linesPltd),' Comparisons'];
-        if largeVal
-            point = plot(0,0,'w.','markersize',.001);
-            infoCVec = ['Max = ',int2str(maxVal),'%, Min = ',int2str(minVal),'%'];
+    if largeVal
+        point = plot(0,0,'w.','markersize',.001);
+        infoCVec = ['Max = ',int2str(maxVal),'%, Min = ',int2str(minVal),'%'];
         legend([datas,rPlot, point],dataName,'Average Absolute Percent Difference', ...
-            infoCVec,'best')
-        else
-            legend([datas,rPlot],dataName,'Average Absolute Percent Difference','location','best')
-        end
+            infoCVec,'location','southeast')
+    else
+        legend([datas,rPlot],dataName,'Average Absolute Percent Difference','location','best')
+    end
 end
 grid on
 if noCase ==1

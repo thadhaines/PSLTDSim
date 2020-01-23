@@ -75,21 +75,21 @@ for area = 1:max(size(mir.areaN)) % for each area
             cData = dsmple(calcPdiff( t, mir, pData, LTDdata),ds);
             plot(tds, cData,'color',grey,'linewidth',.5)
             
-                % Handle checking for large values and collecting min/max vals 
-    if max(abs(cData)) > largeValLim
-        largeVal = true;
-        
-        tempLargeVal = max(cData);
-        tempMinVal = min(cData);
-        
-        if tempLargeVal > maxVal
-            maxVal = tempLargeVal;
-        end
-        if tempMinVal < minVal
-            minVal = tempMinVal;
-        end
-    end
-    
+            % Handle checking for large values and collecting min/max vals
+            if max(abs(cData)) > largeValLim
+                largeVal = true;
+                
+                tempLargeVal = max(cData);
+                tempMinVal = min(cData);
+                
+                if tempLargeVal > maxVal
+                    maxVal = tempLargeVal;
+                end
+                if tempMinVal < minVal
+                    minVal = tempMinVal;
+                end
+            end
+            
             legNames{end+1} = name;
             linesPltd = linesPltd+1;
             if sum(isnan(cData(:))) == 0
@@ -126,27 +126,27 @@ for area = 1:max(size(mir.areaN)) % for each area
                 cData = dsmple(calcPdiff( t, mir, pData, LTDdata),ds);
                 plot(tds, cData,'color',grey,'linewidth',.5)
                 
-                    % Handle checking for large values and collecting min/max vals 
-    if max(abs(cData)) > largeValLim
-        largeVal = true;
-        
-        tempLargeVal = max(cData);
-        tempMinVal = min(cData);
-        
-        if tempLargeVal > maxVal
-            maxVal = tempLargeVal;
-        end
-        if tempMinVal < minVal
-            minVal = tempMinVal;
-        end
-    end
+                % Handle checking for large values and collecting min/max vals
+                if max(abs(cData)) > largeValLim
+                    largeVal = true;
+                    
+                    tempLargeVal = max(cData);
+                    tempMinVal = min(cData);
+                    
+                    if tempLargeVal > maxVal
+                        maxVal = tempLargeVal;
+                    end
+                    if tempMinVal < minVal
+                        minVal = tempMinVal;
+                    end
+                end
                 legNames{end+1} = name;
                 linesPltd = linesPltd+1;
                 if sum(isnan(cData(:))) == 0
-                rSum = rSum+cData.^2;
-                absSum = abs(cData)+ absSum;
-                lineSumd = lineSumd +1;
-            end
+                    rSum = rSum+cData.^2;
+                    absSum = abs(cData)+ absSum;
+                    lineSumd = lineSumd +1;
+                end
             else
                 disp(name)
             end
@@ -158,49 +158,52 @@ for area = 1:max(size(mir.areaN)) % for each area
 end
 % calculate and plot RMS
 RMS = sqrt(rSum./lineSumd);
-    absDevMean = absSum ./ linesPltd;
+absDevMean = absSum ./ linesPltd;
 datas = plot(tds, absDevMean,'color',grey,'linewidth',1.5);
 rPlot = plot(tds, absDevMean,'k','linewidth',1.5);
 
-    % large val handling
-    if largeVal
-        % adjust y lim to fit absDevMean Data
-        newY = max(absDevMean)*1.5;
-        ylim([-newY, newY])
+% large val handling
+if largeVal
+    % adjust y lim to fit absDevMean Data
+    newY = max(absDevMean)*1.5;
+    if newY > 100
+        newY = 100;
     end
-    
+    ylim([-newY, newY])
+end
+
 if makeLegend
     legend(legNames)
 else % make only general legend
-        dataName = [int2str(linesPltd),' Comparisons'];
-        if largeVal
-            point = plot(0,0,'w.','markersize',.001);
-            infoCVec = ['Max = ',int2str(maxVal),'%, Min = ',int2str(minVal),'%'];
+    dataName = [int2str(linesPltd),' Comparisons'];
+    if largeVal
+        point = plot(0,0,'w.','markersize',.001);
+        infoCVec = ['Max = ',int2str(maxVal),'%, Min = ',int2str(minVal),'%'];
         legend([datas,rPlot, point],dataName,'Average Absolute Percent Difference', ...
-            infoCVec,'best')
-        else
-            legend([datas,rPlot],dataName,'Average Absolute Percent Difference','location','best')
-        end
+            infoCVec,'location','southeast')
+    else
+        legend([datas,rPlot],dataName,'Average Absolute Percent Difference','location','best')
+    end
 end
 grid on
 if noCase ==1
-        title('Reactive Power Percent Difference')
-    else
-        title({'Reactive Power Percent Difference'; ['Case: ', LTDCaseName]})
-    end
-    
-    xlabel('Time [sec]')
-    ylabel('Percent Difference [%]')
-    set(gca,'fontsize',bfz)
-    %set(gca,'GridLineStyle','--')
-    %set(gca, 'GridAlpha', .07)
-    xlim(x_lim)
-    
-    % pdf output code
-    if printFigs
-        set(gcf,'color','w'); % to remove border of figure
-        export_fig([LTDCaseName,'Q3ALT'],'-pdf'); % to print fig
-    end
+    title('Reactive Power Percent Difference')
+else
+    title({'Reactive Power Percent Difference'; ['Case: ', LTDCaseName]})
+end
+
+xlabel('Time [sec]')
+ylabel('Percent Difference [%]')
+set(gca,'fontsize',bfz)
+%set(gca,'GridLineStyle','--')
+%set(gca, 'GridAlpha', .07)
+xlim(x_lim)
+
+% pdf output code
+if printFigs
+    set(gcf,'color','w'); % to remove border of figure
+    export_fig([LTDCaseName,'Q3ALT'],'-pdf'); % to print fig
+end
 %% end of function
 end
 

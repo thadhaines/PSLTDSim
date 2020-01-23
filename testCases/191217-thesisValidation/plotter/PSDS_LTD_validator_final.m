@@ -14,7 +14,7 @@ clear; format compact; clc; close all;
 format long;
 
 %% Plot params
-printFigs =  true; % false; % 
+printFigs = true; %   false; % 
 miniFlag = 1; % decrease plot width by half
 ds = 30; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
@@ -38,7 +38,7 @@ genChange = -0;
 PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
 LTDCaseName = 'miniWECCstep'; %
 genChange = 0;
-
+% 
 PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
 LTDCaseName = 'miniWECCramp'; %
 genChange = -0; %
