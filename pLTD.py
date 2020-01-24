@@ -101,16 +101,13 @@ dirname = os.path.dirname(__file__)
 #mirList.append(os.path.join(dirname, 'delme','191028-paperSims','miniWECCnoiseNLdroopDBF.mir'))
 #ltd.plot.sysFcomp(mirList,blkFlag=True, printFigs=False) # multiple mir comp
 
-printFigs =    False # True #
-
-
 #IEEE results 2 - non AGC 10/29/19
-mirList = []
-folderName = '191029-paperSimsNoAGC'
-mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCuniAccF.mir') # base case for AGC testing
+#mirList = []
+#folderName = '191029-paperSimsNoAGC'
+#mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCuniAccF.mir') # base case for AGC testing
 #mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCatlAGCF.mir') # base case for AGC testing
 #mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoStepDBF.mir') # base case for AGC testing
-mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCuniAccF.mir'))
+#mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCuniAccF.mir'))
 
 #mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoDBF.mir'))
 #mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseStepDBF.mir'))
@@ -118,25 +115,24 @@ mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCuniAccF.mir'))
 #mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF.mir'))
 #ltd.plot.sysFcomp(mirList,blkFlag=False, printFigs=True) # multiple mir comp
 
-
-mirLoc = os.path.join(dirname, 'delme','sixMachineRamp','sixMachineRamp1F.mir') # base case for AGC testing
-mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenMach2F.mir') # base case for AGC testing
-mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov1F.mir') # base case for AGC testing
-mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov2F.mir') # base case for AGC testing
-mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov3F.mir') # base case for AGC testing
-mirLoc = os.path.join(dirname, 'delme','genMW','genMWstepF.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','sixMachineRamp','sixMachineRamp1F.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenMach2F.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov1F.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov2F.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','191114-genericsTest','sixMachineStepGenGov3F.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','genMW','genMWstepF.mir') # base case for AGC testing
 
 # WECC data plot
-mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') # base case for AGC testing
+#mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') # base case for AGC testing
 
 # load control
-mirLoc = os.path.join(dirname, 'delme','sixMachineLoadCTRL','sixMachineLoadCTRLF.mir') # load ctrl testing...
-mirLoc = os.path.join(dirname, 'delme','sixMachineLoadCTRL','sixMachineLoadCTRL2F.mir') # load ctrl testing...
-mirLoc = os.path.join(dirname, 'delme','sixMachineLoadCTRL','sixMachineLoadCTRL3F.mir') # load ctrl testing...
+#mirLoc = os.path.join(dirname, 'delme','sixMachineLoadCTRL','sixMachineLoadCTRLF.mir') # load ctrl testing...
+#mirLoc = os.path.join(dirname, 'delme','sixMachineLoadCTRL','sixMachineLoadCTRL2F.mir') # load ctrl testing...
+#mirLoc = os.path.join(dirname, 'delme','sixMachineLoadCTRL','sixMachineLoadCTRL3F.mir') # load ctrl testing...
 # gen control
-mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRLF.mir') # load ctrl testing...
-mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL2F.mir') # load ctrl testing...
-mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL3F.mir') # load ctrl testing...
+#mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRLF.mir') # load ctrl testing...
+#mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL2F.mir') # load ctrl testing...
+#mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL3F.mir') # load ctrl testing...
 
 # Retesting of ACE polts post RACE introduction
 #mirLoc = os.path.join(dirname, 'delme','191029-paperSimsNoAGC','miniWECCnoiseNoDBF.mir')
@@ -156,12 +152,15 @@ mirLoc = os.path.join(dirname, 'delme','sixMachineGenCTRL','sixMachineGenCTRL3F.
 #Thesis Validation mirrors...
 mirLoc = os.path.join(dirname, 'delme','thesisV','miniWECCrampF.mir') # load ctrl testing...
 
+# Mini WECC delay Case
+mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep2F.mir') 
+mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep1F.mir') 
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
-printFigs = True #False # 
+printFigs = False # True #
 #ltd.plot.sysLoad(mir, True)
 #ltd.plot.sysVmVa(mir, False)
 #ltd.plot.sysPePmF(mir, False)
@@ -171,13 +170,15 @@ printFigs = True #False #
 #ltd.plot.allPmDynamics(mir, False)
 
 #ltd.plot.sysPLQF(mir, True)
-#ltd.plot.ValveTravel(mir, False, printFigs)
-#ltd.plot.ValveTravel01(mir, True, printFigs)
-#ltd.plot.BAplots01(mir, True, printFigs)
+#ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
+#ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
 #ltd.plot.sysF(mir, True, printFigs)
 
-#ltd.plot.BAplots02(mir, False, printFigs)
-#ltd.plot.ValveTravel00(mir, False, printFigs)
+#ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
+
+
+#ltd.plot.BAplots02(mir, False, printFigs) # legend on inside of right plot
+#ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
 
 #ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
@@ -192,7 +193,9 @@ printFigs = True #False #
 #ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
 
 # Branch MW Flow
-ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
+#ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
+ltd.plot.branchMW2(mir, 89,[38,90], True, printFigs) # for miniWECC COI
+#ltd.plot.branchMW(mir, 89,38, True, printFigs) # for miniWECC COI
 
 # Plot loopy results
 
