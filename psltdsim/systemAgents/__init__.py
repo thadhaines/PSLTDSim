@@ -9,3 +9,4 @@ from .BranchAgent import BranchAgent
 from .TimerAgent import TimerAgent
 from .PowerPlantAgent import PowerPlantAgent
 from .WindowIntegratorAgent import WindowIntegratorAgent
+from .TransformerAgent import TransformerAgent

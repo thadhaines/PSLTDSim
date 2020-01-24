@@ -92,6 +92,7 @@ class Mirror(object):
         self.Delay = []
         self.Gens = []
         self.Load = []
+        self.XFMR = []
         self.Perturbance = []
         self.AGCramp = []
         self.PowerPlant =[]

@@ -153,8 +153,8 @@ dirname = os.path.dirname(__file__)
 mirLoc = os.path.join(dirname, 'delme','thesisV','miniWECCrampF.mir') # load ctrl testing...
 
 # Mini WECC delay Case
-mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep2F.mir') 
 mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep1F.mir') 
+mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep2F.mir') 
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
@@ -194,8 +194,10 @@ printFigs = False # True #
 
 # Branch MW Flow
 #ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
-ltd.plot.branchMW2(mir, 89,[38,90], True, printFigs) # for miniWECC COI
+#ltd.plot.branchMW2(mir, 89,[38,90], True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 89,38, True, printFigs) # for miniWECC COI
+#ltd.plot.branchMW(mir, 110,108, True, printFigs) # branch post xfm
+ltd.plot.branchMW3(mir, 89,[38,90],110,[108], True, printFigs) # All COI connections
 
 # Plot loopy results
 

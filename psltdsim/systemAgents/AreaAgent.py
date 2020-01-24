@@ -13,7 +13,7 @@ class AreaAgent(object):
         self.Nload = len(col.LoadDAO.FindByArea(self.Area))
         self.Nbranch = len(col.BranchDAO.FindByArea(self.Area))
         self.Nshunt = len(col.ShuntDAO.FindByArea(self.Area))
-        #self.Nxfmr = len(col.BranchDAO.FindByArea(self.Area))
+        self.Nxfmr = len(col.TransformerDAO.FindByArea(self.Area))
 
         # Children
         self.Branch = []
@@ -27,7 +27,7 @@ class AreaAgent(object):
         self.Timer ={}
         self.BA = None
         self.AreaSlack = None
-        #self.SVD = []
+        self.XFMR = []
 
         # Current Timestep values
         self.cv={

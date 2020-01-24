@@ -2,7 +2,7 @@ def create_mirror_agents(mirror):
     """Create python mirror of PSLF system by 'crawling' 
     Handles Buses, Generators, and Loads
     Uses col
-    TODO: Add agents for every object: shunts, SVD, xfmr, branch sections, ...
+    TODO: Add agents for every object: shunts, SVD, xfmr, ...
     """
     # Useful variable notation key:
     # c_ .. current
@@ -99,6 +99,17 @@ def create_mirror_agents(mirror):
         if branch.Islanded:
             mirror.Branch.remove(branch)
             print("*** Removed %s" % branch)
+
+    # Init XFMRs in IPY
+    for area in mirror.Area:
+        xfmrList = col.TransformerDAO.FindByArea(area.Area)
+        for xfmr in xfmrList:
+            if xfmr.St == 1:
+                # Make Agent
+                newXFMRAgent = ltd.systemAgents.TransformerAgent(mirror, area, xfmr)
+                # Put links to agent in mirror
+                mirror.XFMR.append(newXFMRAgent)
+                area.XFMR.append(newXFMRAgent)
        
 
     if mirror.debug:

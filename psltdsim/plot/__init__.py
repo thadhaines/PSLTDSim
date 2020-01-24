@@ -39,3 +39,4 @@ from .BAALtest import BAALtest
 
 from .branchMW import branchMW
 from .branchMW2 import branchMW2
+from .branchMW3 import branchMW3

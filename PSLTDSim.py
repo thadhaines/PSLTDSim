@@ -217,7 +217,7 @@ batchList =[
     #r".\testCases\191215-genCTRL\sixMachineGenCTRL3.py",
     
     # Thesis Validations
-    #r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
+    r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
 
@@ -242,8 +242,8 @@ batchList =[
     #r".\testCases\200109-delayScenario1\sixMachineDelayStep5.py", # delay,equal amount of delayed gen
 
     # Mini WECC delay scenario
-    r".\testCases\200123-miniWECCdelay\miniWECCDelayStep1.py", # No AGC, No Delay
-    r".\testCases\200123-miniWECCdelay\miniWECCDelayStep2.py", # No AGC, Delay OR and WA gens
+    #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep1.py", # No AGC, No Delay
+    #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep2.py", # No AGC, Delay OR and WA gens
 
             ]
 

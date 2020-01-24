@@ -11,6 +11,12 @@ def runSimPY3(mirror, amqpAgent):
     ltd.mirror.sumLoad(mirror) 
     ltd.mirror.sumPe(mirror)
 
+    # Link XFMRS to LTD bus
+    for xfmr in mirror.XFMR:
+        xfmr.createLTDlinks()
+        if xfmr.LinkOk:
+            mirror.Log += [xfmr]
+
     for area in mirror.Area:
         # calculate area f response characteristic (beta), and interchange ( IC )
         area.calcBeta()
