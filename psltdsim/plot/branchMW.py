@@ -1,6 +1,7 @@
 def branchMW(mirror, FromBus , ToBus, blkFlag=True, printFigs=False):
-    """Plot total MW flow on line FromBus -> ToBus
+    """Plot total MW flow on single corridor FromBus -> ToBus
     Uses External Bus Numbers
+    will account for multiple lines between buses
     """
     import matplotlib.pyplot as plt
     from matplotlib.offsetbox import AnchoredText # for text box
@@ -23,13 +24,17 @@ def branchMW(mirror, FromBus , ToBus, blkFlag=True, printFigs=False):
     for branch in mir.Branch:
         if (branch.Bus.Extnum == FromBus) and (branch.TBus.Extnum == ToBus):
             mwFlow += branch.r_Pbr
+
+    for xmfr in mir.XFMR:
+        if (xmfr.Bus.Extnum == FromBus) and (xmfr.TBus.Extnum == ToBus):
+            mwFlow += xmfr.r_Pbr
             
 
     ax.plot(mins, initVal*mwFlow[0], linestyle = '-',linewidth=.8, c=[.7, .7, .7] )
     ax.plot(mins, mwFlow, linestyle = '-',linewidth=1,  )
     #ax.legend(loc='lower right', )
 
-    ax.set_title(r'MW Branch Flow From Bus '+str(FromBus)+' to ' + str(ToBus)
+    ax.set_title(r'MW Flow From Bus '+str(FromBus)+' to ' + str(ToBus)
                  +' \n Case: ' + caseName)
 
     ax.set_xlim(0,minEnd)
@@ -40,6 +45,6 @@ def branchMW(mirror, FromBus , ToBus, blkFlag=True, printFigs=False):
     fig.set_dpi(150)
     fig.set_size_inches(9/mini, 2.5)
     fig.tight_layout()
-    if printFigs: plt.savefig(caseName+'BranchMWflow'+str(FromBus)+'to' + str(ToBus)+'.pdf', dpi=300)
+    if printFigs: plt.savefig(caseName+'MWflow'+str(FromBus)+'to' + str(ToBus)+'.pdf', dpi=300)
     plt.show(block=blkFlag)
     plt.pause(0.00001) # required for true non-blocking print...

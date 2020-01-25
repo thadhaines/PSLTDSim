@@ -69,29 +69,31 @@ class TransformerAgent(object):
         if self.LinkOk:
             
             #reworked from branch calcs....
-            Vs = self.Bus.cv['Vm']*self.Bus.Basekv # sending
+            Vs = self.Bus.cv['Vm'] # sending
             ds = self.Bus.cv['Va'] # radians
-            Vr = self.TBus.cv['Vm']*self.Bus.Basekv # recieving
+            Vr = self.TBus.cv['Vm'] # recieving
             dr = self.TBus.cv['Va'] # radians
             j = 1j
 
-            zBase = self.Bus.Basekv*self.Bus.Basekv/self.mirror.Sbase
+            iBase = self.mirror.Sbase/self.Bus.Basekv*(1E6/1E3)
 
             # alt Flow calcs using Amps
             # 1E3 for kV, 1E6 conversion for MW
             try:
                 # calculate branch amps, assumes X and R are set in pu and not 0
-                Amp = (Vs*1e3*np.exp(j*ds)-Vr*1e3*np.exp(j*dr)) / ((self.R+j*self.X)*zBase)/np.sqrt(3)
+                Amp = (Vs*np.exp(j*ds)-Vr*np.exp(j*dr)) / ((self.R+j*self.X))/np.sqrt(3)*iBase
             except ZeroDivisionError:
                 print("Zero div %s", self)
                 Amp = 0.0 
 
-            self.cv['Amps'] = abs(Amp) 
+            # ratio at end =(vp/vs) used to correctly scale current
+            self.cv['Amps'] = abs(Amp)*(self.Bus.Basekv/self.TBus.Basekv)
 
-            Pr = Vs*1e3*abs(Amp)*np.cos(ds-np.angle(Amp))*np.sqrt(3)/1E6
+            # Constants at end to scale PU values
+            Pr = Vs*abs(Amp)*np.cos(ds-np.angle(Amp))*np.sqrt(3)*self.Bus.Basekv*1e3/1E6
             self.cv['Pbr'] = Pr #MW
             
-            Qr = Vs*1e3*abs(Amp)*np.sin(ds-np.angle(Amp))*np.sqrt(3)/1E6
+            Qr = Vs*abs(Amp)*np.sin(ds-np.angle(Amp))*np.sqrt(3)*self.Bus.Basekv*1e3/1E6
             self.cv['Qbr'] = Qr #MW
 
 

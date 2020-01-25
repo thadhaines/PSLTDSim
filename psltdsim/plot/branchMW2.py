@@ -24,6 +24,10 @@ def branchMW2(mirror, FromBus , ToBusList, blkFlag=True, printFigs=False):
         if (branch.Bus.Extnum == FromBus) and (branch.TBus.Extnum in ToBusList):
             mwFlow += branch.r_Pbr
 
+    for xmfr in mir.XFMR:
+        if (xmfr.Bus.Extnum == FromBus) and (xmfr.TBus.Extnum in ToBusList):
+            mwFlow += xmfr.r_Pbr
+
     ax.plot(mins, initVal*mwFlow[0], linestyle = '-',linewidth=.8, c=[.7, .7, .7] )
     ax.plot(mins, mwFlow, linestyle = '-',linewidth=1,  )
     #ax.legend(loc='lower right', )
@@ -31,7 +35,7 @@ def branchMW2(mirror, FromBus , ToBusList, blkFlag=True, printFigs=False):
     toBusName = str(ToBusList).replace('[','')
     toBusName = toBusName.replace(']','')
 
-    ax.set_title(r'MW Branch Flow From Bus '+str(FromBus)+' to ' + toBusName
+    ax.set_title(r'MW Flow From Bus '+str(FromBus)+' to ' + toBusName
                  +' \n Case: ' + caseName)
 
     ax.set_xlim(0,minEnd)
@@ -42,6 +46,7 @@ def branchMW2(mirror, FromBus , ToBusList, blkFlag=True, printFigs=False):
     fig.set_dpi(150)
     fig.set_size_inches(9/mini, 2.5)
     fig.tight_layout()
-    if printFigs: plt.savefig(caseName+'BranchMWflow'+str(FromBus)+'to' + toBusName.replace(',','-')+'.pdf', dpi=300)
+    toBusName = toBusName.replace(',','-')
+    if printFigs: plt.savefig(caseName+'MWflow'+str(FromBus)+'to' + toBusName.replace(' ','')+'.pdf', dpi=300)
     plt.show(block=blkFlag)
     plt.pause(0.00001) # required for true non-blocking print...

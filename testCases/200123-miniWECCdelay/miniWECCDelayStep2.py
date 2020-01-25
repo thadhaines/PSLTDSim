@@ -12,7 +12,7 @@ Step of Load on bus 43 in area 3 200 MW at t=2
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0, # seconds
-    'endTime': 60.0*5, # seconds
+    'endTime': 60.0*4, # seconds
     'slackTol': 1, # MW
     'PY3msgGroup' : 3, # number of Agent msgs per AMQP msg
     'IPYmsgGroup' : 60, # number of Agent msgs per AMQP msg

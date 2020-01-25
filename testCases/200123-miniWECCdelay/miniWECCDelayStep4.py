@@ -4,9 +4,9 @@ AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
-Base case: No AGC
+Delay Case: No AGC
 Delay over response test on mini WECC scale
-Step of Load on bus 43 in area 3 200 MW at t=2
+Step of gen pm, pref on bus 45 in area 3 -200 MW at t=2
 """
 
 # Simulation Parameters Dictionary
@@ -24,7 +24,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\200123-miniWECCdelay\\", # relative path from cwd
-    'fileName' : 'miniWECCDelayStep1',
+    'fileName' : 'miniWECCDelayStep4',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -35,4 +35,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\miniWECC\miniWECC3AreaLTD.sav"
 dydPath = [r"C:\LTD\pslf_systems\miniWECC\miniWECC_LTD.dyd"]
-ltdPath = r".\testCases\200123-miniWECCdelay\miniWECCDelayStep1.ltd.py"
+ltdPath = r".\testCases\200123-miniWECCdelay\miniWECCDelayStep4.ltd.py"

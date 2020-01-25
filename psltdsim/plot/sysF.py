@@ -36,12 +36,12 @@ def sysF(mirror, blkFlag=True, printFigs=False):
         lowDb = np.ones_like(mir.r_f)*mir.fBase-dbLine
         ax.plot(mins, highDb,linewidth=1,linestyle=":",C='0.3')
         ax.plot(mins,lowDb,linewidth=1,linestyle=":",C='0.3', label = str(dbLine)+' Hz Governor Deadband')
+        ax.legend(loc='center right')
 
     ax.set_title('System Frequency\n Case: ' + caseName)
     ax.set_ylabel('Hz')
     ax.set_xlabel('Time [minutes]')
     ax.set_xlim(0,minEnd)
-    ax.legend(loc='center right')
     #ax.legend()
     ax.grid(True)
     fig.set_dpi(150)
