@@ -158,6 +158,9 @@ mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep
 mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep3F.mir') 
 mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep4F.mir') 
 
+# Daily contol results.
+mirLoc = os.path.join(dirname, 'delme','200127-sixMachineDailyCTRL','sixMachineDailyCTRLF.mir') 
+
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
@@ -174,7 +177,7 @@ printFigs = True # False #
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-ltd.plot.sysF(mir, False, printFigs)
+#ltd.plot.sysF(mir, False, printFigs)
 
 #ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 
@@ -182,7 +185,7 @@ ltd.plot.sysF(mir, False, printFigs)
 #ltd.plot.BAplots02(mir, False, printFigs) # legend on inside of right plot
 #ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
 
-#ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
+#ltd.plot.PloadIEEE(mir,False, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
 
 #ltd.plot.AreaLosses(mir,True, printFigs)
@@ -196,11 +199,16 @@ ltd.plot.sysF(mir, False, printFigs)
 
 # Branch MW Flow
 #ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
-ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
+#ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 89, 110,  True, printFigs) # for miniWECC COI,
 #ltd.plot.branchMW(mir, 89,38, True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 110,108, True, printFigs) # branch post xfm
 #ltd.plot.branchMW3(mir, 89,[38,90],110,[108], True, printFigs) # All COI connections
+
+miniFlag = True
+printFigs = True
+ltd.plot.AreaPLoad(mir, False, printFigs,miniFlag)
+ltd.plot.AreaPe(mir, True, printFigs,miniFlag)
 
 # Plot loopy results
 

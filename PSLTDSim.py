@@ -245,7 +245,10 @@ batchList =[
     #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep1.py", # No AGC, No Delay
     #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep2.py", # No AGC, Delay OR and WA gens
     #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep3.py", # No AGC, No Delay - stepping gen instead of load
-    r".\testCases\200123-miniWECCdelay\miniWECCDelayStep4.py", # No AGC, Delay OR and WA gens - stepping gen instead of load
+    #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep4.py", # No AGC, Delay OR and WA gens - stepping gen instead of load
+
+    # Daily Load and Gen Test
+    r".\testCases\200127-dailyControl\sixMachineDailyCTRL.py", # No AGC, Delay OR and WA gens - stepping gen instead of load
 
             ]
 
