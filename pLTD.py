@@ -209,6 +209,7 @@ miniFlag = True
 printFigs = True
 ltd.plot.AreaPLoad(mir, False, printFigs,miniFlag)
 ltd.plot.AreaPe(mir, True, printFigs,miniFlag)
+ltd.plot.AreaPm(mir, True, printFigs,miniFlag)
 
 # Plot loopy results
 
