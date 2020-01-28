@@ -153,13 +153,17 @@ dirname = os.path.dirname(__file__)
 mirLoc = os.path.join(dirname, 'delme','thesisV','miniWECCrampF.mir') # load ctrl testing...
 
 # Mini WECC delay Case
-mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep1F.mir') 
-mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep2F.mir') 
-mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep3F.mir') 
-mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep4F.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep1F.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep2F.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep3F.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep4F.mir') 
+mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep1AGCF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep2AGCF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep3AGCF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep4AGCF.mir') 
 
 # Daily contol results.
-mirLoc = os.path.join(dirname, 'delme','200127-sixMachineDailyCTRL','sixMachineDailyCTRLF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200127-sixMachineDailyCTRL','sixMachineDailyCTRLF.mir') 
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
@@ -177,7 +181,7 @@ printFigs = True # False #
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-#ltd.plot.sysF(mir, False, printFigs)
+ltd.plot.sysF(mir, False, printFigs)
 
 #ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 
@@ -199,7 +203,7 @@ printFigs = True # False #
 
 # Branch MW Flow
 #ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
-#ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
+ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 89, 110,  True, printFigs) # for miniWECC COI,
 #ltd.plot.branchMW(mir, 89,38, True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 110,108, True, printFigs) # branch post xfm
@@ -207,9 +211,9 @@ printFigs = True # False #
 
 miniFlag = True
 printFigs = True
-ltd.plot.AreaPLoad(mir, False, printFigs,miniFlag)
-ltd.plot.AreaPe(mir, True, printFigs,miniFlag)
-ltd.plot.AreaPm(mir, True, printFigs,miniFlag)
+#ltd.plot.AreaPLoad(mir, False, printFigs,miniFlag)
+#ltd.plot.AreaPe(mir, True, printFigs,miniFlag)
+#ltd.plot.AreaPm(mir, True, printFigs,miniFlag)
 
 # Plot loopy results
 
