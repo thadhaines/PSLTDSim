@@ -93,7 +93,7 @@ def runSimPY3(mirror, amqpAgent):
                           % mirror.govDelay[name]['genBus'])
 
 
-    # Create Timers # NOTE: more of a debug than a useful thing -> Timers will be created by DTC
+    # Create Timers # NOTE: more of a debug than a useful thing -> Timers will be created by specific Agents
     """
     if hasattr(mirror, 'TimerInput'):
         for timer in mirror.TimerInput:
@@ -161,7 +161,7 @@ def runSimPY3(mirror, amqpAgent):
         for AGCramp in mirror.AGCramp:
             AGCramp.step()
 
-        # Step Timers (should probably happen when Time is stepped [below...])
+        # Step Timers (should probably happen when Time is stepped [below...]) No... I don't think so anymore... 1/31
 
         # Step Definite Time Controllers
 

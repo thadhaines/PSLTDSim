@@ -5,12 +5,12 @@ Meant to be used to generate input to Load control / Dispatch Control Agents
 """
 ## User specified input data
 # full file Name (assumed in same folder as this file)
-fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (1).csv"
-#fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (2).csv"
-fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST.csv"
+fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (1).csv" #CISO
+#fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (2).csv" #BPAT
+#fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST.csv" #PACE
 
 dataDate = "12/11/2019" # Date format in csv from EIA
-dataTimeStart = "05" # hour format as in EIA csv
+dataTimeStart = "17" # hour format as in EIA csv
 
 additionalDate = "12/12/2019"
 addDayStop = '14' # time to stop on next day (work around for incomplete data)
@@ -119,6 +119,8 @@ for name in outputTuples:
 
 # make plot
 import matplotlib.pyplot as plt
+import numpy as np
+"""
 fig, ax = plt.subplots()
 ax.plot(plotD['demandTime'],plotD['demand'] , label='Demand')
 ax.plot(plotD['forcastTime'],plotD['forcast'], label = 'Forcast')
@@ -126,6 +128,23 @@ ax.plot(plotD['forcastTime'],plotD['forcast'], label = 'Forcast')
 ax.set_title('Load Forcast and Demand from %s\nStart Time = %s:00 %s '%
              (dataName, dataTimeStart, dataDate))
 ax.set_ylabel('MW')
+ax.set_xlabel('Time [Hours]')
+ax.grid(True)
+ax.legend()
+ax.set_xlim(min(plotD['demandTime']),max(plotD['demandTime']))
+
+plt.show()
+plt.pause(0.00001)
+"""
+print(plotD['demand'][0])
+# Relative % change plots
+fig, ax = plt.subplots()
+ax.plot(plotD['demandTime'], np.array(plotD['demand'])/plotD['demand'][0] , label='Demand')
+ax.plot(plotD['forcastTime'], np.array(plotD['forcast'])/plotD['forcast'][0], label = 'Forcast')
+
+ax.set_title('Load Forcast and Demand from %s\nStart Time = %s:00 %s '%
+             (dataName, dataTimeStart, dataDate))
+ax.set_ylabel('Percent Change [%]')
 ax.set_xlabel('Time [Hours]')
 ax.grid(True)
 ax.legend()

@@ -15,8 +15,8 @@ class TimerAgent(object):
         else:
             # Parse and cast input
             self.idStr = parsed[0].split()
-            self.attr = parsed[1].strip()
-            self.cond = parsed[2].strip()
+            self.attr = parsed[1].strip() # Value in target agent cv dictionary
+            self.cond = parsed[2].strip() # a string ex: <.95
             self.actTime = float(parsed[3].strip())
             # Attempt to find mirror Agent
             foundAgent = ltd.find.findAgent(self.mirror ,self.idStr[0], self.idStr[1:] )
@@ -61,8 +61,9 @@ class TimerAgent(object):
         """Check conditional, handle accumulation logic, raise flag if required"""
         if self.agentRef and self.attrRef:
             if self.mirror.debugTimer:
-                print('Testing '+self.name)
+                print('Stepping '+self.name)
 
+            # Check timer condition
             if eval(str(self.agentRef.cv[self.attr])+self.cond):
                 if self.mirror.debugTimer:
                     print(str(self.agentRef.cv[self.attr])+' ' +self.cond,' is True')
