@@ -165,13 +165,16 @@ mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep
 # Daily contol results.
 #mirLoc = os.path.join(dirname, 'delme','200127-sixMachineDailyCTRL','sixMachineDailyCTRLF.mir') 
 
+# Shunt Contorl Test
+mirLoc = os.path.join(dirname, 'delme','200131-ShuntControlDev','sixMachineShuntCTRLF.mir') 
+
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
-printFigs = True # False # 
-#ltd.plot.sysLoad(mir, True)
-#ltd.plot.sysVmVa(mir, False)
+printFigs = False # True # 
+ltd.plot.sysLoad(mir, False)
+ltd.plot.sysVmVa(mir, True)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, False)
@@ -181,7 +184,7 @@ printFigs = True # False #
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-ltd.plot.sysF(mir, False, printFigs)
+#ltd.plot.sysF(mir, True, printFigs)
 
 #ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 
@@ -203,11 +206,13 @@ ltd.plot.sysF(mir, False, printFigs)
 
 # Branch MW Flow
 #ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
-ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
+#ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 89, 110,  True, printFigs) # for miniWECC COI,
 #ltd.plot.branchMW(mir, 89,38, True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 110,108, True, printFigs) # branch post xfm
 #ltd.plot.branchMW3(mir, 89,[38,90],110,[108], True, printFigs) # All COI connections
+
+
 
 miniFlag = True
 printFigs = True

@@ -1,28 +1,39 @@
-class TimerAgent(object):
-    """For Use from shunt control Agent
+class OLDTimerAgent(object):
+    """Debug timer
     A timer that accumulates time if given condition is met then
      raises an activation flag if enough time has been accumulated."""
 
-    def __init__(self, mirror, name, RefAgent, logicSTR, actTime, timeType='abs'):
-        # Retain Inputs & mirror reference
+    def __init__(self, mirror, name, timerStr):
+        # Retain Inputs / mirror reference
         self.name = name
+        self.timerStr = timerStr
         self.mirror = mirror
-        self.RefAgent = RefAgent
 
-        self.actTime = actTime
-        self.timeType = timeType
-
-        # Parse Timer Logic
-        self.logicSTR = logicSTR
-        parsed = logicSTR.split(":")
-        self.attr = parsed[0].strip() # Value in target agent cv dictionary
-        self.cond = parsed[1].strip() # a string ex: <.95
-
-        if self.attr not in self.RefAgent.cv:
-            print('*** Timer Error: Agent has no attribute %s.' % self.attr)
-            self.attrRef = False
+        parsed = timerStr.split(":")
+        if len(parsed) < 4:
+            print('*** Timer Error: Underdefined input.')
+            foundAgent = False
         else:
-            self.attrRef = True
+            # Parse and cast input
+            self.idStr = parsed[0].split()
+            self.attr = parsed[1].strip() # Value in target agent cv dictionary
+            self.cond = parsed[2].strip() # a string ex: <.95
+            self.actTime = float(parsed[3].strip())
+            # Attempt to find mirror Agent
+            foundAgent = ltd.find.findAgent(self.mirror ,self.idStr[0], self.idStr[1:] )
+
+        if foundAgent:
+            if self.mirror.debugTimer:
+                print('Found', foundAgent)
+            self.agentRef = foundAgent
+            if self.attr not in foundAgent.cv:
+                print('*** Timer Error: Agent has no attribute %s.' % self.attr)
+                self.attrRef = False
+            else:
+                self.attrRef = True
+        else:
+            print('*** Timer Error: Target Agent Not Found.')
+            self.agentRef = None
 
         # Accumulators
         self.currentAcc = 0.0
@@ -40,29 +51,30 @@ class TimerAgent(object):
         self.actFlag = False
 
         # Attach timer to refereneced agent and mirror
-        if self.RefAgent:
-            self.RefAgent.Timer[self.name] = self
-            self.mirror.Timer[self.name] = self
+        if self.agentRef:
+            self.agentRef.Timer[self.name] = self
+            if (self.idStr[0].lower() != 'mirror'):
+                self.mirror.Timer[self.name] = self
             self.mirror.Log.append(self)
             print('*** Added %s ' % self)
 
     def step(self):
         """Check conditional, handle accumulation logic, raise flag if required"""
-        if self.RefAgent and self.attrRef:
+        if self.agentRef and self.attrRef:
             if self.mirror.debugTimer:
                 print('Stepping '+self.name)
 
             # Check timer condition
-            if eval(str(self.RefAgent.cv[self.attr])+self.cond):
+            if eval(str(self.agentRef.cv[self.attr])+self.cond):
                 if self.mirror.debugTimer:
-                    print(str(self.RefAgent.cv[self.attr])+' ' +self.cond,' is True')
+                    print(str(self.agentRef.cv[self.attr])+' ' +self.cond,' is True')
                 # accumulate time
                 self.currentAcc += self.mirror.timeStep
                 self.totalAcc += self.mirror.timeStep
                 self.cv['Acc'] = 1
             else:
                 if self.mirror.debugTimer:
-                    print(str(self.RefAgent.cv[self.attr])+' ' +self.cond,' is False')
+                    print(str(self.agentRef.cv[self.attr])+' ' +self.cond,' is False')
                 # reset timer
                 self.currentAcc = 0.0
                 self.cv['Acc'] = 0
@@ -73,7 +85,7 @@ class TimerAgent(object):
                 self.totalAct +=1
                 self.cv['Act'] = 1
         else:
-            # Avoid crash if no RefAgent
+            # Avoid crash if no agentRef
             pass
 
     def reset(self):
@@ -91,8 +103,7 @@ class TimerAgent(object):
         tag1 =  " <%s object at %s>\n" % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "Activated when:  %s %s %s for %d seconds" %(
-            self.RefAgent ,self.attr, self.cond, self.actTime)
+        tag2 = "Activated when:  %s %s %s for %d seconds" %(self.idStr ,self.attr, self.cond, self.actTime)
 
         return(self.name+tag1+tag2)
 

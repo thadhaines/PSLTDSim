@@ -17,6 +17,7 @@ def runSimPY3(mirror, amqpAgent):
         if xfmr.LinkOk:
             mirror.Log += [xfmr]
 
+    # Ensure correct Area beta and capacity
     for area in mirror.Area:
         # calculate area f response characteristic (beta), and interchange ( IC )
         area.calcBeta()
@@ -24,7 +25,8 @@ def runSimPY3(mirror, amqpAgent):
         area.calcMaxCapacity()
 
     # Place for user input 'code' to be run (timer defs, pp, BA, DTC, etc... )
-    mirror.ppDict = {}
+    mirror.ppDict = {} # power plant dictionary
+
     if 'ltdPath' in mirror.locations:
         exec(open(mirror.locations['ltdPath']).read());
 
@@ -36,6 +38,17 @@ def runSimPY3(mirror, amqpAgent):
     if hasattr(mirror, 'sysPowerPlants'):
         for name in mirror.sysPowerPlants:
             ltd.systemAgents.PowerPlantAgent(mirror, name, mirror.sysPowerPlants[name])
+    
+    # Create any defined Shunt Controler
+    if hasattr(mirror, 'ShuntControl'):
+        for name in mirror.ShuntControl:
+            print("Found Shunt Controller: %s" % name)
+            # attach to mirror at creation
+            mirror.ShuntCTRL.append(ltd.perturbance.ShuntControlAgent(
+                mirror, name, mirror.ShuntControl[name])
+                )
+
+    print("Debug Stop")
 
     # Create any defined Balancing Authorities
     if hasattr(mirror, 'sysBA'):
@@ -161,9 +174,16 @@ def runSimPY3(mirror, amqpAgent):
         for AGCramp in mirror.AGCramp:
             AGCramp.step()
 
-        # Step Timers (should probably happen when Time is stepped [below...]) No... I don't think so anymore... 1/31
-
-        # Step Definite Time Controllers
+        # Step Shunt Controllers
+        for sCtrl in mirror.ShuntCTRL:
+            updateMSG = sCtrl.step()
+            if updateMSG != False:
+                # send update mesage
+                print(updateMSG)
+                send_start = time.time()
+                PY3.send('toIPY', updateMSG)
+                mirror.PY3SendTime += time.time()-send_start
+                mirror.PY3msgs +=1
 
         # Step Individual Agent Dynamics
         dynamic_start = time.time()

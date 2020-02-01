@@ -86,6 +86,7 @@ class Mirror(object):
         self.BA = []
         self.LoadCTRL = []
         self.GenCTRL = []
+        self.ShuntCTRL = []
         self.Branch = []
         self.Bus = []
         self.Dynamics = []

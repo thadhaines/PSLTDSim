@@ -50,11 +50,9 @@ class ShuntAgent(object):
         tag1 =  "<%s object at %s> " % (module,hex(id(self)))
 
         # additional outputs
-        tag2 = "%s %s" %(str(self.FBusnum).zfill(3), self.FBusnam)
-        # additional outputs
-        tag3 = "%s %s" %(str(self.TBusnum).zfill(3), self.TBusnam)
+        tag2 = "%s %s %s" %(str(self.FBusnum).zfill(3), self.Id, self.FBusnam)
 
-        return(tag1+tag2+' to '+tag3)
+        return(tag1+tag2)
 
     def getPref(self):
         """Return reference to PSLF object"""
