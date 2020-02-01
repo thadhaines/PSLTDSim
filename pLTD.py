@@ -174,7 +174,8 @@ xend = max(mir.r_t)
 print(mir)
 printFigs = False # True # 
 ltd.plot.sysLoad(mir, False)
-ltd.plot.sysVmVa(mir, True)
+ltd.plot.sysShunt(mir, False)
+#ltd.plot.sysVmVa(mir, True)
 #ltd.plot.sysPePmF(mir, False)
 #ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, False)
@@ -184,7 +185,7 @@ ltd.plot.sysVmVa(mir, True)
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-#ltd.plot.sysF(mir, True, printFigs)
+ltd.plot.sysF(mir, True, printFigs)
 
 #ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 

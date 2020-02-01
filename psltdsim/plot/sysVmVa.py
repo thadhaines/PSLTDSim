@@ -24,12 +24,12 @@ def sysVmVa(mirror, blkFlag=True):
     ax[0].set_xlabel('Time [sec]')
     ax[0].set_xlim(0,xend)
     ax[0].set_ylabel('Voltage [PU]')
-    ax[0].legend()
+    #ax[0].legend()
 
     ax[1].set_xlabel('Time [sec]')
     ax[1].set_xlim(0,xend)
     ax[1].set_ylabel('Anlge [degrees]')
-    ax[1].legend()
+    #ax[1].legend()
 
     fig.tight_layout()
 

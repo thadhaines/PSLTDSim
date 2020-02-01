@@ -179,7 +179,9 @@ def runSimPY3(mirror, amqpAgent):
             updateMSG = sCtrl.step()
             if updateMSG != False:
                 # send update mesage
-                print(updateMSG)
+                print("*** Stepping %s %s on Bus %d to St=%s" %
+                      (updateMSG['AgentType'],updateMSG['Id'],
+                       updateMSG['Busnum'],updateMSG['St']) )
                 send_start = time.time()
                 PY3.send('toIPY', updateMSG)
                 mirror.PY3SendTime += time.time()-send_start

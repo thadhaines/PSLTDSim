@@ -6,7 +6,8 @@
 # Perturbances
 mirror.sysPerturbances = [
     'load 9 : step P 2 20 per', # step load up 20%
-    'load 8 : step P 10 20 per', # step load up 20%
+    'load 8 : step P 2 5 per', # step load down 5%
+    'load 8 : step P 10 23 per', # step load up 20%
     'load 8 : step P 30 600 abs', # step load to 600 MW
     'load 9 : ramp P 24 15 -600 rel',
     ]
@@ -20,13 +21,14 @@ mirror.ShuntControl = {
         'SetCountType' : 'abs', # Type of counter to trigger
         'ResetLogic' : 'Vm : >1.05',
         'ResetTime' : 5, # seconds
-        'ResetCountType' : 'per : .9',
+        'ResetCountType' : 'abs',
         'HoldTime' : 0, # seconds, minimum time between actions
         'CtrlShunts' : [
             "shunt 8 2",
             "shunt 8 3",
             "shunt 8 4",
             "shunt 8 5",
+            "shunt 8 6",
             ],
         },# end agend def
     'bus9Caps' : {
@@ -36,21 +38,22 @@ mirror.ShuntControl = {
         'SetTime' : 5, # seconds
         'SetCountType' : 'abs', # Type of counter to trigger
         'ResetLogic' : 'Vm : >1.05',
-        'ResetTime' : 5, # seconds
-        'ResetCountType' : 'per : .9',
-        'HoldTime' : 0, # seconds, minimum time between actions
+        'ResetTime' : 3, # seconds
+        'ResetCountType' : 'abs',
+        'HoldTime' : 8, # seconds, minimum time between actions
         'CtrlShunts' : [
             "shunt 9 2",
             "shunt 9 3",
             "shunt 9 4",
             "shunt 9 5",
+            "shunt 9 6",
             ],
         }, # end agent def
     }# end agents def
 
 
 
-#mirror.NoiseAgent = ltd.perturbance.LoadNoiseAgent(mirror, 0.03, True)
+mirror.NoiseAgent = ltd.perturbance.LoadNoiseAgent(mirror, 0.03, True)
 """
 mirror.sysGenerationControl = {
     'testSystem' : {

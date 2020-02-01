@@ -49,13 +49,33 @@ class ShuntControlAgent(object):
                 self.paramD['ResetLogic'],self.paramD['ResetTime'],
                 self.paramD['ResetCountType'])
             # Create Hold Timer (if applicable)
+            if self.paramD['HoldTime'] > 0:
+                self.HoldTimer = ltd.systemAgents.TimerAgent(
+                    self.mirror, name+'HoldTimer', self.mirror,
+                    'f : >0',self.paramD['HoldTime'])
+            else:
+                self.HoldTimer = None
 
             print("*** Shunt Control Agent %s %s  created."
                  % (tarType, idList))
 
+    def resetTimers(self):
+        """ reset timers, handle optional hold timer """
+        self.SetTimer.reset()
+        self.ResetTimer.reset()
+        if self.HoldTimer is not None:
+            self.HoldTimer.reset()
+
     def step(self):
         """ check flags, send msg, else false """
         updateMSG = False
+
+        # check for hold timer
+        if self.HoldTimer is not None:
+            # if still holding, 'pass'
+            if self.HoldTimer.actFlag == False:
+                return updateMSG
+
         NumOn = len(self.OnShunts)
         NumOff = len(self.OffShunts)
 
@@ -67,8 +87,8 @@ class ShuntControlAgent(object):
                 updateMSG = self.OffShunts[0].makeAMQPmsg()
                 # move to On list
                 self.OnShunts.append(self.OffShunts.pop(0))
-                # Reset Timer
-                self.SetTimer.reset()
+                # Reset Timers
+                self.resetTimers()
 
                 return updateMSG
 
@@ -80,8 +100,8 @@ class ShuntControlAgent(object):
                 updateMSG = self.OnShunts[0].makeAMQPmsg()
                 # move to Off List
                 self.OffShunts.append(self.OnShunts.pop(0))
-                # Reset Timer
-                self.ResetTimer.reset()
+                # Reset Timers
+                self.resetTimers()
 
                 return updateMSG
 

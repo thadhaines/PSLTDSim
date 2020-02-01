@@ -11,7 +11,7 @@ i.e. Low voltage (<0.95) from load step at t = 2
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 60.0,
+    'endTime': 66.0,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
