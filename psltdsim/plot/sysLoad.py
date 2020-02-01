@@ -11,12 +11,12 @@ def sysLoad(mirror, blkFlag=True, printFigs=False):
     ax[1].set_title('System Q Load')
     for load in mir.Load:
         ax[0].plot(mir.r_t, np.array(load.r_P)*np.array(load.r_St), 
-                    marker = 10,
-                    linestyle = ':',
+                    #marker = 10,
+                    #linestyle = ':',
                     label = 'Bus '+ load.Bus.Busnam +' Id ' + load.Id)
         ax[1].plot(mir.r_t, np.array(load.r_Q)*np.array(load.r_St), 
-                    marker = 'o',
-                    linestyle = ':',
+                    #marker = 'o',
+                    #linestyle = ':',
                     label = 'Bus '+ load.Bus.Busnam +' Id ' + load.Id)
     # Shunts per bus
     for bus in mir.Bus:
@@ -26,8 +26,8 @@ def sysLoad(mirror, blkFlag=True, printFigs=False):
                 busShuntTot += shunt.r_Q
 
             ax[1].plot(mir.r_t, busShuntTot, 
-                        marker = 'o',
-                        linestyle = ':',
+                        #marker = 'o',
+                        #linestyle = ':',
                         label = 'Bus '+ str(shunt.FBusnum) +' Shunts')
 
     ax[0].set_xlabel('Time [sec]')

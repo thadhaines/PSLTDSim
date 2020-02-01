@@ -14,9 +14,9 @@ def sysShunt(mirror, blkFlag=True, printFigs=False):
     for bus in mir.Bus:
         if len(bus.Shunt)>0:
             ax[0].plot(mir.r_t, bus.r_Vm, 
-                    marker = 'd',
-                    fillstyle='none',
-                    linestyle = ':',
+                    #marker = 'd',
+                    #fillstyle='none',
+                    #linestyle = ':',
                     label = 'Bus '+ str(bus.Extnum))
             busShuntTot = np.zeros_like(bus.Shunt[0].r_Q)
             for shunt in bus.Shunt:
@@ -30,9 +30,9 @@ def sysShunt(mirror, blkFlag=True, printFigs=False):
                 busShuntTot += shunt.r_Q
 
             ax[1].plot(mir.r_t, busShuntTot, 
-                        marker = 'd',
-                        fillstyle='none',
-                        linestyle = ':',
+                        #marker = 'd',
+                        #fillstyle='none',
+                        #linestyle = ':',
                         label = 'Bus '+ str(shunt.FBusnum) +' Total')
 
     ax[0].set_xlabel('Time [sec]')

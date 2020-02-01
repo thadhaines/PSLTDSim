@@ -168,6 +168,9 @@ mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep
 # Shunt Contorl Test
 mirLoc = os.path.join(dirname, 'delme','200131-ShuntControlDev','sixMachineShuntCTRLF.mir') 
 
+# Sunset
+mirLoc = os.path.join(dirname, 'delme','200201-sunset','sixMachineSunsetF.mir') 
+
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
@@ -185,20 +188,20 @@ ltd.plot.sysShunt(mir, False)
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-ltd.plot.sysF(mir, True, printFigs)
+#ltd.plot.sysF(mir, True, printFigs)
 
-#ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
+ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 
 
 #ltd.plot.BAplots02(mir, False, printFigs) # legend on inside of right plot
-#ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
+ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
 
-#ltd.plot.PloadIEEE(mir,False, printFigs=False, miniFlag = True)
+ltd.plot.PloadIEEE(mir,False, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
 
 #ltd.plot.AreaLosses(mir,True, printFigs)
 #ltd.plot.BAgovU(mir, True, printFigs)
-#ltd.plot.BAALtest(mir, True, printFigs)
+ltd.plot.BAALtest(mir, True, printFigs)
 #ltd.plot.SACE(mir,False, printFigs)
 #ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
