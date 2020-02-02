@@ -46,3 +46,6 @@ from .AreaPe import AreaPe
 from .AreaPm import AreaPm
 
 from .sysShunt import sysShunt
+
+from .branchMVAR import branchMVAR
+from .sysBranchMVAR import sysBranchMVAR

@@ -7,9 +7,16 @@ CTRLtimeScale = 60*60 # ninutes
 
 # Perturbances
 mirror.sysPerturbances = [
-    #'load 8 : step P 2 12 per',
-    #'load 9 : step P 2 18 per',
-    'gen 5 : ramp Pm 3600 7200 -20 per' # 2 hour ramp starting at 1 hour
+    # ramp non-gov gens
+    'gen 2 2 : ramp Pm 600 2700 150 rel', # 45 min ramp up
+    'gen 2 2 : ramp Pm 3900 2700 -150 rel', # 45 min ramp down
+    'gen 5 : ramp Pm 600 2700 300 rel', # 45 min ramp up
+    'gen 5 : ramp Pm 3900 2700 -300 rel', # 45 min ramp down
+    # ramp loads
+    'load 8 : ramp P 600 2700 150 rel', # 45 min ramp up
+    'load 8 : ramp P 3900 2700 -150 rel', # 45 min ramp down
+    'load 9 : ramp P 600 2700 300 rel', # 45 min ramp up
+    'load 9 : ramp P 3900 2700 -300 rel', # 45 min ramp down
     ]
 mirror.NoiseAgent = ltd.perturbance.LoadNoiseAgent(mirror, 0.03, True)
 
@@ -22,7 +29,7 @@ mirror.ShuntControl = {
         'SetLogic' : 'Vm : <1.0',
         'SetTime' : 30, # seconds
         'SetCountType' : 'abs', # Type of counter to trigger
-        'ResetLogic' : 'Vm : >1.05',
+        'ResetLogic' : 'Vm : >1.03',
         'ResetTime' : 30, # seconds
         'ResetCountType' : 'abs',
         'HoldTime' : 60, # seconds, minimum time between actions
@@ -41,7 +48,7 @@ mirror.ShuntControl = {
         'SetLogic' : 'Vm : <1.0',
         'SetTime' : 60, # seconds
         'SetCountType' : 'abs', # Type of counter to trigger
-        'ResetLogic' : 'Vm : >1.05',
+        'ResetLogic' : 'Vm : >1.03',
         'ResetTime' : 60, # seconds
         'ResetCountType' : 'abs',
         'HoldTime' : 80, # seconds, minimum time between actions
@@ -76,14 +83,14 @@ mirror.sysBA = {
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
         'GovBeta' : 0.036, # Hz - for nldroop
-        'CtrlGens': ['gen 1 : 0.75 : rampA',
-                     'gen 2 1 : 0.25 : rampA',
+        'CtrlGens': ['gen 1 : 0.5 : rampA',
+                     'gen 2 1 : 0.5 : rampA',
                      ]
         },
     'BA2-CAISO':{
         'Area':2,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 60.00, # seconds 
+        'AGCActionTime': 45.00, # seconds 
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
@@ -102,10 +109,9 @@ mirror.sysBA = {
         'CtrlGens': ['gen 3 : 1.0 : rampA',]
         },
     }
+
 # Load and Generation Cycle Agents
-
-
-
+"""
 mirror.sysGenerationControl = {
     'BPATDispatch' : {
         'Area': 1,
@@ -113,8 +119,8 @@ mirror.sysGenerationControl = {
         'timeScale' : CTRLtimeScale,
         'rampType' : 'per', # relative percent change
         'CtrlGens': [
-            "gen 1 : 0.25",
-            "gen 2 1 : 0.75", 
+            "gen 1 : 0.5",
+            "gen 2 1 : 0.5", 
             ],
         # Data from: 12/11/2019 PACE
         'forcast' : [ 
@@ -132,8 +138,7 @@ mirror.sysGenerationControl = {
         'timeScale' : CTRLtimeScale,
         'rampType' : 'per', # relative percent change
         'CtrlGens': [
-            "gen 3 : 0.25",
-            "gen 4 : 0.75", 
+            "gen 4 : 1.0", 
             ],
         # Data from: 12/11/2019 PACE
         'forcast' : [ 
@@ -181,3 +186,4 @@ mirror.sysLoadControl = {
     },# end of demand load control definition
 }# end of loac control definitions
 
+"""

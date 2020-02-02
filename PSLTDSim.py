@@ -258,7 +258,9 @@ batchList =[
     #r".\testCases\200131-ShuntControlDev\sixMachineShuntCTRL.py", # No AGC, Delay OR and WA gens - stepping gen instead of load
 
     # Sunset Scenario
-    r".\testCases\200201-sunset\sixMachineSunset.py", # Sunset in the West
+    #r".\testCases\200201-sunset\sixMachineSunset.py", # Sunset in the West
+    # Windramp
+    r".\testCases\200202-windramp\sixMachineWindramp.py", # virtual ramp to show shunt work
 
             ]
 

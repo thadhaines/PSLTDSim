@@ -170,6 +170,8 @@ mirLoc = os.path.join(dirname, 'delme','200131-ShuntControlDev','sixMachineShunt
 
 # Sunset
 mirLoc = os.path.join(dirname, 'delme','200201-sunset','sixMachineSunsetF.mir') 
+# windramp
+mirLoc = os.path.join(dirname, 'delme','200202-windramp','sixMachineWindrampF.mir') 
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
@@ -190,18 +192,20 @@ ltd.plot.sysShunt(mir, False)
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
 #ltd.plot.sysF(mir, True, printFigs)
 
-ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
+#ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 
 
 #ltd.plot.BAplots02(mir, False, printFigs) # legend on inside of right plot
-ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
 
-ltd.plot.PloadIEEE(mir,False, printFigs=False, miniFlag = True)
+ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
+ltd.plot.branchMVAR(mir, 8, [9], True, printFigs) # per area, legend inside right
+
+#ltd.plot.PloadIEEE(mir,False, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
 
 #ltd.plot.AreaLosses(mir,True, printFigs)
 #ltd.plot.BAgovU(mir, True, printFigs)
-ltd.plot.BAALtest(mir, True, printFigs)
+#ltd.plot.BAALtest(mir, True, printFigs)
 #ltd.plot.SACE(mir,False, printFigs)
 #ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
@@ -209,7 +213,7 @@ ltd.plot.BAALtest(mir, True, printFigs)
 #ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
 
 # Branch MW Flow
-#ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
+ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
 #ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 89, 110,  True, printFigs) # for miniWECC COI,
 #ltd.plot.branchMW(mir, 89,38, True, printFigs) # for miniWECC COI
