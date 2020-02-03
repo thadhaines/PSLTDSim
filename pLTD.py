@@ -157,38 +157,43 @@ mirLoc = os.path.join(dirname, 'delme','thesisV','miniWECCrampF.mir') # load ctr
 #mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep2F.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep3F.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep4F.mir') 
-mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep1AGCF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep1AGCF.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep2AGCF.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep3AGCF.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep4AGCF.mir') 
+mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep5AGCF.mir') 
 
 # Daily contol results.
 #mirLoc = os.path.join(dirname, 'delme','200127-sixMachineDailyCTRL','sixMachineDailyCTRLF.mir') 
 
 # Shunt Contorl Test
-mirLoc = os.path.join(dirname, 'delme','200131-ShuntControlDev','sixMachineShuntCTRLF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200131-ShuntControlDev','sixMachineShuntCTRLF.mir') 
 
 # Sunset
-mirLoc = os.path.join(dirname, 'delme','200201-sunset','sixMachineSunsetF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200201-sunset','sixMachineSunsetF.mir') 
 # windramp
-mirLoc = os.path.join(dirname, 'delme','200202-windramp','sixMachineWindrampF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200202-windramp','sixMachineWindrampF.mir') 
 
 # DTC
-mirLoc = os.path.join(dirname, 'delme','200202-dtc','sixMachineDTCF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200202-dtc','sixMachineDTCF.mir') 
 # DTC windramp
-mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp1F.mir') 
-mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp2F.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp1F.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp2F.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp3F.mir') 
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
 print(mir)
 printFigs = False # True # 
-ltd.plot.sysLoad(mir, False)
-ltd.plot.sysShunt(mir, False)
+#ltd.plot.sysPePmFLoad(mir, False, printFigs)
+ltd.plot.sysPePmFLoad2(mir, False, printFigs)
+#ltd.plot.sysLoad(mir, False)
+#ltd.plot.sysShuntV(mir, False, printFigs)
+#ltd.plot.sysShuntMVAR(mir, False, printFigs)
+#ltd.plot.sysShunt(mir, False, printFigs)
 #ltd.plot.sysVmVa(mir, True)
 #ltd.plot.sysPePmF(mir, False)
-ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.allPmDynamics(mir, False)
@@ -196,7 +201,7 @@ ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-ltd.plot.sysF(mir, False, printFigs)
+ltd.plot.sysF(mir, True, printFigs)
 
 #ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 
@@ -204,7 +209,7 @@ ltd.plot.sysF(mir, False, printFigs)
 #ltd.plot.BAplots02(mir, False, printFigs) # legend on inside of right plot
 
 #ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
-ltd.plot.branchMVAR(mir, 8, [9], True, printFigs) # per area, legend inside right
+#ltd.plot.branchMVAR(mir, 8, [9], True, printFigs) # per area, legend inside right
 
 #ltd.plot.PloadIEEE(mir,False, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)

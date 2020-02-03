@@ -250,6 +250,7 @@ batchList =[
     #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep3AGC.py", # No , No Delay - stepping gen instead of load
     #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep4.py", # No AGC, Delay OR and WA gens - stepping gen instead of load
     #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep4AGC.py", # AGC, Delay OR and WA gens - stepping gen instead of load
+    r".\testCases\200123-miniWECCdelay\miniWECCDelayStep5AGC.py", # AGC, Delay gens to make swing - stepping gen instead of load
 
     # Daily Load and Gen Test
     #r".\testCases\200127-dailyControl\sixMachineDailyCTRL.py", # No AGC, Delay OR and WA gens - stepping gen instead of load
@@ -267,7 +268,8 @@ batchList =[
 
     # DTC windramp Test
     #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC1.py", # virtual ramp to show shunt work V only
-    r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC2.py", # virtual ramp to show shunt work V and Qbr
+    #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC2.py", # virtual ramp to show shunt work V and Qbr
+    #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC3.py", # virtual ramp to show shunt work V only, gens not ramped
 
             ]
 
@@ -374,14 +376,14 @@ for testCase in batchList:
             #ltd.plot.BAplots01(mir, False)
             #ltd.plot.ValveTravel01(mir, False)
 
-            ltd.plot.sysPePmFLoad(mir, True)
+            ltd.plot.sysPePmFLoad2(mir, True)
             waitTime += time.time() - wait_start
         else:
             
             #ltd.plot.BAplots01(mir, False,)
             #ltd.plot.ValveTravel01(mir, False)
 
-            ltd.plot.sysPePmFLoad(mir ,False)
+            ltd.plot.sysPePmFLoad2(mir ,False)
 
 # End of Batch Output
 batchTime = time.time() - batchStart - waitTime

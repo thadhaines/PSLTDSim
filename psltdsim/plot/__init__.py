@@ -49,3 +49,7 @@ from .sysShunt import sysShunt
 
 from .branchMVAR import branchMVAR
 from .sysBranchMVAR import sysBranchMVAR
+
+from .sysShuntV import sysShuntV
+from .sysShuntMVAR import sysShuntMVAR
+from .sysPePmFLoad2 import sysPePmFLoad2
