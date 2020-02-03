@@ -39,13 +39,22 @@ def runSimPY3(mirror, amqpAgent):
         for name in mirror.sysPowerPlants:
             ltd.systemAgents.PowerPlantAgent(mirror, name, mirror.sysPowerPlants[name])
     
-    # Create any defined Shunt Controler
+    # Create any defined Shunt Controller
     if hasattr(mirror, 'ShuntControl'):
         for name in mirror.ShuntControl:
             print("Found Shunt Controller: %s" % name)
             # attach to mirror at creation
             mirror.ShuntCTRL.append(ltd.perturbance.ShuntControlAgent(
                 mirror, name, mirror.ShuntControl[name])
+                )
+
+    # Create any defined Definite Time Controller
+    if hasattr(mirror, 'DTCdict'):
+        for name in mirror.DTCdict:
+            print("Found Definite Time Controller: %s" % name)
+            # attach to mirror at creation
+            mirror.DTCCTRL.append(ltd.dtc.DTCAgent(
+                mirror, name, mirror.DTCdict[name])
                 )
 
     print("Debug Stop")
@@ -186,6 +195,18 @@ def runSimPY3(mirror, amqpAgent):
                 PY3.send('toIPY', updateMSG)
                 mirror.PY3SendTime += time.time()-send_start
                 mirror.PY3msgs +=1
+
+        # Step Definite Time Controllers
+        for dtc in mirror.DTCCTRL:
+            updateMSG = dtc.step()
+            if updateMSG != False:
+                # send update mesage
+                print("*** DTC %s Acting..."  % dtc.name)
+                send_start = time.time()
+                PY3.send('toIPY', updateMSG)
+                mirror.PY3SendTime += time.time()-send_start
+                mirror.PY3msgs +=1
+            
 
         # Step Individual Agent Dynamics
         dynamic_start = time.time()

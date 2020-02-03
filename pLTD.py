@@ -173,6 +173,9 @@ mirLoc = os.path.join(dirname, 'delme','200201-sunset','sixMachineSunsetF.mir')
 # windramp
 mirLoc = os.path.join(dirname, 'delme','200202-windramp','sixMachineWindrampF.mir') 
 
+# DTC
+mirLoc = os.path.join(dirname, 'delme','200202-dtc','sixMachineDTCF.mir') 
+
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 xend = max(mir.r_t)
@@ -197,7 +200,7 @@ ltd.plot.sysShunt(mir, False)
 
 #ltd.plot.BAplots02(mir, False, printFigs) # legend on inside of right plot
 
-ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
+#ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
 ltd.plot.branchMVAR(mir, 8, [9], True, printFigs) # per area, legend inside right
 
 #ltd.plot.PloadIEEE(mir,False, printFigs=False, miniFlag = True)
@@ -213,7 +216,7 @@ ltd.plot.branchMVAR(mir, 8, [9], True, printFigs) # per area, legend inside righ
 #ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
 
 # Branch MW Flow
-ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
+#ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
 #ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 89, 110,  True, printFigs) # for miniWECC COI,
 #ltd.plot.branchMW(mir, 89,38, True, printFigs) # for miniWECC COI

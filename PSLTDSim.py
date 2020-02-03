@@ -260,7 +260,10 @@ batchList =[
     # Sunset Scenario
     #r".\testCases\200201-sunset\sixMachineSunset.py", # Sunset in the West
     # Windramp
-    r".\testCases\200202-windramp\sixMachineWindramp.py", # virtual ramp to show shunt work
+    #r".\testCases\200202-windramp\sixMachineWindramp.py", # virtual ramp to show shunt work
+    
+    # DTC Test
+    r".\testCases\200202-DTC\sixMachineDTC.py", # virtual ramp to show shunt work
 
             ]
 

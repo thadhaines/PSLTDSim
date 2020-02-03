@@ -14,6 +14,7 @@ from . import plot
 from . import filterAgents
 from . import math
 from . import agc
+from . import dtc
 
 from .init_PSLF import init_PSLF
 
