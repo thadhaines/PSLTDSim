@@ -175,6 +175,9 @@ mirLoc = os.path.join(dirname, 'delme','200202-windramp','sixMachineWindrampF.mi
 
 # DTC
 mirLoc = os.path.join(dirname, 'delme','200202-dtc','sixMachineDTCF.mir') 
+# DTC windramp
+mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp1F.mir') 
+mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp2F.mir') 
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
@@ -185,7 +188,7 @@ ltd.plot.sysLoad(mir, False)
 ltd.plot.sysShunt(mir, False)
 #ltd.plot.sysVmVa(mir, True)
 #ltd.plot.sysPePmF(mir, False)
-#ltd.plot.sysPePmFLoad(mir, False)
+ltd.plot.sysPePmFLoad(mir, False)
 #ltd.plot.sysPLQF(mir, False)
 
 #ltd.plot.allPmDynamics(mir, False)
@@ -193,7 +196,7 @@ ltd.plot.sysShunt(mir, False)
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-#ltd.plot.sysF(mir, True, printFigs)
+ltd.plot.sysF(mir, False, printFigs)
 
 #ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 

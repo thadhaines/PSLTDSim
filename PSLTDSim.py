@@ -263,7 +263,11 @@ batchList =[
     #r".\testCases\200202-windramp\sixMachineWindramp.py", # virtual ramp to show shunt work
     
     # DTC Test
-    r".\testCases\200202-DTC\sixMachineDTC.py", # virtual ramp to show shunt work
+    #r".\testCases\200202-DTC\sixMachineDTC.py", # virtual ramp to show shunt work
+
+    # DTC windramp Test
+    #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC1.py", # virtual ramp to show shunt work V only
+    r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC2.py", # virtual ramp to show shunt work V and Qbr
 
             ]
 
