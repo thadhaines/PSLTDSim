@@ -87,8 +87,9 @@ def parseDyd(mirror,dydLoc):
         foundPModels = 0
         foundLTDModels = 0
         cline = None # used in continued line operation
-
+        parsedLines = 0
         while line:
+            parsedLines+=1
             if line[0] == '#' or line[0] =='\n':
                 # ignore comments and blanks
                 line = next(file, None)
@@ -151,8 +152,12 @@ def parseDyd(mirror,dydLoc):
                 mirror.Dynamics.append(newLTDmod)
                 #print(line) # for debug
                 foundLTDModels += 1
-  
+
+            if mirror.debug:
+                print("*** Parsed dyd line: %d" % parsedLines)
+
             line = next(file,  None) # get next line, if there is one
+
 
         file.close() # close file
         totFPmodels += foundPModels

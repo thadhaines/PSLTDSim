@@ -203,7 +203,7 @@ batchList =[
     #r".\testCases\191118-miniWECCgeneric\genMWgenTrip0.py",
 
     # full wecc
-    #r".\testCases\191122-fullWECC\fWECCstep1.py", # tested as working
+    r".\testCases\191122-fullWECC\fWECCstep1.py", # tested as working
     #r".\testCases\191209-mysteryWECC\fWECCstep1.py", # Includes islanded things - seems to work... HVDC mismatches... mtTap.p is run alot - provides classic F responnse...
 
     # Load Controller Test
@@ -266,7 +266,7 @@ batchList =[
     # DTC Test
     #r".\testCases\200202-DTC\sixMachineDTC.py", # virtual ramp to show shunt work
     # Inertia Perturb test
-    r".\testCases\200203-pertrubH\sixMachineHpert.py", # virtual ramp to show shunt work
+    #r".\testCases\200203-pertrubH\sixMachineHpert.py", # virtual ramp to show shunt work
 
     # DTC windramp Test
     #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC1.py", # virtual ramp to show shunt work V only
