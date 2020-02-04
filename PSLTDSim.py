@@ -293,6 +293,7 @@ for testCase in batchList:
     fail = False
     case+=1
 
+    # read .py file
     exec(open(testCase).read());
     ltd.terminal.dispCodeTitle()
 
@@ -301,6 +302,7 @@ for testCase in batchList:
     #AMQPdebug = 1
     #debugTimer = 1
 
+    # ensure file linking can find files
     print('*** Case {}/{}'.format(case, len(batchList)))
     print('*** %s' % testCase)
     print('\n*** Checking simulation files...')
