@@ -3,23 +3,39 @@
 # Commented and empty lines are ignored during parsing.
 # Double quoted variable names in model parameters also ignored
 
-CTRLtimeScale = 60*60 # ninutes
-
 # Perturbances
 mirror.sysPerturbances = [
+    # Init step for dtc testing
+
+    'load 8 : step P 2 100 rel',
+    'load 8 : step P 22 -100 rel',
+    'mirror : step Hsys 40 -30 per',
+    'load 8 : step P 42 100 rel',
+    'load 8 : step P 62 -100 rel',
+    'mirror : step Hsys 80 -50 per',
+    'load 8 : step P 82 100 rel',
+    'load 8 : step P 102 -100 rel',
+    'mirror : step Hsys 120 30080 abs',
+    'load 8 : step P 122 100 rel',
+    'load 8 : step P 142 -100 rel',
+    """
+    'load 8 : step P 30 250 rel',
+    'load 8 : step P 60 -500 rel',
+    'load 8 : step P 90 -250 rel',
     # ramp non-gov gens
     'gen 2 2 : ramp Pm 600 2700 150 rel', # 45 min ramp up
     'gen 2 2 : ramp Pm 3900 2700 -150 rel', # 45 min ramp down
     'gen 5 : ramp Pm 600 2700 300 rel', # 45 min ramp up
     'gen 5 : ramp Pm 3900 2700 -300 rel', # 45 min ramp down
     # ramp loads
-    #'load 8 : ramp P 600 2700 150 rel', # 45 min ramp up
-    #'load 8 : ramp P 3900 2700 -150 rel', # 45 min ramp down
-    #'load 9 : ramp P 600 2700 300 rel', # 45 min ramp up
-    #'load 9 : ramp P 3900 2700 -300 rel', # 45 min ramp down
+    'load 8 : ramp P 600 2700 150 rel', # 45 min ramp up
+    'load 8 : ramp P 3900 2700 -150 rel', # 45 min ramp down
+    'load 9 : ramp P 600 2700 300 rel', # 45 min ramp up
+    'load 9 : ramp P 3900 2700 -300 rel', # 45 min ramp down
+    """
     ]
 #mirror.NoiseAgent = ltd.perturbance.LoadNoiseAgent(mirror, 0.03, True)
-
+"""
 # Definite Time Controller Definitions
 mirror.DTCdict = {
     'bus8caps' : {
@@ -36,16 +52,16 @@ mirror.DTCdict = {
             }, # end Target Agents
         'Timers' : {
             'set' :{ # set shunts
-                'logic' : "(ra1 < 1.0)",
-                'actTime' : 30, # seconds of true logic before act
+                'logic' : "(ra1 < 1.0) or (ra2 < -25)",
+                'actTime' : 5, # seconds of true logic before act
                 'act' : "anyOFFTar = 1", # set any target off target = 1
             },# end set
             'reset' :{ # reset shunts
-                'logic' : "(ra1 > 1.04)",
-                'actTime' : 30, # seconds of true logic before act
+                'logic' : "(ra1 > 1.04) or (ra2 > 35)",
+                'actTime' : 3, # seconds of true logic before act
                 'act' : "anyONTar = 0", # set any target On target = 0
             },# end reset
-            'hold' : 60, # minimum time between actions
+            'hold' : 10, # minimum time between actions
             }, # end timers
         },# end bus8caps
     'bus9caps' : {
@@ -62,26 +78,27 @@ mirror.DTCdict = {
             }, # end Target Agents
         'Timers' : {
             'set' :{ # set shunts
-                'logic' : "(ra1 < 1.0)",
-                'actTime' : 80, # seconds of true logic before act
+                'logic' : "(ra1 < 1.0) or (ra2 > 25)",
+                'actTime' : 9, # seconds of true logic before act
                 'act' : "anyOFFTar = 1", # set any target off target = 1
             },# end set
             'reset' :{ # reset shunts
-                'logic' : "(ra1 > 1.04)",
-                'actTime' : 80, # seconds of true logic before act
+                'logic' : "(ra1 > 1.04) or (ra2 < -30)",
+                'actTime' : 8, # seconds of true logic before act
                 'act' : "anyONTar = 0", # set any target On target = 0
             },# end reset
-            'hold' : 120, # minimum time between actions
+            'hold' : 10, # minimum time between actions
             }, # end timers
         },# end bus8caps
     }# end DTCdict
+
 
 # Balancing Authorities
 mirror.sysBA = {
     'BA1-BPAT':{
         'Area':1,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 300, # seconds 
+        'AGCActionTime': 30.00, # seconds 
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
@@ -104,7 +121,7 @@ mirror.sysBA = {
     'BA2-CAISO':{
         'Area':2,
         'B': "1.0 : perload", # MW/0.1 Hz
-        'AGCActionTime': 300.00, # seconds 
+        'AGCActionTime': 45.00, # seconds 
         'ACEgain' : 2.0,
         'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
@@ -123,81 +140,4 @@ mirror.sysBA = {
         'CtrlGens': ['gen 3 : 1.0 : rampA',]
         },
     }
-
-# Load and Generation Cycle Agents
-"""
-mirror.sysGenerationControl = {
-    'BPATDispatch' : {
-        'Area': 1,
-        'startTime' : 2,
-        'timeScale' : CTRLtimeScale,
-        'rampType' : 'per', # relative percent change
-        'CtrlGens': [
-            "gen 1 : 0.5",
-            "gen 2 1 : 0.5", 
-            ],
-        # Data from: 12/11/2019 PACE
-        'forcast' : [ 
-            #(time , Precent change from previous value)
-            (0, 0.0),
-            (1, 5.8),
-            (2, 8.8),
-            (3, 9.9),
-            (4, 4.0),
-            ],
-        }, #end of generation controller def
-    'CAISODispatch' : {
-        'Area': 2,
-        'startTime' : 2,
-        'timeScale' : CTRLtimeScale,
-        'rampType' : 'per', # relative percent change
-        'CtrlGens': [
-            "gen 4 : 1.0", 
-            ],
-        # Data from: 12/11/2019 PACE
-        'forcast' : [ 
-            #(time , Precent change from previous value)
-            (0, 0.0),
-            (1, 0.7),
-            (2, 7.5),
-            (3, 11.2),
-            (4, 4.4),
-            ],
-        }, #end of generation controller def
-    }
-
-
-mirror.sysLoadControl = {
-    'BPATDemand' : {
-        'Area': 1,
-        'startTime' : 2,
-        'timeScale' : CTRLtimeScale,
-        'rampType' : 'per', # relative percent change
-        # Data from: 12/11/2019 BPAT
-        'demand' : [ 
-            #(time , Precent change from previous value)
-            (0, 0.000),
-            (1, 3.2),
-            (2, 8.2),
-            (3, 9.3),
-            (4, 3.8),
-        ] ,
-    }, # end of demand agent def
-    'CAISODemand' : {
-        'Area': 2,
-        'startTime' : 2,
-        'timeScale' : CTRLtimeScale,
-        'rampType' : 'per', # relative percent change
-        # Data from: 12/11/2019 CAISO
-        'demand' : [ 
-            #(time , Precent change from previous value)
-            (0, 0.000),
-            (1, 3.0),
-            (2, 7.0),
-            (3, 10.5),
-            (4, 4.4),
-        ] ,
-    },# end of demand load control definition
-}# end of loac control definitions
-
 """

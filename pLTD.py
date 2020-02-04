@@ -161,6 +161,7 @@ mirLoc = os.path.join(dirname, 'delme','thesisV','miniWECCrampF.mir') # load ctr
 #mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep2AGCF.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep3AGCF.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep4AGCF.mir') 
+
 mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep5AGCF.mir') 
 
 # Daily contol results.
@@ -179,7 +180,7 @@ mirLoc = os.path.join(dirname, 'delme','200123-miniWECCdelay','miniWECCDelayStep
 # DTC windramp
 #mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp1F.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp2F.mir') 
-#mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp3F.mir') 
+mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp4F.mir') 
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
@@ -187,7 +188,7 @@ xend = max(mir.r_t)
 print(mir)
 printFigs = False # True # 
 #ltd.plot.sysPePmFLoad(mir, False, printFigs)
-ltd.plot.sysPePmFLoad2(mir, False, printFigs)
+#ltd.plot.sysPePmFLoad2(mir, False, printFigs)
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysShuntV(mir, False, printFigs)
 #ltd.plot.sysShuntMVAR(mir, False, printFigs)
@@ -209,7 +210,7 @@ ltd.plot.sysF(mir, True, printFigs)
 #ltd.plot.BAplots02(mir, False, printFigs) # legend on inside of right plot
 
 #ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
-#ltd.plot.branchMVAR(mir, 8, [9], True, printFigs) # per area, legend inside right
+#ltd.plot.branchMVAR(mir, 8, [9], False, printFigs) # per area, legend inside right
 
 #ltd.plot.PloadIEEE(mir,False, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
@@ -224,7 +225,7 @@ ltd.plot.sysF(mir, True, printFigs)
 #ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
 
 # Branch MW Flow
-#ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
+ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
 #ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 89, 110,  True, printFigs) # for miniWECC COI,
 #ltd.plot.branchMW(mir, 89,38, True, printFigs) # for miniWECC COI

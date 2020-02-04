@@ -11,7 +11,7 @@ def combinedSwing(mirror, Pacc):
         f = 1.0
 
     PaccPU = Pacc/mirror.Sbase
-    HsysPU = mirror.Hsys/mirror.Sbase
+    HsysPU = mirror.cv['Hsys']/mirror.Sbase # to enable changeable inertia
     deltaF = 1.0-mirror.cv['f'] # this calc may be extra... unchanged since last ts
 
     # Swing equation

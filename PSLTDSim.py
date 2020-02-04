@@ -250,7 +250,7 @@ batchList =[
     #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep3AGC.py", # No , No Delay - stepping gen instead of load
     #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep4.py", # No AGC, Delay OR and WA gens - stepping gen instead of load
     #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep4AGC.py", # AGC, Delay OR and WA gens - stepping gen instead of load
-    r".\testCases\200123-miniWECCdelay\miniWECCDelayStep5AGC.py", # AGC, Delay gens to make swing - stepping gen instead of load
+    #r".\testCases\200123-miniWECCdelay\miniWECCDelayStep5AGC.py", # AGC, Delay gens to make swing - stepping gen instead of load
 
     # Daily Load and Gen Test
     #r".\testCases\200127-dailyControl\sixMachineDailyCTRL.py", # No AGC, Delay OR and WA gens - stepping gen instead of load
@@ -265,11 +265,14 @@ batchList =[
     
     # DTC Test
     #r".\testCases\200202-DTC\sixMachineDTC.py", # virtual ramp to show shunt work
+    # Inertia Perturb test
+    r".\testCases\200203-pertrubH\sixMachineHpert.py", # virtual ramp to show shunt work
 
     # DTC windramp Test
     #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC1.py", # virtual ramp to show shunt work V only
     #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC2.py", # virtual ramp to show shunt work V and Qbr
-    #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC3.py", # virtual ramp to show shunt work V only, gens not ramped
+    #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC3.py", # virtual ramp to show shunt work V only, gens not ramped 5 min AGC
+    #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC4.py", # virtual ramp to show shunt work V only, gens not ramped 5 min AGC, +inertia ramp
 
             ]
 

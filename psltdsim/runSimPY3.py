@@ -24,11 +24,15 @@ def runSimPY3(mirror, amqpAgent):
         # calculate maximum generation capacity of area
         area.calcMaxCapacity()
 
+    # ========================================================================
     # Place for user input 'code' to be run (timer defs, pp, BA, DTC, etc... )
     mirror.ppDict = {} # power plant dictionary
 
     if 'ltdPath' in mirror.locations:
         exec(open(mirror.locations['ltdPath']).read());
+
+    # ========================================================================
+    # Handle user input .ltd code
 
     # parse LTD to handle perturbances
     if hasattr(mirror, 'sysPerturbances'):
@@ -38,6 +42,12 @@ def runSimPY3(mirror, amqpAgent):
     if hasattr(mirror, 'sysPowerPlants'):
         for name in mirror.sysPowerPlants:
             ltd.systemAgents.PowerPlantAgent(mirror, name, mirror.sysPowerPlants[name])
+
+    # Check for Noise Agent and set flag
+    if hasattr(mirror, 'NoiseAgent'):
+        mirror.HasNoiseAgent = True
+    else:
+        mirror.HasNoiseAgent = False
     
     # Create any defined Shunt Controller
     if hasattr(mirror, 'ShuntControl'):
@@ -56,8 +66,6 @@ def runSimPY3(mirror, amqpAgent):
             mirror.DTCCTRL.append(ltd.dtc.DTCAgent(
                 mirror, name, mirror.DTCdict[name])
                 )
-
-    print("Debug Stop")
 
     # Create any defined Balancing Authorities
     if hasattr(mirror, 'sysBA'):
@@ -115,13 +123,14 @@ def runSimPY3(mirror, amqpAgent):
                           % mirror.govDelay[name]['genBus'])
 
 
-    # Create Timers # NOTE: more of a debug than a useful thing -> Timers will be created by specific Agents
+    # Create OG Timers # NOTE: more of a debug than a useful thing -> Timers are created by specific Agents
     """
     if hasattr(mirror, 'TimerInput'):
         for timer in mirror.TimerInput:
             ltd.systemAgents.TimerAgent(mir,timer, mirror.TimerInput[timer]) 
     """
 
+    # ========================================================================
     # Initialize dynamics to ensure correct settings
     ltd.mirror.initPY3Dynamics(mirror)
 
@@ -142,12 +151,6 @@ def runSimPY3(mirror, amqpAgent):
     mirror.r_ss_Pacc.append(0.0)
     mirror.r_f.append(1.0)
     mirror.r_fdot.append(0.0)
-
-    # Check for Noise Agent and set flag
-    if hasattr(mirror, 'NoiseAgent'):
-        mirror.HasNoiseAgent = True
-    else:
-        mirror.HasNoiseAgent = False
 
     # Start Simulation loop
     while (mirror.cv['t'] <= mirror.endTime) and mirror.simRun:
@@ -264,11 +267,12 @@ def runSimPY3(mirror, amqpAgent):
         # Step Perturbance Agents and AGC ramps
         for pertX in mirror.Perturbance:
             if pertX.step():
-                #if perturbance takes action, upday IPY
-                send_start = time.time()
-                PY3.send('toIPY', pertX.mObj.makeAMQPmsg())
-                mirror.PY3SendTime += time.time() -send_start
-                mirror.PY3msgs+=1
+                if type(pertX.mObj) !=  type(mirror):
+                    #if perturbance takes action, upday IPY
+                    send_start = time.time()
+                    PY3.send('toIPY', pertX.mObj.makeAMQPmsg())
+                    mirror.PY3SendTime += time.time() -send_start
+                    mirror.PY3msgs+=1
 
         # Step Noise Agent
         if mirror.HasNoiseAgent:

@@ -13,6 +13,8 @@ def cleanLtdStr(inStr):
         clean.append(b[1]) # from bus
         clean.append(b[2]) # to bus
         clean.append(b[3]) # ck id
+    if b[0].lower() == 'mirror':
+        clean.append(b[0]) # type
     else:
         clean.append(b[0]) # type
         clean.append(float(b[1]))   # busnum / area num

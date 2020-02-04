@@ -56,7 +56,7 @@ def sysPePmFLoad2(mirror, blkFlag=True, printFigs=False):
                      )
         ax[0].set_ylabel('MW')
 
-    ax[0].set_xlabel('Time [sec]')
+    ax[0].set_xlabel('Time [minutes]')
 
     if legendFlag:
         # only make legend for smallish systems
@@ -69,7 +69,7 @@ def sysPePmFLoad2(mirror, blkFlag=True, printFigs=False):
             #fillstyle='none',
             #linestyle = ':',
             label = r'System Frequency')
-    ax[1].set_xlabel('Time [sec]')
+    ax[1].set_xlabel('Time [minutes]')
     ax[1].set_ylabel('Frequency [Hz]')
 
     ax = np.append(ax, ax[1].twinx())

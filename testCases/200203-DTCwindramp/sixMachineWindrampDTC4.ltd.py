@@ -12,6 +12,8 @@ mirror.sysPerturbances = [
     'gen 2 2 : ramp Pm 3900 2700 -150 rel', # 45 min ramp down
     'gen 5 : ramp Pm 600 2700 300 rel', # 45 min ramp up
     'gen 5 : ramp Pm 3900 2700 -300 rel', # 45 min ramp down
+    'mirror : ramp Hsys 600 2700 -20 per', # 45 min ramp down
+    'mirror : ramp Hsys 3900 2700 25 per', # 45 min ramp up
     # ramp loads
     #'load 8 : ramp P 600 2700 150 rel', # 45 min ramp up
     #'load 8 : ramp P 3900 2700 -150 rel', # 45 min ramp down

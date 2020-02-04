@@ -67,7 +67,15 @@ class RampAgent(object):
         tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
 
         # additional outputs
-        if self.RBVal == 0 or None:
+        if type(self.mObj) == type(self.mirror):
+            # additional outputs
+            tag2 = "Ramping %s of system mirror at time %.2f to %.2f %s" %(
+                self.attr,
+                self.startTime,
+                self.RAVal,
+                self.RAtype,
+                )
+        elif self.RBVal == 0 or None:
             tag2 = "Ramping %s on Bus %d ID %s at time %.2f by %.2f %s" %(
                 self.attr,
                 self.mObj.Bus.Extnum,

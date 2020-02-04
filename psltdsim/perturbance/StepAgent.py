@@ -40,17 +40,28 @@ class StepAgent(object):
         T = type(self)
         module = T.__name__
         tag1 =  "<%s object at %s>\n" % (module,hex(id(self)))
+        
+        if self.tarType == 'mirror':
+            # additional outputs
+            tag2 = "Stepping %s of system %s at time %.2f to %.2f %s" %(
+                self.attr,
+                self.tarType,
+                self.tStart,
+                self.pertVal,
+                self.stepType,
+                )
 
-        # additional outputs
-        tag2 = "Stepping %s %s %s on Bus %d at time %.2f to %.2f %s" %(
-            self.tarType,
-            self.mObj.Id,
-            self.attr,
-            self.mObj.Bus.Extnum,
-            self.tStart,
-            self.pertVal,
-            self.stepType,
-            )
+        else:
+            # additional outputs
+            tag2 = "Stepping %s %s %s on Bus %d at time %.2f to %.2f %s" %(
+                self.tarType,
+                self.mObj.Id,
+                self.attr,
+                self.mObj.Bus.Extnum,
+                self.tStart,
+                self.pertVal,
+                self.stepType,
+                )
 
         return(tag1+tag2)
 

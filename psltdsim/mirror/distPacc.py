@@ -16,7 +16,7 @@ def distPacc(mirror, deltaPacc):
 
     tol = mirror.slackTol
     error = tol + 1
-    Hss = mirror.ss_H # MW*sec
+    Hss = mirror.cv['Hsys'] # ss_H # MW*sec
     Pacc = deltaPacc
     iteration = 1
 

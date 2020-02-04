@@ -58,6 +58,7 @@ class Mirror(object):
 
         # Varaible initalization
         self.cv = {
+            'Hsys' : None, # set below
             'dp' : 0, # current data point
             't' : 0.0,
             'f' : 1.0,
@@ -158,6 +159,7 @@ class Mirror(object):
             if gov.Gen != None:
                 gov.Gen.Pmax = gov.mwCap
 
+        # ====================================================================
         # link H and mbase to mirror
         ltd.mirror.initInertiaH(self)
 
@@ -172,6 +174,9 @@ class Mirror(object):
         else:
             # Use system sum of H
             self.Hsys = self.ss_H
+
+        self.cv['Hsys'] = self.Hsys
+        # ====================================================================
 
         #Create search dictionaries
         self.searchDict = ltd.find.makeBusSearchDict(self)
@@ -190,6 +195,7 @@ class Mirror(object):
         """Initialize History Values of mirror agent"""
         # initialize running (history) values 
         self.r_t = [0.0]*self.dataPoints
+        self.r_Hsys = [0.0]*self.dataPoints
 
         self.r_f = [0.0]*self.dataPoints
         self.r_deltaF = [0.0]*self.dataPoints
@@ -216,6 +222,7 @@ class Mirror(object):
         self.r_f[n] = self.cv['f']
         self.r_fdot[n] = self.cv['fdot']
         self.r_deltaF[n] = self.cv['deltaF']
+        self.r_Hsys[n] = self.cv['Hsys']
 
         self.r_ss_Pe[n] = self.ss_Pe
         self.r_ss_Pm[n] = self.ss_Pm
@@ -234,6 +241,7 @@ class Mirror(object):
         self.r_f = self.r_f[:N]
         self.r_fdot = self.r_fdot[:N]
         self.r_deltaF = self.r_deltaF[:N]
+        self.r_Hsys = self.r_Hsys[:N]
 
         self.r_ss_Pe = self.r_ss_Pe[:N]
         self.r_ss_Pm = self.r_ss_Pm[:N]

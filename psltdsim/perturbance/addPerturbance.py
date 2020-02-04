@@ -9,7 +9,10 @@ def addPerturbance(mirror, tarType, idList, perType, perParams):
     TODO: Maybe rethink inputs as a dictionary?
     """
 
-    targetObj = ltd.find.findAgent(mirror, tarType, idList)
+    if tarType == 'mirror':
+        targetObj = mirror
+    else:
+        targetObj = ltd.find.findAgent(mirror, tarType, idList)
     
     #Create Perturbance Agent
     if (perType.lower() == 'step') and targetObj:

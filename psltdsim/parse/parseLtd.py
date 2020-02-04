@@ -46,6 +46,23 @@ def parseLtd(mirror,ltdList):
 
             foundPert += 1
 
+        elif t == "mirror":
+            if mirror.debug:
+                print("*** Creating %s Perturbance..." % parts[0])
+            cleanLine = ltd.parse.cleanLtdStr(ltdEntry)
+
+            # turn clean line into idList
+            idList = cleanLine[0]
+
+            ltd.perturbance.addPerturbance(mirror, 
+                                        cleanLine[0], #tar type
+                                        idList, # in string
+                                        cleanLine[1], #per Type
+                                        cleanLine[2:])# per params
+            #print(line) # debug
+
+            foundPert += 1
+
         totPertfound += foundPert
 
     if mirror.debug == 1:
