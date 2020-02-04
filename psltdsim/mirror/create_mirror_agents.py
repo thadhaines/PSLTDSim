@@ -101,15 +101,17 @@ def create_mirror_agents(mirror):
             print("*** Removed %s" % branch)
 
     # Init XFMRs in IPY
-    for area in mirror.Area:
-        xfmrList = col.TransformerDAO.FindByArea(area.Area)
-        for xfmr in xfmrList:
-            if xfmr.St == 1:
-                # Make Agent
-                newXFMRAgent = ltd.systemAgents.TransformerAgent(mirror, area, xfmr)
-                # Put links to agent in mirror
-                mirror.XFMR.append(newXFMRAgent)
-                area.XFMR.append(newXFMRAgent)
+    if hasattr(mirror.simParams, 'makeXFMRs'):
+        if mirror.simParams['makeXFMRs']:
+            for area in mirror.Area:
+                xfmrList = col.TransformerDAO.FindByArea(area.Area)
+                for xfmr in xfmrList:
+                    if xfmr.St == 1:
+                        # Make Agent
+                        newXFMRAgent = ltd.systemAgents.TransformerAgent(mirror, area, xfmr)
+                        # Put links to agent in mirror
+                        mirror.XFMR.append(newXFMRAgent)
+                        area.XFMR.append(newXFMRAgent)
        
 
     if mirror.debug:

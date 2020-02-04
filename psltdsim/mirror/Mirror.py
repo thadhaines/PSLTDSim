@@ -8,12 +8,6 @@ class Mirror(object):
         init_start = time.time()
         __module__= "Mirror"
 
-        # initial system solve
-        try:
-            ltd.mirror.LTD_SolveCase(self)
-        except ValueError as e:
-                print("*** Error Caught")
-                print(e)
 
         # Model Meta Data
         self.created = datetime.now()
@@ -57,6 +51,13 @@ class Mirror(object):
 
         # NOTE: for variable timestep, add extra points here...
         self.dataPoints = int(self.endTime//self.timeStep + 1)
+
+        # initial system solve
+        try:
+            ltd.mirror.LTD_SolveCase(self)
+        except ValueError as e:
+                print("*** Error Caught")
+                print(e)
 
         # Simulation Variable Prefix Key
         # c_ ... current
