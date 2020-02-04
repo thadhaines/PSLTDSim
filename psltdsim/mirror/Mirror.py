@@ -8,6 +8,13 @@ class Mirror(object):
         init_start = time.time()
         __module__= "Mirror"
 
+        # initial system solve
+        try:
+            ltd.mirror.LTD_SolveCase(self)
+        except ValueError as e:
+                print("*** Error Caught")
+                print(e)
+
         # Model Meta Data
         self.created = datetime.now()
         self.simNotes = simNotes
@@ -104,13 +111,6 @@ class Mirror(object):
         self.Timer ={}
         self.globalSlack = None
         self.Filter = []
-
-        # initial system solve
-        try:
-            ltd.mirror.LTD_SolveCase(self)
-        except ValueError as e:
-                print("*** Error Caught")
-                print(e)
 
         # Initialize mirror with PSLF values
         self.Ngen = PSLF.GetCasepar('Ngen')

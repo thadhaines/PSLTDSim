@@ -12,6 +12,7 @@ def init_PSLF(locations, loadDyd = True):
     import GE.Pslf.Middleware as mid
     import GE.Pslf.Middleware.Collections as col 
 
+    # truly global variables
     __builtin__.mid = mid
     __builtin__.col = col
 
