@@ -171,7 +171,7 @@ dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'delme','200131-ShuntControlDev','sixMachineShuntCTRLF.mir') 
 
 # Sunset
-mirLoc = os.path.join(dirname, 'delme','200201-sunset','sixMachineSunsetF.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200201-sunset','sixMachineSunsetF.mir') 
 # windramp
 #mirLoc = os.path.join(dirname, 'delme','200202-windramp','sixMachineWindrampF.mir') 
 
@@ -180,7 +180,14 @@ mirLoc = os.path.join(dirname, 'delme','200201-sunset','sixMachineSunsetF.mir')
 # DTC windramp
 #mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp1F.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp2F.mir') 
-mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp5F.mir') 
+#mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp4F.mir') 
+mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp5F.mir') #deadbands
+
+# Automatable H
+#mirLoc = os.path.join(dirname, 'delme','200203-Hpert','sixMachineHpertF.mir') 
+#full WECC
+mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') #deadbands
+
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
@@ -190,8 +197,8 @@ printFigs = False # True #
 #ltd.plot.sysPePmFLoad(mir, False, printFigs)
 ltd.plot.sysPePmFLoad2(mir, False, printFigs)
 #ltd.plot.sysLoad(mir, False)
-ltd.plot.sysShuntV(mir, False, printFigs)
-ltd.plot.sysShuntMVAR(mir, False, printFigs)
+#ltd.plot.sysShuntV(mir, False, printFigs)
+#ltd.plot.sysShuntMVAR(mir, False, printFigs)
 #ltd.plot.sysShunt(mir, False, printFigs)
 #ltd.plot.sysVmVa(mir, True)
 #ltd.plot.sysPePmF(mir, False)
@@ -202,18 +209,18 @@ ltd.plot.sysShuntMVAR(mir, False, printFigs)
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-#ltd.plot.sysF(mir, True, printFigs)
+ltd.plot.sysF(mir, False, printFigs)
 ltd.plot.sysH(mir, False, printFigs)
 
-ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
+#ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 
 
 #ltd.plot.BAplots02(mir, False, printFigs) # legend on inside of right plot
 
 #ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
-ltd.plot.branchMVAR(mir, 8, [9], False, printFigs) # per area, legend inside right
+#ltd.plot.branchMVAR(mir, 8, [9], False, printFigs) # per area, legend inside right
 
-#ltd.plot.PloadIEEE(mir,False, printFigs=False, miniFlag = True)
+ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
 
 #ltd.plot.AreaLosses(mir,True, printFigs)
@@ -226,7 +233,7 @@ ltd.plot.branchMVAR(mir, 8, [9], False, printFigs) # per area, legend inside rig
 #ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
 
 # Branch MW Flow
-ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
+#ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
 #ltd.plot.branchMW2(mir, 89,[38,90,110], True, printFigs) # for miniWECC COI
 #ltd.plot.branchMW(mir, 89, 110,  True, printFigs) # for miniWECC COI,
 #ltd.plot.branchMW(mir, 89,38, True, printFigs) # for miniWECC COI

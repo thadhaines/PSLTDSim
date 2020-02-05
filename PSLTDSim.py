@@ -203,7 +203,7 @@ batchList =[
     #r".\testCases\191118-miniWECCgeneric\genMWgenTrip0.py",
 
     # full wecc
-    #r".\testCases\191122-fullWECC\fWECCstep1.py", # tested as working
+    r".\testCases\191122-fullWECC\fWECCstep1.py", # tested as working
     #r".\testCases\191209-mysteryWECC\fWECCstep1.py", # Includes islanded things - seems to work... HVDC mismatches... mtTap.p is run alot - provides classic F responnse...
 
     # Load Controller Test
@@ -272,8 +272,8 @@ batchList =[
     #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC1.py", # virtual ramp to show shunt work V only
     #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC2.py", # virtual ramp to show shunt work V and Qbr
     #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC3.py", # virtual ramp to show shunt work V only, gens not ramped 5 min AGC
-    r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC4.py", # virtual ramp to show shunt work V only, gens not ramped 5 min AGC, +inertia ramp + acegain + noise
-    r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC5.py", # virtual ramp to show shunt work V only, gens not ramped 5 min AGC, +inertia ramp + acegain + noise + deadband
+    #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC4.py", # virtual ramp to show shunt work V only, gens not ramped 5 min AGC, +inertia ramp + acegain + noise
+    #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC5.py", # virtual ramp to show shunt work V only, gens not ramped 5 min AGC, +inertia ramp + acegain + noise + deadband
 
             ]
 

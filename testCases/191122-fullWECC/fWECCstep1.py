@@ -1,5 +1,5 @@
 # Format of required info for batch runs.
-debug = 1
+debug = 0
 AMQPdebug = 0
 debugTimer = 0
 
@@ -18,7 +18,7 @@ simParams = {
     'Dsys' : 0.0, # Untested 
     'fBase' : 60.0, # System F base in Hertz
     'freqEffects' : True, # w in swing equation will not be assumed 1 if true
-    'mainIsland' : 0, # if >0, ignore all objects not in main island
+    'mainIsland' : 1, # if >0, ignore all objects not in main island
     'assumedV' : 'V0', # work around for WECC
     'logBranch' : False,
     'makeXFMRs' : False, # work around for islanded WECC xfmrs
@@ -35,9 +35,9 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\fullWecc\fullWecc.sav" # Uses island 0
 dydPath = [r"C:\LTD\pslf_systems\fullWecc\fullWeccFixed.dyd"] #8475 fixed, -0.09. fixed, line 12397 clean, 15593 replace negatives with -
-#savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a.sav"
-#dydPath = [r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1Fixed.dyd"]
-savPath = r"C:\LTD\pslf_systems\fullWecc\16ls\16ls1a.sav"
-dydPath = [r"C:\LTD\pslf_systems\fullWecc\16ls\16ls11Fixed.dyd"]
+savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a.sav"
+dydPath = [r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1Fixed.dyd"]
+#savPath = r"C:\LTD\pslf_systems\fullWecc\16ls\16ls1a.sav"
+#dydPath = [r"C:\LTD\pslf_systems\fullWecc\16ls\16ls11Fixed.dyd"]
 
 ltdPath = r".\testCases\191122-fullWECC\fWECCStep.ltd.py"
