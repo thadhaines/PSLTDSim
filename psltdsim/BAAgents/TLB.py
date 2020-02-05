@@ -104,6 +104,7 @@ class TLB(BA):
         self.cv['ACE2dist'] = self.cv['SACE']*self.ACEgain
         self.cv['distStep'] = 0
         # Check if current time step is an action step
+        #TODO: add option to be triggered via DTC action...
         if (self.mirror.cv['t'] % self.actTime) == 0:
 
             if self.BAdict['AGCDeadband'] > 0:

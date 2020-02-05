@@ -12,7 +12,7 @@ Shunts are configured to keep bus 8 and 9 Voltage between 1 and 1.04 PU
 Governors on 4 Gens (non ramping gens)
 AGC signals split to Area 1 gens, only act on gen 3 in Area 2 5 min AGC
 Area 2 shunts and AGC slightly slower than area 1
-Generators not ramped
+Generators not ramped, deadbands
 """
 
 # Simulation Parameters Dictionary
@@ -30,7 +30,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\200203-DTCwindramp\\", # relative path from cwd
-    'fileName' : 'sixMachineWindramp4',
+    'fileName' : 'sixMachineWindramp5',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -42,4 +42,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachineLTD.sav"
 dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachineLTD.dyd"]
-ltdPath = r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC4.ltd.py"
+ltdPath = r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC5.ltd.py"
