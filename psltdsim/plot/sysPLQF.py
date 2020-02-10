@@ -13,7 +13,7 @@ def sysPLQF(mirror, blkFlag=True):
         ax[0].plot(mir.r_t, mach.r_Pe, 
                     marker = 10,
                     fillstyle='none',
-                    linestyle = ':',
+                    #linestyle = ':',
                     label = 'Pe Gen '+ mach.Busnam)
     ax[0].set_xlabel('Time [sec]')
     ax[0].set_ylabel('MW')
@@ -23,7 +23,7 @@ def sysPLQF(mirror, blkFlag=True):
         ax[2].plot(mir.r_t, mach.r_Q, 
                     marker = 10,
                     fillstyle='none',
-                    linestyle = ':',
+                    #linestyle = ':',
                     label = 'Q Gen '+ mach.Busnam)
     ax[2].set_xlabel('Time [sec]')
     ax[2].set_ylabel('MVAR')
@@ -32,7 +32,7 @@ def sysPLQF(mirror, blkFlag=True):
     ax[1].plot(mir.r_t, mir.r_ss_Pload, 
                 marker = 11,
                 #fillstyle='none',
-                linestyle = ':',
+                #linestyle = ':',
                 label = 'Pload')
     ax[1].set_xlabel('Time [sec]')
     ax[1].set_ylabel('MW')
@@ -40,7 +40,7 @@ def sysPLQF(mirror, blkFlag=True):
     ax[3].set_title('System Mean Frequency')
     ax[3].plot(mir.r_t, mir.r_f,
             marker = '.',
-            linestyle = ':',
+            #linestyle = ':',
             label = r'System Frequency')
     ax[3].set_xlabel('Time [sec]')
     ax[3].set_ylabel('Frequency [PU]')

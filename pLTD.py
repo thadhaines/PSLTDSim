@@ -186,8 +186,9 @@ mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp5
 # Automatable H
 #mirLoc = os.path.join(dirname, 'delme','200203-Hpert','sixMachineHpertF.mir') 
 #full WECC
-mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') #deadbands
-
+#mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') #deadbands
+# Q limit testing
+mirLoc = os.path.join(dirname, 'delme','200210-Qlim','sixMachineQlimF.mir') 
 
 mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
@@ -195,22 +196,23 @@ xend = max(mir.r_t)
 print(mir)
 printFigs = False # True # 
 #ltd.plot.sysPePmFLoad(mir, False, printFigs)
-ltd.plot.sysPePmFLoad2(mir, False, printFigs)
+#ltd.plot.sysPePmFLoad2(mir, False, printFigs)
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysShuntV(mir, False, printFigs)
 #ltd.plot.sysShuntMVAR(mir, False, printFigs)
 #ltd.plot.sysShunt(mir, False, printFigs)
-#ltd.plot.sysVmVa(mir, True)
+#ltd.plot.sysVmVa(mir, False)
+ltd.plot.sysVmVAR(mir, True)
 #ltd.plot.sysPePmF(mir, False)
-#ltd.plot.sysPLQF(mir, False)
+#ltd.plot.sysPLQF(mir, True)
 
 #ltd.plot.allPmDynamics(mir, False)
 
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-ltd.plot.sysF(mir, False, printFigs)
-ltd.plot.sysH(mir, False, printFigs)
+#ltd.plot.sysF(mir, False, printFigs)
+#ltd.plot.sysH(mir, False, printFigs)
 
 #ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 
@@ -220,7 +222,7 @@ ltd.plot.sysH(mir, False, printFigs)
 #ltd.plot.ValveTravel00(mir, False, printFigs) # per area, legend inside right
 #ltd.plot.branchMVAR(mir, 8, [9], False, printFigs) # per area, legend inside right
 
-ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
+#ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = True)
 #ltd.plot.AreaRunningValveTravel(mir,True, True)
 
 #ltd.plot.AreaLosses(mir,True, printFigs)

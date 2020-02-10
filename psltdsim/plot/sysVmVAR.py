@@ -1,5 +1,5 @@
-def sysVmVa(mirror, blkFlag=True):
-    """Plot all Bus Vm and Va of given mirror"""
+def sysVmVAR(mirror, blkFlag=True):
+    """Plot all Bus Vm and all generator MVAR output of given mirror"""
     import matplotlib.pyplot as plt
 
     mir = mirror
@@ -34,19 +34,23 @@ def sysVmVa(mirror, blkFlag=True):
                     #fillstyle='none',
                     #linestyle = ':',
                     label = busType+'Bus '+ bus.Busnam)
-        ax[1].plot(mir.r_t, bus.r_Va, 
-                    marker = varMarker,
+
+    ax[1].set_title('Reactive Power Generated')
+    for mach in mir.Machines:
+        ax[1].plot(mir.r_t, mach.r_Q, 
+                    marker = 10,
                     #fillstyle='none',
                     #linestyle = ':',
-                    label = busType+'Bus '+ bus.Busnam)
-    ax[0].set_xlabel('Time [sec]')
+                    label = 'Q Gen '+ mach.Busnam + ' '+ mach.Id)
+
     ax[0].set_xlim(0,xend)
+    ax[0].set_xlabel('Time [sec]')
     ax[0].set_ylabel('Voltage [PU]')
     ax[0].legend()
 
+    ax[1].set_ylabel('MVAR')
     ax[1].set_xlabel('Time [sec]')
     ax[1].set_xlim(0,xend)
-    ax[1].set_ylabel('Anlge [degrees]')
     ax[1].legend()
 
     fig.tight_layout()
