@@ -54,3 +54,5 @@ from .sysShuntV import sysShuntV
 from .sysShuntMVAR import sysShuntMVAR
 from .sysPePmFLoad2 import sysPePmFLoad2
 from .sysH import sysH
+
+from .sysVmVAR import sysVmVAR

@@ -30,5 +30,9 @@ def LTD_SolveCase(mirror=None):
 
     if errorCode == -1:
         '''Solution did not converge'''
-        raise ValueError('*** PSLF power flow solution did not converge.')
+        raise ValueError('*** PSLF power-flow solution did not converge.')
+        return
+    if errorCode == -2:
+        '''Maximum iterations hit'''
+        raise ValueError('*** PSLF power-flow solution stopped due to maximum number of iterations.')
         return
