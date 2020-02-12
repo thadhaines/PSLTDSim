@@ -228,6 +228,9 @@ batchList =[
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3AstepPSS.py",
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3ArampPSS.py",
     #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
+    
+    #r".\testCases\191217-thesisValidation\wecc\18HSPweccStep.py",
+    r".\testCases\191217-thesisValidation\wecc\18HSPweccRamp.py",
 
     # Delay Tests
     #r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step - AGC tune
@@ -276,13 +279,13 @@ batchList =[
     #r".\testCases\200203-DTCwindramp\sixMachineWindrampDTC5.py", # virtual ramp to show shunt work V only, gens not ramped 5 min AGC, +inertia ramp + acegain + noise + deadband
 
     # Q limit test
-    r".\testCases\200210-QlimTest\sixMachineQlim.py", # Ramp of load to test Q limits
+    #r".\testCases\200210-QlimTest\sixMachineQlim.py", # Ramp of load to test Q limits
 
             ]
 
 # Batch Run Parameters
 dispResults = False
-dispTiming = True
+dispTiming = False
 makePlot = True
 
 # Batch run counters

@@ -13,6 +13,7 @@ class BusAgent(object):
         self.Type = newBus.Type
         self.Islnum = int(newBus.Islnum) # island number
         self.Stisol = int(newBus.Stisol) # isolation status
+        self.WECCFlag = False
 
         # Case Parameters
         self.Nload = len(col.LoadDAO.FindByBus(self.Scanbus))
@@ -50,6 +51,7 @@ class BusAgent(object):
             else:
                 # work around for WECC
                 self.Vsched = self.cv['Vm'] # assuming initial voltage is scheduled voltage...
+                self.WECCFlag = True
         else:
             self.Vsched = ltd.data.single2float(newBus.Vsched)
 
@@ -76,17 +78,17 @@ class BusAgent(object):
         self.cv['Vm'] = pObj.Vm
         self.cv['Va'] = pObj.Va
 
-        #self.Vm = pObj.Vm
-        #self.Va = pObj.Va
-
     def setPvals(self):
         """Set PSLF values"""
         pObj = self.getPref()
         # DEBUG update of voltage magnitude output
         #if self.mirror.debug:
         #    print("* %d %s \tVm changed from \t %.5f \t to %.5f" %(self.Extnum, self.Busnam, pObj.Vm, self.Vsched))
-        #pObj.Vm = self.Vsched
-        pObj.Vm = self.cv['Vm']
+        if self.WECCFlag:
+            pObj.Vm = self.Vsched
+        else:
+            pObj.Vm = self.cv['Vm']
+
         pObj.Save()
 
     def makeAMQPmsg(self):
