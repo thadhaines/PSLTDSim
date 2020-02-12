@@ -140,6 +140,8 @@ class genericHydroGovAgent():
             if 'GovDeadband' in self.Gen.AreaAgent.BA.BAdict:
                 self.deadband = self.Gen.AreaAgent.BA.BAdict['GovDeadband']/self.mirror.simParams['fBase']
 
+        #TODO: incorporate other delays etc as tgov1 does....
+
         if self.mirror.debug and not updated:
             print('... nothing updated.')
             return

@@ -1,0 +1,8 @@
+* dyd loaded in PSLF to ensure MW cap is updated in .sav ?
+
+parse dyd collectes H from machines,
+turbine type and R from govs
+
+and mwcap and mva base from both
+
+creates PSLFmodel info in mirror

@@ -139,8 +139,6 @@ def parseDyd(mirror,dydLoc):
                 if newPmod != None:
                     mirror.PSLFgov.append(newPmod)
                     foundPModels += 1
-                    
-            
 
             # LTD Models (proof of concept) - Will probably be removed
             elif parts[0] == "pgov1":
