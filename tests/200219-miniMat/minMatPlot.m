@@ -26,7 +26,8 @@ ds = 30; % number of samples to skip in PSDS data plots
 
 % debug
 
-PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
+PSDSfileName = '18HSPstep.chf'; % 75 MW
+LTDCaseName = '18HSPweccStep';
 LTDCaseName = 'SixMachineStep1';
 genChange = 0;
 

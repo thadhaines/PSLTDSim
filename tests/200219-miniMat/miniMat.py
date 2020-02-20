@@ -17,12 +17,13 @@ dirname = os.path.dirname(__file__)
 tempFolder = os.path.split(dirname)[0]
 rootDir = os.path.split(tempFolder)[0] # root git folder
 
-mirLoc = os.path.join(rootDir, 'delme','thesisV','SixMachineStep1F.mir')
+mirLoc = os.path.join(rootDir, 'delme','thesisV','18HSPweccStepF.mir')
+#mirLoc = os.path.join(rootDir, 'delme','thesisV','SixMachineStep1F.mir')
 
 mir = ltd.data.readMirror(mirLoc)
 
-#printFigs = False
-#ltd.plot.sysF(mir, True, printFigs)
+printFigs = False
+ltd.plot.sysF(mir, True, printFigs)
 
 
 rootD = mir.getDataDict()
@@ -56,6 +57,20 @@ sio.savemat(varName, mirD)
 
 #ltd.data.exportMat(mirror, mirror.simParams)
 
+# counting of total governors and how many are actually a tgov1
+govCount = 0
+tgovCount =0
+for gov in mir.Dynamics:
+    govCount +=1
+    if 'tgov1Agent' in str(type(gov)):
+        tgovCount +=1
+
+print(tgovCount)
+print(govCount)
+print("%.2f" % (tgovCount/govCount))
 """
 Weighted frequency calcualtion requires generator data from mirror...
+
+WECC data still doesn't export to mat correctly.
+
 """
