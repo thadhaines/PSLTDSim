@@ -21,6 +21,8 @@ class SlackAgent(GeneratorAgent):
             'Pe_calc' : ltd.data.single2float(newGen.Pgen), # for initial ss
             'Pe_error' : 0.0,
             'SCE' : 0,
+            'R' : 666E6, # workaround until gov.cv dict....
+
             }
 
     def makeAMQPmsg(self):

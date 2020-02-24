@@ -217,7 +217,7 @@ batchList =[
     #r".\testCases\191215-genCTRL\sixMachineGenCTRL3.py",
     
     # Thesis Validations
-    r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
+    #r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
 
@@ -280,6 +280,10 @@ batchList =[
 
     # Q limit test
     #r".\testCases\200210-QlimTest\sixMachineQlim.py", # Ramp of load to test Q limits
+
+    # DTC using gov (lazy)
+    r".\testCases\200220-govDTC\sixMachGovDTC.py", # dtc gov testing
+
 
             ]
 

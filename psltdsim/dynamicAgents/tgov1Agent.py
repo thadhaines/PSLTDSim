@@ -23,6 +23,8 @@ class tgov1Agent():
         self.Mbase = self.Gen.Mbase
 
         self.R  = PSLFgov.R
+        self.Gen.cv['R'] = self.R # workaround until gov.cv dict becomes a thing
+
         self.T1 = PSLFgov.T1
         self.Vmax = PSLFgov.Vmax
         self.Vmin = PSLFgov.Vmin
@@ -54,7 +56,10 @@ class tgov1Agent():
 
     def stepDynamics(self):
         """ Perform governor control"""
-        self.Pref = self.Gen.cv['Pref'] # get newest set value.
+        # TODO: use gov.cv dictionary in the same way as other 'new' agents
+        self.Pref = self.Gen.cv['Pref'] # get newest set value. 
+        self.R = self.Gen.cv['R']
+
         # logical Pref delay block placement
         if self.PrefDelay != None:
             self.Pref = self.PrefDelay.step(self.Gen.cv['Pref'])

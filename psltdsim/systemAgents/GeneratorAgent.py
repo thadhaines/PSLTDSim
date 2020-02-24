@@ -39,9 +39,12 @@ class GeneratorAgent(object):
             'Pe' : float(newGen.Pgen),   # Generated Power
             'Pm' : float(newGen.Pgen),   # Initialize as equal
             'Pref' : float(newGen.Pgen), # Steady state init
+            'Pref0' : float(newGen.Pgen), # Steady state init
+            'Mbase' : self.Mbase, #
             'Q' : float(newGen.Qgen),    # Q generatred
             'SCE' : 0.0,
             'St' : int(newGen.St),
+            'R' : 666E6, # workaround until gov.cv dict....
             }
 
         # PSLF dynamic models

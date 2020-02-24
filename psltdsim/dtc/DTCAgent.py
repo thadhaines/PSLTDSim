@@ -101,6 +101,8 @@ class DTCAgent(object):
             if actParse[0] in self.tar:
                 if type(self.tar[actParse[0]]) != type(None):
                     TA = self.tar[actParse[0]]
+                    # actParse[2:] needs to be correctly populated with ra  Vals...
+                    #TODO: real parsing/linking...
                     updateMSG = TA.setNewAttr(actParse[1] , actParse[2])
                     # Reset Timers
                     self.resetTimers()

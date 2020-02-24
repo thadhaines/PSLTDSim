@@ -32,6 +32,10 @@ class RTAgent(object):
         """Return most recent rtAttribute"""
         return self.rtAgent.cv[self.attr]
 
+    def getNewAttrSTR(self):
+        """Return most recent rtAttribute as a string"""
+        return str(self.rtAgent.cv[self.attr])
+
     def setNewAttr(self, operation, newVAl):
         """Set attribute to newVal via operation
         returns AMQP update message"""
