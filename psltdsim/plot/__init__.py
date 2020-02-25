@@ -58,4 +58,4 @@ from .sysH import sysH
 from .sysVmVAR import sysVmVAR
 
 from .sysFcomp2 import sysFcomp2
-from .sysPeComp import sysPeComp
+from .sysPgenComp import sysPgenComp

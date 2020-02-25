@@ -239,7 +239,7 @@ mirList = []
 mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovNoDTCF.mir'))
 mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovDTCF.mir'))
 ltd.plot.sysFcomp2(mirList,blkFlag=False, printFigs=False) # multiple mir comp
-ltd.plot.sysPeComp(mirList, 2, blkFlag=True, printFigs=False, ) # multiple mir comp of pe
+ltd.plot.sysPgenComp(mirList, 2, blkFlag=True, printFigs=False, ) # multiple mir comp of pe
 
 # Branch MW Flow
 #ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario

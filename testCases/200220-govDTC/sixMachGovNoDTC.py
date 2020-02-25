@@ -12,7 +12,7 @@ Gov on Gen 2 changed to hydro
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1.0,
+    'timeStep': 0.5,
     'endTime': 60.0*2,
     'slackTol': 1,
     'PY3msgGroup' : 3,

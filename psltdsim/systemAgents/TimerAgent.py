@@ -35,6 +35,7 @@ class TimerAgent(object):
 
         # Accumulators
         self.AccWindowSize = int(self.actTime / self.mirror.timeStep)
+        self.windowNDX = -1
         self.currentAcc = [0.0]*self.AccWindowSize
         self.totalAcc = 0.0
         self.totalAct = 0
@@ -62,22 +63,23 @@ class TimerAgent(object):
             if self.mirror.debugTimer:
                 print('Stepping '+self.name)
 
-            t = self.mirror.cv['dp']
-            windowNDX = t % self.actTime
+            #t = self.mirror.cv['dp']
+            self.windowNDX += 1
+            self.windowNDX %= self.AccWindowSize
 
             # Check timer condition
             if eval(str(self.RefAgent.cv[self.attr])+self.cond):
                 if self.mirror.debugTimer:
                     print(str(self.RefAgent.cv[self.attr])+' ' +self.cond,' is True')
                 # accumulate time step
-                self.currentAcc[windowNDX] = self.mirror.timeStep
+                self.currentAcc[self.windowNDX] = self.mirror.timeStep
                 self.totalAcc += self.mirror.timeStep
                 self.cv['Acc'] = 1 
             else:
                 if self.mirror.debugTimer:
                     print(str(self.RefAgent.cv[self.attr])+' ' +self.cond,' is False')
                 # reset timer
-                self.currentAcc[windowNDX] = 0.0
+                self.currentAcc[self.windowNDX] = 0.0
                 self.cv['Acc'] = 0
 
             if (sum(self.currentAcc) >= self.actTime*self.percent) and not self.actFlag:

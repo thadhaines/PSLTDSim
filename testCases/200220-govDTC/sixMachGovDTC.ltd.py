@@ -34,12 +34,12 @@ mirror.DTCdict = {
         'Timers' : {
             'set' :{ # set Pref
                 'logic' : "(ra1 > 0)", # should always eval as true
-                'actTime' : 24, # seconds of true logic before act
+                'actTime' : 24.0, # seconds of true logic before act
                 'act' : "tar1 = ra3 + (1-ra1)/(ra2) * ra4 *0.5 ", # step Pref (feed foward)
             },# end set
             'reset' :{ # not used in example
                 'logic' : "0",
-                'actTime' : 30, # seconds of true logic before act
+                'actTime' : 30.0, # seconds of true logic before act
                 'act' : "0", # set any target On target = 0
             },# end reset
             'hold' : 0, # minimum time between actions
