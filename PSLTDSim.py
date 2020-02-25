@@ -282,6 +282,7 @@ batchList =[
     #r".\testCases\200210-QlimTest\sixMachineQlim.py", # Ramp of load to test Q limits
 
     # DTC using gov (lazy)
+    r".\testCases\200220-govDTC\sixMachGovNoDTC.py", # dtc gov testing- base case
     r".\testCases\200220-govDTC\sixMachGovDTC.py", # dtc gov testing
 
 

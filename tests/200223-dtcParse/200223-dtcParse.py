@@ -103,7 +103,7 @@ ra ={
 # list of tuples for location and name of references/targets
 foundNdx = []
 
-#test of enumerate
+#test of enumerate for parse/link action
 for ndx, val in enumerate(act):
     print(ndx, val)
 
@@ -130,7 +130,7 @@ for ndx, val in enumerate(act):
                 print('Target %s points to %s' %
                       (act[ndx:endNdx], tar[act[ndx:endNdx]]))
                 # create list of tuples for replace vals
-                foundNdx.append((act[ndx:endNdx],ndx,endNdx))             
+                foundNdx.append((act[ndx:endNdx],ndx,endNdx))
 
     # Reference var check
     if val.lower() == 'r':
@@ -174,16 +174,16 @@ for tup in foundNdx:
     if tup[0][0] == 't':
         # put target value into string
         newAct += tar[tup[0]]
-        
+
+    #check for references
     if tup[0][0] == 'r':
         # put reference value into string
         newAct += ra[tup[0]]
 
-
-        
 print("input str : %s" % act)
 print("output str: %s" % newAct)
 
-# doesn't account for reference/targets not found in dicts....
+# doesn't account for reference/targets not found in dicts...
+# will likely cause error due to bad input -> Probably fine
 
 

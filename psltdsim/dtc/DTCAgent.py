@@ -96,14 +96,15 @@ class DTCAgent(object):
 
         if self.SetTimer.actFlag:
             # parse action string
-            actParse = self.SetTimer.timerD['act'].split(' ')
+            act = self.SetTimer.timerD['act']
+            actParse = act.split(' ')
             # acquire target agent
             if actParse[0] in self.tar:
                 if type(self.tar[actParse[0]]) != type(None):
                     TA = self.tar[actParse[0]]
-                    # actParse[2:] needs to be correctly populated with ra  Vals...
-                    #TODO: real parsing/linking...
-                    updateMSG = TA.setNewAttr(actParse[1] , actParse[2])
+
+                    actionString = ltd.dtc.parseAction(self, actParse[1], act)
+                    updateMSG = TA.setNewAttr(actParse[1] , actionString)
                     # Reset Timers
                     self.resetTimers()
                     return updateMSG

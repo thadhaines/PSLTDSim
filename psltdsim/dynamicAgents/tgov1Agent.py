@@ -56,7 +56,8 @@ class tgov1Agent():
 
     def stepDynamics(self):
         """ Perform governor control"""
-        # TODO: use gov.cv dictionary in the same way as other 'new' agents
+        # TODO: use gov.cv dictionary in the same way as other 'new' agents -
+        #  maybe? else get new values from parent generator each step
         self.Pref = self.Gen.cv['Pref'] # get newest set value. 
         self.R = self.Gen.cv['R']
 
@@ -66,11 +67,12 @@ class tgov1Agent():
 
         # Create system inputs
         self.w = self.mirror.cv['f']
+
         # delta_w delay plot placement
         if self.wDelay != None:
-            self.w = self.wDelay.step(self.w)
-
-        delta_w = 1.0-self.w
+            delta_w = self.wDelay.step(1.0-self.w)
+        else:
+            delta_w = 1.0-self.w
 
         usableR = self.R
 
@@ -160,9 +162,9 @@ class tgov1Agent():
 
         # Init delays if available
         if self.delayDict != None:
-            # check for wdelay
-            if any(self.delayDict['wDelay'][0:2]) > 0:
-                initVal = 1.0
+            # check for delta w delay if any non zero dealy,filter values or gain value entered
+            if ( any(self.delayDict['wDelay'][0:2]) > 0 ) or (len(self.delayDict['wDelay']) > 2):
+                initVal = 0.0
                 newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal, self.delayDict['wDelay'],)
                 # place delay link into mirror delay list
                 newDelay.offSet = 0
@@ -170,7 +172,7 @@ class tgov1Agent():
                 self.wDelay = newDelay
 
             # check for PrefDelay
-            if any(self.delayDict['PrefDelay'][0:2]) > 0:
+            if (any(self.delayDict['PrefDelay'][0:2]) > 0) or (len(self.delayDict['PrefDelay']) > 2):
                 initVal = self.Pref
                 newDelay = ltd.filterAgents.delayAgent(self, self.mirror, initVal, self.delayDict['PrefDelay'],)
                 # place delay link into mirror delay list

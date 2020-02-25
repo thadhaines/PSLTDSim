@@ -5,8 +5,19 @@
 
 # Perturbances
 mirror.sysPerturbances = [
-    'gen 5 : step Pm 2 -100 rel', # Step generator down
+    'gen 5 : step Pm 20 -100 rel', # Step generator down
     ]
+
+# Delay block used as delta_w gain
+mirror.govDelay ={
+    'delaygen2' : {
+        'genBus' : 2,
+        'genId' : '1', # optional
+        'wDelay' : (0, 0, .5),
+        'PrefDelay' : (0, 0)
+        },
+    #end of defined governor delays
+    }
 
 # Definite Time Controller Definitions
 mirror.DTCdict = {
@@ -23,10 +34,10 @@ mirror.DTCdict = {
         'Timers' : {
             'set' :{ # set Pref
                 'logic' : "(ra1 > 0)", # should always eval as true
-                'actTime' : 4, # seconds of true logic before act
-                'act' : "tar1 = ra3 + (1-ra1)/ra2 * ra4 ", # step 
+                'actTime' : 24, # seconds of true logic before act
+                'act' : "tar1 = ra3 + (1-ra1)/(ra2) * ra4 *0.5 ", # step Pref (feed foward)
             },# end set
-            'reset' :{ # not used
+            'reset' :{ # not used in example
                 'logic' : "0",
                 'actTime' : 30, # seconds of true logic before act
                 'act' : "0", # set any target On target = 0

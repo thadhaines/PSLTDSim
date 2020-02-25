@@ -56,3 +56,6 @@ from .sysPePmFLoad2 import sysPePmFLoad2
 from .sysH import sysH
 
 from .sysVmVAR import sysVmVAR
+
+from .sysFcomp2 import sysFcomp2
+from .sysPeComp import sysPeComp

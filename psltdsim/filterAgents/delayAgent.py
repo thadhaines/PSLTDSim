@@ -16,12 +16,11 @@ class delayAgent(object):
         self.ts = self.mirror.timeStep
         self.d1 = paramTuple[0] # delay time constant
         self.t1 = paramTuple[1] # filter time constant
+        # Handle optional Gain
+        self.gain = 1
+        if len(paramTuple)>2:
+            self.gain = paramTuple[2]
 
-        self.operate = True # used for optional hold (debug)
-        if len(paramTuple)>=3:
-            self.operate = paramTuple[2] # operate bool
-        
-        
         self.initVal = initVal 
 
         self.bufferSize = int(self.d1/self.ts)
@@ -44,7 +43,7 @@ class delayAgent(object):
         Handle buffer output/input, 
         filtering if required
         """
-        if self.EnableDelay and self.operate:
+        if self.EnableDelay:
             t = self.mirror.cv['t']
             buffNDX = int(t/self.ts % self.bufferSize)
             outVal = self.buffer[buffNDX- self.offSet] # minus 1 for... Pref tested... Not -1 for w delay... why?
@@ -55,7 +54,7 @@ class delayAgent(object):
                 outVal = self.filter.stepFilter(outVal)
 
             #print(inputVal, outVal) # debug
-            return outVal
+            return outVal*self.gain
         else:
             # if delay is not enabled, act as a hold (i.e. ignore input) (act as constant)
             #print('*** Delay %s not Enabled...' % self.name)
@@ -63,4 +62,4 @@ class delayAgent(object):
             if self.filter != None:
                 outVal = self.filter.stepFilter(outVal)
             # add options to act as through?
-            return outVal
+            return outVal*self.gain

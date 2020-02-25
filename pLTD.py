@@ -181,22 +181,22 @@ dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp1F.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp2F.mir') 
 #mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp4F.mir') 
-mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp5F.mir') #deadbands
+#mirLoc = os.path.join(dirname, 'delme','200203-DTCwindramp','sixMachineWindramp5F.mir') #deadbands
 
 # Automatable H
 #mirLoc = os.path.join(dirname, 'delme','200203-Hpert','sixMachineHpertF.mir') 
 #full WECC
-mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') #deadbands
-mirLoc = os.path.join(dirname, 'delme','thesisV','18HSPweccStepF.mir') #wecc step 2018
-mirLoc = os.path.join(dirname, 'delme','thesisV','18HSPweccRampF.mir') #wecc step 2018
+#mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') #deadbands
+#mirLoc = os.path.join(dirname, 'delme','thesisV','18HSPweccStepF.mir') #wecc step 2018
+#mirLoc = os.path.join(dirname, 'delme','thesisV','18HSPweccRampF.mir') #wecc step 2018
 # Q limit testing
 #mirLoc = os.path.join(dirname, 'delme','200210-Qlim','sixMachineQlimF.mir') 
 
-mir = ltd.data.readMirror(mirLoc)
+#mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 
-xend = max(mir.r_t)
-print(mir)
+#xend = max(mir.r_t)
+#print(mir)
 printFigs = False # True # 
 #ltd.plot.sysPePmFLoad(mir, False, printFigs)
 #ltd.plot.sysPePmFLoad2(mir, False, printFigs)
@@ -214,7 +214,7 @@ printFigs = False # True #
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
 #ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
-ltd.plot.sysF(mir, True, printFigs)
+#ltd.plot.sysF(mir, True, printFigs)
 #ltd.plot.sysH(mir, False, printFigs)
 
 #ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
@@ -235,7 +235,11 @@ ltd.plot.sysF(mir, True, printFigs)
 #ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
-#ltd.plot.sysFcomp(mirList,True, printFigs=False) # multiple mir comp
+mirList = []
+mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovNoDTCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovDTCF.mir'))
+ltd.plot.sysFcomp2(mirList,blkFlag=False, printFigs=False) # multiple mir comp
+ltd.plot.sysPeComp(mirList, 2, blkFlag=True, printFigs=False, ) # multiple mir comp of pe
 
 # Branch MW Flow
 #ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario

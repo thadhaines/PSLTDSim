@@ -71,8 +71,8 @@ def sysFcomp(mirrorList, blkFlag=True, printFigs=False):
     ax.set_ylabel('Hz')
     ax.set_xlabel('Time [minutes]')
     ax.set_xlim(0,minEnd)
-    ax.legend(loc='upper right')#, bbox_to_anchor=(0.5, -0.2))
-    #ax.legend()
+    #ax.legend(loc='upper right')#, bbox_to_anchor=(0.5, -0.2))
+    ax.legend()
     ax.grid(True)
     fig.set_dpi(150)
     fig.set_size_inches(9/2, 2.5) # single column, double height for legend below

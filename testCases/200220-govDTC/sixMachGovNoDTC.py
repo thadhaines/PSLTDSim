@@ -4,6 +4,7 @@ AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
+Base case - no DTC action
 Meant to configure a DTC that steps Pref of a gov every x seconds according to
 frequency deviation. Meant to mimic issue in BPA GDACs.
 Gov on Gen 2 changed to hydro 
@@ -24,7 +25,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\200220-govDTC\\", # relative path from cwd
-    'fileName' : 'sixMachineGovDTC',
+    'fileName' : 'sixMachineGovNoDTC',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
@@ -35,4 +36,4 @@ simParams = {
 
 savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachineLTD.sav"
 dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachineDTC.dyd"]
-ltdPath = r".\testCases\200220-govDTC\sixMachGovDTC.ltd.py"
+ltdPath = r".\testCases\200220-govDTC\sixMachGovNoDTC.ltd.py"
