@@ -59,3 +59,5 @@ from .sysVmVAR import sysVmVAR
 
 from .sysFcomp2 import sysFcomp2
 from .sysPgenComp import sysPgenComp
+from .sysPmComp import sysPmComp
+from .sysPeComp import sysPeComp

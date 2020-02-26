@@ -236,10 +236,13 @@ printFigs = False # True #
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
 mirList = []
+printFigs = True
 mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovNoDTCF.mir'))
 mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovDTCF.mir'))
-ltd.plot.sysFcomp2(mirList,blkFlag=False, printFigs=False) # multiple mir comp
-ltd.plot.sysPgenComp(mirList, 2, blkFlag=True, printFigs=False, ) # multiple mir comp of pe
+ltd.plot.sysFcomp2(mirList,blkFlag=False, printFigs=printFigs) # multiple mir comp
+#ltd.plot.sysPgenComp(mirList, 2, blkFlag=False, printFigs=False, ) # multiple mir comp of pe
+ltd.plot.sysPmComp(mirList, 2, blkFlag=False, printFigs=printFigs, ) # multiple mir comp of pe
+ltd.plot.sysPeComp(mirList, 2, blkFlag=True, printFigs=printFigs, ) # multiple mir comp of pe
 
 # Branch MW Flow
 #ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario

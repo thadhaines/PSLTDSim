@@ -1,12 +1,12 @@
-def sysFcomp2(mirrorList, blkFlag=True, printFigs=False):
-    """Plot Pe, Pm, and F of given mirror"""
+def sysPmComp(mirrorList, genNum, blkFlag=True, printFigs=False):
+    """Plot  Pm of given gen mirrors"""
     import matplotlib.pyplot as plt
     import numpy as np
     import psltdsim as ltd
 
     plt.rcParams.update({'font.size': 9}) # used to scale text
-    mini = 1 
 
+    mini = 1 
     fig, ax = plt.subplots()
     fig.set_size_inches(6, 2)
 
@@ -30,12 +30,15 @@ def sysFcomp2(mirrorList, blkFlag=True, printFigs=False):
         minEnd = max(mins)
 
         ## Plot System Frequencies
-        ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1, 
-                        label = caseName)
+        gen = ltd.find.findGenOnBus(mir,genNum)
+
+        ax.plot(mins, gen.r_Pm,linewidth=1, 
+                        #linestyle = '--',
+                        label = caseName+' Pm')
         sNDX+=1
 
-    ax.set_title('System Frequency')
-    ax.set_ylabel('Hz')
+    ax.set_title('Controlled Generator Mechanical Power Output')
+    ax.set_ylabel('Power [MW]')
     ax.set_xlabel('Time [minutes]')
     ax.set_xlim(0,minEnd)
     #ax.legend(loc='upper right')#, bbox_to_anchor=(0.5, -0.2))
@@ -45,6 +48,6 @@ def sysFcomp2(mirrorList, blkFlag=True, printFigs=False):
     fig.set_size_inches(9/mini, 2.5) # single column, double height for legend below
     #fig.set_size_inches(9/2, 2.5*.75) # single column, double height for legend below
     fig.tight_layout()
-    if printFigs: plt.savefig(caseName+'Fcomp'+'.pdf', dpi=300)
+    if printFigs: plt.savefig(caseName+'Gen'+str(genNum)+'Pm'+'.pdf', dpi=300)
     plt.show(block = blkFlag)
     plt.pause(0.00001)

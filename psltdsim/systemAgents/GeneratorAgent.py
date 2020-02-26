@@ -26,7 +26,8 @@ class GeneratorAgent(object):
         self.H = 0.0
         self.Hpu = 0.0
         self.Pmax = float(newGen.Pmax)#*
-        self.Qmax = float(newGen.Qmax)#*
+        self.Qmax0 = float(newGen.Qmax)#*
+        self.Qmin0 = float(newGen.Qmin)#*
         self.TurbineType = newGen.TurbineType
 
         # Q: Should Vsched = self.Bus.Vsched? seems better utilized in PSLF
@@ -42,7 +43,9 @@ class GeneratorAgent(object):
             'Pref0' : float(newGen.Pgen), # Steady state init
             'Mbase' : self.Mbase, #
             'Q' : float(newGen.Qgen),    # Q generatred
-            'SCE' : 0.0,
+            'Qmin' : float(newGen.Qmax),    # Q generatred
+            'Qmax' : float(newGen.Qmin),    # Q generatred
+            'SCE' : 0.0, # station control error - never really implemented.
             'St' : int(newGen.St),
             'R' : 666E6, # workaround until gov.cv dict....
             }
@@ -80,6 +83,8 @@ class GeneratorAgent(object):
         
         self.cv['Pe'] = float(pObj.Pgen)
         self.cv['Q'] = float(pObj.Qgen)
+        self.cv['Qmax'] = float(pObj.Qmax)
+        self.cv['Qmin'] = float(pObj.Qmin)
         self.cv['St'] = int(pObj.St)
 
     def setPvals(self):
@@ -91,15 +96,22 @@ class GeneratorAgent(object):
 
         pObj.Pgen = self.cv['Pe']*self.cv['St']
 
+        
         if pObj.St != self.cv['St']:
             # a change in status has occured
+            pObj.St = self.cv['St']
             if self.cv['St'] == 0:
                 pObj.SetOutOfService()
                 if self.mirror.debug: print('setting out of service....')
                 pObj.Pgen = 0.0
+                pObj.Qmax = 0.0
+                pObj.Qmin = 0.0
             elif self.cv['St'] == 1:
                 pObj.SetInService()
-            pObj.St = self.cv['St']
+                # return Q limits to original setting
+                pObj.Qmax = self.Qmax0
+                pObj.Qmin = self.Qmin0
+        
         pObj.Save()
 
     def makeAMQPmsg(self):
@@ -112,6 +124,8 @@ class GeneratorAgent(object):
                'Pm': self.cv['Pm'],
                'Pref' : self.cv['Pref'],
                'Q': self.cv['Q'],
+               'Qmin': self.cv['Qmin'],
+               'Qmax': self.cv['Qmax'],
                'St':self.cv['St'],
                }
         return msg
@@ -122,6 +136,8 @@ class GeneratorAgent(object):
         self.cv['Pm'] = msg['Pm']
         self.cv['Pref'] = msg['Pref']
         self.cv['Q'] = msg['Q']
+        self.cv['Qmin'] = msg['Qmin']
+        self.cv['Qmax'] = msg['Qmax']
         self.cv['St'] = msg['St']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')
