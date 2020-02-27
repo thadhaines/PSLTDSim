@@ -1,4 +1,4 @@
-def findBranchByTFC(mirror, idList):
+def findBranchByFTC(mirror, idList):
     """Locate mirror branch agent by idList which contatins:
     [FromBus, ToBus, CircuitId]
     Pretty lazy approach 'ok' - only has to find once, then uses scanbus

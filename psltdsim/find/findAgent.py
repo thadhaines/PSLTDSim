@@ -35,6 +35,6 @@ def findAgent(mirror, tarType, idList):
               
     if tarType.lower() == 'branch':
         # Branches must have from, to, and ck id
-        targetObj = ltd.find.findBranchByTFC(mirror, idList)
+        targetObj = ltd.find.findBranchByFTC(mirror, idList)
 
     return targetObj
