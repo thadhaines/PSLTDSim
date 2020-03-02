@@ -6,7 +6,7 @@ def distPacc(mirror, deltaPacc):
         Each area has it's own designated slack gen (though it may not be used)
 
     NOTE: pretty rough on the mulitple slack generator handling (i.e. untested) - might work if in seperate islands....
-    TODO: IRP_flag..., and mw limits of generators (Pmax)
+    TODO:  mw limits of generators (Pmax)
 
     Same as original disPacc,with removal of slack inertia before second pass and
     all mirror agents refreshed each solution attempt
@@ -27,8 +27,9 @@ def distPacc(mirror, deltaPacc):
         #for each system area:
         for c_gen in mirror.Machines:
 
-            # Ensure off generators don't suppy power or get Pacc distribution
-            if c_gen.cv['St'] == 0:
+            # Ensure state 0 generators, or non inertial response generators
+            #  don't suppy power or get Pacc distribution
+            if (c_gen.cv['St'] == 0) or (c_gen.cv['IRPflag'] == False):
                 #c_gen.cv['Pe'] = 0
                 #c_gen.cv['Q'] = 0
                 #c_gen.setPvals()

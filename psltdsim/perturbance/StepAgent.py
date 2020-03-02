@@ -94,24 +94,29 @@ class StepAgent(object):
                     # System Pm is calculated after perturbance steps
                     if (self.pertVal == 1) and (self.mObj.cv['St'] ==0):
                         self.mObj.cv['St'] = 1
+                        self.mObj.cv['IRPflag'] = True
                         self.mObj.cv['Pm'] = self.RestartVal
                         self.mObj.cv['Pe'] = self.RestartVal
-                        self.mirror.flatStart = 1
+                        self.mObj.cv['Qmin'] = self.mObj.Qmin0
+                        self.mObj.cv['Qmax'] = self.mObj.Qmax0
+                        # self.mirror.flatStart = 1
                         # handle initial pm values....
                         # add inertial to system
-                        self.mirror.ss_H += self.mObj.H
-                        self.mirror.Hsys += self.mObj.H
+                        #self.mirror.ss_H += self.mObj.H
+                        self.mirror.cv['Hsys'] += self.mObj.H
 
-                    elif (self.pertVal == 0) and (self.mObj.cv['St'] ==1):
+                    elif (self.pertVal == 0) and (self.mObj.cv['St'] == 1):
                         self.mObj.cv['St'] = 0
-                        if self.mirror.debug: print('setting flat start')
-                        self.mirror.flatStart = 1
-                        #self.mObj.cv['Pm'] = 0
-                        #self.mObj.cv['Pe'] = 0
-                        #self.mObj.cv['Q'] = 0
+                        self.mObj.cv['IRPflag'] = False
+                        #if self.mirror.debug: print('setting flat start')
+                        #self.mirror.flatStart = 1
+                        self.mObj.cv['Pm'] = 0
+                        self.mObj.cv['Pe'] = 0
+                        self.mObj.cv['Qmin'] = 0
+                        self.mObj.cv['Qmax'] = 0
                         #remove inertia from system
-                        self.mirror.ss_H -= self.mObj.H
-                        self.mirror.Hsys -= self.mObj.H
+                        #self.mirror.ss_H -= self.mObj.H
+                        self.mirror.cv['Hsys'] -= self.mObj.H
                     else:
                         print("*** Perturbance Error: Status aready %d."
                               % self.pertVal)

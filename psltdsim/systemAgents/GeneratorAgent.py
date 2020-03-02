@@ -35,7 +35,7 @@ class GeneratorAgent(object):
 
         # Current Status
         self.cv={
-            'IRPflag': False,      # Inertia response participant flag...
+            'IRPflag': True,      # Inertia response participant flag...
             'P0' : float(newGen.Pgen),
             'Pe' : float(newGen.Pgen),   # Generated Power
             'Pm' : float(newGen.Pgen),   # Initialize as equal
@@ -43,8 +43,8 @@ class GeneratorAgent(object):
             'Pref0' : float(newGen.Pgen), # Steady state init
             'Mbase' : self.Mbase, #
             'Q' : float(newGen.Qgen),    # Q generatred
-            'Qmin' : float(newGen.Qmax),    # Q generatred
-            'Qmax' : float(newGen.Qmin),    # Q generatred
+            'Qmin' : self.Qmin0,
+            'Qmax' : self.Qmax0,
             'SCE' : 0.0, # station control error - never really implemented.
             'St' : int(newGen.St),
             'R' : 666E6, # workaround until gov.cv dict....
@@ -94,24 +94,28 @@ class GeneratorAgent(object):
         #if self.mirror.debug:
         #    print("* %d %s \tPe changed from \t %.5f \t to %.5f" %(self.Busnum, self.Busnam, pObj.Pgen, self.cv['Pe']*self.cv['St']))
 
-        pObj.Pgen = self.cv['Pe']*self.cv['St']
+        pObj.Pgen = self.cv['Pe']
+        pObj.Qmax = self.cv['Qmax']
+        pObj.Qmin = self.cv['Qmin']
+        pObj.St = self.cv['St']
 
-        
+        """ State changes handled in step agent
         if pObj.St != self.cv['St']:
             # a change in status has occured
             pObj.St = self.cv['St']
             if self.cv['St'] == 0:
-                pObj.SetOutOfService()
-                if self.mirror.debug: print('setting out of service....')
+                #pObj.SetOutOfService()
+                #if self.mirror.debug: print('setting out of service....')
                 pObj.Pgen = 0.0
                 pObj.Qmax = 0.0
                 pObj.Qmin = 0.0
             elif self.cv['St'] == 1:
-                pObj.SetInService()
+                #pObj.SetInService()
                 # return Q limits to original setting
                 pObj.Qmax = self.Qmax0
                 pObj.Qmin = self.Qmin0
-        
+        """
+
         pObj.Save()
 
     def makeAMQPmsg(self):

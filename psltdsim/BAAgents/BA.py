@@ -10,10 +10,16 @@ class BA(object):
         self.actTime = float(BAdict['AGCActionTime'])
 
         # Handle optional agc ramp time param
-        if hasattr(BAdict, 'AGCRampTime'):
+        if 'AGCRampTime' in BAdict:
             self.rampTime = float(BAdict['AGCRampTime'])
         else:
             self.rampTime = float(BAdict['AGCActionTime'])
+
+        # Handle optional variable frequency gain
+        if 'BVgain' in BAdict:
+            self.BVgain = float(BAdict['BVgain'])
+        else:
+            self.BVgain = 0.0
 
         self.ctrlMachines = []
 
@@ -27,6 +33,7 @@ class BA(object):
             'condACE' :0.0, # conditional
             'ACE2dist' : 0.0,
             'distStep' : 0,
+            'Bv' : None, # placeholder for variable bias
             }
 
         # Link mirror Area to agent
@@ -57,6 +64,8 @@ class BA(object):
         else:
             print("*** Balacing Authority Error - Area Not Found")
         
+        self.cv['Bv'] = self.B
+
         # Participation Dictionary init
         self.pDict = {}
 
@@ -106,7 +115,7 @@ class BA(object):
 
             else:
                 print('*** Balacing Authority Error: Target Agent %s Not Found.' % parsed[0])
-        #end for
+        #end for that creates links
 
         # Calc participation factor (pF) sum
         self.pFsum = 0.0
@@ -153,6 +162,7 @@ class BA(object):
         self.r_ACE2dist = [0.0]*self.mirror.dataPoints
         self.r_distStep = [0.0]*self.mirror.dataPoints
         self.r_condACE = [0.0]*self.mirror.dataPoints
+        self.r_Bv = [0.0]*self.mirror.dataPoints
 
         if self.filter != None:
             self.r_SACE = [0.0]*self.mirror.dataPoints
@@ -168,6 +178,7 @@ class BA(object):
         self.r_ACE2dist[n] = self.cv['ACE2dist']
         self.r_distStep[n] = self.cv['distStep']
         self.r_condACE[n] = self.cv['condACE']
+        self.r_Bv[n] = self.cv['Bv']
 
     def popUnsetData(self,N):
         """Erase data after N from non-converged cases"""
@@ -179,3 +190,4 @@ class BA(object):
         self.r_ACE2dist = self.r_ACE2dist[:N]
         self.r_distStep = self.r_distStep[:N]
         self.r_condACE = self.r_condACE[:N]
+        self.r_Bv = self.r_Bv[:N]

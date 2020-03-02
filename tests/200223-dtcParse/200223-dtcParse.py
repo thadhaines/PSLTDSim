@@ -180,6 +180,7 @@ for tup in foundNdx:
         # put reference value into string
         newAct += ra[tup[0]]
 
+# Move to DEBUG only?
 print("input str : %s" % act)
 print("output str: %s" % newAct)
 

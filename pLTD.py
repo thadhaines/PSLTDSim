@@ -185,14 +185,20 @@ dirname = os.path.dirname(__file__)
 
 # Automatable H
 #mirLoc = os.path.join(dirname, 'delme','200203-Hpert','sixMachineHpertF.mir') 
+
 #full WECC
 #mirLoc = os.path.join(dirname, 'delme','fullWECC','fWECCstepF.mir') #deadbands
 #mirLoc = os.path.join(dirname, 'delme','thesisV','18HSPweccStepF.mir') #wecc step 2018
 #mirLoc = os.path.join(dirname, 'delme','thesisV','18HSPweccRampF.mir') #wecc step 2018
+
 # Q limit testing
 #mirLoc = os.path.join(dirname, 'delme','200210-Qlim','sixMachineQlimF.mir') 
 
-#mir = ltd.data.readMirror(mirLoc)
+# Varibable Frequency Bias
+mirLoc = os.path.join(dirname, 'delme','200301-VariFreqB','sixMachineVariB0F.mir') #wecc step 2018
+
+
+mir = ltd.data.readMirror(mirLoc)
 #ltd.terminal.dispSimTandC(mir)
 
 #xend = max(mir.r_t)
@@ -213,12 +219,12 @@ printFigs = False # True #
 
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.ValveTravel(mir, False, printFigs) # per area, legend outside right
-#ltd.plot.ValveTravel01(mir, True, printFigs) # all govs in one graph
+#ltd.plot.ValveTravel01(mir, False, printFigs) # all govs in one graph
 #ltd.plot.sysF(mir, True, printFigs)
-#ltd.plot.sysH(mir, False, printFigs)
 
 #ltd.plot.BAplots01(mir, False, printFigs) # legend on outside of plot
 
+#ltd.plot.sysH(mir, True, printFigs)
 
 #ltd.plot.BAplots02(mir, False, printFigs) # legend on inside of right plot
 
@@ -235,14 +241,19 @@ printFigs = False # True #
 #ltd.plot.ACE2dist(mir, True, printFigs)
 #ltd.plot.oneGenDynamics(mir, True, printFigs, 17) # 4th input is bus num of gen
 
+# list stuff...
 mirList = []
 printFigs = True
-mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovNoDTCF.mir'))
-mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovDTCF.mir'))
-ltd.plot.sysFcomp2(mirList,blkFlag=False, printFigs=printFigs) # multiple mir comp
+#mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovNoDTCF.mir'))
+#mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovDTCF.mir'))
+mirList.append(os.path.join(dirname, 'delme','200301-VariFreqB','sixMachineVariB0F.mir'))
+mirList.append(os.path.join(dirname, 'delme','200301-VariFreqB','sixMachineVariB1F.mir'))
+
+ltd.plot.sysFcomp2(mirList,blkFlag=True, printFigs=printFigs) # multiple mir comp
 #ltd.plot.sysPgenComp(mirList, 2, blkFlag=False, printFigs=False, ) # multiple mir comp of pe
-ltd.plot.sysPmComp(mirList, 2, blkFlag=False, printFigs=printFigs, ) # multiple mir comp of pe
-ltd.plot.sysPeComp(mirList, 2, blkFlag=True, printFigs=printFigs, ) # multiple mir comp of pe
+#ltd.plot.sysPmComp(mirList, 2, blkFlag=False, printFigs=printFigs, ) # multiple mir comp of pe
+#ltd.plot.sysPeComp(mirList, 2, blkFlag=True, printFigs=printFigs, ) # multiple mir comp of pe
+
 
 # Branch MW Flow
 #ltd.plot.branchMW(mir, 8,9, True, printFigs) # for six machine delay scenario
@@ -252,10 +263,6 @@ ltd.plot.sysPeComp(mirList, 2, blkFlag=True, printFigs=printFigs, ) # multiple m
 #ltd.plot.branchMW(mir, 110,108, True, printFigs) # branch post xfm
 #ltd.plot.branchMW3(mir, 89,[38,90],110,[108], True, printFigs) # All COI connections
 
-
-
-miniFlag = True
-printFigs = True
 #ltd.plot.AreaPLoad(mir, False, printFigs,miniFlag)
 #ltd.plot.AreaPe(mir, True, printFigs,miniFlag)
 #ltd.plot.AreaPm(mir, True, printFigs,miniFlag)

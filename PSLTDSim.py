@@ -287,7 +287,11 @@ batchList =[
 
     # Soft and Hard Tripping
     #r".\testCases\200225-softTrips\sixMachSoftTrip.py", # dtc gov testing- base case
-    r".\testCases\200225-softTrips\sixMachHardTrip.py", # dtc gov testing- base case
+    #r".\testCases\200225-softTrips\sixMachHardTrip.py", # dtc gov testing- base case
+
+    # AGC Variable Frequency Testing
+    #r".\testCases\200301-variFreqB\sixMachVariB0.py", # no variable bias
+    r".\testCases\200301-variFreqB\sixMachVariB1.py", # variable bias on
 
 
             ]

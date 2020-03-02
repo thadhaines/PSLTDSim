@@ -5,7 +5,7 @@
 
 # Perturbances
 mirror.sysPerturbances = [
-    'gen 5 : step St 2 0',
+    'gen 3 : step St 2 0',
     #'gen 5 : step Pm 2 0 abs', # Step generator Pm down
     #'gen 5 : step Pe 2 0 abs', # Step generator Pe down
     #'gen 5 : step Qmax 2 0 abs', # Step generator Qmax down

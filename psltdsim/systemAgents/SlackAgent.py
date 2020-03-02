@@ -10,14 +10,18 @@ class SlackAgent(GeneratorAgent):
         self.Tol = mirror.slackTol
 
         # Current Values
+        # NOTE: Qmin / Qmax not applicable to slack generators
+        # NOTE: Assumed slack generator NOT tripped EVER
         self.cv={
-            'IRPflag': False,      # Inertia response participant flag...
+            'IRPflag': True,      # Inertia response participant flag...
             'St' : int(newGen.St),
             'Pe' : ltd.data.single2float(newGen.Pgen),   # Generated Power
             'Pm' : ltd.data.single2float(newGen.Pgen),   # Initialize as equal
             'Pref' : ltd.data.single2float(newGen.Pgen), # Steady state init
             'P0' : ltd.data.single2float(newGen.Pgen),
             'Q' : ltd.data.single2float(newGen.Qgen),    # Q generatred
+            'Qmin' : self.Qmin0,
+            'Qmax' : self.Qmax0,
             'Pe_calc' : ltd.data.single2float(newGen.Pgen), # for initial ss
             'Pe_error' : 0.0,
             'SCE' : 0,
