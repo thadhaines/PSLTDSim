@@ -76,10 +76,18 @@ class TLB(BA):
         # Handle computing integral of ACE using trapezoidal integration
         # optional window integration agent
         n = self.mirror.cv['dp']
+        #Window integration using Reported ACE -> Makes sense as AGC should bring RACE to Zero
         if self.windowInt:
             self.cv['IACE'] = self.wIntAgent.step(self.cv['RACE'], self.r_RACE[n-1])
         else:
             self.cv['IACE'] += (self.cv['RACE']+self.r_RACE[n-1])/2.0*self.mirror.timeStep
+        """
+        # Window integration using conditional ACE
+        if self.windowInt:
+            self.cv['IACE'] = self.wIntAgent.step(self.cv['condACE'], self.r_condACE[n-1])
+        else:
+            self.cv['IACE'] += (self.cv['condACE']+self.r_condACE[n-1])/2.0*self.mirror.timeStep
+        """
 
         IACE2add = 0.0
         # Include Integral of ACE

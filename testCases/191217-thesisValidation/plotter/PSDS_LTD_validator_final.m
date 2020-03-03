@@ -66,16 +66,17 @@ PSDSfileName = '18HSPstep.chf'; % case used in IEEE paper
 LTDCaseName = '18HSPweccStep'; %
 genChange = 0;
 
+
+
+%% import PSDS data
+psds_data = udread(PSDSfileName,[1:15000]); % used to overcome WECC error of "Array dimensions exceed supported range"
+%cellfun(@disp,psds_data.Name) % display all data types collected from psds
+%psdsData_col = jfind(psds_data, 'spd');
 %% import LTD data in an automatic way
 cases = {[LTDCaseName,'F']};
 load(cases{1}) % 2 sec
 mir = eval(cases{1});
 clear eval(cases{1})
-
-%% import PSDS data
-psds_data = udread(PSDSfileName,[]);
-%cellfun(@disp,psds_data.Name) % display all data types collected from psds
-
 %% Initial not super useful plots (kind of ... useful in six machine case)
 %compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

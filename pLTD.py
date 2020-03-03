@@ -195,7 +195,7 @@ dirname = os.path.dirname(__file__)
 #mirLoc = os.path.join(dirname, 'delme','200210-Qlim','sixMachineQlimF.mir') 
 
 # Varibable Frequency Bias
-mirLoc = os.path.join(dirname, 'delme','200301-VariFreqB','sixMachineVariB0F.mir') #wecc step 2018
+mirLoc = os.path.join(dirname, 'delme','200301-VariFreqB','sixMachineVariB1F.mir') #wecc step 2018
 
 
 mir = ltd.data.readMirror(mirLoc)
@@ -243,7 +243,7 @@ printFigs = False # True #
 
 # list stuff...
 mirList = []
-printFigs = True
+printFigs = False
 #mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovNoDTCF.mir'))
 #mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovDTCF.mir'))
 mirList.append(os.path.join(dirname, 'delme','200301-VariFreqB','sixMachineVariB0F.mir'))

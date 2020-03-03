@@ -26,7 +26,7 @@ simParams = {
     'integrationMethod' : 'rk45',
     # Data Export Parameters
     'fileDirectory' : "\\delme\\thesisV\\", # relative path from cwd
-    'fileName' : '18HSPweccRamp',
+    'fileName' : 'wecc18HSPRamp',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.

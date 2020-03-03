@@ -13,10 +13,10 @@ mirror.sysBA = {
     'BA1':{
         'Area':1,
         'B': "1.0 : permax", # MW/0.1 Hz
-        'BVgain' : 300.0, # variable frequency bias gain
+        'BVgain' : 500.0, # variable frequency bias gain
         'AGCActionTime': 30.00, # seconds 
         'ACEgain' : 2.0,
-        'AGCType':'TLB : 2', # Tie-Line Bias 
+        'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,
         'IncludeIACE' : True,
@@ -37,10 +37,10 @@ mirror.sysBA = {
     'BA2':{
         'Area':2,
         'B': "1.0 : permax", # MW/0.1 Hz
-        'BVgain' : 300.0, # variable frequency bias gain
+        'BVgain' : 500.0, # variable frequency bias gain
         'AGCActionTime': 30.00, # seconds 
         'ACEgain' : 2.0,
-        'AGCType':'TLB : 2', # Tie-Line Bias 
+        'AGCType':'TLB : 0', # Tie-Line Bias 
         'UseAreaDroop' : False,
         'AreaDroop' : 0.05,
         'IncludeIACE' : True,
@@ -53,6 +53,6 @@ mirror.sysBA = {
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
         'GovBeta' : 0.036, # Hz - for nldroop
-        'CtrlGens': ['gen 4 : 1.0 : rampA',]
+        'CtrlGens': ['gen 3 : 1.0 : rampA',]
         },
     }

@@ -14,6 +14,7 @@ import psltdsim as ltd
 # handle file directory paths
 import os
 dirname = os.path.dirname(__file__)
+print(dirname)
 tempFolder = os.path.split(dirname)[0]
 rootDir = os.path.split(tempFolder)[0] # root git folder
 
@@ -27,10 +28,10 @@ ltd.plot.sysF(mir, True, printFigs)
 
 
 rootD = mir.getDataDict()
-tempGenD = {}
-
+"""
 # busnumber:busName
 # uses mbase and H to calcualte weighted freq using psds data
+tempGenD = {}
 gNdx = 0
 for gen in mir.Machines:
     if all(gen.r_St): # for always on gens
@@ -48,10 +49,17 @@ for gen in mir.Machines:
 # combine gen dict into rootD
 genD = {'gens': tempGenD, 'nGens' : gNdx}
 rootD = ltd.data.mergeDicts(rootD, genD)
+"""
 varName = mir.simParams['fileName']
 mirD ={varName:rootD}
 import scipy.io as sio
 
+mirD = {
+    'mir' : {
+        'f' : mir.r_f,
+        't' : mir.r_t,
+            }
+        }
 os.chdir(dirname)
 sio.savemat(varName, mirD)
 

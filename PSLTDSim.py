@@ -231,6 +231,7 @@ batchList =[
     
     #r".\testCases\191217-thesisValidation\wecc\18HSPweccStep.py",
     #r".\testCases\191217-thesisValidation\wecc\18HSPweccRamp.py",
+    r".\testCases\191217-thesisValidation\wecc\18HSPweccTrip.py",
 
     # Delay Tests
     #r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step - AGC tune
@@ -291,7 +292,7 @@ batchList =[
 
     # AGC Variable Frequency Testing
     #r".\testCases\200301-variFreqB\sixMachVariB0.py", # no variable bias
-    r".\testCases\200301-variFreqB\sixMachVariB1.py", # variable bias on
+    #r".\testCases\200301-variFreqB\sixMachVariB1.py", # variable bias on
 
 
             ]

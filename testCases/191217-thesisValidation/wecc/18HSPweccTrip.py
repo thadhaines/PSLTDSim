@@ -4,13 +4,13 @@ AMQPdebug = 0
 debugTimer = 0
 
 simNotes = """
-trip gen 2 2, variable bias off (base case)
+2018 Heavy Spring WECC, 100 MW step load on buses 24160, 24133, 24135 at t=2 
 """
 
 # Simulation Parameters Dictionary
 simParams = {
-    'timeStep': 1.0,
-    'endTime': 60*10,
+    'timeStep': 1,
+    'endTime': 5,    
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,
@@ -18,19 +18,21 @@ simParams = {
     'Dsys' : 0.0, # Untested 
     'fBase' : 60.0, # System F base in Hertz
     'freqEffects' : True, # w in swing equation will not be assumed 1 if true
+    'mainIsland' : 1, # if >0, ignore all objects not in main island
+    'assumedV' : 'V0', # work around for WECC
+    'logBranch' : False,
+    'makeXFMRs' : False, # work around for islanded WECC xfmrs
     # Mathematical Options
     'integrationMethod' : 'rk45',
     # Data Export Parameters
-    'fileDirectory' : "\\delme\\200301-VariFreqB\\", # relative path from cwd
-    'fileName' : 'sixMachineVariB0',
+    'fileDirectory' : "\\delme\\thesisV\\", # relative path from cwd
+    'fileName' : 'wecc18HSPTrip',
     'exportFinalMirror': 1, # Export mirror with all data
     'exportMat': 1, # if IPY: requies exportDict == 1 to work
     'exportDict' : 0, # when using python 3 no need to export dicts.
     'deleteInit' : 0, # Delete initialized mirror
-    'assumedV' : 'Vsched', # assummed voltage - either Vsched or Vinit
-    'logBranch' : True,
     }
 
-savPath = r"C:\LTD\pslf_systems\sixMachine\sixMachineLTD.sav"
-dydPath = [r"C:\LTD\pslf_systems\sixMachine\sixMachineDTC.dyd"]
-ltdPath = r".\testCases\200301-variFreqB\sixMachVariB0.ltd.py"
+savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a.sav"
+dydPath = [r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1Fixed.dyd"]
+ltdPath = r".\testCases\191217-thesisValidation\wecc\18HSPweccTrip.ltd.py"

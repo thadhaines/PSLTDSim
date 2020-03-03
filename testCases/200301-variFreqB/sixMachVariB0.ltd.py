@@ -53,6 +53,6 @@ mirror.sysBA = {
         'GovDeadband' : .036, # Hz
         'GovAlpha' : 0.016, # Hz - for nldroop
         'GovBeta' : 0.036, # Hz - for nldroop
-        'CtrlGens': ['gen 4 : 1.0 : rampA',]
+        'CtrlGens': ['gen 3 : 1.0 : rampA',]
         },
     }

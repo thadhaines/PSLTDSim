@@ -10,7 +10,7 @@ Trip gen 2 2, variable bias
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1.0,
-    'endTime': 60*15,
+    'endTime': 60*10,
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,

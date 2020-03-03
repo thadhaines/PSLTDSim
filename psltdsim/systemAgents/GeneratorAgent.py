@@ -85,21 +85,26 @@ class GeneratorAgent(object):
         self.cv['Q'] = float(pObj.Qgen)
         self.cv['Qmax'] = float(pObj.Qmax)
         self.cv['Qmin'] = float(pObj.Qmin)
+
+        # TODO: Handle State changes that occur in PSLF? (i.e. WECC auto trips)
         self.cv['St'] = int(pObj.St)
+
 
     def setPvals(self):
         """Send current mirror values to PSLF"""
         pObj = self.getPref()
         # DEBUG update of voltage magnitude
         #if self.mirror.debug:
-        #    print("* %d %s \tPe changed from \t %.5f \t to %.5f" %(self.Busnum, self.Busnam, pObj.Pgen, self.cv['Pe']*self.cv['St']))
+        #    print("* %d %s \tPe changed from \t %.5f \t to %.5f" %
+        #    (self.Busnum, self.Busnam, pObj.Pgen, self.cv['Pe']*self.cv['St']))
 
         pObj.Pgen = self.cv['Pe']
         pObj.Qmax = self.cv['Qmax']
         pObj.Qmin = self.cv['Qmin']
         pObj.St = self.cv['St']
 
-        """ State changes handled in step agent
+        """ Obsolete Code
+        # State changes handled in step agent (03/02/20)
         if pObj.St != self.cv['St']:
             # a change in status has occured
             pObj.St = self.cv['St']

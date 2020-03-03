@@ -28,7 +28,7 @@ ds = 30; % number of samples to skip in PSDS data plots
 
 PSDSfileName = '18HSPstep.chf'; % 75 MW
 LTDCaseName = '18HSPweccStep';
-LTDCaseName = 'SixMachineStep1';
+%LTDCaseName = 'SixMachineStep1';
 genChange = 0;
 
 %% import LTD data in an automatic way

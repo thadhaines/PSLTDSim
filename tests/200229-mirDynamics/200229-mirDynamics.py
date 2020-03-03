@@ -49,12 +49,12 @@ for gov in mir.Dynamics:
     govDict['total']['count'] += 1
     govDict['total']['capacity'] += gov.mwCap
 
-print("Model\tCount\tCapacity [MW]")
+print("Model & \tCount\t & Capacity [MW] \\\\")
 for key in sorted(govDict.items(), key=lambda x: x[1]['count'],reverse=True):
     model = key[0]
     count = key[1]['count']
     cap = key[1]['capacity']
-    print("%7s\t%5d\t%9.2f" % (model, count, cap))
+    print("%7s & \t%5d\t & %9.2f \\\\" % (model, count, cap))
 
 
 # model information for SIMULATED models
@@ -100,12 +100,12 @@ for gov in mir.Dynamics:
     simGovs['total']['count'] += 1
     simGovs['total']['capacity'] += gov.mwCap
 
-print("\nModel\tCount\tCapacity [MW]")
+print("\nModel & \tCount & \tCapacity [MW] \\\\")
 for key in sorted(simGovs.items(), key=lambda x: x[1]['count'],reverse=True):
     model = key[0]
     count = key[1]['count']
     cap = key[1]['capacity']
-    print("%7s\t%5d\t%9.2f" % (model, count, cap))
+    print("%7s\t & %5d\t & %9.2f \\\\" % (model, count, cap))
 
 # Machine Info
 
@@ -132,13 +132,17 @@ for gen in mir.Machines:
         genDict['total']['count'] +=1
         genDict['total']['capacity'] += gen.Pmax
 
-print("\nModel\tCount\tCapacity [MW]")
+print("\nModel & \t Count\t & Capacity [MW] \\\\")
 for key in sorted(genDict.items(), key=lambda x: x[1]['count'],reverse=True):
     model = key[0]
     count = key[1]['count']
     cap = key[1]['capacity']
-    print("%7s\t%5d\t%9.2f" % (model, count, cap))
+    print("%7s\t & %5d\t & %9.2f \\\\" % (model, count, cap))
 
+
+print("Machines:\t%d" %len(mir.Machines))
+print("Loads:\t%d" %len(mir.Load))
+print("Bus:\t%d" %len(mir.Bus))
 print("DEBUG STOP")
 
 """
