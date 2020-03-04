@@ -35,41 +35,41 @@ genChange = -0;
 
 %%
 % Mini WECC - No PSS
-PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
-LTDCaseName = 'miniWECCstep'; %
-genChange = 0;
+% PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
+% LTDCaseName = 'miniWECCstep'; %
+% genChange = 0;
+% % 
+% PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
+% LTDCaseName = 'miniWECCramp'; %
+% genChange = -0; %
 % 
-PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
-LTDCaseName = 'miniWECCramp'; %
-genChange = -0; %
+% PSDSfileName = 'miniWECC_genTrip027.chf'; %
+% LTDCaseName = 'miniWECCgenTrip027';
+% genChange = -0;
 
-PSDSfileName = 'miniWECC_genTrip027.chf'; %
-LTDCaseName = 'miniWECCgenTrip027';
-genChange = -0;
-%
 % %%
 % % Mini WECC - PSS
-PSDSfileName = 'miniWECC_loadStepPSS.chf'; % case used in IEEE paper
-LTDCaseName = 'miniWECCstepPSS'; %
-genChange = 0;
+% PSDSfileName = 'miniWECC_loadStepPSS.chf'; % case used in IEEE paper
+% LTDCaseName = 'miniWECCstepPSS'; %
+% genChange = 0;
+% 
+% PSDSfileName = 'miniWECC_loadRampPSS.chf'; % case used in IEEE paper
+% LTDCaseName = 'miniWECCrampPSS'; %
+% genChange = -0; %
+% 
+% PSDSfileName = 'miniWECC_genTrip027PSS.chf'; %
+% LTDCaseName = 'miniWECCgenTrip027PSS';
+% genChange = -0;
 
-PSDSfileName = 'miniWECC_loadRampPSS.chf'; % case used in IEEE paper
-LTDCaseName = 'miniWECCrampPSS'; %
-genChange = -0; %
-
-PSDSfileName = 'miniWECC_genTrip027PSS.chf'; %
-LTDCaseName = 'miniWECCgenTrip027PSS';
-genChange = -0;
-
-% % WECC 
-PSDSfileName = '18HSPstep.chf'; % case used in IEEE paper
-LTDCaseName = '18HSPweccStep'; %
-genChange = 0;
+% % WECC - use seperate matlab file - datagrabber
+%PSDSfileName = '18HSPstep.chf'; % case used in IEEE paper
+%LTDCaseName = '18HSPweccStep'; %
+%genChange = 0;
 
 
 
 %% import PSDS data
-psds_data = udread(PSDSfileName,[1:15000]); % used to overcome WECC error of "Array dimensions exceed supported range"
+psds_data = udread(PSDSfileName,[]); % 
 %cellfun(@disp,psds_data.Name) % display all data types collected from psds
 %psdsData_col = jfind(psds_data, 'spd');
 %% import LTD data in an automatic way

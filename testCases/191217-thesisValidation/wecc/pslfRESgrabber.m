@@ -42,6 +42,8 @@ psds_data = udread(PSDSfileName,[fbugCol]-1);
 
 % result: 23 iterations till completion using 5000 chunksize -> ~115000 records in full wecc
 % with only fmeta
+% Tip: read chf in PSLF plot to find when desired data starts and adjsut
+% sNdx accordingly.
 
 
 
@@ -52,16 +54,17 @@ t = psds_data.Data(:,1); % PSDS time
 dataCol = jfind(psds_data, 'fbug');
 grey = [0.7, 0.7, 0.7];
 black = [1,1,1];
-ppos = [18 312 1252 373*2];
+ds=30;
+ppos = [18 312 1252 373];
 
 figure('position',ppos)
 hold on
 for data=1:max(size(dataCol))-1
-    plot( t, psds_data.Data(:,dataCol(data)), 'color',grey,'linewidth',.5,'HandleVisibility','off') % all others
+    plot( dsmple(t,ds), dsmple(psds_data.Data(:,dataCol(data)),ds), 'color',grey,'linewidth',.5,'HandleVisibility','off') % all others
     
 end
 
-plot( t, psds_data.Data(:,dataCol(max(size(dataCol)))) , 'color',grey,'linewidth',.5)
+plot( dsmple(t,ds), dsmple(psds_data.Data(:,dataCol(max(size(dataCol)))),ds) , 'color',grey,'linewidth',.5)
 
 % compute average
 ave = zeros(size(t));
@@ -87,4 +90,20 @@ xlim([0,max(mir.t)])
 set(gca,'fontsize',bfz)
 
 set(gcf,'color','w'); % to remove border of figure
-%export_fig([LTDCaseName,'Qbr3ALT'],'-pdf'); % to print fig
+%export_fig([LTDCaseName,'Freq'],'-pdf'); % to print fig
+%export_fig([LTDCaseName,'Freq'],'-png'); % to print fig
+
+%% deviation data
+
+dif = abs(calcDeviation( t, mir, ave, mir.f*60 ));
+
+figure('position',ppos)
+plot(t,dif,'m','linewidth',.5)
+title({'Absolute Frequency Difference'; ['Case: ', LTDCaseName]})
+ylabel('Frequency [Hz]')
+xlabel('Time [sec]')
+set(gca,'fontsize',bfz)
+xlim([0, max(mir.t)])
+grid on
+set(gcf,'color','w'); % to remove border of figure
+%export_fig([LTDCaseName,'absFreqDiff'],'-pdf'); % to print fig

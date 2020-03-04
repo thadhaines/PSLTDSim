@@ -40,6 +40,7 @@ genChange = varargin{5}
 grey = [.75,.75,.75];
 %% Calculate weighted freq
 Hsys = mir.Hss;
+%Hsys = mir.H(end); % work around for tripped gens
 weightedF = zeros(size(psds_data.Data(:,1),1),1);
 for area = 1:max(size(mir.areaN)) % for each area
     if debug

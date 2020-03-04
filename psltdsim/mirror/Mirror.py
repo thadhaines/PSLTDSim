@@ -283,6 +283,7 @@ class Mirror(object):
              'Sbase' : self.Sbase,
              'Hsys' : self.Hsys,
              'Hss' : self.ss_H,
+             'H' : self.r_Hsys,
              'meta' : meta,
              }
         return d
