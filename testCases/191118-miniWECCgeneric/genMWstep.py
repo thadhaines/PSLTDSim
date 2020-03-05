@@ -10,7 +10,7 @@ generic MiniWECC Multi Area step of 1200 MW at t=2
 # Simulation Parameters Dictionary
 simParams = {
     'timeStep': 1,
-    'endTime': 90,    
+    'endTime': 30,    
     'slackTol': 1,
     'PY3msgGroup' : 3,
     'IPYmsgGroup' : 60,

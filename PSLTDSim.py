@@ -219,19 +219,19 @@ batchList =[
     # Thesis Validations
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineStep1.py",
     #r".\testCases\191217-thesisValidation\sixMach\sixMachineRamp1.py",
-    r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
+    #r".\testCases\191217-thesisValidation\sixMach\sixMachineTrip0.py", # Gen trip off
 
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3Astep.py",
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3Aramp.py",
-    r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0.py",
 
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3AstepPSS.py",
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3ArampPSS.py",
-    r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
+    #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
     
-    #r".\testCases\191217-thesisValidation\wecc\18HSPweccStep.py",
-    #r".\testCases\191217-thesisValidation\wecc\18HSPweccRamp.py",
-    #r".\testCases\191217-thesisValidation\wecc\18HSPweccTrip.py",
+    r".\testCases\191217-thesisValidation\wecc\18HSPweccStep.py", # WORKS
+    #r".\testCases\191217-thesisValidation\wecc\18HSPweccRamp.py", # crashes after 12 seconds...
+    #r".\testCases\191217-thesisValidation\wecc\18HSPweccTrip.py", # NOT DEVELOPED...
 
     # Delay Tests
     #r".\testCases\200108-delayTest\sixMachineDelayStep1.py", # pref step - AGC tune
