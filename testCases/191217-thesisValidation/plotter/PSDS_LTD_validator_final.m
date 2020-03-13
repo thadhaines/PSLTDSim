@@ -16,7 +16,7 @@ format long;
 %% Plot params
 printFigs =  false; % true; %  
 miniFlag = 1; % decrease plot width by half
-ds = 30; % number of samples to skip in PSDS data plots
+ds = 5; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
 
 % Six Machine -> works with git .p etc.
@@ -24,17 +24,17 @@ ds = 30; % number of samples to skip in PSDS data plots
 PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
 LTDCaseName = 'SixMachineStep1';
 genChange = 0;
-
-PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
-LTDCaseName = 'SixMachineRamp1';
-genChange = 0;
-
-PSDSfileName = 'sixMachineGenTrip0.chf';
-LTDCaseName = 'SixMachineTrip0';
-genChange = -0;
+% 
+% PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
+% LTDCaseName = 'SixMachineRamp1';
+% genChange = 0;
+% 
+% PSDSfileName = 'sixMachineGenTrip0.chf';
+% LTDCaseName = 'SixMachineTrip0';
+% genChange = -0;
 
 %%
-% Mini WECC - No PSS
+%Mini WECC - No PSS
 % PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
 % LTDCaseName = 'miniWECCstep'; %
 % genChange = 0;
@@ -80,7 +80,7 @@ clear eval(cases{1})
 %% Initial not super useful plots (kind of ... useful in six machine case)
 %compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
