@@ -68,7 +68,7 @@ def genDynamicsComp(mirList, blkFlag=True, printFigs = False, genNum = 0):
 
     ax.grid(True)
     fig.set_dpi(150)
-    fig.set_size_inches(9/2, 2.5) # single column, double height for legend below
+    fig.set_size_inches(9, 2.5) # single column, double height for legend below
     fig.tight_layout()
     if printFigs: plt.savefig('gen'+str(genNum)+'ValveComp'+'.pdf', dpi=300)
     plt.show(block = blkFlag)

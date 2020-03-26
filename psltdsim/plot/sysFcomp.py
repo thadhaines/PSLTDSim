@@ -75,7 +75,7 @@ def sysFcomp(mirrorList, blkFlag=True, printFigs=False):
     ax.legend()
     ax.grid(True)
     fig.set_dpi(150)
-    fig.set_size_inches(9/2, 2.5) # single column, double height for legend below
+    fig.set_size_inches(9, 2.5) # single column, double height for legend below
     #fig.set_size_inches(9/2, 2.5*.75) # single column, double height for legend below
     fig.tight_layout()
     if printFigs: plt.savefig(caseName+'Freq'+'.pdf', dpi=300)

@@ -71,6 +71,11 @@ class TLB(BA):
             if np.sign(variableFbias) == np.sign(deltaw):
                 condACE += variableFbias
 
+        elif self.AGCtype == 4:
+            # only send ace if summation is same sign as frequency deviation
+            if np.sign(condACE) == np.sign(deltaw):
+                condACE = 0
+
         self.cv['condACE'] = condACE
 
         # Handle computing integral of ACE using trapezoidal integration
@@ -96,6 +101,10 @@ class TLB(BA):
             if (abs(deltaw) >= self.BAdict['IACEdeadband']/self.mirror.simParams['fBase']):
                 # add non weighted, non conditional ACE
                 IACE2add =  self.cv['IACE']* float(self.BAdict['IACEscale'])
+
+        if self.BAdict['IACEconditional']:
+            if np.sign(IACE2add) == np.sign(deltaw):
+                IACE2add = 0
 
         # Put ACEdist through filter
         if self.filter != None:

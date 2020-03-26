@@ -36,7 +36,9 @@ def PloadIEEE(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     #ax.legend(loc=0)
     ax.grid(True)
     fig.set_dpi(150)
-    fig.set_size_inches(9/lengDiv, 2.5*.75)
+    #fig.set_size_inches(9/lengDiv, 2.5*.75)
+    fig.set_size_inches(9, 2.5) # single column, double height for legend below
+
     fig.tight_layout()
     if printFigs: plt.savefig(caseName+'PloadChange'+'.pdf', dpi=300)
     plt.show(block = blkFlag)
