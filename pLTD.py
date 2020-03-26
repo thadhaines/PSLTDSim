@@ -267,7 +267,7 @@ folderName = '191029-paperSimsNoAGC'
 mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCuniAccF.mir') # area 3 has larger deadband
 mir = ltd.data.readMirror(mirLoc)
 #ltd.plot.AreaRunningValveTravel(mir,True, True) # per area, 
-ltd.plot.ValveTravel(mir, False, True)
+#ltd.plot.ValveTravel(mir, False, True)
 
 # List of test cases
 mirList = []
@@ -285,3 +285,41 @@ mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF
 #for case in mirList:
 #    mir = ltd.data.readMirror(case)
 #    ltd.plot.ValveTravel(mir, False, printFigs)
+
+""" Thesis AGC Tuning plots """
+mirList = []
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt4In1F.mir') # Condidtional ACE internal
+mirList.append( mirLoc )
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt0In1F.mir') # Non Conditional ACE
+mirList.append( mirLoc )
+
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt4Ex1F.mir') # Condidtional ACE External
+mirList.append( mirLoc )
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt0Ex1F.mir') # Non Conditional ACE
+mirList.append( mirLoc )
+
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCtune1F.mir') # AGC Tune
+mirList.append( mirLoc )
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCtune2F.mir') #
+mirList.append( mirLoc )
+
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCdbnz1F.mir') # AGC Tune
+mirList.append( mirLoc )
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCdbnz2F.mir') # AGC Tune
+mirList.append( mirLoc )
+
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase1F.mir') # AGC base case 1 odd stuff via multibus gen?
+mirList.append( mirLoc )
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase2F.mir') # AGC base case 2
+mirList.append( mirLoc )
+
+mir = ltd.data.readMirror(mirList[6])
+
+#ltd.plot.sysF(mir, True, False) # single frequency plot
+#ltd.plot.BAplots02(mir, False)
+ltd.plot.PloadIEEE(mir,True, printFigs=True, miniFlag = False)
+
+
+for case in mirList:
+    mir = ltd.data.readMirror(case)
+    ltd.plot.BAplots02(mir, False, printFigs=True,)

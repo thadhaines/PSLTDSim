@@ -44,8 +44,8 @@ def BAplots02(mirror, blkFlag=True, printFigs=False):
         ax.plot(mins, BA.r_RACE, linewidth=1,
                 label= BA.name+' RACE')
         if BA.filter != None:
-            ax.plot(mins, BA.r_SACE, linewidth=1.25,linestyle=":",
-                    label= BA.name+' SACE')
+            ax.plot(mins, BA.r_ACE2dist, linewidth=1.25,linestyle=":",
+                    label= BA.name+' DACE')
         ax.plot(mins, BA.Area.r_ICerror, linewidth=1.5,
                 linestyle='--',
                 label= BA.name +' IC Error')

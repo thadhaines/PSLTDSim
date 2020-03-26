@@ -295,17 +295,17 @@ batchList =[
     #r".\testCases\200301-variFreqB\sixMachVariB1.py", # variable bias on
 
     # Thesis AGC tuning with noise, deadbands
-    #r".\testCases\200325-smFinals\smAGCbase1.py", # Area 1 base case
+    r".\testCases\200325-smFinals\smAGCbase1.py", # Area 1 base case
     #r".\testCases\200325-smFinals\smAGCbase2.py", # Area 2 base case
     #r".\testCases\200325-smFinals\smAGCtune1.py", # Area 1 tuning
     #r".\testCases\200325-smFinals\smAGCtune2.py", # Area 2 tuning
     #r".\testCases\200325-smFinals\smAGCdbnz1.py", # Area 1 tuning with db and noise
     #r".\testCases\200325-smFinals\smAGCdbnz2.py", # Area 2 tuning with db and noise
-    r".\testCases\200325-smFinals\smAGCt0In1.py", # both AGC on, area 1 perturbance TLB 0
-    r".\testCases\200325-smFinals\smAGCt4In1.py", # both AGC on, area 1 perturbance TLB 4
+    #r".\testCases\200325-smFinals\smAGCt0In1.py", # both AGC on, area 1 perturbance TLB 0
+    #r".\testCases\200325-smFinals\smAGCt4In1.py", # both AGC on, area 1 perturbance TLB 4
     # un needed?
-    r".\testCases\200325-smFinals\smAGCt0Ex1.py", # both AGC on, area 2 perturbance TLB 0
-    r".\testCases\200325-smFinals\smAGCt4Ex1.py", # both AGC on, area 2 perturbance TLB 4
+    #r".\testCases\200325-smFinals\smAGCt0Ex1.py", # both AGC on, area 2 perturbance TLB 0
+    #r".\testCases\200325-smFinals\smAGCt4Ex1.py", # both AGC on, area 2 perturbance TLB 4
             ]
 
 # Batch Run Parameters
