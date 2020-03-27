@@ -61,3 +61,6 @@ from .sysFcomp2 import sysFcomp2
 from .sysPgenComp import sysPgenComp
 from .sysPmComp import sysPmComp
 from .sysPeComp import sysPeComp
+
+from .sysPe import sysPe
+from .areaPL import areaPL

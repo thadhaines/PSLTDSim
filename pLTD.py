@@ -327,8 +327,10 @@ mir = ltd.data.readMirror(mirList[6])
 """ Long-term thesis simulations """
 printFigs = True
 mirList = []
-mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdF.mir') # Condidtional ACE internal
-#mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdDBnzF.mir') # Condidtional ACE internal
+mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdF.mir') # forcast demand ideal
+mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdDBnzF.mir') # forcast demand with nz
+mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrF.mir') # wind ramp
+mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrDBnzF.mir') # wind ramp
 mir = ltd.data.readMirror(mirLoc)
 #ltd.plot.AreaPLoad(mir, False, printFigs)
 #ltd.plot.AreaPe(mir, False, printFigs)
@@ -338,6 +340,8 @@ ltd.plot.BAplots02(mir, False, printFigs)
 ltd.plot.sysShuntV(mir, False, printFigs)
 ltd.plot.sysShuntMVAR(mir, False, printFigs)
 #ltd.plot.sysPLQF(mir, True)
-ltd.plot.sysPePmFLoad2(mir, False, printFigs)
+#ltd.plot.sysPePmFLoad2(mir, False, printFigs)
+ltd.plot.sysPe(mir, False, printFigs)
+ltd.plot.areaPL(mir, False, printFigs)
 
 #ltd.plot.sysShuntV(mir, True, printFigs)
