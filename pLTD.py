@@ -196,8 +196,8 @@ ltd.terminal.dispSimTandC(mir)
 
 #xend = max(mir.r_t)
 #print(mir)
-#printFigs =  True # False #
-#ltd.plot.sysPePmFLoad(mir, False, printFigs)
+printFigs =  False #True 
+#ltd.plot.sysPePmFLoad(mir, False,)
 #ltd.plot.sysPePmFLoad2(mir, False, printFigs)
 #ltd.plot.sysLoad(mir, False)
 #ltd.plot.sysShuntV(mir, False, printFigs)
@@ -317,9 +317,27 @@ mir = ltd.data.readMirror(mirList[6])
 
 #ltd.plot.sysF(mir, True, False) # single frequency plot
 #ltd.plot.BAplots02(mir, False)
-ltd.plot.PloadIEEE(mir,True, printFigs=True, miniFlag = False)
+#ltd.plot.PloadIEEE(mir,True, printFigs=True, miniFlag = False)
 
 
-for case in mirList:
-    mir = ltd.data.readMirror(case)
-    ltd.plot.BAplots02(mir, False, printFigs=True,)
+#for case in mirList:
+#    mir = ltd.data.readMirror(case)
+#    ltd.plot.BAplots02(mir, False, printFigs=True,)
+
+""" Long-term thesis simulations """
+printFigs = True
+mirList = []
+mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdF.mir') # Condidtional ACE internal
+#mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdDBnzF.mir') # Condidtional ACE internal
+mir = ltd.data.readMirror(mirLoc)
+#ltd.plot.AreaPLoad(mir, False, printFigs)
+#ltd.plot.AreaPe(mir, False, printFigs)
+#ltd.plot.AreaPm(mir, False, printFigs)
+ltd.plot.BAplots02(mir, False, printFigs)
+
+ltd.plot.sysShuntV(mir, False, printFigs)
+ltd.plot.sysShuntMVAR(mir, False, printFigs)
+#ltd.plot.sysPLQF(mir, True)
+ltd.plot.sysPePmFLoad2(mir, False, printFigs)
+
+#ltd.plot.sysShuntV(mir, True, printFigs)

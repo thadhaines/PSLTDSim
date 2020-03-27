@@ -295,7 +295,7 @@ batchList =[
     #r".\testCases\200301-variFreqB\sixMachVariB1.py", # variable bias on
 
     # Thesis AGC tuning with noise, deadbands
-    r".\testCases\200325-smFinals\smAGCbase1.py", # Area 1 base case
+    #r".\testCases\200325-smFinals\smAGCbase1.py", # Area 1 base case
     #r".\testCases\200325-smFinals\smAGCbase2.py", # Area 2 base case
     #r".\testCases\200325-smFinals\smAGCtune1.py", # Area 1 tuning
     #r".\testCases\200325-smFinals\smAGCtune2.py", # Area 2 tuning
@@ -306,6 +306,11 @@ batchList =[
     # un needed?
     #r".\testCases\200325-smFinals\smAGCt0Ex1.py", # both AGC on, area 2 perturbance TLB 0
     #r".\testCases\200325-smFinals\smAGCt4Ex1.py", # both AGC on, area 2 perturbance TLB 4
+
+    # Thesis Long-term Simulations
+    #r".\testCases\200326-smLT\smLTfd.py", # long-term forcast demand sim
+    r".\testCases\200326-smLT\smLTfdDBnz.py", # long-term forcast demand sim with deadbands and noise
+
             ]
 
 # Batch Run Parameters
