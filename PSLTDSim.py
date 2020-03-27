@@ -311,7 +311,7 @@ batchList =[
     #r".\testCases\200326-smLT\smLTfd.py", # long-term forcast demand sim
     #r".\testCases\200326-smLT\smLTfdDBnz.py", # long-term forcast demand sim with deadbands and noise
 
-    #r".\testCases\200326-smLT\smLTwr.py", # long-term windramp
+    r".\testCases\200326-smLT\smLTwr.py", # long-term windramp
     r".\testCases\200326-smLT\smLTwrDBnz.py", # long-term windramp deadband noise
             ]
 

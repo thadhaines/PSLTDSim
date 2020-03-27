@@ -279,6 +279,7 @@ mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF
 #ltd.plot.sysFcomp(mirList,blkFlag=True, printFigs=True) # multiple mir comp
 #ltd.plot.genDynamicsComp(mirList, blkFlag=True, printFigs = True, genNum = 32) # comparison of valve travel
 #ltd.plot.PloadIEEE(mir,True, printFigs=True, miniFlag = True)
+ltd.plot.PloadIEEE2(mir,True, printFigs=True, miniFlag = False)
 
 # Plot loopy results
 #printFigs = True
@@ -317,7 +318,8 @@ mir = ltd.data.readMirror(mirList[6])
 
 #ltd.plot.sysF(mir, True, False) # single frequency plot
 #ltd.plot.BAplots02(mir, False)
-#ltd.plot.PloadIEEE(mir,True, printFigs=True, miniFlag = False)
+#ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = False)
+ltd.plot.PloadIEEE2(mir,True, printFigs=True, miniFlag = False)
 
 
 #for case in mirList:
@@ -325,7 +327,7 @@ mir = ltd.data.readMirror(mirList[6])
 #    ltd.plot.BAplots02(mir, False, printFigs=True,)
 
 """ Long-term thesis simulations """
-printFigs = True
+printFigs = False
 mirList = []
 mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdF.mir') # forcast demand ideal
 mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdDBnzF.mir') # forcast demand with nz
@@ -335,13 +337,14 @@ mir = ltd.data.readMirror(mirLoc)
 #ltd.plot.AreaPLoad(mir, False, printFigs)
 #ltd.plot.AreaPe(mir, False, printFigs)
 #ltd.plot.AreaPm(mir, False, printFigs)
-ltd.plot.BAplots02(mir, False, printFigs)
+#ltd.plot.BAplots02(mir, False, printFigs)
 
-ltd.plot.sysShuntV(mir, False, printFigs)
-ltd.plot.sysShuntMVAR(mir, False, printFigs)
+#ltd.plot.sysShuntV(mir, False, printFigs)
+#ltd.plot.sysShuntMVAR(mir, False, printFigs)
 #ltd.plot.sysPLQF(mir, True)
 #ltd.plot.sysPePmFLoad2(mir, False, printFigs)
-ltd.plot.sysPe(mir, False, printFigs)
-ltd.plot.areaPL(mir, False, printFigs)
+#ltd.plot.sysPe(mir, False, printFigs)
+#ltd.plot.areaPL(mir, False, printFigs)
 
 #ltd.plot.sysShuntV(mir, True, printFigs)
+ltd.plot.PloadIEEE2(mir,True, printFigs=True, miniFlag = False)
