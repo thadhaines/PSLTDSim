@@ -3,6 +3,18 @@ def PloadIEEE2(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     import matplotlib.pyplot as plt
     import numpy as np
 
+    # custom color cycler
+    from cycler import cycler
+    ltdColors=[ [0,0,0], # black
+            [.7,.7,.7], # grey
+            [0,1,0], # green
+            [1,0,1], # magenta
+            "#17becf", # light blue
+            [1,.647,0],# orange
+        ]
+    default_cycler = (cycler(color=ltdColors))
+    plt.rc('axes', prop_cycle=default_cycler)
+
     mir = mirror
 
     # for 2 column presentation
@@ -20,12 +32,13 @@ def PloadIEEE2(mirror, blkFlag=True, printFigs=False, miniFlag = False):
     fig, ax = plt.subplots()
 
     ax.plot(mins, np.array(mir.r_ss_Pload)-mir.r_ss_Pload[0], linewidth=1.0, 
-            color='black',
+            #color='black',
             label = 'System Total')
 
     for area in mir.Area:
         ax.plot(mins, np.array(area.r_P)-area.r_P[0], 
                 linewidth=.85,
+                linestyle="--",
                 label = 'Area '+ str(area.Area)
                 )
 

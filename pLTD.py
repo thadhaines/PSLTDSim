@@ -191,8 +191,8 @@ mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt3In1F.mir') #wecc
 Plot Functions
 """
 
-mir = ltd.data.readMirror(mirLoc)
-ltd.terminal.dispSimTandC(mir)
+#mir = ltd.data.readMirror(mirLoc)
+#ltd.terminal.dispSimTandC(mir)
 
 #xend = max(mir.r_t)
 #print(mir)
@@ -265,21 +265,21 @@ printFigs =  False #True
 folderName = '191029-paperSimsNoAGC'
 #mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoStepDBF.mir') # ramp / no step for uni test
 mirLoc = os.path.join(dirname, 'delme',folderName,'miniWECCuniAccF.mir') # area 3 has larger deadband
-mir = ltd.data.readMirror(mirLoc)
+#mir = ltd.data.readMirror(mirLoc)
 #ltd.plot.AreaRunningValveTravel(mir,True, True) # per area, 
 #ltd.plot.ValveTravel(mir, False, True)
 
 # List of test cases
-mirList = []
-mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoDBF.mir'))
-mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseStepDBF.mir'))
-mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoStepDBF.mir'))
-mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF.mir'))
+#mirList = []
+#mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseStepDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNoStepDBF.mir'))
+#mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF.mir'))
 
 #ltd.plot.sysFcomp(mirList,blkFlag=True, printFigs=True) # multiple mir comp
 #ltd.plot.genDynamicsComp(mirList, blkFlag=True, printFigs = True, genNum = 32) # comparison of valve travel
 #ltd.plot.PloadIEEE(mir,True, printFigs=True, miniFlag = True)
-ltd.plot.PloadIEEE2(mir,True, printFigs=True, miniFlag = False)
+#ltd.plot.PloadIEEE2(mir,True, printFigs=True, miniFlag = False)
 
 # Plot loopy results
 #printFigs = True
@@ -294,10 +294,10 @@ mirList.append( mirLoc )
 mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt0In1F.mir') # Non Conditional ACE
 mirList.append( mirLoc )
 
-mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt4Ex1F.mir') # Condidtional ACE External
-mirList.append( mirLoc )
-mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt0Ex1F.mir') # Non Conditional ACE
-mirList.append( mirLoc )
+#mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt4Ex1F.mir') # Condidtional ACE External
+#mirList.append( mirLoc )
+#mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt0Ex1F.mir') # Non Conditional ACE
+#mirList.append( mirLoc )
 
 mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCtune1F.mir') # AGC Tune
 mirList.append( mirLoc )
@@ -309,17 +309,22 @@ mirList.append( mirLoc )
 mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCdbnz2F.mir') # AGC Tune
 mirList.append( mirLoc )
 
-mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase1F.mir') # AGC base case 1 odd stuff via multibus gen?
-mirList.append( mirLoc )
-mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase2F.mir') # AGC base case 2
-mirList.append( mirLoc )
+#mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase1F.mir') # AGC base case 1 odd stuff via multibus gen?
+#mirList.append( mirLoc )
+#mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase2F.mir') # AGC base case 2
+#mirList.append( mirLoc )
 
-mir = ltd.data.readMirror(mirList[6])
+#mir = ltd.data.readMirror(mirList[6])
+for case in mirList:
+    mir = ltd.data.readMirror(case)
+    print(mir)
+#ltd.plot.sysFcomp(mirList,blkFlag=True, printFigs=False) # multiple mir comp
+
 
 #ltd.plot.sysF(mir, True, False) # single frequency plot
 #ltd.plot.BAplots02(mir, False)
-#ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = False)
-ltd.plot.PloadIEEE2(mir,True, printFigs=True, miniFlag = False)
+##ltd.plot.PloadIEEE(mir,True, printFigs=False, miniFlag = False)
+#ltd.plot.PloadIEEE2(mir,True, printFigs=True, miniFlag = False)
 
 
 #for case in mirList:
@@ -333,18 +338,16 @@ mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdF.mir') # forcast de
 mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdDBnzF.mir') # forcast demand with nz
 mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrF.mir') # wind ramp
 mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrDBnzF.mir') # wind ramp
-mir = ltd.data.readMirror(mirLoc)
+#mir = ltd.data.readMirror(mirLoc)
 #ltd.plot.AreaPLoad(mir, False, printFigs)
 #ltd.plot.AreaPe(mir, False, printFigs)
 #ltd.plot.AreaPm(mir, False, printFigs)
 #ltd.plot.BAplots02(mir, False, printFigs)
 
 #ltd.plot.sysShuntV(mir, False, printFigs)
-#ltd.plot.sysShuntMVAR(mir, False, printFigs)
-#ltd.plot.sysPLQF(mir, True)
-#ltd.plot.sysPePmFLoad2(mir, False, printFigs)
-#ltd.plot.sysPe(mir, False, printFigs)
+#ltd.plot.sysShuntMVAR(mir,  False, printFigs)
+ltd.plot.sysPe(mir,not False, printFigs)
 #ltd.plot.areaPL(mir, False, printFigs)
+#ltd.plot.PloadIEEE2(mir,True, printFigs=True, miniFlag = False)
 
-#ltd.plot.sysShuntV(mir, True, printFigs)
-ltd.plot.PloadIEEE2(mir,True, printFigs=True, miniFlag = False)
+#ltd.plot.sysPePmFLoad2(mir, False, printFigs)

@@ -3,6 +3,18 @@ def BAplots02(mirror, blkFlag=True, printFigs=False):
     import matplotlib.pyplot as plt
     import numpy as np
 
+    # custom color cycler
+    from cycler import cycler
+    ltdColors=[ [0,0,0], # black
+            [.7,.7,.7], # grey
+            [0,1,0], # green
+            [1,0,1], # magenta
+            "#17becf", # light blue
+            [1,.647,0],# orange
+        ]
+    default_cycler = (cycler(color=ltdColors))
+    plt.rc('axes', prop_cycle=default_cycler)
+
     mir = mirror
     xend = max(mir.r_t)
     mini = 1 # can be increased to scale width of plots

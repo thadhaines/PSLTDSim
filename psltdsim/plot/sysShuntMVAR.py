@@ -1,9 +1,23 @@
 def sysShuntMVAR(mirror, blkFlag=True, printFigs=False):
-    """Plot Voltage of system Shunt buses """
+    """Plot mvar of system Shunt buses 
+    uses cycler for color and style - repeats after 6
+    """
     
     import matplotlib.pyplot as plt
     from matplotlib.offsetbox import AnchoredText # for text box
     import numpy as np
+    # custom color cycler
+    from cycler import cycler
+    ltdColors=[ [0,0,0], # black
+            [.7,.7,.7], # grey
+            [0,1,0], # green
+            [1,0,1], # magenta
+            "#17becf", # light blue
+            [1,.647,0],# orange
+        ]
+    ltdStyles =  ["-","--",':',"-","--",':']
+    default_cycler = ( cycler(color=ltdColors)  + cycler(linestyle=ltdStyles) )
+    plt.rc('axes', prop_cycle=default_cycler)
 
     mir = mirror
 

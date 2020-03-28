@@ -121,6 +121,18 @@ for name in outputTuples:
 # make plot
 import matplotlib.pyplot as plt
 import numpy as np
+# custom color cycler
+from cycler import cycler
+ltdColors=[ [0,0,0], # black
+        [.7,.7,.7], # grey
+        [0,1,0], # green
+        [1,0,1], # magenta
+        "#17becf", # light blue
+        [1,.647,0],# orange
+    ]
+default_cycler = (cycler(color=ltdColors))
+plt.rc('axes', prop_cycle=default_cycler)
+
 """
 fig, ax = plt.subplots()
 ax.plot(plotD['demandTime'],plotD['demand'] , label='Demand')

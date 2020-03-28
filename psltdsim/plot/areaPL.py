@@ -2,6 +2,17 @@ def areaPL(mirror, blkFlag=True, printFigs=False):
     """Plot area Powergen and Load"""
     import matplotlib.pyplot as plt
     import numpy as np
+    # custom color cycler
+    from cycler import cycler
+    ltdColors=[ [0,0,0], # black
+            [.7,.7,.7], # grey
+            [0,1,0], # green
+            [1,0,1], # magenta
+            "#17becf", # light blue
+            [1,.647,0],# orange
+        ]
+    default_cycler = (cycler(color=ltdColors))
+    plt.rc('axes', prop_cycle=default_cycler)
     
     mir = mirror
     caseName = mir.simParams['fileName'][:-1]
@@ -21,7 +32,7 @@ def areaPL(mirror, blkFlag=True, printFigs=False):
         ax.plot(mins, area.r_P, 
                     linewidth = 2,
                     linestyle = '--',
-                    label = r'$P$ Area '+ str(area.Area)
+                    label = r'$P_{load}$ Area '+ str(area.Area)
                     )
 
     ax.set_ylabel('MW')

@@ -1,14 +1,22 @@
 def sysPe(mirror, blkFlag=True, printFigs=False):
-    """Plot Pe, Pm, and F of given mirror"""
+    """Plot Pe from all gens in a given mirror
+    Uses cycler for colors - repeats after 6
+    """
     import matplotlib.pyplot as plt
     import numpy as np
-    from matplotlib.cm import get_cmap
 
-    name = "tab20"
-    cmap = get_cmap(name)  # type: matplotlib.colors.ListedColormap
-    colors = cmap.colors  # type: list
-    #print(colors)
-    
+    # custom color cycler
+    from cycler import cycler
+    ltdColors=[ [0,0,0], # black
+            [.7,.7,.7], # grey
+            [0,1,0], # green
+            [1,0,1], # magenta
+            "#17becf", # light blue
+            [1,.647,0],# orange
+        ]
+    default_cycler = (cycler(color=ltdColors))
+    plt.rc('axes', prop_cycle=default_cycler)
+
     mir = mirror
     caseName = mir.simParams['fileName'][:-1]
     mins = np.array(mir.r_t)/60.0;

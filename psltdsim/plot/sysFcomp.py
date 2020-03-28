@@ -17,6 +17,10 @@ def sysFcomp(mirrorList, blkFlag=True, printFigs=False):
             [.7,.7,.7],
             [0,1,0],
             [1,0,1],
+            #[0,1,1], # cyan
+            "#17becf", # light blue
+            [1,.647,0],# orange
+            #"#ff7f0e", #orange
         ]
     styles =["-","--",':','-.'
         ]
