@@ -1,10 +1,23 @@
 def ValveTravel(mirror, blkFlag=True, printFigs=False):
-    """Plot ValveTravel of given mirror areas"""
+    """Plot ValveTravel of given mirror areas
+    six color repeat - grey moved down
+    """
     import matplotlib.pyplot as plt
     from matplotlib.offsetbox import AnchoredText # for text box
 
 
     import numpy as np
+    # custom color cycler
+    from cycler import cycler
+    ltdColors=[ [0,0,0], # black
+            [0,1,0], # green
+            [1,0,1], # magenta
+            [.7,.7,.7], # grey
+            [1,.647,0],# orange
+            "#17becf", # light blue
+        ]
+    default_cycler = (cycler(color=ltdColors))
+    plt.rc('axes', prop_cycle=default_cycler)
 
     mir = mirror
 

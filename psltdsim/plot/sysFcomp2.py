@@ -1,7 +1,20 @@
 def sysFcomp2(mirrorList, blkFlag=True, printFigs=False):
-    """Plot Pe, Pm, and F of given mirror"""
+    """F of given mirrors
+    uses 6colors
+    """
     import matplotlib.pyplot as plt
     import numpy as np
+    # custom color cycler
+    from cycler import cycler
+    ltdColors=[ [0,0,0], # black
+            [0,1,0], # green
+            [1,0,1], # magenta
+            [.7,.7,.7], # grey
+            [1,.647,0],# orange
+            "#17becf", # light blue
+        ]
+    default_cycler = (cycler(color=ltdColors))
+    plt.rc('axes', prop_cycle=default_cycler)
     import psltdsim as ltd
 
     plt.rcParams.update({'font.size': 9}) # used to scale text
@@ -10,14 +23,7 @@ def sysFcomp2(mirrorList, blkFlag=True, printFigs=False):
     fig, ax = plt.subplots()
     fig.set_size_inches(6, 2)
 
-    colors=[ [0,0,0],
-            [.7,.7,.7],
-            [0,1,0],
-            [1,0,1],
-        ]
-    styles =["-","--",':','-.'
-        ]
-    sNDX = 0
+
 
     for mirror in mirrorList:
         mir = ltd.data.readMirror(mirror)
@@ -32,7 +38,6 @@ def sysFcomp2(mirrorList, blkFlag=True, printFigs=False):
         ## Plot System Frequencies
         ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1, 
                         label = caseName)
-        sNDX+=1
 
     ax.set_title('System Frequency')
     ax.set_ylabel('Hz')

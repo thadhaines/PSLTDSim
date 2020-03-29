@@ -6,7 +6,7 @@ Meant to be used to generate input to Load control / Dispatch Control Agents
 ## User specified input data
 # full file Name (assumed in same folder as this file)
 fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (1).csv" #CISO
-#fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (2).csv" #BPAT
+fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (2).csv" #BPAT
 #fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST.csv" #PACE
 
 dataDate = "12/11/2019" # Date format in csv from EIA
@@ -124,9 +124,9 @@ import numpy as np
 # custom color cycler
 from cycler import cycler
 ltdColors=[ [0,0,0], # black
-        [.7,.7,.7], # grey
         [0,1,0], # green
         [1,0,1], # magenta
+        [.7,.7,.7], # grey
         "#17becf", # light blue
         [1,.647,0],# orange
     ]

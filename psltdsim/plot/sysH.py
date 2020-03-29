@@ -15,7 +15,9 @@ def sysH(mirror, blkFlag=True, printFigs=False):
 
     fig, ax = plt.subplots()
 
-    ax.plot(mins, mir.r_Hsys, linewidth=1)
+    ax.plot(mins, mir.r_Hsys, 
+            color='black',
+            linewidth=1)
 
 
     ax.set_title('System Inertia\n Case: ' + caseName)

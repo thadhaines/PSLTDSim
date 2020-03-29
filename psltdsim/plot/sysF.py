@@ -29,7 +29,9 @@ def sysF(mirror, blkFlag=True, printFigs=False):
 
     fig, ax = plt.subplots()
     fig.set_size_inches(6, 2)
-    ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1, label = 'Frequency')
+    ax.plot(mins, np.array(mir.r_f)*60.0,linewidth=1, 
+            color='black',
+            label = 'Frequency')
 
     if plotDb:
         highDb = np.ones_like(mir.r_f)*mir.fBase+dbLine
