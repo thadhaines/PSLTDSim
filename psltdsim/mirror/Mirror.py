@@ -168,7 +168,10 @@ class Mirror(object):
         # NOTE: H is typically MW*sec unless noted as PU or in PSLF models
         if type(self.Hinput) == str:
             # Handle scaling of system H case
+            #print("scaling H from %.2f" % self.ss_H)
             self.Hsys = self.ss_H*float(self.Hinput)
+            #print("to %.2f" % self.Hsys)
+
         elif self.Hinput > 0.0:
             # Handle Input of h as MW*sec
             self.Hsys = self.Hinput

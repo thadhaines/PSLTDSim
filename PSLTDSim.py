@@ -297,12 +297,12 @@ batchList =[
     # Thesis AGC tuning with noise, deadbands
     #r".\testCases\200325-smFinals\smAGCbase1.py", # Area 1 base case
     #r".\testCases\200325-smFinals\smAGCbase2.py", # Area 2 base case
-    r".\testCases\200325-smFinals\smAGCtune1.py", # Area 1 tuning
-    r".\testCases\200325-smFinals\smAGCtune2.py", # Area 2 tuning
-    r".\testCases\200325-smFinals\smAGCdbnz1.py", # Area 1 tuning with db and noise
-    r".\testCases\200325-smFinals\smAGCdbnz2.py", # Area 2 tuning with db and noise
-    r".\testCases\200325-smFinals\smAGCt0In1.py", # both AGC on, area 1 perturbance TLB 0
-    r".\testCases\200325-smFinals\smAGCt4In1.py", # both AGC on, area 1 perturbance TLB 4
+    #r".\testCases\200325-smFinals\smAGCtune1.py", # Area 1 tuning
+    #r".\testCases\200325-smFinals\smAGCtune2.py", # Area 2 tuning
+    #r".\testCases\200325-smFinals\smAGCdbnz1.py", # Area 1 tuning with db and noise
+    #r".\testCases\200325-smFinals\smAGCdbnz2.py", # Area 2 tuning with db and noise
+    #r".\testCases\200325-smFinals\smAGCt0In1.py", # both AGC on, area 1 perturbance TLB 0
+    #r".\testCases\200325-smFinals\smAGCt4In1.py", # both AGC on, area 1 perturbance TLB 4
     # un needed?
     #r".\testCases\200325-smFinals\smAGCt0Ex1.py", # both AGC on, area 2 perturbance TLB 0
     #r".\testCases\200325-smFinals\smAGCt4Ex1.py", # both AGC on, area 2 perturbance TLB 4
@@ -312,6 +312,11 @@ batchList =[
     #r".\testCases\200326-smLT\smLTfdDBnz.py", # long-term forcast demand sim with deadbands and noise
     #r".\testCases\200326-smLT\smLTwr.py", # long-term windramp
     #r".\testCases\200326-smLT\smLTwrDBnz.py", # long-term windramp deadband noise
+
+    # damping and H scaling effect Tests
+    #r".\testCases\200329-DandH\smDstep.py", # Damping effect
+    r".\testCases\200329-DandH\smHstep.py", # scaled inertia effect
+
             ]
 
 # Batch Run Parameters

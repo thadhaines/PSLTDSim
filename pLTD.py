@@ -261,23 +261,44 @@ Plot Functions
 
 
 #================================================================================================
+""" System Damping """
+mirList = []
+printFigs = True
+mirList.append(os.path.join(dirname, 'delme','200329-DandH','smD0F.mir'))
+mirList.append(os.path.join(dirname, 'delme','200329-DandH','smDposF.mir'))
+mirList.append(os.path.join(dirname, 'delme','200329-DandH','smDnegF.mir'))
 
+#ltd.plot.sysFcomp2(mirList,blkFlag=True, printFigs=printFigs) # multiple mir comp
+
+#================================================================================================
 """ dtc gov step ff """
 # list stuff...
 mirList = []
-printFigs = True
+printFigs = False
 mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovNoDTCF.mir'))
 mirList.append(os.path.join(dirname, 'delme','200220-govDTC','sixMachineGovDTCF.mir'))
 
 #ltd.plot.sysFcomp2(mirList,blkFlag=True, printFigs=printFigs) # multiple mir comp
 #ltd.plot.sysPeComp(mirList, 2, blkFlag=True, printFigs=printFigs, ) # multiple mir comp of pe
 
+#================================================================================================
+""" Inertia sim changes"""
+mirList = []
+printFigs = True
+mirList.append(os.path.join(dirname, 'delme','200329-DandH','smH100F.mir'))
+mirList.append(os.path.join(dirname, 'delme','200329-DandH','smH90F.mir'))
+mirList.append(os.path.join(dirname, 'delme','200329-DandH','smH80F.mir'))
+mirList.append(os.path.join(dirname, 'delme','200329-DandH','smH70F.mir'))
+
+ltd.plot.sysFcomp2(mirList,blkFlag=True, printFigs=printFigs) # multiple mir comp
+ltd.plot.genDynamicsComp2(mirList, blkFlag=True, printFigs = True, genNum = 1) # comparison of valve travel
+
 
 """ Automatable H """
 mirLoc = os.path.join(dirname, 'delme','200203-Hpert','sixMachineHpertF.mir') 
 mir = ltd.data.readMirror(mirLoc)
-ltd.plot.sysH(mir, False, printFigs)
-ltd.plot.sysF(mir, False, printFigs)
+#ltd.plot.sysH(mir, False, printFigs)
+#ltd.plot.sysF(mir, False, printFigs)
 
 
 #================================================================================================
