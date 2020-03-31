@@ -334,6 +334,7 @@ mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF
 
 """ Thesis AGC Tuning plots """
 mirList = []
+baseCases = []
 mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt4In1F.mir') # Condidtional ACE internal
 mirList.append( mirLoc )
 mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCt0In1F.mir') # Non Conditional ACE
@@ -356,9 +357,13 @@ mirList.append( mirLoc )
 
 mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase1F.mir') # AGC base case 1 odd stuff via multibus gen?
 mirList.append( mirLoc )
+baseCases.append( mirLoc )
 mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase2F.mir') # AGC base case 2
 mirList.append( mirLoc )
+baseCases.append( mirLoc )
 
+
+ltd.plot.sysFcomp2(baseCases, True, True)
 #for case in mirList:
     #mir = ltd.data.readMirror(case)
     #print(mir)
