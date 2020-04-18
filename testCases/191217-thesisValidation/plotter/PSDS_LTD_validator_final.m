@@ -78,9 +78,15 @@ load(cases{1}) % 2 sec
 mir = eval(cases{1});
 clear eval(cases{1})
 %% Initial not super useful plots (kind of ... useful in six machine case)
+compareVsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[32,17])
+compareQsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[32,30,68])
+comparePmsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[32,30])
+comparePesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[32,30])
+compareAnglesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[30])
+
 %compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+%compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
@@ -88,7 +94,7 @@ compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj, genChange) % doesn't handle changes in inertia, fAdj used for this
 
 %% Frequency plots
- compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
+%compareF3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 
 %% Difference plots
 % compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
@@ -107,7 +113,8 @@ compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareAngle3ALT(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% Branch comparisons
-%comparePbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% require matlab ... newer than 2014
+% comparePbr1(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePbr2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePbr3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePbr3ALT(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

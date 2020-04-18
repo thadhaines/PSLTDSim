@@ -229,7 +229,7 @@ batchList =[
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3ArampPSS.py",
     #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
     
-    #r".\testCases\191217-thesisValidation\wecc\18HSPweccStep.py", # WORKS
+    r".\testCases\191217-thesisValidation\wecc\18HSPweccStep.py", # WORKS
     #r".\testCases\191217-thesisValidation\wecc\18HSPweccRamp.py", # crashes after 12 seconds...
     #r".\testCases\191217-thesisValidation\wecc\18HSPweccTrip.py", # NOT DEVELOPED...
 
@@ -315,7 +315,7 @@ batchList =[
 
     # damping and H scaling effect Tests
     #r".\testCases\200329-DandH\smDstep.py", # Damping effect
-    r".\testCases\200329-DandH\smHstep.py", # scaled inertia effect
+    #r".\testCases\200329-DandH\smHstep.py", # scaled inertia effect
 
             ]
 

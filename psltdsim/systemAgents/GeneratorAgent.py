@@ -147,6 +147,12 @@ class GeneratorAgent(object):
         self.cv['Q'] = msg['Q']
         self.cv['Qmin'] = msg['Qmin']
         self.cv['Qmax'] = msg['Qmax']
+
+        # check for auto off machines - will 
+        if msg['St'] != self.cv['St']:
+            print("### Change in St from %d to %d\n### %s" %
+                  (self.cv['St'], msg['St'], self))
+
         self.cv['St'] = msg['St']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')

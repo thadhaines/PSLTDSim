@@ -33,6 +33,6 @@ simParams = {
     'deleteInit' : 0, # Delete initialized mirror
     }
 
-savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a.sav"
+savPath = r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2aEDIT.sav"
 dydPath = [r"C:\LTD\pslf_systems\fullWecc\18HSP\18HSP2a1Fixed.dyd"]
 ltdPath = r".\testCases\191217-thesisValidation\wecc\18HSPweccRamp.ltd.py"

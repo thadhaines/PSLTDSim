@@ -135,7 +135,7 @@ cData = calcPdiff( t, mir, pData, ltdData );
 plot(t,cData,'m','linewidth',.85)
 grid on
 xlim(x_lim)
-title('Precent Difference Plot')
+title('Percent Difference Plot')
 ylabel('Percent Difference [%]')
 xlabel('Time [sec]')
 set(gca,'fontsize',bfz)

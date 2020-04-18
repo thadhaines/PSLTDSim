@@ -23,6 +23,8 @@ def LTD_SolveCase(mirror=None):
         0,  # reorder (in dypar default = 0)
         )
     soln_end = time.time()
+
+    #handle timing 
     if mirror:
         mirror.PFTime += (soln_end - soln_start)
         mirror.PFSolns += 1
@@ -36,3 +38,6 @@ def LTD_SolveCase(mirror=None):
         '''Maximum iterations hit'''
         raise ValueError('*** PSLF power-flow solution stopped due to maximum number of iterations.')
         return
+
+    #converged
+    return

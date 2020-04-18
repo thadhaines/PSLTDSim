@@ -261,6 +261,7 @@ Plot Functions
 
 
 #================================================================================================
+#================================================================================================
 """ System Damping """
 mirList = []
 printFigs = True
@@ -290,8 +291,8 @@ mirList.append(os.path.join(dirname, 'delme','200329-DandH','smH90F.mir'))
 mirList.append(os.path.join(dirname, 'delme','200329-DandH','smH80F.mir'))
 mirList.append(os.path.join(dirname, 'delme','200329-DandH','smH70F.mir'))
 
-ltd.plot.sysFcomp2(mirList,blkFlag=True, printFigs=printFigs) # multiple mir comp
-ltd.plot.genDynamicsComp2(mirList, blkFlag=True, printFigs = True, genNum = 1) # comparison of valve travel
+#ltd.plot.sysFcomp2(mirList,blkFlag=True, printFigs=printFigs) # multiple mir comp
+#ltd.plot.genDynamicsComp2(mirList, blkFlag=True, printFigs = True, genNum = 1) # comparison of valve travel
 
 
 """ Automatable H """
@@ -331,7 +332,11 @@ mirList.append(os.path.join(dirname, 'delme',folderName,'miniWECCnoiseNLdroopDBF
     #mir = ltd.data.readMirror(case)
     #ltd.plot.ValveTravel(mir, False, printFigs)
 
+# BAAL testing
+#mir = ltd.data.readMirror(mirList[1])
+#ltd.plot.BAALtest(mir)
 
+#================================================================================================
 """ Thesis AGC Tuning plots """
 mirList = []
 baseCases = []
@@ -350,10 +355,10 @@ mirList.append( mirLoc )
 mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCtune2F.mir') #
 mirList.append( mirLoc )
 
-mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCdbnz1F.mir') # AGC Tune
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCdbnz1F.mir') # AGC noise
 mirList.append( mirLoc )
-mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCdbnz2F.mir') # AGC Tune
-mirList.append( mirLoc )
+mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCdbnz2F.mir') # AGC noise
+mirList.append( mirLoc ) 
 
 mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase1F.mir') # AGC base case 1 odd stuff via multibus gen?
 mirList.append( mirLoc )
@@ -362,8 +367,12 @@ mirLoc = os.path.join(dirname, 'delme','200325-smFinal','smAGCbase2F.mir') # AGC
 mirList.append( mirLoc )
 baseCases.append( mirLoc )
 
+# BAAL testing
+#mir = ltd.data.readMirror(mirList[1])
+#ltd.plot.BAALtest(mir, True, True)
 
-ltd.plot.sysFcomp2(baseCases, True, True)
+#ltd.plot.sysFcomp2(baseCases, True, True)
+
 #for case in mirList:
     #mir = ltd.data.readMirror(case)
     #print(mir)
@@ -381,25 +390,34 @@ ltd.plot.sysFcomp2(baseCases, True, True)
     #mir = ltd.data.readMirror(case)
     #ltd.plot.BAplots02(mir, False, printFigs=True,)
 
+#================================================================================================
 """ Long-term thesis simulations """
-printFigs = False
+printFigs = True
 mirList = []
 mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdF.mir') # forcast demand ideal
 mirList.append( mirLoc )
 mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdDBnzF.mir') # forcast demand with nz
 mirList.append( mirLoc )
-mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrF.mir') # wind ramp
-mirList.append( mirLoc )
+#mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrF.mir') # wind ramp
+#mirList.append( mirLoc )
 mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrDBnzF.mir') # wind ramp
 mirList.append( mirLoc )
+
+# BAAL testing
+#for case in mirList:
+    #mir = ltd.data.readMirror(case)
+    #ltd.plot.BAALtest(mir, False, True)
 
 #ltd.plot.AreaPLoad(mir, False, printFigs)
 #ltd.plot.AreaPe(mir, False, printFigs)
 #ltd.plot.AreaPm(mir, False, printFigs)
 
-#for mirLoc in mirList:
-    #mir = ltd.data.readMirror(mirLoc)
+for mirLoc in mirList:
+    mir = ltd.data.readMirror(mirLoc)
     #ltd.plot.BAplots02(mir, False, printFigs)
+    ltd.plot.branchMVAR(mir, 8, [9], False, printFigs) # per area, legend inside right
+    
+    #ltd.plot.BAplots02detail(mir, [100,120], False, printFigs)
     #ltd.plot.sysShuntV(mir, False, printFigs)
     #ltd.plot.sysShuntMVAR(mir,  False, printFigs)
     #ltd.plot.sysPe(mir, False, printFigs)

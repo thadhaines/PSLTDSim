@@ -20,6 +20,7 @@ from .sysPemLQF import sysPemLQF
 
 from .BAplots01 import BAplots01
 from .BAplots02 import BAplots02
+from .BAplots02detail import BAplots02detail
 from .BAgovU import BAgovU
 from .ValveTravel import ValveTravel
 from .ValveTravel00 import ValveTravel00

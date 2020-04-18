@@ -11,7 +11,7 @@ PSDSfileName = '18HSPstep.chf';
 chunkSize = 15000;
 
 dataExists = 1;
-Sndx = 1;
+Sndx = 67000; %use GE plotter to find begining of data of interest
 fbugCol = []; % starting index (time)
 disp('*** Start')
 iteration = 0
@@ -35,7 +35,7 @@ while dataExists
 end
 disp('*** End')
 datetime('now')
-psds_data = udread(PSDSfileName,[fbugCol]-1);
+psds_data = udread(PSDSfileName,[fbugCol]+67000);
 
 % it is wise to save teh fbugCol!
 
@@ -55,13 +55,13 @@ dataCol = jfind(psds_data, 'fbug');
 grey = [0.7, 0.7, 0.7];
 black = [1,1,1];
 ds=30;
-ppos = [18 312 1252 373];
+%ppos = [18 312 1252 373];
+ppos = [18 312 626 373]; % mini
 
 figure('position',ppos)
 hold on
 for data=1:max(size(dataCol))-1
     plot( dsmple(t,ds), dsmple(psds_data.Data(:,dataCol(data)),ds), 'color',grey,'linewidth',.5,'HandleVisibility','off') % all others
-    
 end
 
 plot( dsmple(t,ds), dsmple(psds_data.Data(:,dataCol(max(size(dataCol)))),ds) , 'color',grey,'linewidth',.5)
@@ -82,7 +82,6 @@ bfz = 13;
 LTDCaseName = mir.meta.fileName(1:size(mir.meta.fileName,2)-1);
 grid on
 legend({[int2str(max(size(dataCol))) ' PSDS'],'Average PSDS','LTD'})
-title('Generator Frequency Comparison')
 title({'Generator Frequency Comparison'; ['Case: ', LTDCaseName]})
 ylabel('Frequency [Hz]')
 xlabel('Time [sec]')

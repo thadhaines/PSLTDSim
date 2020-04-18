@@ -1,8 +1,9 @@
-function [  ] = comparePe( mir, psds_data, varargin )
+function [  ] = compareVsel( mir, psds_data, varargin )
 %compareV Compare LTD mirror and psds simulation data
-%   optional inputs: case name, print figs, figure size
-%   PSDS angles need to have the reference subtracted from them to be centered
-%   around 0
+%   optional inputs: LTDCaseName, printFigs, miniFlag, ds, [select bus nums]
+% assumes all optional inputs are inserted, plots only select bus numbers
+
+sel = varargin{5}; % select nums to print
 
 % Handle optional inputs
 if nargin == 2
@@ -18,9 +19,9 @@ if nargin < 5
     ppos = [18 312 1252 373];
 else
     if varargin{3} == 1
-    ppos = [18 312 626 373];
+        ppos = [18 312 626 373];
     else
-    ppos = [18 312 1252 373];
+        ppos = [18 312 1252 373];
     end
 end
 
@@ -47,11 +48,13 @@ legNames = {};
 hold on
 set(gca,'linestyleorder',{'-', '-*', '-x', '-+', '-^', '-v', '--', '--*', '--x', '--+', '--^', '--v', ':', ':*', ':x', ':+', ':^', ':v'})
 for bv=1:max(size(v_col))
-    %plots all psds data
-    dsData = dsmple(psds_data.Data(:,v_col(bv)),ds);
-    plot(tds, dsData)
-    temp = strsplit(psds_data.Description{v_col(bv)});
-    legNames{end+1} = ['PSDS ', temp{1}];
+    %plots select bus voltage data psds data
+    if ismember(bv, sel)
+        dsData = dsmple(psds_data.Data(:,v_col(bv)),ds);
+        plot(tds, dsData)
+        temp = strsplit(psds_data.Description{v_col(bv)});
+        legNames{end+1} = ['PSDS ', temp{1}];
+    end
 end
 
 for area = 1:max(size(mir.areaN)) % for each area
@@ -59,72 +62,76 @@ for area = 1:max(size(mir.areaN)) % for each area
         fprintf('area %d\n',mir.areaN(area) )
     end
     curArea = ['A',int2str(area)];
+    
     uniqueEntry = unique(mir.(curArea).slackBusN);
     for slack = 1:max(size(mir.(curArea).slackBusN))
+        %plots select bus voltage data psds data
+    if ismember(mir.(curArea).slackBusN(slack), sel)
         if ismember(mir.(curArea).slackBusN(slack),uniqueEntry)
             % remove number from unique
             uniqueEntry(uniqueEntry == mir.(curArea).slackBusN(slack)) = [];
             curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
             plot(mir.t, mir.(curArea).(curSlack).Vm,'o')
             name = [(curArea),'.',(curSlack)];
-            legNames{end+1} = ['LTD ',name];
+            legNames{end+1} = ['PSLTDSim ',name];
         end
     end
+    end
+    
     uniqueEntry = unique(mir.(curArea).genBusN);
     for gen = 1:max(size(mir.(curArea).genBusN))
+        %plots select bus voltage data psds data
+    if ismember(mir.(curArea).genBusN(gen), sel)
         if ismember(mir.(curArea).genBusN(gen),uniqueEntry)
             % remove number from unique
             uniqueEntry(uniqueEntry == mir.(curArea).genBusN(gen)) = [];
             curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
             plot(mir.t, mir.(curArea).(curGen).Vm,'o')
             name = [(curArea),'.',(curGen)];
-            legNames{end+1} = ['LTD ',name];
+            legNames{end+1} = ['PSLTDSim ',name];
         end
     end
+    end
+    
     uniqueEntry = unique(mir.(curArea).loadBusN);
     for load = 1:max(size(mir.(curArea).loadBusN))
+        %plots select bus voltage data psds data
+    if ismember(mir.(curArea).loadBusN(load), sel)
         if ismember(mir.(curArea).loadBusN(load),uniqueEntry)
             % remove number from unique
             uniqueEntry(uniqueEntry == mir.(curArea).loadBusN(load)) = [];
             curLoadbus = ['L',int2str(mir.(curArea).loadBusN(load))];
             plot(mir.t, mir.(curArea).(curLoadbus).Vm,'o')
             name = [(curArea),'.',(curLoadbus)];
-            legNames{end+1} = ['LTD ',name];
+            legNames{end+1} = ['PSLTDSim ',name];
         end
     end
-
+    end
+    
     uniqueEntry = unique(mir.(curArea).xBusN);
     for xbus = 1:max(size(mir.(curArea).xBusN))
         % remove number from unique
+        %plots select bus voltage data psds data
+    if ismember(mir.(curArea).xBusN(xbus), sel)
         if ismember(mir.(curArea).xBusN(xbus),uniqueEntry)
             uniqueEntry(uniqueEntry == mir.(curArea).xBusN(xbus)) = [];
             curXbus = ['x',int2str(mir.(curArea).xBusN(xbus))];
             plot(mir.t, mir.(curArea).(curXbus).Vm,'o')
             name = [(curArea),'.',(curXbus)];
-            legNames{end+1} = ['LTD ',name];
+            legNames{end+1} = ['PSLTDSim ',name];
         end
+    end
     end
 end
 if makeLegend
-    if dLeg
-        if max(size(legNames)) > 15
-            loc = 'eastoutside';
-        else
-            loc = 'best';
-        end
-        
-        leg = columnlegend(2, cellstr(legNames), 'location',loc);
-        set(leg,'FontSize',bfz)
-    else
     legend(legNames)
-    end
-    grid on
 end
 grid on
+
 if noCase ==1
-    title('Comparison of Bus Voltage')
+    title('Select Comparison of Bus Voltage')
 else
-    title({'Comparison of Bus Voltage'; ['Case: ', LTDCaseName]})
+    title({'Select Comparison of Bus Voltage'; ['Case: ', LTDCaseName]})
 end
 xlabel('Time [sec]')
 ylabel('Voltage [pu]')
@@ -134,7 +141,7 @@ xlim(x_lim)
 % pdf output code
 if printFigs
     set(gcf,'color','w'); % to remove border of figure
-    export_fig([LTDCaseName,'V'],'-pdf'); % to print fig
+    export_fig([LTDCaseName,'Vsel'],'-pdf'); % to print fig
 end
 %% end of function
 end

@@ -161,6 +161,13 @@ class BranchAgent(object):
 
     def recAMQPmsg(self,msg):
         """Set message values to agent values"""
+        # check for auto off  
+        """
+        # issue found 4/4/20 - mirror out of sync...
+        if msg['St'] != self.cv['St']:
+            print("### Change in St from %d to %d\n### %s" %
+                  (self.cv['St'], msg['St'], self))
+        """
         self.cv['St'] = msg['St']
         if self.mirror.AMQPdebug: 
             print('AMQP values set!')

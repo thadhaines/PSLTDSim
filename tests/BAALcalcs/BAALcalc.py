@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 Fbase = 60
 Fs = 1*Fbase
 
-betaList = [-50, -100, -150, -200] # frequency bias
+betaList = np.array([-50, -100, -150, -200])/5 # frequency bias
 Fa = 60.005 # actual frequency - rolling minute average...
 
 eps1 = 0.0228 # Hz, dictated by interconnection
