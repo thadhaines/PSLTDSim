@@ -6,7 +6,7 @@ Meant to be used to generate input to Load control / Dispatch Control Agents
 ## User specified input data
 # full file Name (assumed in same folder as this file)
 fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (1).csv" #CISO
-fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (2).csv" #BPAT
+#fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST (2).csv" #BPAT
 #fileName = "Balancing_authority_hourly_actual_and_forecast_demand_12_per_05_per_2019_–_12_per_12_per_2019_MST.csv" #PACE
 
 dataDate = "12/11/2019" # Date format in csv from EIA
@@ -152,8 +152,8 @@ plt.pause(0.00001)
 #print(plotD['demand'][0]) # Debug
 # Relative % change plots
 fig, ax = plt.subplots()
-ax.plot(plotD['demandTime'], np.array(plotD['demand'])/plotD['demand'][0] , label='Demand')
-ax.plot(plotD['forcastTime'], np.array(plotD['forcast'])/plotD['forcast'][0], label = 'Forcast')
+ax.plot(plotD['demandTime'], ((np.array(plotD['demand'])/plotD['demand'][0])-1)*100 , label='Demand')
+ax.plot(plotD['forcastTime'], ((np.array(plotD['forcast'])/plotD['forcast'][0])-1)*100, label = 'Forcast')
 
 ax.set_title('Load Forecast and Demand from %s\nStart Time = %s:00 %s '%
              (dataName, dataTimeStart, dataDate))

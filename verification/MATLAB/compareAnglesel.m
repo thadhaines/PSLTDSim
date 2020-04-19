@@ -5,6 +5,17 @@ function [  ] = compareAnglesel( mir, psds_data, varargin )
 
 sel = varargin{5} % select nums to print
 
+% color scheme
+ltdColors={ [0,0,0], % black
+            [1,0,1], % magenta
+            [0,1,0], % green
+            %[0.090196078431373,  0.745098039215686,   0.811764705882353],
+            %"#17becf", % light blue
+            [0,1,1], % cyan
+            [1,.647,0],% orange
+            [.7,.7,.7]% grey
+        };
+
 % Handle optional inputs
 if nargin == 2
     printFigs = 0;
@@ -37,9 +48,7 @@ ag_col = jfind(psds_data, 'abug');
 ds = varargin{4};
 tds = dsmple(t,ds);
 
-if max(size(ag_col)) > 20
-    makeLegend = 0;
-end
+linesP = 0; % used for index of ltdColors cell structure
 
 %% find slack name Area
 %cycle through areas until one has a slackbus
@@ -61,6 +70,7 @@ slackAng = psds_data.Data(:,psdsDataNdx);
 
 %% plot
 figure('position',ppos)
+
 legNames ={};
 hold on
 for curCol=1:max(size(ag_col))
@@ -70,8 +80,9 @@ for curCol=1:max(size(ag_col))
     busNum = str2num(cell2mat(busNum(1))); % pain in the ass cell->char->num
 if ismember(busNum,sel)
     angleData = rad2deg(unwrap(deg2rad(( psds_data.Data(:,ag_col(curCol))- slackAng ))));
-    plot(tds, dsmple(angleData,ds),'.')
+    plot(tds, dsmple(angleData,ds),'.-','color',ltdColors{linesP+1})
     legNames{end+1} = ['PSDS ', temp{1}];
+    linesP = mod(linesP+1 , size(ltdColors,1));
 end
 end
 
@@ -90,9 +101,11 @@ for area = 1:max(size(mir.areaN)) % for each area
         if ismember(mir.(curArea).slackBusN(slack),sel)
         curSlack = ['S',int2str(mir.(curArea).slackBusN(slack))];
         angData = rad2deg(mir.(curArea).(curSlack).Va);
-        plot(mir.t, angData,'o')
+        stairs(mir.t, angData,'-o','color',ltdColors{linesP+1},'linewidth',1.5)
+        
+        linesP = mod(linesP+1 , size(ltdColors,1));
         name = [(curArea),'.',(curSlack)];
-        legNames{end+1} = ['LTD ',name];
+        legNames{end+1} = ['PSLTDSim ',name];
         
         if max(angData) > ymax
             ymax = max(angData);
@@ -102,15 +115,21 @@ for area = 1:max(size(mir.areaN)) % for each area
         end
         end
     end
+    
+    uniqueEntry = unique(mir.(curArea).genBusN);
     for gen = 1:max(size(mir.(curArea).genBusN))
         if ismember(mir.(curArea).genBusN(gen),sel)
+            if ismember(mir.(curArea).genBusN(gen),uniqueEntry)
+                % remove from unique Entry
+            uniqueEntry(uniqueEntry == mir.(curArea).genBusN(gen)) = [];
         curGen = ['G',int2str(mir.(curArea).genBusN(gen))];
         % place for for each gen in Ngen...
         % if same bus, will have same voltage and angle...
         angData = rad2deg(mir.(curArea).(curGen).Va);
-        plot(mir.t, angData,'o')        
+        stairs(mir.t, angData,'-o','color',ltdColors{linesP+1},'linewidth',1.5)
+        linesP = mod(linesP+1 , size(ltdColors,1));       
         name = [(curArea),'.',(curGen)];
-        legNames{end+1} = ['LTD ',name];
+        legNames{end+1} = ['PSLTDSim ',name];
         
          if max(angData) > ymax
             ymax = max(angData);
@@ -118,6 +137,7 @@ for area = 1:max(size(mir.areaN)) % for each area
         if min(angData) < ymin
             ymin = min(angData);
         end
+            end
         end
     end
     
