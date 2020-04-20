@@ -229,7 +229,7 @@ batchList =[
     #r".\testCases\191217-thesisValidation\miniW\miniWECC3ArampPSS.py",
     #r".\testCases\191217-thesisValidation\miniW\miniWECCgenTrip0PSS.py",
     
-    r".\testCases\191217-thesisValidation\wecc\18HSPweccStep.py", # WORKS
+    #r".\testCases\191217-thesisValidation\wecc\18HSPweccStep.py", # WORKS
     #r".\testCases\191217-thesisValidation\wecc\18HSPweccRamp.py", # crashes after 12 seconds...
     #r".\testCases\191217-thesisValidation\wecc\18HSPweccTrip.py", # NOT DEVELOPED...
 
@@ -310,8 +310,8 @@ batchList =[
     # Thesis Long-term Simulations
     #r".\testCases\200326-smLT\smLTfd.py", # long-term forcast demand sim
     #r".\testCases\200326-smLT\smLTfdDBnz.py", # long-term forcast demand sim with deadbands and noise
-    #r".\testCases\200326-smLT\smLTwr.py", # long-term windramp
-    #r".\testCases\200326-smLT\smLTwrDBnz.py", # long-term windramp deadband noise
+    r".\testCases\200326-smLT\smLTwr.py", # long-term windramp
+    r".\testCases\200326-smLT\smLTwrDBnz.py", # long-term windramp deadband noise
 
     # damping and H scaling effect Tests
     #r".\testCases\200329-DandH\smDstep.py", # Damping effect

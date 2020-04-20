@@ -394,12 +394,12 @@ baseCases.append( mirLoc )
 """ Long-term thesis simulations """
 printFigs = True
 mirList = []
-mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdF.mir') # forcast demand ideal
-mirList.append( mirLoc )
-mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdDBnzF.mir') # forcast demand with nz
-mirList.append( mirLoc )
-#mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrF.mir') # wind ramp
+#mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdF.mir') # forcast demand ideal
 #mirList.append( mirLoc )
+#mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTfdDBnzF.mir') # forcast demand with nz
+#mirList.append( mirLoc )
+mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrF.mir') # wind ramp
+mirList.append( mirLoc )
 mirLoc = os.path.join(dirname, 'delme','200326-smLT','smLTwrDBnzF.mir') # wind ramp
 mirList.append( mirLoc )
 
@@ -415,11 +415,11 @@ mirList.append( mirLoc )
 for mirLoc in mirList:
     mir = ltd.data.readMirror(mirLoc)
     #ltd.plot.BAplots02(mir, False, printFigs)
-    ltd.plot.branchMVAR(mir, 8, [9], False, printFigs) # per area, legend inside right
+    #ltd.plot.branchMVAR(mir, 8, [9], False, printFigs) # per area, legend inside right
     
     #ltd.plot.BAplots02detail(mir, [100,120], False, printFigs)
     #ltd.plot.sysShuntV(mir, False, printFigs)
-    #ltd.plot.sysShuntMVAR(mir,  False, printFigs)
+    ltd.plot.sysShuntMVAR(mir,  False, printFigs)
     #ltd.plot.sysPe(mir, False, printFigs)
     #ltd.plot.areaPL(mir, False, printFigs)
 

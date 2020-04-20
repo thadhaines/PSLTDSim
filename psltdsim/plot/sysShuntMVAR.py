@@ -47,7 +47,7 @@ def sysShuntMVAR(mirror, blkFlag=True, printFigs=False):
 
     
 
-    ax.legend(loc='lower right', )
+    ax.legend(loc='upper left', )
 
     ax.set_title('Shunt Bus Active B\n Case: ' + caseName)
     ax.set_xlim(0,minEnd)
