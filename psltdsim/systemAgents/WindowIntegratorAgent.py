@@ -10,7 +10,7 @@ class WindowIntegratorAgent(object):
         self.windowSize = int(self.length / self.mirror.timeStep)
 
         self.window = [0.0]*self.windowSize
-        self.windowNDX = -1
+        self.windowNDX = -1 # so first step index points to 0
 
         self.cv = {
             'windowInt' : 0.0,
@@ -19,7 +19,6 @@ class WindowIntegratorAgent(object):
 
     def step(self, curVal, preVal):
         # calculate current window Area, return value
-        #t = self.mirror.cv['dp'] # current data point
         self.windowNDX += 1
         self.windowNDX %= self.windowSize
 
