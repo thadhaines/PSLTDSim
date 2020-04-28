@@ -42,7 +42,7 @@ genChange = 0;
 % PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
 % LTDCaseName = 'miniWECCramp'; %
 % genChange = -0; %
-% 
+
 % PSDSfileName = 'miniWECC_genTrip027.chf'; %
 % LTDCaseName = 'miniWECCgenTrip027';
 % genChange = -0;
@@ -78,11 +78,19 @@ load(cases{1}) % 2 sec
 mir = eval(cases{1});
 clear eval(cases{1})
 %% Initial not super useful plots (kind of ... useful in six machine case)
-compareVsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[32,17])
-compareQsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[32,30,68])
-comparePmsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[32,30])
-comparePesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[32,30])
-compareAnglesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[30])
+% mini wecc
+% compareVsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[57,69],18)
+% compareQsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[17,53],18)
+% comparePmsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[17,53],18)
+% comparePesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[17,53],18)
+% compareAnglesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[1,53],18)
+
+% six machine
+compareVsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[7,11],18)
+compareQsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[1,3],18)
+comparePmsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[1,3],18)
+comparePesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[1,3],18)
+compareAnglesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[2,5],18)
 
 %compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 %compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)

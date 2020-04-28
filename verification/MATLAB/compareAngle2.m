@@ -6,6 +6,12 @@ function [  ] = compareAngle2( mir, psds_data, varargin )
 %   Deviation changed to Difference in plot output
 
 % Handle optional inputs
+if nargin > 6
+    bfz = varargin{5};
+else
+    bfz = 13;
+end
+
 if nargin == 2
     printFigs = 0;
     noCase =1;
@@ -29,7 +35,6 @@ end
 debug = 0;
 makeLegend = 0;
 x_lim = [mir.t(1), mir.t(end)];
-bfz = 13;
 t = psds_data.Data(:,1); % PSDS time
 
 % funtion specific
