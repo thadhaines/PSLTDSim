@@ -21,14 +21,14 @@ ds = 5; % number of samples to skip in PSDS data plots
 
 % Six Machine -> works with git .p etc.
 % 
-PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
-LTDCaseName = 'SixMachineStep1';
-genChange = 0;
-% 
-% PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
-% LTDCaseName = 'SixMachineRamp1';
+% PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
+% LTDCaseName = 'SixMachineStep1';
 % genChange = 0;
 % 
+PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
+LTDCaseName = 'SixMachineRamp1';
+genChange = 0;
+
 % PSDSfileName = 'sixMachineGenTrip0.chf';
 % LTDCaseName = 'SixMachineTrip0';
 % genChange = -0;
@@ -52,7 +52,7 @@ genChange = 0;
 % PSDSfileName = 'miniWECC_loadStepPSS.chf'; % case used in IEEE paper
 % LTDCaseName = 'miniWECCstepPSS'; %
 % genChange = 0;
-% 
+
 % PSDSfileName = 'miniWECC_loadRampPSS.chf'; % case used in IEEE paper
 % LTDCaseName = 'miniWECCrampPSS'; %
 % genChange = -0; %
@@ -92,11 +92,11 @@ comparePmsel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[1,3],18)
 comparePesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[1,3],18)
 compareAnglesel(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,[2,5],18)
 
-%compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-%comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
 %compareWfreq(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, fAdj, genChange) % doesn't handle changes in inertia, fAdj used for this

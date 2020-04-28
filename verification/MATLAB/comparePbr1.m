@@ -47,12 +47,12 @@ grey = [.75,.75,.75];
 
 % create string array from char
 numBranch = size(mir.branch.branchN,1);
-branchSTR = strings(numBranch,1);
-for n = 1: numBranch
-    charVec = mir.branch.branchN(n,:);
-    branchSTR(n) = strtrim(string(charVec));
-end
-
+%branchSTR = strings(numBranch,1);
+%for n = 1: numBranch
+%    charVec = mir.branch.branchN(n,:);
+%    branchSTR(n) = strtrim(string(charVec));
+%end
+branchSTR = cellstr(mir.branch.branchN);
 uniBranch = unique(branchSTR);
 
 legNames = {};
@@ -63,20 +63,23 @@ psdsData_col = jfind(psds_data, 'pbr');
 %
 figure('position',ppos)
 legNames={};
-% Plot PSLTD mw flows...
+%% Plot LTD mw flows...
 for br = 1:size(uniBranch,1)
     brID = strcat('br',uniBranch(br));
     plot(mir.t, mir.branch.(char(brID)).Pbr,'s') 
     hold on
-    legNames{end+1} =  ['LTD ', char(strrep(uniBranch(br),"_"," "))];
+    legNames{end+1} =  ['LTD ', char(strrep(uniBranch(br),'_',' '))];
 end
+
+%% plot psds flows
 for index = psdsData_col
     plot(t, psds_data.Data(:,index),'--','linewidth',2)
-    fullDesc = psds_data.Description{index};
-    splitStr = split(fullDesc,':');
+    fullDesc = cellstr(psds_data.Description{index});
+    splitStr = strsplit(fullDesc{1},':');
     legNames{end+1} =  ['PSDS ',splitStr{1} ,' to ',splitStr{4} ];
 end
 
+%%
 title({'Branch Real Power Flow'; ['Case: ', LTDCaseName]})
 
 legend(legNames,'location','east')

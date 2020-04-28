@@ -68,7 +68,7 @@ for dataCol = psdsData_col
         LTDdata =  mir.branch.(ltdDataName).Pbr; % Qbr Amps;
     catch ME
         if (strcmp(ME.identifier,'MATLAB:nonExistentField'))
-            fprintf("Branch %s to %s not found in Mirror.\n", FbusSTR, TbusSTR);
+            fprintf('Branch %s to %s not found in Mirror.\n', FbusSTR, TbusSTR);
             continue
         end
     end
