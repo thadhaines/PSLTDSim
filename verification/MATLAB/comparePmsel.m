@@ -138,9 +138,9 @@ if makeLegend
 end
 grid on
 if noCase ==1
-    title('Select Comparison of Mechanical Power Output')
+    title('Select Comparison of Mechanical Power')
 else
-    title({'Select Comparison of Mechanical Power Output'; ['Case: ', LTDCaseName]})
+    title({'Select Comparison of Mechanical Power'; ['Case: ', LTDCaseName]})
 end
 xlabel('Time [sec]')
 ylabel('Power [MW]')

@@ -131,6 +131,7 @@ end
         linesP = mod(linesP+1 , size(ltdColors,1));
             end
         end
+    end
         
     
     
@@ -141,9 +142,9 @@ end
     end
     grid on
     if noCase ==1
-        title('Select Comparison of Real Power Output')
+        title('Select Comparison of Real Power')
     else
-        title({'Select Comparison of Real Power Output'; ['Case: ', LTDCaseName]})
+        title({'Select Comparison of Real Power'; ['Case: ', LTDCaseName]})
     end
     
     xlabel('Time [sec]')

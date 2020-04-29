@@ -157,9 +157,9 @@ legend(legNames, 'location','best','FontSize',13)
 %end
 grid on
 if noCase ==1
-    title('Select Comparison of Generator Voltage Angle')
+    title('Select Comparison of Voltage Angle')
 else
-    title({'Select Comparison of Generator Voltage Angle'; ['Case: ', LTDCaseName]})
+    title({'Select Comparison of Voltage Angle'; ['Case: ', LTDCaseName]})
 end
 xlabel('Time [sec]')
 ylabel('Generator Angle [degrees]')

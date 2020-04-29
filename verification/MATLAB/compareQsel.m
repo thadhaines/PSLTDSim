@@ -137,9 +137,9 @@ end
 
 grid on
 if noCase ==1
-    title('Select Comparison of Reactive Power Output')
+    title('Select Comparison of Reactive Power')
 else
-    title({'Select Comparison of Reactive Power Output'; ['Case: ', LTDCaseName]})
+    title({'Select Comparison of Reactive Power'; ['Case: ', LTDCaseName]})
 end
 xlabel('Time [sec]')
 ylabel('Reactive Power [MVAR]')
