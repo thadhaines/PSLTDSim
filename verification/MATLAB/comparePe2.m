@@ -9,6 +9,12 @@ else
     bfz = 13;
 end
 
+if nargin > 7
+    outFile = varargin{6};
+else
+    outFile = '-pdf';
+end
+
 if nargin == 2
     printFigs = 0;
     noCase =1;
@@ -144,7 +150,7 @@ xlim(x_lim)
 % pdf output code
 if printFigs
     set(gcf,'color','w'); % to remove border of figure
-    export_fig([LTDCaseName,'Pe2'],'-pdf'); % to print fig
+    export_fig([LTDCaseName,'Pe2'],outFile); % to print fig
 end
 %% end of function
 end

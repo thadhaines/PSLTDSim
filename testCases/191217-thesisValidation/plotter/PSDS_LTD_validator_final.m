@@ -14,16 +14,16 @@ clear; format compact; clc; close all;
 format long;
 
 %% Plot params
-printFigs =  false; % true; %  
+printFigs =   true; % false; % 
 miniFlag = 1; % decrease plot width by half
 ds = 5; % number of samples to skip in PSDS data plots
 %% Knowns - Case file names
 
 % Six Machine -> works with git .p etc.
 % 
-PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
-LTDCaseName = 'SixMachineStep1';
-genChange = 0;
+% PSDSfileName = 'sixMachineStep1.chf'; % 75 MW
+% LTDCaseName = 'SixMachineStep1';
+% genChange = 0;
 % 
 % PSDSfileName = 'sixMachineRamp1.chf'; % 75 MW
 % LTDCaseName = 'SixMachineRamp1';
@@ -35,14 +35,14 @@ genChange = 0;
 
 %%
 %Mini WECC - No PSS
-% PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
-% LTDCaseName = 'miniWECCstep'; %
-% genChange = 0;
+PSDSfileName = 'miniWECC_loadStep.chf'; % case used in IEEE paper
+LTDCaseName = 'miniWECCstep'; %
+genChange = 0;
 % % 
 % PSDSfileName = 'miniWECC_loadRamp.chf'; % case used in IEEE paper
 % LTDCaseName = 'miniWECCramp'; %
 % genChange = -0; %
-
+% 
 % PSDSfileName = 'miniWECC_genTrip027.chf'; %
 % LTDCaseName = 'miniWECCgenTrip027';
 % genChange = -0;
@@ -78,6 +78,7 @@ load(cases{1}) % 2 sec
 mir = eval(cases{1});
 clear eval(cases{1})
 axSz = 17.5;
+outFile = '-png';
 
 %% Initial not super useful plots (kind of ... useful in six machine case)
 % mini wecc
@@ -97,7 +98,7 @@ axSz = 17.5;
 % compareV(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareQ(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % compareAngle(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
-comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
+% comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 % comparePe(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %compareFreqTrip(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds, genChange)
@@ -108,20 +109,20 @@ comparePm(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds)
 
 %% Difference plots
 % 
-% compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
+compareV2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+% comparePe2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+% comparePm2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+% compareQ2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+compareAngle2(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
 
 %% percent difference plots
-% compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% compareQ3ALT(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
-% compareAngle3ALT(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz)
+compareV3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+% comparePe3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+% comparePm3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+% compareQ3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+% compareQ3ALT(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+compareAngle3(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
+compareAngle3ALT(mir, psds_data, LTDCaseName, printFigs, miniFlag, ds,axSz,outFile)
 
 %% Branch comparisons
 % require matlab ... newer than 2014

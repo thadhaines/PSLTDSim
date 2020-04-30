@@ -8,6 +8,11 @@ if nargin > 6
 else
     bfz = 13;
 end
+if nargin > 7
+    outFile = varargin{6};
+else
+    outFile = '-pdf';
+end
 
 if nargin == 2
     printFigs = 0;
@@ -207,7 +212,7 @@ xlim(x_lim)
 % pdf output code
 if printFigs
     set(gcf,'color','w'); % to remove border of figure
-    export_fig([LTDCaseName,'Q3ALT'],'-pdf'); % to print fig
+    export_fig([LTDCaseName,'Q3ALT'],outFile); % to print fig
 end
 %% end of function
 end
